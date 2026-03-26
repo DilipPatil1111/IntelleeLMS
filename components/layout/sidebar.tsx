@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
-  Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked,
+  Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
+  Shield, FolderOpen,
   type LucideIcon
 } from "lucide-react";
 import { useState } from "react";
@@ -50,10 +51,13 @@ const principalNav: NavItem[] = [
   { label: "Teachers", href: "/principal/teachers", icon: Users },
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
   { label: "Programs", href: "/principal/programs", icon: BookOpen },
+  { label: "Batches", href: "/principal/batches", icon: Layers },
   { label: "Reports", href: "/principal/reports", icon: BarChart3 },
   { label: "Academic Year", href: "/principal/academic-year", icon: Calendar },
   { label: "Holidays", href: "/principal/holidays", icon: Calendar },
   { label: "Email Templates", href: "/principal/email-templates", icon: Bell },
+  { label: "Policies", href: "/principal/policies", icon: Shield },
+  { label: "Templates", href: "/principal/shared-documents", icon: FolderOpen },
   { label: "Settings", href: "/principal/settings", icon: Settings },
 ];
 

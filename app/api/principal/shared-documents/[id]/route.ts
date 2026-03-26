@@ -8,16 +8,20 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
-  const holiday = await db.holiday.update({
+  const doc = await db.sharedDocument.update({
     where: { id },
     data: {
-      name: body.name,
-      date: new Date(body.date),
-      type: body.type || "PUBLIC",
+      title: body.title,
+      description: body.description || null,
+      type: body.type || "DOCUMENT",
+      fileUrl: body.fileUrl || null,
+      fileName: body.fileName || null,
+      category: body.category || null,
+      isPublic: body.isPublic ?? true,
     },
   });
 
-  return NextResponse.json({ holiday });
+  return NextResponse.json({ document: doc });
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -25,6 +29,6 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  await db.holiday.delete({ where: { id } });
+  await db.sharedDocument.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }

@@ -22,6 +22,7 @@ export async function POST(req: Request) {
       content: body.content || null,
       fileUrl: body.fileUrl || null,
       category: body.category || null,
+      isActive: body.isActive ?? true,
     },
   });
 
