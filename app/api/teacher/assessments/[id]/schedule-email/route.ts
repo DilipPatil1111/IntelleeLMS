@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getServerAppUrl } from "@/lib/app-url";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -17,7 +18,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   if (!assessment) return NextResponse.json({ error: "Assessment not found" }, { status: 404 });
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const appUrl = getServerAppUrl();
   const link = `${appUrl}/student/assessments/${assessment.id}/take`;
 
   const emails = assessment.batch.students.map((sp) => ({

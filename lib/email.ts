@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { env } from "@/lib/env";
 
 let resend: Resend | null = null;
 
@@ -9,6 +10,15 @@ function getResend() {
   return resend;
 }
 
+/** Default Resend test sender (only works for your own account email). Use RESEND_FROM_EMAIL after domain verification. */
+const DEFAULT_FROM = "Intellee College <onboarding@resend.dev>";
+
+function getFromAddress(): string {
+  const configured = env.RESEND_FROM_EMAIL?.trim();
+  if (configured) return configured;
+  return DEFAULT_FROM;
+}
+
 interface SendEmailParams {
   to: string;
   subject: string;
@@ -16,24 +26,42 @@ interface SendEmailParams {
   text?: string;
 }
 
-export async function sendEmail({ to, subject, html, text }: SendEmailParams) {
+export type SendEmailResult =
+  | { ok: true; mock: true }
+  | { ok: true; mock: false; id?: string }
+  | { ok: false; error: string };
+
+export async function sendEmail({ to, subject, html, text }: SendEmailParams): Promise<SendEmailResult> {
   const client = getResend();
   if (!client) {
-    console.log(`[EMAIL MOCK] To: ${to} | Subject: ${subject}`);
-    return { success: true, mock: true };
+    console.warn(
+      `[EMAIL] RESEND_API_KEY is not set — welcome email not sent to ${to}. Set RESEND_API_KEY on Vercel (and optionally RESEND_FROM_EMAIL).`
+    );
+    return { ok: true, mock: true };
   }
 
-  const options: Record<string, unknown> = {
-    from: "Intellee College <noreply@intellee.edu>",
-    to,
-    subject,
-  };
-  if (html) options.html = html;
-  if (text) options.text = text;
+  const htmlBody = html ?? (text ? `<p>${text.replace(/</g, "&lt;")}</p>` : "<p></p>");
+  const textBody = text ?? (html ? html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "");
 
-  const result = await (client.emails.send as unknown as (opts: Record<string, unknown>) => Promise<unknown>)(options);
-
-  return { success: true, data: result };
+  try {
+    const result = await client.emails.send({
+      from: getFromAddress(),
+      to,
+      subject,
+      html: htmlBody,
+      text: textBody || htmlBody.replace(/<[^>]+>/g, " ").trim() || "(no body)",
+    });
+    if (result.error) {
+      const errMsg = result.error.message || "Resend rejected the send";
+      console.error("[EMAIL] Resend error:", result.error);
+      return { ok: false, error: errMsg };
+    }
+    return { ok: true, mock: false, id: result.data?.id };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[EMAIL] Send exception:", msg);
+    return { ok: false, error: msg };
+  }
 }
 
 export function buildAssessmentInviteEmail(assessmentTitle: string, link: string) {
@@ -64,7 +92,7 @@ export function buildStudentWelcomeEmail(params: {
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #4f46e5;">Intellee College</h2>
         <p>Hello ${firstName},</p>
-        <p>An administrator created your student account. Use the credentials below to sign in. You will be asked to set a new password on first login.</p>
+        <p>An administrator created your student account. Use the credentials below to sign in at the login page. You will be asked to set and confirm a new password before using the student dashboard.</p>
         <div style="background: #f3f4f6; border-radius: 8px; padding: 16px; margin: 16px 0;">
           <p style="margin: 0;"><strong>Email:</strong> ${email}</p>
           <p style="margin: 8px 0 0;"><strong>Temporary password:</strong> <code style="background: #e5e7eb; padding: 4px 8px; border-radius: 4px;">${temporaryPassword}</code></p>

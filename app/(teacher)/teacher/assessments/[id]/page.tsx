@@ -9,6 +9,7 @@ import { formatDate, formatDateTime } from "@/lib/utils";
 import Link from "next/link";
 import { CopyLinkButton } from "./copy-link-button";
 import { AssessmentActions } from "./assessment-actions";
+import { getServerAppUrl } from "@/lib/app-url";
 
 export default async function AssessmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -27,7 +28,7 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
 
   if (!assessment) notFound();
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const appUrl = getServerAppUrl();
   const assessmentLink = `${appUrl}/assess/${assessment.linkToken}`;
   const isDraft = assessment.status === "DRAFT";
 

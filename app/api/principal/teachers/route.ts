@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sendEmail, buildStudentWelcomeEmail } from "@/lib/email";
 import { generateTemporaryPassword } from "@/lib/password";
-import { env } from "@/lib/env";
+import { getServerAppUrl } from "@/lib/app-url";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -67,19 +67,25 @@ export async function POST(req: Request) {
     include: { teacherProfile: { include: { teacherPrograms: { include: { program: true } } } } },
   });
 
-  const loginUrl = `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/login`;
+  const loginUrl = `${getServerAppUrl()}/login`;
   const emailPayload = buildStudentWelcomeEmail({
     firstName: user.firstName,
     email: user.email,
     temporaryPassword: plainPassword,
     loginUrl,
   });
-  await sendEmail({
+  const emailResult = await sendEmail({
     to: user.email,
     subject: "Your Intellee College teacher account",
     html: emailPayload.html.replace("student account", "teacher account"),
     text: emailPayload.text.replace("student account", "teacher account"),
   });
 
-  return NextResponse.json({ user: { id: user.id, email: user.email } });
+  const welcomeEmailStatus = !emailResult.ok ? "failed" : emailResult.mock ? "mock" : "sent";
+
+  return NextResponse.json({
+    user: { id: user.id, email: user.email },
+    welcomeEmailStatus,
+    emailError: !emailResult.ok ? emailResult.error : undefined,
+  });
 }

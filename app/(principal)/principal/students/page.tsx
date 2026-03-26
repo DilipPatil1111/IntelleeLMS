@@ -106,6 +106,9 @@ export default function PrincipalStudentsPage() {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<StudentRow | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [saveBanner, setSaveBanner] = useState<{ tone: "success" | "warning" | "error"; message: string } | null>(
+    null
+  );
 
   const programOptions = useMemo(
     () => programs.map((p) => ({ value: p.id, label: p.name })),
@@ -144,7 +147,7 @@ export default function PrincipalStudentsPage() {
 
   async function handleSave() {
     if (editing) {
-      await fetch(`/api/principal/students/${editing.id}`, {
+      const res = await fetch(`/api/principal/students/${editing.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -158,8 +161,14 @@ export default function PrincipalStudentsPage() {
           batchId: form.batchId || null,
         }),
       });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setSaveBanner({ tone: "error", message: (err as { error?: string }).error || "Could not update student." });
+        return;
+      }
+      setSaveBanner({ tone: "success", message: "Student updated." });
     } else {
-      await fetch("/api/principal/students", {
+      const res = await fetch("/api/principal/students", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -172,6 +181,33 @@ export default function PrincipalStudentsPage() {
           enrollmentNo: form.enrollmentNo.trim() || undefined,
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setSaveBanner({
+          tone: "error",
+          message: (data as { error?: string }).error || "Could not create student.",
+        });
+        return;
+      }
+      const welcome = (data as { welcomeEmailStatus?: string; emailError?: string }).welcomeEmailStatus;
+      const emailErr = (data as { emailError?: string }).emailError;
+      if (welcome === "failed") {
+        setSaveBanner({
+          tone: "error",
+          message: `Student created, but the welcome email failed: ${emailErr || "unknown error"}. Check Vercel env: RESEND_API_KEY, RESEND_FROM_EMAIL, and NEXT_PUBLIC_APP_URL.`,
+        });
+      } else if (welcome === "mock") {
+        setSaveBanner({
+          tone: "warning",
+          message:
+            "Student created. Welcome email was not sent (RESEND_API_KEY is not set on the server). Add it in Vercel → Settings → Environment Variables.",
+        });
+      } else {
+        setSaveBanner({
+          tone: "success",
+          message: "Student created. A welcome email with login link and temporary password was sent.",
+        });
+      }
     }
     setShowModal(false);
     setEditing(null);
@@ -237,6 +273,20 @@ export default function PrincipalStudentsPage() {
           </Button>
         }
       />
+
+      {saveBanner && (
+        <div
+          className={`mb-4 rounded-lg border px-4 py-3 text-sm ${
+            saveBanner.tone === "success"
+              ? "border-green-200 bg-green-50 text-green-800"
+              : saveBanner.tone === "warning"
+                ? "border-amber-200 bg-amber-50 text-amber-900"
+                : "border-red-200 bg-red-50 text-red-800"
+          }`}
+        >
+          {saveBanner.message}
+        </div>
+      )}
 
       <div className="overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200">

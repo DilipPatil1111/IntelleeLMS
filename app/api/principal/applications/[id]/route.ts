@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getServerAppUrl } from "@/lib/app-url";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -16,7 +17,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   });
   if (!application) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const appUrl = getServerAppUrl();
 
   if (action === "accept") {
     await db.programApplication.update({
