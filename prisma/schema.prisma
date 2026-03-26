@@ -1,0 +1,669 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────
+
+enum Role {
+  STUDENT
+  TEACHER
+  PRINCIPAL
+}
+
+enum AssessmentType {
+  QUIZ
+  TEST
+  ASSIGNMENT
+  PROJECT
+  HOMEWORK
+}
+
+enum AssessmentStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  GRADED
+}
+
+enum QuestionType {
+  MCQ
+  SHORT
+  PARAGRAPH
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  GRADED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+enum HolidayType {
+  PUBLIC
+  COLLEGE
+  CUSTOM
+}
+
+enum NotificationType {
+  ASSESSMENT_INVITE
+  RESULT_PUBLISHED
+  ATTENDANCE_REMINDER
+  APPLICATION_RECEIVED
+  APPLICATION_ACCEPTED
+  ENROLLMENT_CONFIRMED
+  GENERAL
+}
+
+enum StudentStatus {
+  APPLICANT
+  ACCEPTED
+  ENROLLED
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  EXPELLED
+  TRANSFERRED
+  GRADUATED
+}
+
+enum ApplicationStatus {
+  PENDING
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+  ENROLLED
+}
+
+enum ContentType {
+  TEXT
+  VIDEO
+  AUDIO
+  IMAGE
+  DOCUMENT
+  URL
+  PRESENTATION
+}
+
+// ─── Auth / Users ────────────────────────────────────────────────────
+
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  firstName      String
+  middleName     String?
+  lastName       String
+  role           Role      @default(STUDENT)
+  image          String?
+  phone          String?
+  address        String?
+  city           String?
+  state          String?
+  country        String?
+  postalCode     String?
+  visaStatus     String?
+  profilePicture String?
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  studentProfile StudentProfile?
+  teacherProfile TeacherProfile?
+
+  attempts             Attempt[]
+  answers              Answer[]
+  attendanceRecords    AttendanceRecord[]
+  notifications        Notification[]
+  assessmentShares     AssessmentShare[]    @relation("SharedWith")
+  createdShares        AssessmentShare[]    @relation("SharedBy")
+  auditLogs            AuditLog[]
+  applications         ProgramApplication[]
+  sharedDocuments      SharedDocument[]     @relation("SharedDocWith")
+  createdDocuments     SharedDocument[]     @relation("SharedDocBy")
+  topicProgress        TopicProgress[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Academic Structure ──────────────────────────────────────────────
+
+model Program {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  description String?
+  durationYears Int    @default(1)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  batches     Batch[]
+  subjects    Subject[]
+  students    StudentProfile[]
+  feeStructures FeeStructure[]
+  applications  ProgramApplication[]
+}
+
+model AcademicYear {
+  id        String   @id @default(cuid())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  isCurrent Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  batches   Batch[]
+  holidays  Holiday[]
+}
+
+model Batch {
+  id             String       @id @default(cuid())
+  name           String
+  programId      String
+  academicYearId String
+  startDate      DateTime
+  endDate        DateTime
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  program        Program      @relation(fields: [programId], references: [id])
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  students       StudentProfile[]
+  teacherAssignments TeacherSubjectAssignment[]
+  assessments    Assessment[]
+  attendanceSessions AttendanceSession[]
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  description String?
+  programId   String
+  credits     Int      @default(3)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  program     Program  @relation(fields: [programId], references: [id])
+  modules     Module[]
+  teacherAssignments TeacherSubjectAssignment[]
+  assessments Assessment[]
+  attendanceSessions AttendanceSession[]
+}
+
+model Module {
+  id                  String   @id @default(cuid())
+  name                String
+  description         String?
+  orderIndex          Int      @default(0)
+  subjectId           String
+  isPublished         Boolean  @default(false)
+  requiresCompletion  Boolean  @default(false)
+  prerequisiteModuleId String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  subject             Subject  @relation(fields: [subjectId], references: [id])
+  prerequisiteModule  Module?  @relation("ModulePrereq", fields: [prerequisiteModuleId], references: [id])
+  dependentModules    Module[] @relation("ModulePrereq")
+  topics              Topic[]
+  assessments         Assessment[] @relation("ModuleAssessments")
+}
+
+model Topic {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  orderIndex  Int      @default(0)
+  moduleId    String
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  contents    TopicContent[]
+  assessments Assessment[] @relation("TopicAssessments")
+  progress    TopicProgress[]
+}
+
+model TopicContent {
+  id          String      @id @default(cuid())
+  topicId     String
+  title       String
+  type        ContentType
+  content     String?
+  mediaUrl    String?
+  fileSize    Int?
+  duration    Int?
+  orderIndex  Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  topic       Topic       @relation(fields: [topicId], references: [id], onDelete: Cascade)
+}
+
+model TopicProgress {
+  id          String   @id @default(cuid())
+  topicId     String
+  studentId   String
+  isCompleted Boolean  @default(false)
+  completedAt DateTime?
+  timeSpent   Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  topic       Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  student     User     @relation(fields: [studentId], references: [id])
+
+  @@unique([topicId, studentId])
+}
+
+// ─── Profiles ────────────────────────────────────────────────────────
+
+model StudentProfile {
+  id             String        @id @default(cuid())
+  userId         String        @unique
+  enrollmentNo   String        @unique
+  programId      String?
+  batchId        String?
+  status         StudentStatus @default(APPLICANT)
+  enrollmentDate DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program        Program?      @relation(fields: [programId], references: [id])
+  batch          Batch?        @relation(fields: [batchId], references: [id])
+  feePayments    FeePayment[]
+}
+
+model TeacherProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  employeeId    String   @unique
+  department    String?
+  qualification String?
+  specialization String?
+  joinDate      DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjectAssignments TeacherSubjectAssignment[]
+}
+
+model TeacherSubjectAssignment {
+  id              String   @id @default(cuid())
+  teacherProfileId String
+  subjectId       String
+  batchId         String
+  createdAt       DateTime @default(now())
+
+  teacherProfile  TeacherProfile @relation(fields: [teacherProfileId], references: [id])
+  subject         Subject        @relation(fields: [subjectId], references: [id])
+  batch           Batch          @relation(fields: [batchId], references: [id])
+
+  @@unique([teacherProfileId, subjectId, batchId])
+}
+
+// ─── Fees ────────────────────────────────────────────────────────────
+
+model FeeStructure {
+  id          String   @id @default(cuid())
+  programId   String
+  name        String
+  totalAmount Float
+  dueDate     DateTime?
+  term        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  program     Program  @relation(fields: [programId], references: [id])
+  payments    FeePayment[]
+}
+
+model FeePayment {
+  id               String   @id @default(cuid())
+  studentProfileId String
+  feeStructureId   String
+  amountPaid       Float
+  paymentDate      DateTime @default(now())
+  paymentMethod    String?
+  transactionRef   String?
+  notes            String?
+  createdAt        DateTime @default(now())
+
+  studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id])
+  feeStructure     FeeStructure   @relation(fields: [feeStructureId], references: [id])
+}
+
+// ─── Assessments ─────────────────────────────────────────────────────
+
+model Assessment {
+  id               String           @id @default(cuid())
+  title            String
+  description      String?
+  type             AssessmentType
+  status           AssessmentStatus @default(DRAFT)
+  subjectId        String
+  batchId          String
+  createdById      String
+  moduleId         String?
+  topicId          String?
+  isMandatory      Boolean          @default(false)
+  totalMarks       Float
+  passingMarks     Float?
+  duration         Int?
+  scheduledOpenAt  DateTime?
+  scheduledCloseAt DateTime?
+  resultsReleaseAt DateTime?
+  assessmentDate   DateTime?
+  linkToken        String           @unique @default(cuid())
+  instructions     String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  subject          Subject          @relation(fields: [subjectId], references: [id])
+  batch            Batch            @relation(fields: [batchId], references: [id])
+  module           Module?          @relation("ModuleAssessments", fields: [moduleId], references: [id])
+  topic            Topic?           @relation("TopicAssessments", fields: [topicId], references: [id])
+  questions        Question[]
+  attempts         Attempt[]
+  shares           AssessmentShare[]
+  scheduledEmails  ScheduledEmail[]
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  assessmentId  String
+  type          QuestionType
+  questionText  String
+  marks         Float
+  orderIndex    Int          @default(0)
+  correctAnswer String?
+  rubric        String?
+  maxLength     Int?
+  mediaUrl      String?
+  mediaType     String?
+  additionalInfo String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  assessment    Assessment   @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  options       QuestionOption[]
+  answers       Answer[]
+}
+
+model QuestionOption {
+  id          String   @id @default(cuid())
+  questionId  String
+  optionText  String
+  isCorrect   Boolean  @default(false)
+  orderIndex  Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+// ─── Submissions ─────────────────────────────────────────────────────
+
+model Attempt {
+  id            String        @id @default(cuid())
+  assessmentId  String
+  studentId     String
+  status        AttemptStatus @default(IN_PROGRESS)
+  startedAt     DateTime      @default(now())
+  submittedAt   DateTime?
+  totalScore    Float?
+  percentage    Float?
+  feedback      String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  assessment    Assessment    @relation(fields: [assessmentId], references: [id])
+  student       User          @relation(fields: [studentId], references: [id])
+  answers       Answer[]
+
+  @@unique([assessmentId, studentId])
+}
+
+model Answer {
+  id           String   @id @default(cuid())
+  attemptId    String
+  questionId   String
+  studentId    String
+  answerText   String?
+  selectedOptionId String?
+  autoScore    Float?
+  manualScore  Float?
+  feedback     String?
+  isGraded     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  attempt      Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question     Question @relation(fields: [questionId], references: [id])
+  student      User     @relation(fields: [studentId], references: [id])
+}
+
+// ─── Sharing ─────────────────────────────────────────────────────────
+
+model AssessmentShare {
+  id            String   @id @default(cuid())
+  assessmentId  String
+  sharedWithId  String
+  sharedById    String
+  canEdit       Boolean  @default(false)
+  expiresAt     DateTime?
+  createdAt     DateTime @default(now())
+
+  assessment    Assessment @relation(fields: [assessmentId], references: [id])
+  sharedWith    User       @relation("SharedWith", fields: [sharedWithId], references: [id])
+  sharedBy      User       @relation("SharedBy", fields: [sharedById], references: [id])
+
+  @@unique([assessmentId, sharedWithId])
+}
+
+// ─── Attendance ──────────────────────────────────────────────────────
+
+model AttendanceSession {
+  id              String    @id @default(cuid())
+  subjectId       String
+  batchId         String
+  sessionDate     DateTime
+  startTime       String?
+  endTime         String?
+  topic           String?
+  overrideHoliday Boolean   @default(false)
+  createdById     String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  subject         Subject   @relation(fields: [subjectId], references: [id])
+  batch           Batch     @relation(fields: [batchId], references: [id])
+  records         AttendanceRecord[]
+}
+
+model AttendanceRecord {
+  id                  String           @id @default(cuid())
+  attendanceSessionId String
+  studentId           String
+  status              AttendanceStatus @default(PRESENT)
+  remarks             String?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  session             AttendanceSession @relation(fields: [attendanceSessionId], references: [id], onDelete: Cascade)
+  student             User              @relation(fields: [studentId], references: [id])
+
+  @@unique([attendanceSessionId, studentId])
+}
+
+model Holiday {
+  id             String      @id @default(cuid())
+  name           String
+  date           DateTime
+  type           HolidayType @default(PUBLIC)
+  academicYearId String?
+  region         String?
+  createdAt      DateTime    @default(now())
+
+  academicYear   AcademicYear? @relation(fields: [academicYearId], references: [id])
+}
+
+// ─── Scheduling & Notifications ──────────────────────────────────────
+
+model ScheduledEmail {
+  id            String   @id @default(cuid())
+  assessmentId  String?
+  emailType     String
+  recipientEmail String
+  subject       String
+  body          String?
+  scheduledAt   DateTime
+  sentAt        DateTime?
+  isSent        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  assessment    Assessment? @relation(fields: [assessmentId], references: [id])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  link      String?
+  createdAt DateTime         @default(now())
+
+  user      User             @relation(fields: [userId], references: [id])
+}
+
+// ─── Program Applications ───────────────────────────────────────────
+
+model ProgramApplication {
+  id             String            @id @default(cuid())
+  applicantId    String
+  programId      String
+  status         ApplicationStatus @default(PENDING)
+  personalStatement String?
+  documents      String?
+  reviewNotes    String?
+  reviewedById   String?
+  reviewedAt     DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  applicant      User              @relation(fields: [applicantId], references: [id])
+  program        Program           @relation(fields: [programId], references: [id])
+}
+
+// ─── Policies & Templates ───────────────────────────────────────────
+
+model Policy {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  content     String?
+  fileUrl     String?
+  category    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SharedDocument {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  type        ContentType @default(DOCUMENT)
+  fileUrl     String?
+  fileName    String?
+  fileSize    Int?
+  category    String?
+  sharedById  String
+  isPublic    Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  sharedBy    User        @relation("SharedDocBy", fields: [sharedById], references: [id])
+  sharedWith  User[]      @relation("SharedDocWith")
+}
+
+model EmailTemplate {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  subject     String
+  body        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── Audit ───────────────────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+}
