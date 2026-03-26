@@ -42,6 +42,7 @@ export type UserMinAggregateOutputType = {
   postalCode: string | null
   visaStatus: string | null
   profilePicture: string | null
+  mustChangePassword: boolean | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -65,6 +66,7 @@ export type UserMaxAggregateOutputType = {
   postalCode: string | null
   visaStatus: string | null
   profilePicture: string | null
+  mustChangePassword: boolean | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -88,6 +90,7 @@ export type UserCountAggregateOutputType = {
   postalCode: number
   visaStatus: number
   profilePicture: number
+  mustChangePassword: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -113,6 +116,7 @@ export type UserMinAggregateInputType = {
   postalCode?: true
   visaStatus?: true
   profilePicture?: true
+  mustChangePassword?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -136,6 +140,7 @@ export type UserMaxAggregateInputType = {
   postalCode?: true
   visaStatus?: true
   profilePicture?: true
+  mustChangePassword?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -159,6 +164,7 @@ export type UserCountAggregateInputType = {
   postalCode?: true
   visaStatus?: true
   profilePicture?: true
+  mustChangePassword?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -255,6 +261,7 @@ export type UserGroupByOutputType = {
   postalCode: string | null
   visaStatus: string | null
   profilePicture: string | null
+  mustChangePassword: boolean
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -299,6 +306,7 @@ export type UserWhereInput = {
   postalCode?: Prisma.StringNullableFilter<"User"> | string | null
   visaStatus?: Prisma.StringNullableFilter<"User"> | string | null
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -317,6 +325,9 @@ export type UserWhereInput = {
   sharedDocuments?: Prisma.SharedDocumentListRelationFilter
   createdDocuments?: Prisma.SharedDocumentListRelationFilter
   topicProgress?: Prisma.TopicProgressListRelationFilter
+  teacherAttendances?: Prisma.TeacherAttendanceListRelationFilter
+  announcementRecipients?: Prisma.AnnouncementRecipientListRelationFilter
+  announcementsCreated?: Prisma.AnnouncementListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -337,6 +348,7 @@ export type UserOrderByWithRelationInput = {
   postalCode?: Prisma.SortOrderInput | Prisma.SortOrder
   visaStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -355,6 +367,9 @@ export type UserOrderByWithRelationInput = {
   sharedDocuments?: Prisma.SharedDocumentOrderByRelationAggregateInput
   createdDocuments?: Prisma.SharedDocumentOrderByRelationAggregateInput
   topicProgress?: Prisma.TopicProgressOrderByRelationAggregateInput
+  teacherAttendances?: Prisma.TeacherAttendanceOrderByRelationAggregateInput
+  announcementRecipients?: Prisma.AnnouncementRecipientOrderByRelationAggregateInput
+  announcementsCreated?: Prisma.AnnouncementOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -378,6 +393,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   postalCode?: Prisma.StringNullableFilter<"User"> | string | null
   visaStatus?: Prisma.StringNullableFilter<"User"> | string | null
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -396,6 +412,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   sharedDocuments?: Prisma.SharedDocumentListRelationFilter
   createdDocuments?: Prisma.SharedDocumentListRelationFilter
   topicProgress?: Prisma.TopicProgressListRelationFilter
+  teacherAttendances?: Prisma.TeacherAttendanceListRelationFilter
+  announcementRecipients?: Prisma.AnnouncementRecipientListRelationFilter
+  announcementsCreated?: Prisma.AnnouncementListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -416,6 +435,7 @@ export type UserOrderByWithAggregationInput = {
   postalCode?: Prisma.SortOrderInput | Prisma.SortOrder
   visaStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -445,6 +465,7 @@ export type UserScalarWhereWithAggregatesInput = {
   postalCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   visaStatus?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   profilePicture?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  mustChangePassword?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -468,6 +489,7 @@ export type UserCreateInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -486,6 +508,9 @@ export type UserCreateInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -506,6 +531,7 @@ export type UserUncheckedCreateInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -524,6 +550,9 @@ export type UserUncheckedCreateInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUpdateInput = {
@@ -544,6 +573,7 @@ export type UserUpdateInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -562,6 +592,9 @@ export type UserUpdateInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -582,6 +615,7 @@ export type UserUncheckedUpdateInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -600,6 +634,9 @@ export type UserUncheckedUpdateInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -620,6 +657,7 @@ export type UserCreateManyInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -643,6 +681,7 @@ export type UserUpdateManyMutationInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -666,6 +705,7 @@ export type UserUncheckedUpdateManyInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -689,6 +729,7 @@ export type UserCountOrderByAggregateInput = {
   postalCode?: Prisma.SortOrder
   visaStatus?: Prisma.SortOrder
   profilePicture?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -712,6 +753,7 @@ export type UserMaxOrderByAggregateInput = {
   postalCode?: Prisma.SortOrder
   visaStatus?: Prisma.SortOrder
   profilePicture?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -735,6 +777,7 @@ export type UserMinOrderByAggregateInput = {
   postalCode?: Prisma.SortOrder
   visaStatus?: Prisma.SortOrder
   profilePicture?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -905,6 +948,20 @@ export type UserUpdateOneRequiredWithoutCreatedSharesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedSharesInput, Prisma.UserUpdateWithoutCreatedSharesInput>, Prisma.UserUncheckedUpdateWithoutCreatedSharesInput>
 }
 
+export type UserCreateNestedOneWithoutTeacherAttendancesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTeacherAttendancesInput, Prisma.UserUncheckedCreateWithoutTeacherAttendancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTeacherAttendancesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTeacherAttendancesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTeacherAttendancesInput, Prisma.UserUncheckedCreateWithoutTeacherAttendancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTeacherAttendancesInput
+  upsert?: Prisma.UserUpsertWithoutTeacherAttendancesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTeacherAttendancesInput, Prisma.UserUpdateWithoutTeacherAttendancesInput>, Prisma.UserUncheckedUpdateWithoutTeacherAttendancesInput>
+}
+
 export type UserCreateNestedOneWithoutAttendanceRecordsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAttendanceRecordsInput, Prisma.UserUncheckedCreateWithoutAttendanceRecordsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAttendanceRecordsInput
@@ -999,6 +1056,34 @@ export type UserUncheckedUpdateManyWithoutSharedDocumentsNestedInput = {
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
+export type UserCreateNestedOneWithoutAnnouncementsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementsCreatedInput, Prisma.UserUncheckedCreateWithoutAnnouncementsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAnnouncementsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAnnouncementsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementsCreatedInput, Prisma.UserUncheckedCreateWithoutAnnouncementsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAnnouncementsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutAnnouncementsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAnnouncementsCreatedInput, Prisma.UserUpdateWithoutAnnouncementsCreatedInput>, Prisma.UserUncheckedUpdateWithoutAnnouncementsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutAnnouncementRecipientsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementRecipientsInput, Prisma.UserUncheckedCreateWithoutAnnouncementRecipientsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAnnouncementRecipientsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAnnouncementRecipientsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementRecipientsInput, Prisma.UserUncheckedCreateWithoutAnnouncementRecipientsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAnnouncementRecipientsInput
+  upsert?: Prisma.UserUpsertWithoutAnnouncementRecipientsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAnnouncementRecipientsInput, Prisma.UserUpdateWithoutAnnouncementRecipientsInput>, Prisma.UserUncheckedUpdateWithoutAnnouncementRecipientsInput>
+}
+
 export type UserCreateNestedOneWithoutAuditLogsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
@@ -1031,6 +1116,7 @@ export type UserCreateWithoutAccountsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1048,6 +1134,9 @@ export type UserCreateWithoutAccountsInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1068,6 +1157,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1085,6 +1175,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1121,6 +1214,7 @@ export type UserUpdateWithoutAccountsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1138,6 +1232,9 @@ export type UserUpdateWithoutAccountsInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1158,6 +1255,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1175,6 +1273,9 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1195,6 +1296,7 @@ export type UserCreateWithoutSessionsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1212,6 +1314,9 @@ export type UserCreateWithoutSessionsInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1232,6 +1337,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1249,6 +1355,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1285,6 +1394,7 @@ export type UserUpdateWithoutSessionsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1302,6 +1412,9 @@ export type UserUpdateWithoutSessionsInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1322,6 +1435,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1339,6 +1453,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutTopicProgressInput = {
@@ -1359,6 +1476,7 @@ export type UserCreateWithoutTopicProgressInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1376,6 +1494,9 @@ export type UserCreateWithoutTopicProgressInput = {
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutTopicProgressInput = {
@@ -1396,6 +1517,7 @@ export type UserUncheckedCreateWithoutTopicProgressInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1413,6 +1535,9 @@ export type UserUncheckedCreateWithoutTopicProgressInput = {
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutTopicProgressInput = {
@@ -1449,6 +1574,7 @@ export type UserUpdateWithoutTopicProgressInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1466,6 +1592,9 @@ export type UserUpdateWithoutTopicProgressInput = {
   applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTopicProgressInput = {
@@ -1486,6 +1615,7 @@ export type UserUncheckedUpdateWithoutTopicProgressInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1503,6 +1633,9 @@ export type UserUncheckedUpdateWithoutTopicProgressInput = {
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutStudentProfileInput = {
@@ -1523,6 +1656,7 @@ export type UserCreateWithoutStudentProfileInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1540,6 +1674,9 @@ export type UserCreateWithoutStudentProfileInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -1560,6 +1697,7 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1577,6 +1715,9 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -1613,6 +1754,7 @@ export type UserUpdateWithoutStudentProfileInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1630,6 +1772,9 @@ export type UserUpdateWithoutStudentProfileInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -1650,6 +1795,7 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1667,6 +1813,9 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutTeacherProfileInput = {
@@ -1687,6 +1836,7 @@ export type UserCreateWithoutTeacherProfileInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1704,6 +1854,9 @@ export type UserCreateWithoutTeacherProfileInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutTeacherProfileInput = {
@@ -1724,6 +1877,7 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1741,6 +1895,9 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutTeacherProfileInput = {
@@ -1777,6 +1934,7 @@ export type UserUpdateWithoutTeacherProfileInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1794,6 +1952,9 @@ export type UserUpdateWithoutTeacherProfileInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherProfileInput = {
@@ -1814,6 +1975,7 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1831,6 +1993,9 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutAttemptsInput = {
@@ -1851,6 +2016,7 @@ export type UserCreateWithoutAttemptsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1868,6 +2034,9 @@ export type UserCreateWithoutAttemptsInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutAttemptsInput = {
@@ -1888,6 +2057,7 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1905,6 +2075,9 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutAttemptsInput = {
@@ -1941,6 +2114,7 @@ export type UserUpdateWithoutAttemptsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1958,6 +2132,9 @@ export type UserUpdateWithoutAttemptsInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttemptsInput = {
@@ -1978,6 +2155,7 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1995,6 +2173,9 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutAnswersInput = {
@@ -2015,6 +2196,7 @@ export type UserCreateWithoutAnswersInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2032,6 +2214,9 @@ export type UserCreateWithoutAnswersInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutAnswersInput = {
@@ -2052,6 +2237,7 @@ export type UserUncheckedCreateWithoutAnswersInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2069,6 +2255,9 @@ export type UserUncheckedCreateWithoutAnswersInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutAnswersInput = {
@@ -2105,6 +2294,7 @@ export type UserUpdateWithoutAnswersInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2122,6 +2312,9 @@ export type UserUpdateWithoutAnswersInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnswersInput = {
@@ -2142,6 +2335,7 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2159,6 +2353,9 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutAssessmentSharesInput = {
@@ -2179,6 +2376,7 @@ export type UserCreateWithoutAssessmentSharesInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2196,6 +2394,9 @@ export type UserCreateWithoutAssessmentSharesInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentSharesInput = {
@@ -2216,6 +2417,7 @@ export type UserUncheckedCreateWithoutAssessmentSharesInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2233,6 +2435,9 @@ export type UserUncheckedCreateWithoutAssessmentSharesInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentSharesInput = {
@@ -2258,6 +2463,7 @@ export type UserCreateWithoutCreatedSharesInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2275,6 +2481,9 @@ export type UserCreateWithoutCreatedSharesInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSharesInput = {
@@ -2295,6 +2504,7 @@ export type UserUncheckedCreateWithoutCreatedSharesInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2312,6 +2522,9 @@ export type UserUncheckedCreateWithoutCreatedSharesInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSharesInput = {
@@ -2348,6 +2561,7 @@ export type UserUpdateWithoutAssessmentSharesInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2365,6 +2579,9 @@ export type UserUpdateWithoutAssessmentSharesInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
@@ -2385,6 +2602,7 @@ export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2402,6 +2620,9 @@ export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUpsertWithoutCreatedSharesInput = {
@@ -2433,6 +2654,7 @@ export type UserUpdateWithoutCreatedSharesInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2450,6 +2672,9 @@ export type UserUpdateWithoutCreatedSharesInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSharesInput = {
@@ -2470,6 +2695,7 @@ export type UserUncheckedUpdateWithoutCreatedSharesInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2487,6 +2713,189 @@ export type UserUncheckedUpdateWithoutCreatedSharesInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserCreateWithoutTeacherAttendancesInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+}
+
+export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+}
+
+export type UserCreateOrConnectWithoutTeacherAttendancesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTeacherAttendancesInput, Prisma.UserUncheckedCreateWithoutTeacherAttendancesInput>
+}
+
+export type UserUpsertWithoutTeacherAttendancesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTeacherAttendancesInput, Prisma.UserUncheckedUpdateWithoutTeacherAttendancesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTeacherAttendancesInput, Prisma.UserUncheckedCreateWithoutTeacherAttendancesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTeacherAttendancesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTeacherAttendancesInput, Prisma.UserUncheckedUpdateWithoutTeacherAttendancesInput>
+}
+
+export type UserUpdateWithoutTeacherAttendancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutAttendanceRecordsInput = {
@@ -2507,6 +2916,7 @@ export type UserCreateWithoutAttendanceRecordsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2524,6 +2934,9 @@ export type UserCreateWithoutAttendanceRecordsInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -2544,6 +2957,7 @@ export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2561,6 +2975,9 @@ export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -2597,6 +3014,7 @@ export type UserUpdateWithoutAttendanceRecordsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2614,6 +3032,9 @@ export type UserUpdateWithoutAttendanceRecordsInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -2634,6 +3055,7 @@ export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2651,6 +3073,9 @@ export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -2671,6 +3096,7 @@ export type UserCreateWithoutNotificationsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2688,6 +3114,9 @@ export type UserCreateWithoutNotificationsInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -2708,6 +3137,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2725,6 +3155,9 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -2761,6 +3194,7 @@ export type UserUpdateWithoutNotificationsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2778,6 +3212,9 @@ export type UserUpdateWithoutNotificationsInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -2798,6 +3235,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2815,6 +3253,9 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -2835,6 +3276,7 @@ export type UserCreateWithoutApplicationsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2852,6 +3294,9 @@ export type UserCreateWithoutApplicationsInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -2872,6 +3317,7 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2889,6 +3335,9 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -2925,6 +3374,7 @@ export type UserUpdateWithoutApplicationsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2942,6 +3392,9 @@ export type UserUpdateWithoutApplicationsInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -2962,6 +3415,7 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2979,6 +3433,9 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutCreatedDocumentsInput = {
@@ -2999,6 +3456,7 @@ export type UserCreateWithoutCreatedDocumentsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3016,6 +3474,9 @@ export type UserCreateWithoutCreatedDocumentsInput = {
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
@@ -3036,6 +3497,7 @@ export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3053,6 +3515,9 @@ export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDocumentsInput = {
@@ -3078,6 +3543,7 @@ export type UserCreateWithoutSharedDocumentsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3095,6 +3561,9 @@ export type UserCreateWithoutSharedDocumentsInput = {
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutSharedDocumentsInput = {
@@ -3115,6 +3584,7 @@ export type UserUncheckedCreateWithoutSharedDocumentsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3132,6 +3602,9 @@ export type UserUncheckedCreateWithoutSharedDocumentsInput = {
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutSharedDocumentsInput = {
@@ -3168,6 +3641,7 @@ export type UserUpdateWithoutCreatedDocumentsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3185,6 +3659,9 @@ export type UserUpdateWithoutCreatedDocumentsInput = {
   applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
@@ -3205,6 +3682,7 @@ export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3222,6 +3700,9 @@ export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutSharedDocumentsInput = {
@@ -3261,9 +3742,370 @@ export type UserScalarWhereInput = {
   postalCode?: Prisma.StringNullableFilter<"User"> | string | null
   visaStatus?: Prisma.StringNullableFilter<"User"> | string | null
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+}
+
+export type UserCreateWithoutAnnouncementsCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAnnouncementsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementsCreatedInput, Prisma.UserUncheckedCreateWithoutAnnouncementsCreatedInput>
+}
+
+export type UserUpsertWithoutAnnouncementsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAnnouncementsCreatedInput, Prisma.UserUncheckedUpdateWithoutAnnouncementsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementsCreatedInput, Prisma.UserUncheckedCreateWithoutAnnouncementsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAnnouncementsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAnnouncementsCreatedInput, Prisma.UserUncheckedUpdateWithoutAnnouncementsCreatedInput>
+}
+
+export type UserUpdateWithoutAnnouncementsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAnnouncementRecipientsInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+}
+
+export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+}
+
+export type UserCreateOrConnectWithoutAnnouncementRecipientsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementRecipientsInput, Prisma.UserUncheckedCreateWithoutAnnouncementRecipientsInput>
+}
+
+export type UserUpsertWithoutAnnouncementRecipientsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAnnouncementRecipientsInput, Prisma.UserUncheckedUpdateWithoutAnnouncementRecipientsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAnnouncementRecipientsInput, Prisma.UserUncheckedCreateWithoutAnnouncementRecipientsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAnnouncementRecipientsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAnnouncementRecipientsInput, Prisma.UserUncheckedUpdateWithoutAnnouncementRecipientsInput>
+}
+
+export type UserUpdateWithoutAnnouncementRecipientsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -3284,6 +4126,7 @@ export type UserCreateWithoutAuditLogsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3301,6 +4144,9 @@ export type UserCreateWithoutAuditLogsInput = {
   sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -3321,6 +4167,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   postalCode?: string | null
   visaStatus?: string | null
   profilePicture?: string | null
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3338,6 +4185,9 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
   createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
   topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -3374,6 +4224,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3391,6 +4242,9 @@ export type UserUpdateWithoutAuditLogsInput = {
   sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -3411,6 +4265,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3428,6 +4283,9 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUpdateWithoutSharedDocumentsInput = {
@@ -3448,6 +4306,7 @@ export type UserUpdateWithoutSharedDocumentsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3465,6 +4324,9 @@ export type UserUpdateWithoutSharedDocumentsInput = {
   applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
   createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
@@ -3485,6 +4347,7 @@ export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3502,6 +4365,9 @@ export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
   createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
   topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutSharedDocumentsInput = {
@@ -3522,6 +4388,7 @@ export type UserUncheckedUpdateManyWithoutSharedDocumentsInput = {
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3546,6 +4413,9 @@ export type UserCountOutputType = {
   sharedDocuments: number
   createdDocuments: number
   topicProgress: number
+  teacherAttendances: number
+  announcementRecipients: number
+  announcementsCreated: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3562,6 +4432,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   sharedDocuments?: boolean | UserCountOutputTypeCountSharedDocumentsArgs
   createdDocuments?: boolean | UserCountOutputTypeCountCreatedDocumentsArgs
   topicProgress?: boolean | UserCountOutputTypeCountTopicProgressArgs
+  teacherAttendances?: boolean | UserCountOutputTypeCountTeacherAttendancesArgs
+  announcementRecipients?: boolean | UserCountOutputTypeCountAnnouncementRecipientsArgs
+  announcementsCreated?: boolean | UserCountOutputTypeCountAnnouncementsCreatedArgs
 }
 
 /**
@@ -3665,6 +4538,27 @@ export type UserCountOutputTypeCountTopicProgressArgs<ExtArgs extends runtime.Ty
   where?: Prisma.TopicProgressWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTeacherAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TeacherAttendanceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAnnouncementRecipientsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnnouncementRecipientWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAnnouncementsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnnouncementWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3684,6 +4578,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   postalCode?: boolean
   visaStatus?: boolean
   profilePicture?: boolean
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3702,6 +4597,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   sharedDocuments?: boolean | Prisma.User$sharedDocumentsArgs<ExtArgs>
   createdDocuments?: boolean | Prisma.User$createdDocumentsArgs<ExtArgs>
   topicProgress?: boolean | Prisma.User$topicProgressArgs<ExtArgs>
+  teacherAttendances?: boolean | Prisma.User$teacherAttendancesArgs<ExtArgs>
+  announcementRecipients?: boolean | Prisma.User$announcementRecipientsArgs<ExtArgs>
+  announcementsCreated?: boolean | Prisma.User$announcementsCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3723,6 +4621,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   postalCode?: boolean
   visaStatus?: boolean
   profilePicture?: boolean
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3746,6 +4645,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   postalCode?: boolean
   visaStatus?: boolean
   profilePicture?: boolean
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3769,12 +4669,13 @@ export type UserSelectScalar = {
   postalCode?: boolean
   visaStatus?: boolean
   profilePicture?: boolean
+  mustChangePassword?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "emailVerified" | "hashedPassword" | "firstName" | "middleName" | "lastName" | "role" | "image" | "phone" | "address" | "city" | "state" | "country" | "postalCode" | "visaStatus" | "profilePicture" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "emailVerified" | "hashedPassword" | "firstName" | "middleName" | "lastName" | "role" | "image" | "phone" | "address" | "city" | "state" | "country" | "postalCode" | "visaStatus" | "profilePicture" | "mustChangePassword" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -3791,6 +4692,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sharedDocuments?: boolean | Prisma.User$sharedDocumentsArgs<ExtArgs>
   createdDocuments?: boolean | Prisma.User$createdDocumentsArgs<ExtArgs>
   topicProgress?: boolean | Prisma.User$topicProgressArgs<ExtArgs>
+  teacherAttendances?: boolean | Prisma.User$teacherAttendancesArgs<ExtArgs>
+  announcementRecipients?: boolean | Prisma.User$announcementRecipientsArgs<ExtArgs>
+  announcementsCreated?: boolean | Prisma.User$announcementsCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3814,6 +4718,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     sharedDocuments: Prisma.$SharedDocumentPayload<ExtArgs>[]
     createdDocuments: Prisma.$SharedDocumentPayload<ExtArgs>[]
     topicProgress: Prisma.$TopicProgressPayload<ExtArgs>[]
+    teacherAttendances: Prisma.$TeacherAttendancePayload<ExtArgs>[]
+    announcementRecipients: Prisma.$AnnouncementRecipientPayload<ExtArgs>[]
+    announcementsCreated: Prisma.$AnnouncementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3833,6 +4740,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     postalCode: string | null
     visaStatus: string | null
     profilePicture: string | null
+    mustChangePassword: boolean
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -4245,6 +5153,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   sharedDocuments<T extends Prisma.User$sharedDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sharedDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SharedDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdDocuments<T extends Prisma.User$createdDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SharedDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   topicProgress<T extends Prisma.User$topicProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$topicProgressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TopicProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  teacherAttendances<T extends Prisma.User$teacherAttendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$teacherAttendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  announcementRecipients<T extends Prisma.User$announcementRecipientsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$announcementRecipientsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  announcementsCreated<T extends Prisma.User$announcementsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$announcementsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4291,6 +5202,7 @@ export interface UserFieldRefs {
   readonly postalCode: Prisma.FieldRef<"User", 'String'>
   readonly visaStatus: Prisma.FieldRef<"User", 'String'>
   readonly profilePicture: Prisma.FieldRef<"User", 'String'>
+  readonly mustChangePassword: Prisma.FieldRef<"User", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -5034,6 +5946,78 @@ export type User$topicProgressArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.TopicProgressScalarFieldEnum | Prisma.TopicProgressScalarFieldEnum[]
+}
+
+/**
+ * User.teacherAttendances
+ */
+export type User$teacherAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TeacherAttendance
+   */
+  select?: Prisma.TeacherAttendanceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TeacherAttendance
+   */
+  omit?: Prisma.TeacherAttendanceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TeacherAttendanceInclude<ExtArgs> | null
+  where?: Prisma.TeacherAttendanceWhereInput
+  orderBy?: Prisma.TeacherAttendanceOrderByWithRelationInput | Prisma.TeacherAttendanceOrderByWithRelationInput[]
+  cursor?: Prisma.TeacherAttendanceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TeacherAttendanceScalarFieldEnum | Prisma.TeacherAttendanceScalarFieldEnum[]
+}
+
+/**
+ * User.announcementRecipients
+ */
+export type User$announcementRecipientsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AnnouncementRecipient
+   */
+  select?: Prisma.AnnouncementRecipientSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AnnouncementRecipient
+   */
+  omit?: Prisma.AnnouncementRecipientOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnnouncementRecipientInclude<ExtArgs> | null
+  where?: Prisma.AnnouncementRecipientWhereInput
+  orderBy?: Prisma.AnnouncementRecipientOrderByWithRelationInput | Prisma.AnnouncementRecipientOrderByWithRelationInput[]
+  cursor?: Prisma.AnnouncementRecipientWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnnouncementRecipientScalarFieldEnum | Prisma.AnnouncementRecipientScalarFieldEnum[]
+}
+
+/**
+ * User.announcementsCreated
+ */
+export type User$announcementsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Announcement
+   */
+  select?: Prisma.AnnouncementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Announcement
+   */
+  omit?: Prisma.AnnouncementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnnouncementInclude<ExtArgs> | null
+  where?: Prisma.AnnouncementWhereInput
+  orderBy?: Prisma.AnnouncementOrderByWithRelationInput | Prisma.AnnouncementOrderByWithRelationInput[]
+  cursor?: Prisma.AnnouncementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
 }
 
 /**

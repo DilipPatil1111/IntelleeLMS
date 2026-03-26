@@ -63,6 +63,9 @@ enum NotificationType {
   APPLICATION_ACCEPTED
   ENROLLMENT_CONFIRMED
   GENERAL
+  TEACHER_SELF_ATTENDANCE_REQUIRED
+  ANNOUNCEMENT
+  HOLIDAY_NOTICE
 }
 
 enum StudentStatus {
@@ -75,6 +78,14 @@ enum StudentStatus {
   EXPELLED
   TRANSFERRED
   GRADUATED
+  CANCELLED
+}
+
+enum PolicyType {
+  PROGRAM
+  COLLEGE
+  STUDENT
+  OTHER
 }
 
 enum ApplicationStatus {
@@ -115,6 +126,7 @@ model User {
   postalCode     String?
   visaStatus     String?
   profilePicture String?
+  mustChangePassword Boolean @default(false)
   isActive       Boolean   @default(true)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -135,6 +147,9 @@ model User {
   sharedDocuments      SharedDocument[]     @relation("SharedDocWith")
   createdDocuments     SharedDocument[]     @relation("SharedDocBy")
   topicProgress        TopicProgress[]
+  teacherAttendances   TeacherAttendance[]
+  announcementRecipients AnnouncementRecipient[]
+  announcementsCreated Announcement[] @relation("AnnouncementCreator")
 }
 
 model Account {
@@ -181,6 +196,7 @@ model Program {
   code        String   @unique
   description String?
   durationYears Int    @default(1)
+  durationText  String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -190,6 +206,8 @@ model Program {
   students    StudentProfile[]
   feeStructures FeeStructure[]
   applications  ProgramApplication[]
+  teacherPrograms TeacherProgram[]
+  announcements Announcement[]
 }
 
 model AcademicYear {
@@ -203,6 +221,7 @@ model AcademicYear {
 
   batches   Batch[]
   holidays  Holiday[]
+  announcements Announcement[]
 }
 
 model Batch {
@@ -222,6 +241,7 @@ model Batch {
   teacherAssignments TeacherSubjectAssignment[]
   assessments    Assessment[]
   attendanceSessions AttendanceSession[]
+  announcements Announcement[]
 }
 
 model Subject {
@@ -341,6 +361,19 @@ model TeacherProfile {
 
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   subjectAssignments TeacherSubjectAssignment[]
+  teacherPrograms TeacherProgram[]
+}
+
+model TeacherProgram {
+  id               String   @id @default(cuid())
+  teacherProfileId String
+  programId        String
+  createdAt        DateTime @default(now())
+
+  teacherProfile TeacherProfile @relation(fields: [teacherProfileId], references: [id], onDelete: Cascade)
+  program        Program        @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([teacherProfileId, programId])
 }
 
 model TeacherSubjectAssignment {
@@ -533,6 +566,20 @@ model AttendanceSession {
   subject         Subject   @relation(fields: [subjectId], references: [id])
   batch           Batch     @relation(fields: [batchId], references: [id])
   records         AttendanceRecord[]
+  teacherAttendance TeacherAttendance?
+}
+
+model TeacherAttendance {
+  id                    String           @id @default(cuid())
+  attendanceSessionId   String           @unique
+  teacherUserId         String
+  status                AttendanceStatus @default(PRESENT)
+  remarks               String?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  session AttendanceSession @relation(fields: [attendanceSessionId], references: [id], onDelete: Cascade)
+  teacher User              @relation(fields: [teacherUserId], references: [id])
 }
 
 model AttendanceRecord {
@@ -614,15 +661,16 @@ model ProgramApplication {
 // ─── Policies & Templates ───────────────────────────────────────────
 
 model Policy {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
   description String?
   content     String?
   fileUrl     String?
   category    String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  policyType  PolicyType @default(OTHER)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model SharedDocument {
@@ -636,6 +684,7 @@ model SharedDocument {
   category    String?
   sharedById  String
   isPublic    Boolean     @default(false)
+  audienceRoles String[]  @default([])
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
@@ -652,6 +701,38 @@ model EmailTemplate {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Announcement {
+  id                     String   @id @default(cuid())
+  title                  String
+  body                   String
+  createdById            String
+  programId              String?
+  batchId                String?
+  academicYearId         String?
+  recipientAll           Boolean  @default(true)
+  sendEmail              Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  creator        User           @relation("AnnouncementCreator", fields: [createdById], references: [id])
+  program        Program?       @relation(fields: [programId], references: [id])
+  batch          Batch?         @relation(fields: [batchId], references: [id])
+  academicYear   AcademicYear?  @relation(fields: [academicYearId], references: [id])
+  recipients     AnnouncementRecipient[]
+}
+
+model AnnouncementRecipient {
+  id              String   @id @default(cuid())
+  announcementId  String
+  userId          String
+  emailSent       Boolean  @default(false)
+
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([announcementId, userId])
 }
 
 // ─── Audit ───────────────────────────────────────────────────────────

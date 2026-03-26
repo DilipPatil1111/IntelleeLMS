@@ -9,6 +9,7 @@ import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Select } from "@/components/ui/select";
 
 interface Policy {
   id: string;
@@ -17,6 +18,7 @@ interface Policy {
   content: string | null;
   fileUrl: string | null;
   category: string | null;
+  policyType: "PROGRAM" | "COLLEGE" | "STUDENT" | "OTHER";
   isActive: boolean;
 }
 
@@ -26,8 +28,16 @@ const emptyForm = {
   content: "",
   fileUrl: "",
   category: "",
+  policyType: "OTHER" as Policy["policyType"],
   isActive: true,
 };
+
+const POLICY_TYPES: { value: Policy["policyType"]; label: string }[] = [
+  { value: "PROGRAM", label: "Program policies" },
+  { value: "COLLEGE", label: "College-level policies" },
+  { value: "STUDENT", label: "Student policies" },
+  { value: "OTHER", label: "Other policies" },
+];
 
 export default function PrincipalPoliciesPage() {
   const [policies, setPolicies] = useState<Policy[]>([]);
@@ -90,6 +100,9 @@ export default function PrincipalPoliciesPage() {
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <h3 className="text-base font-semibold text-gray-900">{p.title}</h3>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    <Badge variant="info">{POLICY_TYPES.find((x) => x.value === p.policyType)?.label || p.policyType}</Badge>
+                  </div>
                   {p.category && (
                     <p className="text-xs text-gray-500 mt-0.5">Category: {p.category}</p>
                   )}
@@ -123,6 +136,7 @@ export default function PrincipalPoliciesPage() {
                         content: p.content || "",
                         fileUrl: p.fileUrl || "",
                         category: p.category || "",
+                        policyType: p.policyType || "OTHER",
                         isActive: p.isActive,
                       });
                       setShowModal(true);
@@ -152,6 +166,12 @@ export default function PrincipalPoliciesPage() {
         className="max-w-2xl"
       >
         <div className="space-y-4">
+          <Select
+            label="Policy type"
+            value={form.policyType}
+            onChange={(e) => setForm({ ...form, policyType: e.target.value as Policy["policyType"] })}
+            options={POLICY_TYPES}
+          />
           <Input
             label="Title"
             value={form.title}

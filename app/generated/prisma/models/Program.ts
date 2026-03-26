@@ -40,6 +40,7 @@ export type ProgramMinAggregateOutputType = {
   code: string | null
   description: string | null
   durationYears: number | null
+  durationText: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -51,6 +52,7 @@ export type ProgramMaxAggregateOutputType = {
   code: string | null
   description: string | null
   durationYears: number | null
+  durationText: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -62,6 +64,7 @@ export type ProgramCountAggregateOutputType = {
   code: number
   description: number
   durationYears: number
+  durationText: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -83,6 +86,7 @@ export type ProgramMinAggregateInputType = {
   code?: true
   description?: true
   durationYears?: true
+  durationText?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -94,6 +98,7 @@ export type ProgramMaxAggregateInputType = {
   code?: true
   description?: true
   durationYears?: true
+  durationText?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -105,6 +110,7 @@ export type ProgramCountAggregateInputType = {
   code?: true
   description?: true
   durationYears?: true
+  durationText?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -203,6 +209,7 @@ export type ProgramGroupByOutputType = {
   code: string
   description: string | null
   durationYears: number
+  durationText: string | null
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -237,6 +244,7 @@ export type ProgramWhereInput = {
   code?: Prisma.StringFilter<"Program"> | string
   description?: Prisma.StringNullableFilter<"Program"> | string | null
   durationYears?: Prisma.IntFilter<"Program"> | number
+  durationText?: Prisma.StringNullableFilter<"Program"> | string | null
   isActive?: Prisma.BoolFilter<"Program"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Program"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Program"> | Date | string
@@ -245,6 +253,8 @@ export type ProgramWhereInput = {
   students?: Prisma.StudentProfileListRelationFilter
   feeStructures?: Prisma.FeeStructureListRelationFilter
   applications?: Prisma.ProgramApplicationListRelationFilter
+  teacherPrograms?: Prisma.TeacherProgramListRelationFilter
+  announcements?: Prisma.AnnouncementListRelationFilter
 }
 
 export type ProgramOrderByWithRelationInput = {
@@ -253,6 +263,7 @@ export type ProgramOrderByWithRelationInput = {
   code?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   durationYears?: Prisma.SortOrder
+  durationText?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -261,6 +272,8 @@ export type ProgramOrderByWithRelationInput = {
   students?: Prisma.StudentProfileOrderByRelationAggregateInput
   feeStructures?: Prisma.FeeStructureOrderByRelationAggregateInput
   applications?: Prisma.ProgramApplicationOrderByRelationAggregateInput
+  teacherPrograms?: Prisma.TeacherProgramOrderByRelationAggregateInput
+  announcements?: Prisma.AnnouncementOrderByRelationAggregateInput
 }
 
 export type ProgramWhereUniqueInput = Prisma.AtLeast<{
@@ -272,6 +285,7 @@ export type ProgramWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Program"> | string
   description?: Prisma.StringNullableFilter<"Program"> | string | null
   durationYears?: Prisma.IntFilter<"Program"> | number
+  durationText?: Prisma.StringNullableFilter<"Program"> | string | null
   isActive?: Prisma.BoolFilter<"Program"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Program"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Program"> | Date | string
@@ -280,6 +294,8 @@ export type ProgramWhereUniqueInput = Prisma.AtLeast<{
   students?: Prisma.StudentProfileListRelationFilter
   feeStructures?: Prisma.FeeStructureListRelationFilter
   applications?: Prisma.ProgramApplicationListRelationFilter
+  teacherPrograms?: Prisma.TeacherProgramListRelationFilter
+  announcements?: Prisma.AnnouncementListRelationFilter
 }, "id" | "code">
 
 export type ProgramOrderByWithAggregationInput = {
@@ -288,6 +304,7 @@ export type ProgramOrderByWithAggregationInput = {
   code?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   durationYears?: Prisma.SortOrder
+  durationText?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -307,6 +324,7 @@ export type ProgramScalarWhereWithAggregatesInput = {
   code?: Prisma.StringWithAggregatesFilter<"Program"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Program"> | string | null
   durationYears?: Prisma.IntWithAggregatesFilter<"Program"> | number
+  durationText?: Prisma.StringNullableWithAggregatesFilter<"Program"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Program"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Program"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Program"> | Date | string
@@ -318,6 +336,7 @@ export type ProgramCreateInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -326,6 +345,8 @@ export type ProgramCreateInput = {
   students?: Prisma.StudentProfileCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramUncheckedCreateInput = {
@@ -334,6 +355,7 @@ export type ProgramUncheckedCreateInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -342,6 +364,8 @@ export type ProgramUncheckedCreateInput = {
   students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramUpdateInput = {
@@ -350,6 +374,7 @@ export type ProgramUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -358,6 +383,8 @@ export type ProgramUpdateInput = {
   students?: Prisma.StudentProfileUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramUncheckedUpdateInput = {
@@ -366,6 +393,7 @@ export type ProgramUncheckedUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -374,6 +402,8 @@ export type ProgramUncheckedUpdateInput = {
   students?: Prisma.StudentProfileUncheckedUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramCreateManyInput = {
@@ -382,6 +412,7 @@ export type ProgramCreateManyInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -393,6 +424,7 @@ export type ProgramUpdateManyMutationInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -404,6 +436,7 @@ export type ProgramUncheckedUpdateManyInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -415,6 +448,7 @@ export type ProgramCountOrderByAggregateInput = {
   code?: Prisma.SortOrder
   description?: Prisma.SortOrder
   durationYears?: Prisma.SortOrder
+  durationText?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -430,6 +464,7 @@ export type ProgramMaxOrderByAggregateInput = {
   code?: Prisma.SortOrder
   description?: Prisma.SortOrder
   durationYears?: Prisma.SortOrder
+  durationText?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -441,6 +476,7 @@ export type ProgramMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   description?: Prisma.SortOrder
   durationYears?: Prisma.SortOrder
+  durationText?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -512,6 +548,20 @@ export type ProgramUpdateOneWithoutStudentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProgramUpdateToOneWithWhereWithoutStudentsInput, Prisma.ProgramUpdateWithoutStudentsInput>, Prisma.ProgramUncheckedUpdateWithoutStudentsInput>
 }
 
+export type ProgramCreateNestedOneWithoutTeacherProgramsInput = {
+  create?: Prisma.XOR<Prisma.ProgramCreateWithoutTeacherProgramsInput, Prisma.ProgramUncheckedCreateWithoutTeacherProgramsInput>
+  connectOrCreate?: Prisma.ProgramCreateOrConnectWithoutTeacherProgramsInput
+  connect?: Prisma.ProgramWhereUniqueInput
+}
+
+export type ProgramUpdateOneRequiredWithoutTeacherProgramsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProgramCreateWithoutTeacherProgramsInput, Prisma.ProgramUncheckedCreateWithoutTeacherProgramsInput>
+  connectOrCreate?: Prisma.ProgramCreateOrConnectWithoutTeacherProgramsInput
+  upsert?: Prisma.ProgramUpsertWithoutTeacherProgramsInput
+  connect?: Prisma.ProgramWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProgramUpdateToOneWithWhereWithoutTeacherProgramsInput, Prisma.ProgramUpdateWithoutTeacherProgramsInput>, Prisma.ProgramUncheckedUpdateWithoutTeacherProgramsInput>
+}
+
 export type ProgramCreateNestedOneWithoutFeeStructuresInput = {
   create?: Prisma.XOR<Prisma.ProgramCreateWithoutFeeStructuresInput, Prisma.ProgramUncheckedCreateWithoutFeeStructuresInput>
   connectOrCreate?: Prisma.ProgramCreateOrConnectWithoutFeeStructuresInput
@@ -540,12 +590,29 @@ export type ProgramUpdateOneRequiredWithoutApplicationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProgramUpdateToOneWithWhereWithoutApplicationsInput, Prisma.ProgramUpdateWithoutApplicationsInput>, Prisma.ProgramUncheckedUpdateWithoutApplicationsInput>
 }
 
+export type ProgramCreateNestedOneWithoutAnnouncementsInput = {
+  create?: Prisma.XOR<Prisma.ProgramCreateWithoutAnnouncementsInput, Prisma.ProgramUncheckedCreateWithoutAnnouncementsInput>
+  connectOrCreate?: Prisma.ProgramCreateOrConnectWithoutAnnouncementsInput
+  connect?: Prisma.ProgramWhereUniqueInput
+}
+
+export type ProgramUpdateOneWithoutAnnouncementsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProgramCreateWithoutAnnouncementsInput, Prisma.ProgramUncheckedCreateWithoutAnnouncementsInput>
+  connectOrCreate?: Prisma.ProgramCreateOrConnectWithoutAnnouncementsInput
+  upsert?: Prisma.ProgramUpsertWithoutAnnouncementsInput
+  disconnect?: Prisma.ProgramWhereInput | boolean
+  delete?: Prisma.ProgramWhereInput | boolean
+  connect?: Prisma.ProgramWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProgramUpdateToOneWithWhereWithoutAnnouncementsInput, Prisma.ProgramUpdateWithoutAnnouncementsInput>, Prisma.ProgramUncheckedUpdateWithoutAnnouncementsInput>
+}
+
 export type ProgramCreateWithoutBatchesInput = {
   id?: string
   name: string
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -553,6 +620,8 @@ export type ProgramCreateWithoutBatchesInput = {
   students?: Prisma.StudentProfileCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramUncheckedCreateWithoutBatchesInput = {
@@ -561,6 +630,7 @@ export type ProgramUncheckedCreateWithoutBatchesInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -568,6 +638,8 @@ export type ProgramUncheckedCreateWithoutBatchesInput = {
   students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramCreateOrConnectWithoutBatchesInput = {
@@ -592,6 +664,7 @@ export type ProgramUpdateWithoutBatchesInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -599,6 +672,8 @@ export type ProgramUpdateWithoutBatchesInput = {
   students?: Prisma.StudentProfileUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramUncheckedUpdateWithoutBatchesInput = {
@@ -607,6 +682,7 @@ export type ProgramUncheckedUpdateWithoutBatchesInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -614,6 +690,8 @@ export type ProgramUncheckedUpdateWithoutBatchesInput = {
   students?: Prisma.StudentProfileUncheckedUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramCreateWithoutSubjectsInput = {
@@ -622,6 +700,7 @@ export type ProgramCreateWithoutSubjectsInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -629,6 +708,8 @@ export type ProgramCreateWithoutSubjectsInput = {
   students?: Prisma.StudentProfileCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramUncheckedCreateWithoutSubjectsInput = {
@@ -637,6 +718,7 @@ export type ProgramUncheckedCreateWithoutSubjectsInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -644,6 +726,8 @@ export type ProgramUncheckedCreateWithoutSubjectsInput = {
   students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramCreateOrConnectWithoutSubjectsInput = {
@@ -668,6 +752,7 @@ export type ProgramUpdateWithoutSubjectsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -675,6 +760,8 @@ export type ProgramUpdateWithoutSubjectsInput = {
   students?: Prisma.StudentProfileUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramUncheckedUpdateWithoutSubjectsInput = {
@@ -683,6 +770,7 @@ export type ProgramUncheckedUpdateWithoutSubjectsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -690,6 +778,8 @@ export type ProgramUncheckedUpdateWithoutSubjectsInput = {
   students?: Prisma.StudentProfileUncheckedUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramCreateWithoutStudentsInput = {
@@ -698,6 +788,7 @@ export type ProgramCreateWithoutStudentsInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -705,6 +796,8 @@ export type ProgramCreateWithoutStudentsInput = {
   subjects?: Prisma.SubjectCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramUncheckedCreateWithoutStudentsInput = {
@@ -713,6 +806,7 @@ export type ProgramUncheckedCreateWithoutStudentsInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -720,6 +814,8 @@ export type ProgramUncheckedCreateWithoutStudentsInput = {
   subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramCreateOrConnectWithoutStudentsInput = {
@@ -744,6 +840,7 @@ export type ProgramUpdateWithoutStudentsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -751,6 +848,8 @@ export type ProgramUpdateWithoutStudentsInput = {
   subjects?: Prisma.SubjectUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramUncheckedUpdateWithoutStudentsInput = {
@@ -759,6 +858,7 @@ export type ProgramUncheckedUpdateWithoutStudentsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -766,6 +866,96 @@ export type ProgramUncheckedUpdateWithoutStudentsInput = {
   subjects?: Prisma.SubjectUncheckedUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutProgramNestedInput
+}
+
+export type ProgramCreateWithoutTeacherProgramsInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  durationYears?: number
+  durationText?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
+  subjects?: Prisma.SubjectCreateNestedManyWithoutProgramInput
+  students?: Prisma.StudentProfileCreateNestedManyWithoutProgramInput
+  feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutProgramInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutProgramInput
+}
+
+export type ProgramUncheckedCreateWithoutTeacherProgramsInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  durationYears?: number
+  durationText?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
+  subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutProgramInput
+  students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutProgramInput
+  feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutProgramInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutProgramInput
+}
+
+export type ProgramCreateOrConnectWithoutTeacherProgramsInput = {
+  where: Prisma.ProgramWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProgramCreateWithoutTeacherProgramsInput, Prisma.ProgramUncheckedCreateWithoutTeacherProgramsInput>
+}
+
+export type ProgramUpsertWithoutTeacherProgramsInput = {
+  update: Prisma.XOR<Prisma.ProgramUpdateWithoutTeacherProgramsInput, Prisma.ProgramUncheckedUpdateWithoutTeacherProgramsInput>
+  create: Prisma.XOR<Prisma.ProgramCreateWithoutTeacherProgramsInput, Prisma.ProgramUncheckedCreateWithoutTeacherProgramsInput>
+  where?: Prisma.ProgramWhereInput
+}
+
+export type ProgramUpdateToOneWithWhereWithoutTeacherProgramsInput = {
+  where?: Prisma.ProgramWhereInput
+  data: Prisma.XOR<Prisma.ProgramUpdateWithoutTeacherProgramsInput, Prisma.ProgramUncheckedUpdateWithoutTeacherProgramsInput>
+}
+
+export type ProgramUpdateWithoutTeacherProgramsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
+  subjects?: Prisma.SubjectUpdateManyWithoutProgramNestedInput
+  students?: Prisma.StudentProfileUpdateManyWithoutProgramNestedInput
+  feeStructures?: Prisma.FeeStructureUpdateManyWithoutProgramNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutProgramNestedInput
+}
+
+export type ProgramUncheckedUpdateWithoutTeacherProgramsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
+  subjects?: Prisma.SubjectUncheckedUpdateManyWithoutProgramNestedInput
+  students?: Prisma.StudentProfileUncheckedUpdateManyWithoutProgramNestedInput
+  feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutProgramNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramCreateWithoutFeeStructuresInput = {
@@ -774,6 +964,7 @@ export type ProgramCreateWithoutFeeStructuresInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -781,6 +972,8 @@ export type ProgramCreateWithoutFeeStructuresInput = {
   subjects?: Prisma.SubjectCreateNestedManyWithoutProgramInput
   students?: Prisma.StudentProfileCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramUncheckedCreateWithoutFeeStructuresInput = {
@@ -789,6 +982,7 @@ export type ProgramUncheckedCreateWithoutFeeStructuresInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -796,6 +990,8 @@ export type ProgramUncheckedCreateWithoutFeeStructuresInput = {
   subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutProgramInput
   students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutProgramInput
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramCreateOrConnectWithoutFeeStructuresInput = {
@@ -820,6 +1016,7 @@ export type ProgramUpdateWithoutFeeStructuresInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -827,6 +1024,8 @@ export type ProgramUpdateWithoutFeeStructuresInput = {
   subjects?: Prisma.SubjectUpdateManyWithoutProgramNestedInput
   students?: Prisma.StudentProfileUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramUncheckedUpdateWithoutFeeStructuresInput = {
@@ -835,6 +1034,7 @@ export type ProgramUncheckedUpdateWithoutFeeStructuresInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -842,6 +1042,8 @@ export type ProgramUncheckedUpdateWithoutFeeStructuresInput = {
   subjects?: Prisma.SubjectUncheckedUpdateManyWithoutProgramNestedInput
   students?: Prisma.StudentProfileUncheckedUpdateManyWithoutProgramNestedInput
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramCreateWithoutApplicationsInput = {
@@ -850,6 +1052,7 @@ export type ProgramCreateWithoutApplicationsInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -857,6 +1060,8 @@ export type ProgramCreateWithoutApplicationsInput = {
   subjects?: Prisma.SubjectCreateNestedManyWithoutProgramInput
   students?: Prisma.StudentProfileCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramUncheckedCreateWithoutApplicationsInput = {
@@ -865,6 +1070,7 @@ export type ProgramUncheckedCreateWithoutApplicationsInput = {
   code: string
   description?: string | null
   durationYears?: number
+  durationText?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -872,6 +1078,8 @@ export type ProgramUncheckedCreateWithoutApplicationsInput = {
   subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutProgramInput
   students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutProgramInput
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedCreateNestedManyWithoutProgramInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutProgramInput
 }
 
 export type ProgramCreateOrConnectWithoutApplicationsInput = {
@@ -896,6 +1104,7 @@ export type ProgramUpdateWithoutApplicationsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -903,6 +1112,8 @@ export type ProgramUpdateWithoutApplicationsInput = {
   subjects?: Prisma.SubjectUpdateManyWithoutProgramNestedInput
   students?: Prisma.StudentProfileUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutProgramNestedInput
 }
 
 export type ProgramUncheckedUpdateWithoutApplicationsInput = {
@@ -911,6 +1122,7 @@ export type ProgramUncheckedUpdateWithoutApplicationsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -918,6 +1130,96 @@ export type ProgramUncheckedUpdateWithoutApplicationsInput = {
   subjects?: Prisma.SubjectUncheckedUpdateManyWithoutProgramNestedInput
   students?: Prisma.StudentProfileUncheckedUpdateManyWithoutProgramNestedInput
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedUpdateManyWithoutProgramNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutProgramNestedInput
+}
+
+export type ProgramCreateWithoutAnnouncementsInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  durationYears?: number
+  durationText?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
+  subjects?: Prisma.SubjectCreateNestedManyWithoutProgramInput
+  students?: Prisma.StudentProfileCreateNestedManyWithoutProgramInput
+  feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutProgramInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramCreateNestedManyWithoutProgramInput
+}
+
+export type ProgramUncheckedCreateWithoutAnnouncementsInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  durationYears?: number
+  durationText?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
+  subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutProgramInput
+  students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutProgramInput
+  feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutProgramInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutProgramInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedCreateNestedManyWithoutProgramInput
+}
+
+export type ProgramCreateOrConnectWithoutAnnouncementsInput = {
+  where: Prisma.ProgramWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProgramCreateWithoutAnnouncementsInput, Prisma.ProgramUncheckedCreateWithoutAnnouncementsInput>
+}
+
+export type ProgramUpsertWithoutAnnouncementsInput = {
+  update: Prisma.XOR<Prisma.ProgramUpdateWithoutAnnouncementsInput, Prisma.ProgramUncheckedUpdateWithoutAnnouncementsInput>
+  create: Prisma.XOR<Prisma.ProgramCreateWithoutAnnouncementsInput, Prisma.ProgramUncheckedCreateWithoutAnnouncementsInput>
+  where?: Prisma.ProgramWhereInput
+}
+
+export type ProgramUpdateToOneWithWhereWithoutAnnouncementsInput = {
+  where?: Prisma.ProgramWhereInput
+  data: Prisma.XOR<Prisma.ProgramUpdateWithoutAnnouncementsInput, Prisma.ProgramUncheckedUpdateWithoutAnnouncementsInput>
+}
+
+export type ProgramUpdateWithoutAnnouncementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
+  subjects?: Prisma.SubjectUpdateManyWithoutProgramNestedInput
+  students?: Prisma.StudentProfileUpdateManyWithoutProgramNestedInput
+  feeStructures?: Prisma.FeeStructureUpdateManyWithoutProgramNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUpdateManyWithoutProgramNestedInput
+}
+
+export type ProgramUncheckedUpdateWithoutAnnouncementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationYears?: Prisma.IntFieldUpdateOperationsInput | number
+  durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
+  subjects?: Prisma.SubjectUncheckedUpdateManyWithoutProgramNestedInput
+  students?: Prisma.StudentProfileUncheckedUpdateManyWithoutProgramNestedInput
+  feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutProgramNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutProgramNestedInput
+  teacherPrograms?: Prisma.TeacherProgramUncheckedUpdateManyWithoutProgramNestedInput
 }
 
 
@@ -931,6 +1233,8 @@ export type ProgramCountOutputType = {
   students: number
   feeStructures: number
   applications: number
+  teacherPrograms: number
+  announcements: number
 }
 
 export type ProgramCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -939,6 +1243,8 @@ export type ProgramCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   students?: boolean | ProgramCountOutputTypeCountStudentsArgs
   feeStructures?: boolean | ProgramCountOutputTypeCountFeeStructuresArgs
   applications?: boolean | ProgramCountOutputTypeCountApplicationsArgs
+  teacherPrograms?: boolean | ProgramCountOutputTypeCountTeacherProgramsArgs
+  announcements?: boolean | ProgramCountOutputTypeCountAnnouncementsArgs
 }
 
 /**
@@ -986,6 +1292,20 @@ export type ProgramCountOutputTypeCountApplicationsArgs<ExtArgs extends runtime.
   where?: Prisma.ProgramApplicationWhereInput
 }
 
+/**
+ * ProgramCountOutputType without action
+ */
+export type ProgramCountOutputTypeCountTeacherProgramsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TeacherProgramWhereInput
+}
+
+/**
+ * ProgramCountOutputType without action
+ */
+export type ProgramCountOutputTypeCountAnnouncementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnnouncementWhereInput
+}
+
 
 export type ProgramSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -993,6 +1313,7 @@ export type ProgramSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   code?: boolean
   description?: boolean
   durationYears?: boolean
+  durationText?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1001,6 +1322,8 @@ export type ProgramSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   students?: boolean | Prisma.Program$studentsArgs<ExtArgs>
   feeStructures?: boolean | Prisma.Program$feeStructuresArgs<ExtArgs>
   applications?: boolean | Prisma.Program$applicationsArgs<ExtArgs>
+  teacherPrograms?: boolean | Prisma.Program$teacherProgramsArgs<ExtArgs>
+  announcements?: boolean | Prisma.Program$announcementsArgs<ExtArgs>
   _count?: boolean | Prisma.ProgramCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["program"]>
 
@@ -1010,6 +1333,7 @@ export type ProgramSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   code?: boolean
   description?: boolean
   durationYears?: boolean
+  durationText?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1021,6 +1345,7 @@ export type ProgramSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   code?: boolean
   description?: boolean
   durationYears?: boolean
+  durationText?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1032,18 +1357,21 @@ export type ProgramSelectScalar = {
   code?: boolean
   description?: boolean
   durationYears?: boolean
+  durationText?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ProgramOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "durationYears" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["program"]>
+export type ProgramOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "durationYears" | "durationText" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["program"]>
 export type ProgramInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   batches?: boolean | Prisma.Program$batchesArgs<ExtArgs>
   subjects?: boolean | Prisma.Program$subjectsArgs<ExtArgs>
   students?: boolean | Prisma.Program$studentsArgs<ExtArgs>
   feeStructures?: boolean | Prisma.Program$feeStructuresArgs<ExtArgs>
   applications?: boolean | Prisma.Program$applicationsArgs<ExtArgs>
+  teacherPrograms?: boolean | Prisma.Program$teacherProgramsArgs<ExtArgs>
+  announcements?: boolean | Prisma.Program$announcementsArgs<ExtArgs>
   _count?: boolean | Prisma.ProgramCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProgramIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1057,6 +1385,8 @@ export type $ProgramPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     students: Prisma.$StudentProfilePayload<ExtArgs>[]
     feeStructures: Prisma.$FeeStructurePayload<ExtArgs>[]
     applications: Prisma.$ProgramApplicationPayload<ExtArgs>[]
+    teacherPrograms: Prisma.$TeacherProgramPayload<ExtArgs>[]
+    announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1064,6 +1394,7 @@ export type $ProgramPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     code: string
     description: string | null
     durationYears: number
+    durationText: string | null
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1466,6 +1797,8 @@ export interface Prisma__ProgramClient<T, Null = never, ExtArgs extends runtime.
   students<T extends Prisma.Program$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Program$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   feeStructures<T extends Prisma.Program$feeStructuresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Program$feeStructuresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeeStructurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   applications<T extends Prisma.Program$applicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Program$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  teacherPrograms<T extends Prisma.Program$teacherProgramsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Program$teacherProgramsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherProgramPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  announcements<T extends Prisma.Program$announcementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Program$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1500,6 +1833,7 @@ export interface ProgramFieldRefs {
   readonly code: Prisma.FieldRef<"Program", 'String'>
   readonly description: Prisma.FieldRef<"Program", 'String'>
   readonly durationYears: Prisma.FieldRef<"Program", 'Int'>
+  readonly durationText: Prisma.FieldRef<"Program", 'String'>
   readonly isActive: Prisma.FieldRef<"Program", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Program", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Program", 'DateTime'>
@@ -2013,6 +2347,54 @@ export type Program$applicationsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ProgramApplicationScalarFieldEnum | Prisma.ProgramApplicationScalarFieldEnum[]
+}
+
+/**
+ * Program.teacherPrograms
+ */
+export type Program$teacherProgramsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TeacherProgram
+   */
+  select?: Prisma.TeacherProgramSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TeacherProgram
+   */
+  omit?: Prisma.TeacherProgramOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TeacherProgramInclude<ExtArgs> | null
+  where?: Prisma.TeacherProgramWhereInput
+  orderBy?: Prisma.TeacherProgramOrderByWithRelationInput | Prisma.TeacherProgramOrderByWithRelationInput[]
+  cursor?: Prisma.TeacherProgramWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TeacherProgramScalarFieldEnum | Prisma.TeacherProgramScalarFieldEnum[]
+}
+
+/**
+ * Program.announcements
+ */
+export type Program$announcementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Announcement
+   */
+  select?: Prisma.AnnouncementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Announcement
+   */
+  omit?: Prisma.AnnouncementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnnouncementInclude<ExtArgs> | null
+  where?: Prisma.AnnouncementWhereInput
+  orderBy?: Prisma.AnnouncementOrderByWithRelationInput | Prisma.AnnouncementOrderByWithRelationInput[]
+  cursor?: Prisma.AnnouncementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
 }
 
 /**

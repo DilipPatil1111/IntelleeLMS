@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, Users, ClipboardList, TrendingUp } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
+import { TeacherDashboardAlerts } from "@/components/teacher/teacher-dashboard-alerts";
 
 export default async function TeacherDashboard() {
   const session = await auth();
@@ -89,6 +90,8 @@ export default async function TeacherDashboard() {
           </Link>
         }
       />
+
+      <TeacherDashboardAlerts />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard

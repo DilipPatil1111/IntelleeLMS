@@ -75,6 +75,7 @@ export type SharedDocumentCountAggregateOutputType = {
   category: number
   sharedById: number
   isPublic: number
+  audienceRoles: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -130,6 +131,7 @@ export type SharedDocumentCountAggregateInputType = {
   category?: true
   sharedById?: true
   isPublic?: true
+  audienceRoles?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -232,6 +234,7 @@ export type SharedDocumentGroupByOutputType = {
   category: string | null
   sharedById: string
   isPublic: boolean
+  audienceRoles: string[]
   createdAt: Date
   updatedAt: Date
   _count: SharedDocumentCountAggregateOutputType | null
@@ -270,6 +273,7 @@ export type SharedDocumentWhereInput = {
   category?: Prisma.StringNullableFilter<"SharedDocument"> | string | null
   sharedById?: Prisma.StringFilter<"SharedDocument"> | string
   isPublic?: Prisma.BoolFilter<"SharedDocument"> | boolean
+  audienceRoles?: Prisma.StringNullableListFilter<"SharedDocument">
   createdAt?: Prisma.DateTimeFilter<"SharedDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SharedDocument"> | Date | string
   sharedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -287,6 +291,7 @@ export type SharedDocumentOrderByWithRelationInput = {
   category?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedById?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
+  audienceRoles?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sharedBy?: Prisma.UserOrderByWithRelationInput
@@ -307,6 +312,7 @@ export type SharedDocumentWhereUniqueInput = Prisma.AtLeast<{
   category?: Prisma.StringNullableFilter<"SharedDocument"> | string | null
   sharedById?: Prisma.StringFilter<"SharedDocument"> | string
   isPublic?: Prisma.BoolFilter<"SharedDocument"> | boolean
+  audienceRoles?: Prisma.StringNullableListFilter<"SharedDocument">
   createdAt?: Prisma.DateTimeFilter<"SharedDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SharedDocument"> | Date | string
   sharedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -324,6 +330,7 @@ export type SharedDocumentOrderByWithAggregationInput = {
   category?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedById?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
+  audienceRoles?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SharedDocumentCountOrderByAggregateInput
@@ -347,6 +354,7 @@ export type SharedDocumentScalarWhereWithAggregatesInput = {
   category?: Prisma.StringNullableWithAggregatesFilter<"SharedDocument"> | string | null
   sharedById?: Prisma.StringWithAggregatesFilter<"SharedDocument"> | string
   isPublic?: Prisma.BoolWithAggregatesFilter<"SharedDocument"> | boolean
+  audienceRoles?: Prisma.StringNullableListFilter<"SharedDocument">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SharedDocument"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SharedDocument"> | Date | string
 }
@@ -361,6 +369,7 @@ export type SharedDocumentCreateInput = {
   fileSize?: number | null
   category?: string | null
   isPublic?: boolean
+  audienceRoles?: Prisma.SharedDocumentCreateaudienceRolesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   sharedBy: Prisma.UserCreateNestedOneWithoutCreatedDocumentsInput
@@ -378,6 +387,7 @@ export type SharedDocumentUncheckedCreateInput = {
   category?: string | null
   sharedById: string
   isPublic?: boolean
+  audienceRoles?: Prisma.SharedDocumentCreateaudienceRolesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   sharedWith?: Prisma.UserUncheckedCreateNestedManyWithoutSharedDocumentsInput
@@ -393,6 +403,7 @@ export type SharedDocumentUpdateInput = {
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sharedBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDocumentsNestedInput
@@ -410,6 +421,7 @@ export type SharedDocumentUncheckedUpdateInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sharedWith?: Prisma.UserUncheckedUpdateManyWithoutSharedDocumentsNestedInput
@@ -426,6 +438,7 @@ export type SharedDocumentCreateManyInput = {
   category?: string | null
   sharedById: string
   isPublic?: boolean
+  audienceRoles?: Prisma.SharedDocumentCreateaudienceRolesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -440,6 +453,7 @@ export type SharedDocumentUpdateManyMutationInput = {
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -455,6 +469,7 @@ export type SharedDocumentUncheckedUpdateManyInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -469,6 +484,14 @@ export type SharedDocumentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type SharedDocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -480,6 +503,7 @@ export type SharedDocumentCountOrderByAggregateInput = {
   category?: Prisma.SortOrder
   sharedById?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
+  audienceRoles?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -602,6 +626,15 @@ export type SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput = {
   deleteMany?: Prisma.SharedDocumentScalarWhereInput | Prisma.SharedDocumentScalarWhereInput[]
 }
 
+export type SharedDocumentCreateaudienceRolesInput = {
+  set: string[]
+}
+
+export type SharedDocumentUpdateaudienceRolesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type SharedDocumentCreateWithoutSharedWithInput = {
   id?: string
   title: string
@@ -612,6 +645,7 @@ export type SharedDocumentCreateWithoutSharedWithInput = {
   fileSize?: number | null
   category?: string | null
   isPublic?: boolean
+  audienceRoles?: Prisma.SharedDocumentCreateaudienceRolesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   sharedBy: Prisma.UserCreateNestedOneWithoutCreatedDocumentsInput
@@ -628,6 +662,7 @@ export type SharedDocumentUncheckedCreateWithoutSharedWithInput = {
   category?: string | null
   sharedById: string
   isPublic?: boolean
+  audienceRoles?: Prisma.SharedDocumentCreateaudienceRolesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -647,6 +682,7 @@ export type SharedDocumentCreateWithoutSharedByInput = {
   fileSize?: number | null
   category?: string | null
   isPublic?: boolean
+  audienceRoles?: Prisma.SharedDocumentCreateaudienceRolesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   sharedWith?: Prisma.UserCreateNestedManyWithoutSharedDocumentsInput
@@ -662,6 +698,7 @@ export type SharedDocumentUncheckedCreateWithoutSharedByInput = {
   fileSize?: number | null
   category?: string | null
   isPublic?: boolean
+  audienceRoles?: Prisma.SharedDocumentCreateaudienceRolesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   sharedWith?: Prisma.UserUncheckedCreateNestedManyWithoutSharedDocumentsInput
@@ -707,6 +744,7 @@ export type SharedDocumentScalarWhereInput = {
   category?: Prisma.StringNullableFilter<"SharedDocument"> | string | null
   sharedById?: Prisma.StringFilter<"SharedDocument"> | string
   isPublic?: Prisma.BoolFilter<"SharedDocument"> | boolean
+  audienceRoles?: Prisma.StringNullableListFilter<"SharedDocument">
   createdAt?: Prisma.DateTimeFilter<"SharedDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SharedDocument"> | Date | string
 }
@@ -737,6 +775,7 @@ export type SharedDocumentCreateManySharedByInput = {
   fileSize?: number | null
   category?: string | null
   isPublic?: boolean
+  audienceRoles?: Prisma.SharedDocumentCreateaudienceRolesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -751,6 +790,7 @@ export type SharedDocumentUpdateWithoutSharedWithInput = {
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sharedBy?: Prisma.UserUpdateOneRequiredWithoutCreatedDocumentsNestedInput
@@ -767,6 +807,7 @@ export type SharedDocumentUncheckedUpdateWithoutSharedWithInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -782,6 +823,7 @@ export type SharedDocumentUncheckedUpdateManyWithoutSharedWithInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -796,6 +838,7 @@ export type SharedDocumentUpdateWithoutSharedByInput = {
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sharedWith?: Prisma.UserUpdateManyWithoutSharedDocumentsNestedInput
@@ -811,6 +854,7 @@ export type SharedDocumentUncheckedUpdateWithoutSharedByInput = {
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sharedWith?: Prisma.UserUncheckedUpdateManyWithoutSharedDocumentsNestedInput
@@ -826,6 +870,7 @@ export type SharedDocumentUncheckedUpdateManyWithoutSharedByInput = {
   fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  audienceRoles?: Prisma.SharedDocumentUpdateaudienceRolesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -872,6 +917,7 @@ export type SharedDocumentSelect<ExtArgs extends runtime.Types.Extensions.Intern
   category?: boolean
   sharedById?: boolean
   isPublic?: boolean
+  audienceRoles?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -890,6 +936,7 @@ export type SharedDocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   category?: boolean
   sharedById?: boolean
   isPublic?: boolean
+  audienceRoles?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -906,6 +953,7 @@ export type SharedDocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   category?: boolean
   sharedById?: boolean
   isPublic?: boolean
+  audienceRoles?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -922,11 +970,12 @@ export type SharedDocumentSelectScalar = {
   category?: boolean
   sharedById?: boolean
   isPublic?: boolean
+  audienceRoles?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SharedDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "type" | "fileUrl" | "fileName" | "fileSize" | "category" | "sharedById" | "isPublic" | "createdAt" | "updatedAt", ExtArgs["result"]["sharedDocument"]>
+export type SharedDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "type" | "fileUrl" | "fileName" | "fileSize" | "category" | "sharedById" | "isPublic" | "audienceRoles" | "createdAt" | "updatedAt", ExtArgs["result"]["sharedDocument"]>
 export type SharedDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sharedWith?: boolean | Prisma.SharedDocument$sharedWithArgs<ExtArgs>
@@ -956,6 +1005,7 @@ export type $SharedDocumentPayload<ExtArgs extends runtime.Types.Extensions.Inte
     category: string | null
     sharedById: string
     isPublic: boolean
+    audienceRoles: string[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["sharedDocument"]>
@@ -1393,6 +1443,7 @@ export interface SharedDocumentFieldRefs {
   readonly category: Prisma.FieldRef<"SharedDocument", 'String'>
   readonly sharedById: Prisma.FieldRef<"SharedDocument", 'String'>
   readonly isPublic: Prisma.FieldRef<"SharedDocument", 'Boolean'>
+  readonly audienceRoles: Prisma.FieldRef<"SharedDocument", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"SharedDocument", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SharedDocument", 'DateTime'>
 }

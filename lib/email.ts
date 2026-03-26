@@ -51,6 +51,32 @@ export function buildAssessmentInviteEmail(assessmentTitle: string, link: string
   };
 }
 
+export function buildStudentWelcomeEmail(params: {
+  firstName: string;
+  email: string;
+  temporaryPassword: string;
+  loginUrl: string;
+}) {
+  const { firstName, email, temporaryPassword, loginUrl } = params;
+  return {
+    subject: "Your Intellee College account is ready",
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4f46e5;">Intellee College</h2>
+        <p>Hello ${firstName},</p>
+        <p>An administrator created your student account. Use the credentials below to sign in. You will be asked to set a new password on first login.</p>
+        <div style="background: #f3f4f6; border-radius: 8px; padding: 16px; margin: 16px 0;">
+          <p style="margin: 0;"><strong>Email:</strong> ${email}</p>
+          <p style="margin: 8px 0 0;"><strong>Temporary password:</strong> <code style="background: #e5e7eb; padding: 4px 8px; border-radius: 4px;">${temporaryPassword}</code></p>
+        </div>
+        <p><a href="${loginUrl}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Sign in</a></p>
+        <p style="color: #6b7280; font-size: 13px;">For security, delete this email after you have saved your new password. Never share your password with anyone.</p>
+      </div>
+    `,
+    text: `Hello ${firstName},\n\nYour account email: ${email}\nTemporary password: ${temporaryPassword}\n\nSign in: ${loginUrl}\n\nYou must change your password after signing in.`,
+  };
+}
+
 export function buildResultsEmail(studentName: string, assessmentTitle: string, score: number, total: number, percentage: number) {
   const passed = percentage >= 50;
   return {

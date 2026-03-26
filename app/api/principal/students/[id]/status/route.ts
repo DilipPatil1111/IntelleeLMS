@@ -10,7 +10,15 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const body = await req.json();
   const { status } = body;
 
-  const validStatuses = ["ACTIVE", "INACTIVE", "SUSPENDED", "EXPELLED", "TRANSFERRED", "GRADUATED"];
+  const validStatuses = [
+    "ACTIVE",
+    "INACTIVE",
+    "SUSPENDED",
+    "EXPELLED",
+    "TRANSFERRED",
+    "GRADUATED",
+    "CANCELLED",
+  ];
   if (!validStatuses.includes(status)) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
@@ -20,7 +28,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     data: { status },
   });
 
-  const isActive = !["SUSPENDED", "EXPELLED", "TRANSFERRED", "INACTIVE"].includes(status);
+  const isActive = !["SUSPENDED", "EXPELLED", "TRANSFERRED", "INACTIVE", "CANCELLED"].includes(status);
   await db.user.update({
     where: { id },
     data: { isActive },

@@ -10,7 +10,9 @@ export async function GET(req: Request) {
   const subjectId = searchParams.get("subjectId");
   const batchId = searchParams.get("batchId");
 
-  const where: Record<string, unknown> = {};
+  const where: Record<string, unknown> = {
+    createdById: session.user.id,
+  };
   if (subjectId) where.subjectId = subjectId;
   if (batchId) where.batchId = batchId;
 
@@ -19,6 +21,7 @@ export async function GET(req: Request) {
     include: {
       subject: true,
       records: { select: { studentId: true, status: true } },
+      teacherAttendance: true,
     },
     orderBy: { sessionDate: "desc" },
     take: 30,

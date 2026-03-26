@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
-import { Download } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Download, Users, GraduationCap, PieChart as PieIcon } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 interface ReportItem {
   id: string;
@@ -22,8 +22,19 @@ interface ReportItem {
   avgScore: number;
 }
 
+interface Analytics {
+  totalStudents: number;
+  studentsByStatus: Record<string, number>;
+  enrollmentByProgram: { programId: string; programName: string; count: number }[];
+  totalTeachers: number;
+  teacherCountByProgram: { programId: string; name: string; count: number }[];
+}
+
+const STATUS_COLORS = ["#4f46e5", "#10b981", "#f59e0b", "#ef4444", "#6b7280", "#8b5cf6", "#ec4899"];
+
 export default function PrincipalReportsPage() {
   const [data, setData] = useState<ReportItem[]>([]);
+  const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
   const [programId, setProgramId] = useState("");
 
@@ -37,9 +48,15 @@ export default function PrincipalReportsPage() {
   function loadReports() {
     const url = programId ? `/api/principal/reports?programId=${programId}` : "/api/principal/reports";
     fetch(url).then((r) => r.json()).then((d) => setData(d.data || []));
+    const aq = programId ? `?programId=${programId}` : "";
+    fetch(`/api/principal/analytics${aq}`).then((r) => r.json()).then((d) => setAnalytics(d));
   }
 
   useEffect(() => { loadReports(); }, [programId]);
+
+  const statusPieData = analytics
+    ? Object.entries(analytics.studentsByStatus).map(([name, value]) => ({ name, value }))
+    : [];
 
   return (
     <>
@@ -56,6 +73,83 @@ export default function PrincipalReportsPage() {
       <div className="mb-6 max-w-xs">
         <Select label="Filter by Program" value={programId} onChange={(e) => setProgramId(e.target.value)} options={programs} placeholder="All Programs" />
       </div>
+
+      {analytics && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <Card className="border-indigo-100 shadow-sm overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-indigo-50 to-violet-50 border-b border-indigo-100">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white">
+                  <Users className="h-5 w-5" />
+                </span>
+                Enrollment & student status
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <p className="text-sm text-gray-600 mb-4">
+                Total students (filtered): <strong>{analytics.totalStudents}</strong>
+              </p>
+              {statusPieData.length > 0 && (
+                <ResponsiveContainer width="100%" height={280}>
+                  <PieChart>
+                    <Pie data={statusPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label>
+                      {statusPieData.map((_, i) => (
+                        <Cell key={i} fill={STATUS_COLORS[i % STATUS_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="border-emerald-100 shadow-sm overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white">
+                  <GraduationCap className="h-5 w-5" />
+                </span>
+                Teachers by program
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6 space-y-3">
+              <p className="text-sm text-gray-600">
+                Active teachers (filtered scope): <strong>{analytics.totalTeachers}</strong>
+              </p>
+              <ul className="space-y-2">
+                {analytics.teacherCountByProgram.map((row) => (
+                  <li key={row.programId} className="flex justify-between text-sm border-b border-gray-100 pb-2">
+                    <span className="text-gray-700">{row.name}</span>
+                    <Badge variant="info">{row.count} teachers</Badge>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="lg:col-span-2 border-violet-100 shadow-sm">
+            <CardHeader className="bg-gradient-to-r from-violet-50 to-fuchsia-50 border-b">
+              <CardTitle className="flex items-center gap-2">
+                <PieIcon className="h-5 w-5 text-violet-600" />
+                Enrollment by program
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {analytics.enrollmentByProgram.map((row) => (
+                  <div key={row.programId} className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">{row.programName}</p>
+                    <p className="text-2xl font-bold text-violet-700 mt-1">{row.count}</p>
+                    <p className="text-xs text-gray-400">students</p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {data.length > 0 && (
         <Card className="mb-6">

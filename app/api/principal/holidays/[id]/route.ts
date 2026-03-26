@@ -14,6 +14,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       name: body.name,
       date: new Date(body.date),
       type: body.type || "PUBLIC",
+      academicYearId: body.academicYearId || null,
     },
   });
 

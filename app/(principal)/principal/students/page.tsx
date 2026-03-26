@@ -18,7 +18,8 @@ type StudentStatus =
   | "SUSPENDED"
   | "EXPELLED"
   | "TRANSFERRED"
-  | "GRADUATED";
+  | "GRADUATED"
+  | "CANCELLED";
 
 const STUDENT_STATUSES: StudentStatus[] = [
   "APPLICANT",
@@ -30,6 +31,7 @@ const STUDENT_STATUSES: StudentStatus[] = [
   "EXPELLED",
   "TRANSFERRED",
   "GRADUATED",
+  "CANCELLED",
 ];
 
 const statusSelectOptions = STUDENT_STATUSES.map((s) => ({ value: s, label: s }));
@@ -93,7 +95,7 @@ function attendancePct(records: { status: string }[]) {
 function statusBadgeVariant(status: StudentStatus): "success" | "warning" | "danger" | "default" {
   if (status === "ACTIVE" || status === "ENROLLED" || status === "GRADUATED") return "success";
   if (status === "APPLICANT" || status === "ACCEPTED") return "warning";
-  if (status === "SUSPENDED" || status === "EXPELLED") return "danger";
+  if (status === "SUSPENDED" || status === "EXPELLED" || status === "CANCELLED") return "danger";
   return "default";
 }
 

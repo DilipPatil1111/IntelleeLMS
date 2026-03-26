@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -21,9 +22,12 @@ interface SessionData {
   subject: { name: string };
   records: { studentId: string; status: string }[];
   overrideHoliday: boolean;
+  teacherAttendance: { status: string } | null;
 }
 
-export default function TeacherAttendancePage() {
+function TeacherAttendanceInner() {
+  const searchParams = useSearchParams();
+  const pendingSessionId = searchParams.get("pendingSession");
   const [subjects, setSubjects] = useState<
     { value: string; label: string }[]
   >([]);
@@ -43,6 +47,9 @@ export default function TeacherAttendancePage() {
   const [saving, setSaving] = useState(false);
   const [isHoliday, setIsHoliday] = useState(false);
   const [overrideHoliday, setOverrideHoliday] = useState(false);
+  const [teacherSelfStatus, setTeacherSelfStatus] = useState("PRESENT");
+  const [includeTeacherSelf, setIncludeTeacherSelf] = useState(true);
+  const [resolvingSession, setResolvingSession] = useState(false);
 
   useEffect(() => {
     fetch("/api/teacher/options")
@@ -90,6 +97,23 @@ export default function TeacherAttendancePage() {
     }
   }, [sessionDate]);
 
+  async function resolvePendingTeacherAttendance() {
+    if (!pendingSessionId) return;
+    setResolvingSession(true);
+    await fetch("/api/teacher/attendance/record-teacher", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ attendanceSessionId: pendingSessionId, status: teacherSelfStatus }),
+    });
+    setResolvingSession(false);
+    window.history.replaceState({}, "", "/teacher/attendance");
+    if (subjectId && batchId) {
+      fetch(`/api/teacher/attendance/sessions?subjectId=${subjectId}&batchId=${batchId}`)
+        .then((r) => r.json())
+        .then((data) => setSessions(data.sessions || []));
+    }
+  }
+
   async function handleSave() {
     setSaving(true);
     await fetch("/api/teacher/attendance", {
@@ -103,6 +127,7 @@ export default function TeacherAttendancePage() {
         endTime,
         attendance,
         overrideHoliday,
+        teacherSelfStatus: includeTeacherSelf ? teacherSelfStatus : undefined,
       }),
     });
     setSaving(false);
@@ -163,6 +188,28 @@ export default function TeacherAttendancePage() {
             </div>
           </div>
 
+          {pendingSessionId && (
+            <div className="rounded-lg bg-red-50 border-2 border-red-300 p-4 mb-4">
+              <p className="text-sm font-bold text-red-800 mb-2">Your attendance is still required for a saved session.</p>
+              <div className="flex flex-wrap items-end gap-3">
+                <Select
+                  label="Your status for that class"
+                  value={teacherSelfStatus}
+                  onChange={(e) => setTeacherSelfStatus(e.target.value)}
+                  options={[
+                    { value: "PRESENT", label: "Present" },
+                    { value: "LATE", label: "Late" },
+                    { value: "ABSENT", label: "Absent" },
+                    { value: "EXCUSED", label: "Excused" },
+                  ]}
+                />
+                <Button onClick={resolvePendingTeacherAttendance} isLoading={resolvingSession}>
+                  Confirm my attendance
+                </Button>
+              </div>
+            </div>
+          )}
+
           {isHoliday && (
             <div className="rounded-lg bg-red-50 border border-red-200 p-3 mb-4 flex items-center justify-between">
               <p className="text-sm text-red-600">
@@ -185,6 +232,34 @@ export default function TeacherAttendancePage() {
             subjectId &&
             (!isHoliday || overrideHoliday) && (
               <>
+                <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-4 mb-4">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-800 mb-2">
+                    <input
+                      type="checkbox"
+                      checked={includeTeacherSelf}
+                      onChange={(e) => setIncludeTeacherSelf(e.target.checked)}
+                      className="rounded border-gray-300"
+                    />
+                    Record my attendance for this class session (recommended)
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {["PRESENT", "LATE", "ABSENT", "EXCUSED"].map((status) => (
+                      <button
+                        key={status}
+                        type="button"
+                        onClick={() => setTeacherSelfStatus(status)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
+                          teacherSelfStatus === status
+                            ? "bg-indigo-600 text-white"
+                            : "bg-white border border-gray-200 text-gray-600"
+                        }`}
+                      >
+                        {status}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
@@ -275,6 +350,9 @@ export default function TeacherAttendancePage() {
                       Present
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                      You
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
                       Override
                     </th>
                   </tr>
@@ -300,6 +378,13 @@ export default function TeacherAttendancePage() {
                         }
                         /{s.records.length}
                       </td>
+                      <td className="px-4 py-3 text-sm">
+                        {s.teacherAttendance ? (
+                          <Badge variant="success">{s.teacherAttendance.status}</Badge>
+                        ) : (
+                          <Badge variant="danger">Pending</Badge>
+                        )}
+                      </td>
                       <td className="px-4 py-3">
                         {s.overrideHoliday && (
                           <Badge variant="warning">Holiday Override</Badge>
@@ -314,5 +399,13 @@ export default function TeacherAttendancePage() {
         </CardContent>
       </Card>
     </>
+  );
+}
+
+export default function TeacherAttendancePage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-gray-500">Loading…</div>}>
+      <TeacherAttendanceInner />
+    </Suspense>
   );
 }

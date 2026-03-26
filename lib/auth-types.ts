@@ -5,10 +5,12 @@ declare module "next-auth" {
     user: {
       id: string;
       role: "STUDENT" | "TEACHER" | "PRINCIPAL";
+      mustChangePassword?: boolean;
     } & DefaultSession["user"];
   }
 
   interface User {
     role?: "STUDENT" | "TEACHER" | "PRINCIPAL";
+    mustChangePassword?: boolean;
   }
 }

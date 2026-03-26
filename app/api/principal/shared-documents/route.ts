@@ -29,6 +29,7 @@ export async function POST(req: Request) {
       category: body.category || null,
       sharedById: session.user.id,
       isPublic: body.isPublic ?? true,
+      audienceRoles: Array.isArray(body.audienceRoles) ? body.audienceRoles : [],
     },
   });
 

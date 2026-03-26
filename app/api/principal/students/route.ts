@@ -1,5 +1,8 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { sendEmail, buildStudentWelcomeEmail } from "@/lib/email";
+import { generateTemporaryPassword } from "@/lib/password";
+import { env } from "@/lib/env";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -25,7 +28,11 @@ export async function POST(req: Request) {
 
   const body = await req.json();
   const bcrypt = await import("bcryptjs");
-  const hashedPassword = await bcrypt.hash(body.password || "Student@123", 10);
+  const plainPassword =
+    typeof body.password === "string" && body.password.length >= 8
+      ? body.password
+      : generateTemporaryPassword();
+  const hashedPassword = await bcrypt.hash(plainPassword, 12);
 
   const user = await db.user.create({
     data: {
@@ -35,6 +42,7 @@ export async function POST(req: Request) {
       middleName: body.middleName || null,
       phone: body.phone || null,
       hashedPassword,
+      mustChangePassword: true,
       role: "STUDENT",
       studentProfile: {
         create: {
@@ -47,5 +55,19 @@ export async function POST(req: Request) {
     },
   });
 
-  return NextResponse.json({ user });
+  const loginUrl = `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/login`;
+  const emailPayload = buildStudentWelcomeEmail({
+    firstName: user.firstName,
+    email: user.email,
+    temporaryPassword: plainPassword,
+    loginUrl,
+  });
+  await sendEmail({
+    to: user.email,
+    subject: emailPayload.subject,
+    html: emailPayload.html,
+    text: emailPayload.text,
+  });
+
+  return NextResponse.json({ user: { id: user.id, email: user.email } });
 }

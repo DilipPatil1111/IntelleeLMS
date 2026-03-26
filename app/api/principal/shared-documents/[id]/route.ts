@@ -18,6 +18,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       fileName: body.fileName || null,
       category: body.category || null,
       isPublic: body.isPublic ?? true,
+      audienceRoles: Array.isArray(body.audienceRoles) ? body.audienceRoles : undefined,
     },
   });
 

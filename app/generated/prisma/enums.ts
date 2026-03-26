@@ -83,7 +83,10 @@ export const NotificationType = {
   APPLICATION_RECEIVED: 'APPLICATION_RECEIVED',
   APPLICATION_ACCEPTED: 'APPLICATION_ACCEPTED',
   ENROLLMENT_CONFIRMED: 'ENROLLMENT_CONFIRMED',
-  GENERAL: 'GENERAL'
+  GENERAL: 'GENERAL',
+  TEACHER_SELF_ATTENDANCE_REQUIRED: 'TEACHER_SELF_ATTENDANCE_REQUIRED',
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  HOLIDAY_NOTICE: 'HOLIDAY_NOTICE'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -98,10 +101,21 @@ export const StudentStatus = {
   SUSPENDED: 'SUSPENDED',
   EXPELLED: 'EXPELLED',
   TRANSFERRED: 'TRANSFERRED',
-  GRADUATED: 'GRADUATED'
+  GRADUATED: 'GRADUATED',
+  CANCELLED: 'CANCELLED'
 } as const
 
 export type StudentStatus = (typeof StudentStatus)[keyof typeof StudentStatus]
+
+
+export const PolicyType = {
+  PROGRAM: 'PROGRAM',
+  COLLEGE: 'COLLEGE',
+  STUDENT: 'STUDENT',
+  OTHER: 'OTHER'
+} as const
+
+export type PolicyType = (typeof PolicyType)[keyof typeof PolicyType]
 
 
 export const ApplicationStatus = {

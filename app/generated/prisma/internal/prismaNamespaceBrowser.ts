@@ -65,6 +65,7 @@ export const ModelName = {
   TopicProgress: 'TopicProgress',
   StudentProfile: 'StudentProfile',
   TeacherProfile: 'TeacherProfile',
+  TeacherProgram: 'TeacherProgram',
   TeacherSubjectAssignment: 'TeacherSubjectAssignment',
   FeeStructure: 'FeeStructure',
   FeePayment: 'FeePayment',
@@ -75,6 +76,7 @@ export const ModelName = {
   Answer: 'Answer',
   AssessmentShare: 'AssessmentShare',
   AttendanceSession: 'AttendanceSession',
+  TeacherAttendance: 'TeacherAttendance',
   AttendanceRecord: 'AttendanceRecord',
   Holiday: 'Holiday',
   ScheduledEmail: 'ScheduledEmail',
@@ -83,6 +85,8 @@ export const ModelName = {
   Policy: 'Policy',
   SharedDocument: 'SharedDocument',
   EmailTemplate: 'EmailTemplate',
+  Announcement: 'Announcement',
+  AnnouncementRecipient: 'AnnouncementRecipient',
   AuditLog: 'AuditLog'
 } as const
 
@@ -120,6 +124,7 @@ export const UserScalarFieldEnum = {
   postalCode: 'postalCode',
   visaStatus: 'visaStatus',
   profilePicture: 'profilePicture',
+  mustChangePassword: 'mustChangePassword',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -171,6 +176,7 @@ export const ProgramScalarFieldEnum = {
   code: 'code',
   description: 'description',
   durationYears: 'durationYears',
+  durationText: 'durationText',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -311,6 +317,16 @@ export const TeacherProfileScalarFieldEnum = {
 } as const
 
 export type TeacherProfileScalarFieldEnum = (typeof TeacherProfileScalarFieldEnum)[keyof typeof TeacherProfileScalarFieldEnum]
+
+
+export const TeacherProgramScalarFieldEnum = {
+  id: 'id',
+  teacherProfileId: 'teacherProfileId',
+  programId: 'programId',
+  createdAt: 'createdAt'
+} as const
+
+export type TeacherProgramScalarFieldEnum = (typeof TeacherProgramScalarFieldEnum)[keyof typeof TeacherProgramScalarFieldEnum]
 
 
 export const TeacherSubjectAssignmentScalarFieldEnum = {
@@ -478,6 +494,19 @@ export const AttendanceSessionScalarFieldEnum = {
 export type AttendanceSessionScalarFieldEnum = (typeof AttendanceSessionScalarFieldEnum)[keyof typeof AttendanceSessionScalarFieldEnum]
 
 
+export const TeacherAttendanceScalarFieldEnum = {
+  id: 'id',
+  attendanceSessionId: 'attendanceSessionId',
+  teacherUserId: 'teacherUserId',
+  status: 'status',
+  remarks: 'remarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherAttendanceScalarFieldEnum = (typeof TeacherAttendanceScalarFieldEnum)[keyof typeof TeacherAttendanceScalarFieldEnum]
+
+
 export const AttendanceRecordScalarFieldEnum = {
   id: 'id',
   attendanceSessionId: 'attendanceSessionId',
@@ -558,6 +587,7 @@ export const PolicyScalarFieldEnum = {
   content: 'content',
   fileUrl: 'fileUrl',
   category: 'category',
+  policyType: 'policyType',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -577,6 +607,7 @@ export const SharedDocumentScalarFieldEnum = {
   category: 'category',
   sharedById: 'sharedById',
   isPublic: 'isPublic',
+  audienceRoles: 'audienceRoles',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -596,6 +627,33 @@ export const EmailTemplateScalarFieldEnum = {
 } as const
 
 export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
+
+
+export const AnnouncementScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  body: 'body',
+  createdById: 'createdById',
+  programId: 'programId',
+  batchId: 'batchId',
+  academicYearId: 'academicYearId',
+  recipientAll: 'recipientAll',
+  sendEmail: 'sendEmail',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+
+
+export const AnnouncementRecipientScalarFieldEnum = {
+  id: 'id',
+  announcementId: 'announcementId',
+  userId: 'userId',
+  emailSent: 'emailSent'
+} as const
+
+export type AnnouncementRecipientScalarFieldEnum = (typeof AnnouncementRecipientScalarFieldEnum)[keyof typeof AnnouncementRecipientScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {

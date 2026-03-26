@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
+import type { PolicyType } from "@/app/generated/prisma/enums";
 
 export async function GET() {
   const session = await auth();
@@ -22,6 +23,7 @@ export async function POST(req: Request) {
       content: body.content || null,
       fileUrl: body.fileUrl || null,
       category: body.category || null,
+      policyType: (body.policyType as PolicyType) || "OTHER",
       isActive: body.isActive ?? true,
     },
   });

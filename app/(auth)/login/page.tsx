@@ -4,11 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginUser } from "@/lib/actions/auth-actions";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
+
+function LoginBanner() {
+  const params = useSearchParams();
+  if (params.get("passwordChanged") === "1") {
+    return (
+      <div className="mb-4 rounded-lg bg-emerald-50 border border-emerald-200 p-3 text-sm text-emerald-800">
+        Your password was updated. Sign in with your new password.
+      </div>
+    );
+  }
+  return null;
+}
 
 export default function LoginPage() {
-  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +46,9 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+          <Suspense fallback={null}>
+            <LoginBanner />
+          </Suspense>
           {error && (
             <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-600">
               {error}

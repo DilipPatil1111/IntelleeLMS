@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
+import type { PolicyType } from "@/app/generated/prisma/enums";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -16,6 +17,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       content: body.content || null,
       fileUrl: body.fileUrl || null,
       category: body.category || null,
+      policyType: (body.policyType as PolicyType) || undefined,
       isActive: body.isActive ?? true,
     },
   });

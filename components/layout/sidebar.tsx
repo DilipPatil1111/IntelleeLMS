@@ -7,8 +7,8 @@ import {
   LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
-  Shield, FolderOpen,
-  type LucideIcon
+  Shield, FolderOpen, Megaphone,
+  type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -33,6 +33,7 @@ const studentNav: NavItem[] = [
 const teacherNav: NavItem[] = [
   { label: "Dashboard", href: "/teacher", icon: LayoutDashboard },
   { label: "Assessments", href: "/teacher/assessments", icon: FileText },
+  { label: "Announcements", href: "/teacher/announcements", icon: Megaphone },
   { label: "Question Bank", href: "/teacher/questions", icon: ClipboardList },
   { label: "Grading", href: "/teacher/grading", icon: BookOpen },
   { label: "Attendance", href: "/teacher/attendance", icon: Calendar },
@@ -56,6 +57,7 @@ const principalNav: NavItem[] = [
   { label: "Academic Year", href: "/principal/academic-year", icon: Calendar },
   { label: "Holidays", href: "/principal/holidays", icon: Calendar },
   { label: "Email Templates", href: "/principal/email-templates", icon: Bell },
+  { label: "Announcements", href: "/principal/announcements", icon: Megaphone },
   { label: "Policies", href: "/principal/policies", icon: Shield },
   { label: "Templates", href: "/principal/shared-documents", icon: FolderOpen },
   { label: "Settings", href: "/principal/settings", icon: Settings },

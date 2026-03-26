@@ -453,10 +453,6 @@ export type AttendanceRecordUncheckedUpdateManyWithoutSessionNestedInput = {
   deleteMany?: Prisma.AttendanceRecordScalarWhereInput | Prisma.AttendanceRecordScalarWhereInput[]
 }
 
-export type EnumAttendanceStatusFieldUpdateOperationsInput = {
-  set?: $Enums.AttendanceStatus
-}
-
 export type AttendanceRecordCreateWithoutStudentInput = {
   id?: string
   status?: $Enums.AttendanceStatus

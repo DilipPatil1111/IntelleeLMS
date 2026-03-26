@@ -68,7 +68,24 @@ export default function EmailTemplatesPage() {
                   <CardTitle className="text-base">{t.name.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}</CardTitle>
                   {"id" in t && t.id ? <Badge variant="success">Customized</Badge> : <Badge>Default</Badge>}
                 </div>
-                <Button variant="outline" size="sm" onClick={() => startEdit(t)}>Edit</Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      if (typeof window !== "undefined") {
+                        sessionStorage.setItem(
+                          "emailTemplateDraft",
+                          JSON.stringify({ subject: t.subject, body: t.body })
+                        );
+                      }
+                      window.location.href = "/principal/announcements";
+                    }}
+                  >
+                    Apply to announcement
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => startEdit(t)}>Edit</Button>
+                </div>
               </div>
             </CardHeader>
             {editing === t.name ? (

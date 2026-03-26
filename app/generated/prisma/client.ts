@@ -112,6 +112,11 @@ export type StudentProfile = Prisma.StudentProfileModel
  */
 export type TeacherProfile = Prisma.TeacherProfileModel
 /**
+ * Model TeacherProgram
+ * 
+ */
+export type TeacherProgram = Prisma.TeacherProgramModel
+/**
  * Model TeacherSubjectAssignment
  * 
  */
@@ -162,6 +167,11 @@ export type AssessmentShare = Prisma.AssessmentShareModel
  */
 export type AttendanceSession = Prisma.AttendanceSessionModel
 /**
+ * Model TeacherAttendance
+ * 
+ */
+export type TeacherAttendance = Prisma.TeacherAttendanceModel
+/**
  * Model AttendanceRecord
  * 
  */
@@ -201,6 +211,16 @@ export type SharedDocument = Prisma.SharedDocumentModel
  * 
  */
 export type EmailTemplate = Prisma.EmailTemplateModel
+/**
+ * Model Announcement
+ * 
+ */
+export type Announcement = Prisma.AnnouncementModel
+/**
+ * Model AnnouncementRecipient
+ * 
+ */
+export type AnnouncementRecipient = Prisma.AnnouncementRecipientModel
 /**
  * Model AuditLog
  * 

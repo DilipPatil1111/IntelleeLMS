@@ -8,13 +8,15 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
+  const durationText = typeof body.durationText === "string" ? body.durationText.trim() : "";
   const program = await db.program.update({
     where: { id },
     data: {
       name: body.name,
       code: body.code,
       description: body.description || null,
-      durationYears: body.durationYears || 1,
+      durationYears: typeof body.durationYears === "number" ? body.durationYears : 1,
+      durationText: durationText || null,
     },
   });
 

@@ -20,8 +20,15 @@ interface SharedDoc {
   fileName: string | null;
   category: string | null;
   isPublic: boolean;
+  audienceRoles: string[];
   sharedBy: { firstName: string; lastName: string };
 }
+
+const AUDIENCE_OPTIONS = [
+  { value: "STUDENT", label: "Students" },
+  { value: "TEACHER", label: "Teachers / trainers" },
+  { value: "PRINCIPAL", label: "Principal / administrators" },
+];
 
 const DOC_TYPE_OPTIONS = [
   { value: "DOCUMENT", label: "Document" },
@@ -40,6 +47,7 @@ const emptyForm = {
   fileName: "",
   category: "",
   isPublic: true,
+  audienceRoles: ["STUDENT", "TEACHER", "PRINCIPAL"] as string[],
 };
 
 export default function PrincipalSharedDocumentsPage() {
@@ -116,6 +124,12 @@ export default function PrincipalSharedDocumentsPage() {
                     <p className="text-sm text-gray-600 mt-2 line-clamp-3">{d.description}</p>
                   )}
                   <p className="text-xs text-gray-500 mt-2">
+                    Audience:{" "}
+                    {(d.audienceRoles?.length ?? 0) > 0
+                      ? d.audienceRoles.map((r) => AUDIENCE_OPTIONS.find((o) => o.value === r)?.label || r).join(", ")
+                      : "Not set"}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
                     Shared by {d.sharedBy.firstName} {d.sharedBy.lastName}
                   </p>
                   {d.fileUrl && (
@@ -142,6 +156,7 @@ export default function PrincipalSharedDocumentsPage() {
                         fileName: d.fileName || "",
                         category: d.category || "",
                         isPublic: d.isPublic,
+                        audienceRoles: d.audienceRoles?.length ? d.audienceRoles : ["STUDENT", "TEACHER", "PRINCIPAL"],
                       });
                       setShowModal(true);
                     }}
@@ -201,6 +216,28 @@ export default function PrincipalSharedDocumentsPage() {
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
           />
+          <div>
+            <p className="text-sm font-medium text-gray-700 mb-2">Share with</p>
+            <div className="flex flex-wrap gap-3">
+              {AUDIENCE_OPTIONS.map((o) => (
+                <label key={o.value} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={form.audienceRoles.includes(o.value)}
+                    onChange={() => {
+                      setForm((f) => ({
+                        ...f,
+                        audienceRoles: f.audienceRoles.includes(o.value)
+                          ? f.audienceRoles.filter((x) => x !== o.value)
+                          : [...f.audienceRoles, o.value],
+                      }));
+                    }}
+                  />
+                  {o.label}
+                </label>
+              ))}
+            </div>
+          </div>
           <label className="flex items-center gap-2 text-sm text-gray-700">
             <input
               type="checkbox"
