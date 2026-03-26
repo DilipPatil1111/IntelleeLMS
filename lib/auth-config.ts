@@ -7,19 +7,19 @@ export const authConfig: NextAuthConfig = {
   },
   providers: [],
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.role = (user as unknown as Record<string, unknown>).role;
         token.id = user.id;
         token.mustChangePassword = (user as unknown as Record<string, unknown>).mustChangePassword as boolean;
       }
-      if (trigger === "update" && token.id) {
-        const { db } = await import("./db");
-        const u = await db.user.findUnique({
-          where: { id: token.id as string },
-          select: { mustChangePassword: true },
-        });
-        if (u) token.mustChangePassword = u.mustChangePassword;
+      // Keep JWT edge-safe: do not import Prisma here (middleware bundles this file).
+      // Client can call session.update({ mustChangePassword: false }) if we add a flow without signOut.
+      if (trigger === "update" && session && typeof session === "object") {
+        const s = session as Record<string, unknown>;
+        if (typeof s.mustChangePassword === "boolean") {
+          token.mustChangePassword = s.mustChangePassword;
+        }
       }
       return token;
     },
