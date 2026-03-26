@@ -5,6 +5,9 @@ import { generateTemporaryPassword } from "@/lib/password";
 import { getServerAppUrl } from "@/lib/app-url";
 import { NextResponse } from "next/server";
 
+/** Node runtime: full process.env (Vercel secrets) — Edge would not expose all server env vars. */
+export const runtime = "nodejs";
+
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -1,13 +1,21 @@
 import { Resend } from "resend";
 import { env } from "@/lib/env";
 
-let resend: Resend | null = null;
+/**
+ * Read at send time (not build time). Bracket access avoids some bundlers inlining
+ * `process.env.RESEND_API_KEY` as undefined when the key was added only on the host (e.g. Vercel).
+ */
+function getResendApiKey(): string | undefined {
+  const raw = process.env["RESEND_API_KEY"];
+  if (typeof raw !== "string") return undefined;
+  const trimmed = raw.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
 
-function getResend() {
-  if (!resend && process.env.RESEND_API_KEY) {
-    resend = new Resend(process.env.RESEND_API_KEY);
-  }
-  return resend;
+function getResendClient(): Resend | null {
+  const key = getResendApiKey();
+  if (!key) return null;
+  return new Resend(key);
 }
 
 /** Default Resend test sender (only works for your own account email). Use RESEND_FROM_EMAIL after domain verification. */
@@ -32,10 +40,10 @@ export type SendEmailResult =
   | { ok: false; error: string };
 
 export async function sendEmail({ to, subject, html, text }: SendEmailParams): Promise<SendEmailResult> {
-  const client = getResend();
+  const client = getResendClient();
   if (!client) {
     console.warn(
-      `[EMAIL] RESEND_API_KEY is not set — welcome email not sent to ${to}. Set RESEND_API_KEY on Vercel (and optionally RESEND_FROM_EMAIL).`
+      `[EMAIL] RESEND_API_KEY is not set or empty — email not sent to ${to}. In Vercel: add RESEND_API_KEY for Production, then Redeploy.`
     );
     return { ok: true, mock: true };
   }

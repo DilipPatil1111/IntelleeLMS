@@ -200,7 +200,7 @@ export default function PrincipalStudentsPage() {
         setSaveBanner({
           tone: "warning",
           message:
-            "Student created. Welcome email was not sent (RESEND_API_KEY is not set on the server). Add it in Vercel → Settings → Environment Variables.",
+            "Student created, but no email was sent: the server still does not see RESEND_API_KEY. In Vercel → Settings → Environment Variables, add RESEND_API_KEY for this deployment’s environment (Production vs Preview), save, then redeploy. Trailing spaces in the key value can also cause this.",
         });
       } else {
         setSaveBanner({
