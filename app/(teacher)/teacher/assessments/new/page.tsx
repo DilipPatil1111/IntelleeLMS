@@ -34,17 +34,20 @@ export default function CreateAssessmentPage() {
   const [allSubjects, setAllSubjects] = useState<{ value: string; label: string; programId: string }[]>([]);
   const [allBatches, setAllBatches] = useState<{ value: string; label: string; programId: string }[]>([]);
 
+  /** Single-program tenants behave as if program is chosen immediately; avoids empty subject/batch before state catches up. */
+  const resolvedProgramId = programId || (programs.length === 1 ? programs[0].value : "");
+
   const subjectOptions =
-    programs.length > 1 && !programId
+    programs.length > 1 && !resolvedProgramId
       ? []
-      : programId
-        ? allSubjects.filter((s) => s.programId === programId)
+      : resolvedProgramId
+        ? allSubjects.filter((s) => s.programId === resolvedProgramId)
         : allSubjects;
   const batchOptions =
-    programs.length > 1 && !programId
+    programs.length > 1 && !resolvedProgramId
       ? []
-      : programId
-        ? allBatches.filter((b) => b.programId === programId)
+      : resolvedProgramId
+        ? allBatches.filter((b) => b.programId === resolvedProgramId)
         : allBatches;
 
   const [form, setForm] = useState({
@@ -77,8 +80,12 @@ export default function CreateAssessmentPage() {
 
   useEffect(() => {
     fetch("/api/teacher/options")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Could not load programs and classes");
+        return r.json();
+      })
       .then((data) => {
+        if (data.error) throw new Error(data.error);
         const progs = data.programs || [];
         setPrograms(progs);
         setAllSubjects(data.subjects || []);
@@ -86,6 +93,9 @@ export default function CreateAssessmentPage() {
         if (progs.length === 1) {
           setProgramId(progs[0].value);
         }
+      })
+      .catch((e: Error) => {
+        setError(e.message || "Failed to load program options");
       });
   }, []);
 
@@ -289,10 +299,10 @@ export default function CreateAssessmentPage() {
             <div className="space-y-4">
               <Input label="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Midterm Quiz - Chapter 3" required />
               <Textarea label="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Brief description..." />
-              {programs.length > 1 && (
+              {programs.length > 0 && (
                 <Select
                   label="Program"
-                  value={programId}
+                  value={resolvedProgramId}
                   onChange={(e) => {
                     const next = e.target.value;
                     setProgramId(next);
@@ -301,6 +311,11 @@ export default function CreateAssessmentPage() {
                   options={programs}
                   placeholder="Select program"
                 />
+              )}
+              {programs.length === 0 && (
+                <p className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                  No active programs are set up yet. Ask your administrator to add programs; then subjects and batches will appear here.
+                </p>
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Select label="Type" value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} options={[
@@ -348,7 +363,8 @@ export default function CreateAssessmentPage() {
                     !form.title ||
                     !form.subjectId ||
                     !form.batchId ||
-                    (programs.length > 1 && !programId)
+                    programs.length === 0 ||
+                    (programs.length > 1 && !resolvedProgramId)
                   }
                 >
                   Next: Add Questions
