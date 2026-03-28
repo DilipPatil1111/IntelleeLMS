@@ -87,6 +87,15 @@ export function buildAssessmentInviteEmail(assessmentTitle: string, link: string
   };
 }
 
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+/** Safe for double-quoted HTML attributes (e.g. href). */
+function escapeHtmlAttribute(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/\r?\n/g, "");
+}
+
 export function buildStudentWelcomeEmail(params: {
   firstName: string;
   email: string;
@@ -94,22 +103,26 @@ export function buildStudentWelcomeEmail(params: {
   loginUrl: string;
 }) {
   const { firstName, email, temporaryPassword, loginUrl } = params;
+  const href = escapeHtmlAttribute(loginUrl);
+  const loginUrlVisible = escapeHtml(loginUrl);
   return {
     subject: "Your Intellee College account is ready",
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #4f46e5;">Intellee College</h2>
-        <p>Hello ${firstName},</p>
+        <p>Hello ${escapeHtml(firstName)},</p>
         <p>An administrator created your student account. Use the credentials below to sign in at the login page. You will be asked to set and confirm a new password before using the student dashboard.</p>
         <div style="background: #f3f4f6; border-radius: 8px; padding: 16px; margin: 16px 0;">
-          <p style="margin: 0;"><strong>Email:</strong> ${email}</p>
-          <p style="margin: 8px 0 0;"><strong>Temporary password:</strong> <code style="background: #e5e7eb; padding: 4px 8px; border-radius: 4px;">${temporaryPassword}</code></p>
+          <p style="margin: 0;"><strong>Email:</strong> ${escapeHtml(email)}</p>
+          <p style="margin: 8px 0 0;"><strong>Temporary password:</strong> <code style="background: #e5e7eb; padding: 4px 8px; border-radius: 4px;">${escapeHtml(temporaryPassword)}</code></p>
         </div>
-        <p><a href="${loginUrl}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Sign in</a></p>
+        <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Sign in</a></p>
+        <p style="color: #374151; font-size: 14px;">If the button does not open the site, copy this address into your browser:</p>
+        <p style="word-break: break-all; font-size: 14px; color: #1f2937;"><a href="${href}" style="color: #4f46e5;">${loginUrlVisible}</a></p>
         <p style="color: #6b7280; font-size: 13px;">For security, delete this email after you have saved your new password. Never share your password with anyone.</p>
       </div>
     `,
-    text: `Hello ${firstName},\n\nYour account email: ${email}\nTemporary password: ${temporaryPassword}\n\nSign in: ${loginUrl}\n\nYou must change your password after signing in.`,
+    text: `Hello ${firstName},\n\nYour account email: ${email}\nTemporary password: ${temporaryPassword}\n\nSign in (copy this link into your browser if needed):\n${loginUrl}\n\nYou must change your password after signing in.`,
   };
 }
 

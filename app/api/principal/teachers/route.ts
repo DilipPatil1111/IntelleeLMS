@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sendEmail, buildStudentWelcomeEmail } from "@/lib/email";
 import { generateTemporaryPassword } from "@/lib/password";
-import { getServerAppUrl } from "@/lib/app-url";
+import { getLoginPageUrl } from "@/lib/app-url";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
     include: { teacherProfile: { include: { teacherPrograms: { include: { program: true } } } } },
   });
 
-  const loginUrl = `${getServerAppUrl()}/login`;
+  const loginUrl = getLoginPageUrl();
   const emailPayload = buildStudentWelcomeEmail({
     firstName: user.firstName,
     email: user.email,
