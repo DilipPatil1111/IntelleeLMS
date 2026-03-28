@@ -1,12 +1,12 @@
 import { auth } from "@/lib/auth";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import {
+  TEMPLATE_ALLOWED_EXT,
+  TEMPLATE_MAX_BYTES,
+  writePublicUpload,
+} from "@/lib/file-upload";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
-
-const MAX_BYTES = 8 * 1024 * 1024;
-const ALLOWED = new Set([".pdf", ".doc", ".docx"]);
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -15,38 +15,46 @@ export async function POST(req: Request) {
   const role = (session.user as unknown as Record<string, unknown>).role as string;
   if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-  const formData = await req.formData();
+  let formData: FormData;
+  try {
+    formData = await req.formData();
+  } catch {
+    return NextResponse.json({ error: "Invalid form data." }, { status: 400 });
+  }
+
   const file = formData.get("file") as File | null;
   const kind = formData.get("kind") as string | null;
 
   if (!file || !kind) {
-    return NextResponse.json({ error: "file and kind (certificate | transcript) are required" }, { status: 400 });
-  }
-  if (kind !== "certificate" && kind !== "transcript") {
-    return NextResponse.json({ error: "kind must be certificate or transcript" }, { status: 400 });
+    return NextResponse.json({ error: "Missing file or kind." }, { status: 400 });
   }
 
-  const ext = path.extname(file.name).toLowerCase();
-  if (!ALLOWED.has(ext)) {
-    return NextResponse.json({ error: "Only PDF, DOC, or DOCX files are allowed." }, { status: 400 });
+  const allowedKinds = ["certificate", "transcript", "studentContract"] as const;
+  if (!allowedKinds.includes(kind as (typeof allowedKinds)[number])) {
+    return NextResponse.json(
+      { error: "kind must be certificate, transcript, or studentContract." },
+      { status: 400 }
+    );
   }
 
   const buf = Buffer.from(await file.arrayBuffer());
-  if (buf.length > MAX_BYTES) {
-    return NextResponse.json({ error: "File too large (max 8 MB)." }, { status: 400 });
+  const result = await writePublicUpload({
+    buffer: buf,
+    originalName: file.name || "upload.bin",
+    allowedExt: TEMPLATE_ALLOWED_EXT,
+    maxBytes: TEMPLATE_MAX_BYTES,
+    publicSubdir: "templates",
+  });
+
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error, uploaded: false }, { status: 500 });
   }
 
-  const dir = path.join(process.cwd(), "public", "uploads", "templates");
-  await mkdir(dir, { recursive: true });
-
-  const safeBase = `${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}${ext}`;
-  const abs = path.join(dir, safeBase);
-  await writeFile(abs, buf);
-
-  const url = `/uploads/templates/${safeBase}`;
   return NextResponse.json({
-    url,
+    url: result.url,
     fileName: file.name,
     kind,
+    uploaded: true,
+    message: "File uploaded successfully.",
   });
 }

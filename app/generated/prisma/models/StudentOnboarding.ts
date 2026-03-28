@@ -33,6 +33,12 @@ export type StudentOnboardingMinAggregateOutputType = {
   preAdmissionCompletedAt: Date | null
   principalConfirmedAt: Date | null
   contractDocumentUrl: string | null
+  signedContractUploadUrl: string | null
+  signedContractFileName: string | null
+  governmentIdUploadUrl: string | null
+  governmentIdFileName: string | null
+  feeProofUploadUrl: string | null
+  feeProofFileName: string | null
   preAdmissionAssessmentId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -47,6 +53,12 @@ export type StudentOnboardingMaxAggregateOutputType = {
   preAdmissionCompletedAt: Date | null
   principalConfirmedAt: Date | null
   contractDocumentUrl: string | null
+  signedContractUploadUrl: string | null
+  signedContractFileName: string | null
+  governmentIdUploadUrl: string | null
+  governmentIdFileName: string | null
+  feeProofUploadUrl: string | null
+  feeProofFileName: string | null
   preAdmissionAssessmentId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -61,6 +73,12 @@ export type StudentOnboardingCountAggregateOutputType = {
   preAdmissionCompletedAt: number
   principalConfirmedAt: number
   contractDocumentUrl: number
+  signedContractUploadUrl: number
+  signedContractFileName: number
+  governmentIdUploadUrl: number
+  governmentIdFileName: number
+  feeProofUploadUrl: number
+  feeProofFileName: number
   preAdmissionAssessmentId: number
   createdAt: number
   updatedAt: number
@@ -77,6 +95,12 @@ export type StudentOnboardingMinAggregateInputType = {
   preAdmissionCompletedAt?: true
   principalConfirmedAt?: true
   contractDocumentUrl?: true
+  signedContractUploadUrl?: true
+  signedContractFileName?: true
+  governmentIdUploadUrl?: true
+  governmentIdFileName?: true
+  feeProofUploadUrl?: true
+  feeProofFileName?: true
   preAdmissionAssessmentId?: true
   createdAt?: true
   updatedAt?: true
@@ -91,6 +115,12 @@ export type StudentOnboardingMaxAggregateInputType = {
   preAdmissionCompletedAt?: true
   principalConfirmedAt?: true
   contractDocumentUrl?: true
+  signedContractUploadUrl?: true
+  signedContractFileName?: true
+  governmentIdUploadUrl?: true
+  governmentIdFileName?: true
+  feeProofUploadUrl?: true
+  feeProofFileName?: true
   preAdmissionAssessmentId?: true
   createdAt?: true
   updatedAt?: true
@@ -105,6 +135,12 @@ export type StudentOnboardingCountAggregateInputType = {
   preAdmissionCompletedAt?: true
   principalConfirmedAt?: true
   contractDocumentUrl?: true
+  signedContractUploadUrl?: true
+  signedContractFileName?: true
+  governmentIdUploadUrl?: true
+  governmentIdFileName?: true
+  feeProofUploadUrl?: true
+  feeProofFileName?: true
   preAdmissionAssessmentId?: true
   createdAt?: true
   updatedAt?: true
@@ -192,6 +228,12 @@ export type StudentOnboardingGroupByOutputType = {
   preAdmissionCompletedAt: Date | null
   principalConfirmedAt: Date | null
   contractDocumentUrl: string | null
+  signedContractUploadUrl: string | null
+  signedContractFileName: string | null
+  governmentIdUploadUrl: string | null
+  governmentIdFileName: string | null
+  feeProofUploadUrl: string | null
+  feeProofFileName: string | null
   preAdmissionAssessmentId: string | null
   createdAt: Date
   updatedAt: Date
@@ -227,6 +269,12 @@ export type StudentOnboardingWhereInput = {
   preAdmissionCompletedAt?: Prisma.DateTimeNullableFilter<"StudentOnboarding"> | Date | string | null
   principalConfirmedAt?: Prisma.DateTimeNullableFilter<"StudentOnboarding"> | Date | string | null
   contractDocumentUrl?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  signedContractUploadUrl?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  signedContractFileName?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  governmentIdUploadUrl?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  governmentIdFileName?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  feeProofUploadUrl?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  feeProofFileName?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
   preAdmissionAssessmentId?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
   createdAt?: Prisma.DateTimeFilter<"StudentOnboarding"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentOnboarding"> | Date | string
@@ -242,6 +290,12 @@ export type StudentOnboardingOrderByWithRelationInput = {
   preAdmissionCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   principalConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   contractDocumentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedContractUploadUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedContractFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  governmentIdUploadUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  governmentIdFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  feeProofUploadUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  feeProofFileName?: Prisma.SortOrderInput | Prisma.SortOrder
   preAdmissionAssessmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -260,6 +314,12 @@ export type StudentOnboardingWhereUniqueInput = Prisma.AtLeast<{
   preAdmissionCompletedAt?: Prisma.DateTimeNullableFilter<"StudentOnboarding"> | Date | string | null
   principalConfirmedAt?: Prisma.DateTimeNullableFilter<"StudentOnboarding"> | Date | string | null
   contractDocumentUrl?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  signedContractUploadUrl?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  signedContractFileName?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  governmentIdUploadUrl?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  governmentIdFileName?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  feeProofUploadUrl?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
+  feeProofFileName?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
   preAdmissionAssessmentId?: Prisma.StringNullableFilter<"StudentOnboarding"> | string | null
   createdAt?: Prisma.DateTimeFilter<"StudentOnboarding"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentOnboarding"> | Date | string
@@ -275,6 +335,12 @@ export type StudentOnboardingOrderByWithAggregationInput = {
   preAdmissionCompletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   principalConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   contractDocumentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedContractUploadUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedContractFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  governmentIdUploadUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  governmentIdFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  feeProofUploadUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  feeProofFileName?: Prisma.SortOrderInput | Prisma.SortOrder
   preAdmissionAssessmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -295,6 +361,12 @@ export type StudentOnboardingScalarWhereWithAggregatesInput = {
   preAdmissionCompletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentOnboarding"> | Date | string | null
   principalConfirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentOnboarding"> | Date | string | null
   contractDocumentUrl?: Prisma.StringNullableWithAggregatesFilter<"StudentOnboarding"> | string | null
+  signedContractUploadUrl?: Prisma.StringNullableWithAggregatesFilter<"StudentOnboarding"> | string | null
+  signedContractFileName?: Prisma.StringNullableWithAggregatesFilter<"StudentOnboarding"> | string | null
+  governmentIdUploadUrl?: Prisma.StringNullableWithAggregatesFilter<"StudentOnboarding"> | string | null
+  governmentIdFileName?: Prisma.StringNullableWithAggregatesFilter<"StudentOnboarding"> | string | null
+  feeProofUploadUrl?: Prisma.StringNullableWithAggregatesFilter<"StudentOnboarding"> | string | null
+  feeProofFileName?: Prisma.StringNullableWithAggregatesFilter<"StudentOnboarding"> | string | null
   preAdmissionAssessmentId?: Prisma.StringNullableWithAggregatesFilter<"StudentOnboarding"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StudentOnboarding"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"StudentOnboarding"> | Date | string
@@ -308,6 +380,12 @@ export type StudentOnboardingCreateInput = {
   preAdmissionCompletedAt?: Date | string | null
   principalConfirmedAt?: Date | string | null
   contractDocumentUrl?: string | null
+  signedContractUploadUrl?: string | null
+  signedContractFileName?: string | null
+  governmentIdUploadUrl?: string | null
+  governmentIdFileName?: string | null
+  feeProofUploadUrl?: string | null
+  feeProofFileName?: string | null
   preAdmissionAssessmentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -323,6 +401,12 @@ export type StudentOnboardingUncheckedCreateInput = {
   preAdmissionCompletedAt?: Date | string | null
   principalConfirmedAt?: Date | string | null
   contractDocumentUrl?: string | null
+  signedContractUploadUrl?: string | null
+  signedContractFileName?: string | null
+  governmentIdUploadUrl?: string | null
+  governmentIdFileName?: string | null
+  feeProofUploadUrl?: string | null
+  feeProofFileName?: string | null
   preAdmissionAssessmentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -336,6 +420,12 @@ export type StudentOnboardingUpdateInput = {
   preAdmissionCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   principalConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contractDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preAdmissionAssessmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -351,6 +441,12 @@ export type StudentOnboardingUncheckedUpdateInput = {
   preAdmissionCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   principalConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contractDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preAdmissionAssessmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -365,6 +461,12 @@ export type StudentOnboardingCreateManyInput = {
   preAdmissionCompletedAt?: Date | string | null
   principalConfirmedAt?: Date | string | null
   contractDocumentUrl?: string | null
+  signedContractUploadUrl?: string | null
+  signedContractFileName?: string | null
+  governmentIdUploadUrl?: string | null
+  governmentIdFileName?: string | null
+  feeProofUploadUrl?: string | null
+  feeProofFileName?: string | null
   preAdmissionAssessmentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -378,6 +480,12 @@ export type StudentOnboardingUpdateManyMutationInput = {
   preAdmissionCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   principalConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contractDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preAdmissionAssessmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -392,6 +500,12 @@ export type StudentOnboardingUncheckedUpdateManyInput = {
   preAdmissionCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   principalConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contractDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preAdmissionAssessmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -411,6 +525,12 @@ export type StudentOnboardingCountOrderByAggregateInput = {
   preAdmissionCompletedAt?: Prisma.SortOrder
   principalConfirmedAt?: Prisma.SortOrder
   contractDocumentUrl?: Prisma.SortOrder
+  signedContractUploadUrl?: Prisma.SortOrder
+  signedContractFileName?: Prisma.SortOrder
+  governmentIdUploadUrl?: Prisma.SortOrder
+  governmentIdFileName?: Prisma.SortOrder
+  feeProofUploadUrl?: Prisma.SortOrder
+  feeProofFileName?: Prisma.SortOrder
   preAdmissionAssessmentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -425,6 +545,12 @@ export type StudentOnboardingMaxOrderByAggregateInput = {
   preAdmissionCompletedAt?: Prisma.SortOrder
   principalConfirmedAt?: Prisma.SortOrder
   contractDocumentUrl?: Prisma.SortOrder
+  signedContractUploadUrl?: Prisma.SortOrder
+  signedContractFileName?: Prisma.SortOrder
+  governmentIdUploadUrl?: Prisma.SortOrder
+  governmentIdFileName?: Prisma.SortOrder
+  feeProofUploadUrl?: Prisma.SortOrder
+  feeProofFileName?: Prisma.SortOrder
   preAdmissionAssessmentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -439,6 +565,12 @@ export type StudentOnboardingMinOrderByAggregateInput = {
   preAdmissionCompletedAt?: Prisma.SortOrder
   principalConfirmedAt?: Prisma.SortOrder
   contractDocumentUrl?: Prisma.SortOrder
+  signedContractUploadUrl?: Prisma.SortOrder
+  signedContractFileName?: Prisma.SortOrder
+  governmentIdUploadUrl?: Prisma.SortOrder
+  governmentIdFileName?: Prisma.SortOrder
+  feeProofUploadUrl?: Prisma.SortOrder
+  feeProofFileName?: Prisma.SortOrder
   preAdmissionAssessmentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -484,6 +616,12 @@ export type StudentOnboardingCreateWithoutUserInput = {
   preAdmissionCompletedAt?: Date | string | null
   principalConfirmedAt?: Date | string | null
   contractDocumentUrl?: string | null
+  signedContractUploadUrl?: string | null
+  signedContractFileName?: string | null
+  governmentIdUploadUrl?: string | null
+  governmentIdFileName?: string | null
+  feeProofUploadUrl?: string | null
+  feeProofFileName?: string | null
   preAdmissionAssessmentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -497,6 +635,12 @@ export type StudentOnboardingUncheckedCreateWithoutUserInput = {
   preAdmissionCompletedAt?: Date | string | null
   principalConfirmedAt?: Date | string | null
   contractDocumentUrl?: string | null
+  signedContractUploadUrl?: string | null
+  signedContractFileName?: string | null
+  governmentIdUploadUrl?: string | null
+  governmentIdFileName?: string | null
+  feeProofUploadUrl?: string | null
+  feeProofFileName?: string | null
   preAdmissionAssessmentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -526,6 +670,12 @@ export type StudentOnboardingUpdateWithoutUserInput = {
   preAdmissionCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   principalConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contractDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preAdmissionAssessmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -539,6 +689,12 @@ export type StudentOnboardingUncheckedUpdateWithoutUserInput = {
   preAdmissionCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   principalConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contractDocumentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedContractFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governmentIdFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofUploadUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeProofFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preAdmissionAssessmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -555,6 +711,12 @@ export type StudentOnboardingSelect<ExtArgs extends runtime.Types.Extensions.Int
   preAdmissionCompletedAt?: boolean
   principalConfirmedAt?: boolean
   contractDocumentUrl?: boolean
+  signedContractUploadUrl?: boolean
+  signedContractFileName?: boolean
+  governmentIdUploadUrl?: boolean
+  governmentIdFileName?: boolean
+  feeProofUploadUrl?: boolean
+  feeProofFileName?: boolean
   preAdmissionAssessmentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -570,6 +732,12 @@ export type StudentOnboardingSelectCreateManyAndReturn<ExtArgs extends runtime.T
   preAdmissionCompletedAt?: boolean
   principalConfirmedAt?: boolean
   contractDocumentUrl?: boolean
+  signedContractUploadUrl?: boolean
+  signedContractFileName?: boolean
+  governmentIdUploadUrl?: boolean
+  governmentIdFileName?: boolean
+  feeProofUploadUrl?: boolean
+  feeProofFileName?: boolean
   preAdmissionAssessmentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -585,6 +753,12 @@ export type StudentOnboardingSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   preAdmissionCompletedAt?: boolean
   principalConfirmedAt?: boolean
   contractDocumentUrl?: boolean
+  signedContractUploadUrl?: boolean
+  signedContractFileName?: boolean
+  governmentIdUploadUrl?: boolean
+  governmentIdFileName?: boolean
+  feeProofUploadUrl?: boolean
+  feeProofFileName?: boolean
   preAdmissionAssessmentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -600,12 +774,18 @@ export type StudentOnboardingSelectScalar = {
   preAdmissionCompletedAt?: boolean
   principalConfirmedAt?: boolean
   contractDocumentUrl?: boolean
+  signedContractUploadUrl?: boolean
+  signedContractFileName?: boolean
+  governmentIdUploadUrl?: boolean
+  governmentIdFileName?: boolean
+  feeProofUploadUrl?: boolean
+  feeProofFileName?: boolean
   preAdmissionAssessmentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type StudentOnboardingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "contractAcknowledgedAt" | "governmentIdsUploadedAt" | "feeProofUploadedAt" | "preAdmissionCompletedAt" | "principalConfirmedAt" | "contractDocumentUrl" | "preAdmissionAssessmentId" | "createdAt" | "updatedAt", ExtArgs["result"]["studentOnboarding"]>
+export type StudentOnboardingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "contractAcknowledgedAt" | "governmentIdsUploadedAt" | "feeProofUploadedAt" | "preAdmissionCompletedAt" | "principalConfirmedAt" | "contractDocumentUrl" | "signedContractUploadUrl" | "signedContractFileName" | "governmentIdUploadUrl" | "governmentIdFileName" | "feeProofUploadUrl" | "feeProofFileName" | "preAdmissionAssessmentId" | "createdAt" | "updatedAt", ExtArgs["result"]["studentOnboarding"]>
 export type StudentOnboardingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -630,6 +810,15 @@ export type $StudentOnboardingPayload<ExtArgs extends runtime.Types.Extensions.I
     preAdmissionCompletedAt: Date | null
     principalConfirmedAt: Date | null
     contractDocumentUrl: string | null
+    /**
+     * * Student-uploaded signed agreement (PDF or image).
+     */
+    signedContractUploadUrl: string | null
+    signedContractFileName: string | null
+    governmentIdUploadUrl: string | null
+    governmentIdFileName: string | null
+    feeProofUploadUrl: string | null
+    feeProofFileName: string | null
     preAdmissionAssessmentId: string | null
     createdAt: Date
     updatedAt: Date
@@ -1065,6 +1254,12 @@ export interface StudentOnboardingFieldRefs {
   readonly preAdmissionCompletedAt: Prisma.FieldRef<"StudentOnboarding", 'DateTime'>
   readonly principalConfirmedAt: Prisma.FieldRef<"StudentOnboarding", 'DateTime'>
   readonly contractDocumentUrl: Prisma.FieldRef<"StudentOnboarding", 'String'>
+  readonly signedContractUploadUrl: Prisma.FieldRef<"StudentOnboarding", 'String'>
+  readonly signedContractFileName: Prisma.FieldRef<"StudentOnboarding", 'String'>
+  readonly governmentIdUploadUrl: Prisma.FieldRef<"StudentOnboarding", 'String'>
+  readonly governmentIdFileName: Prisma.FieldRef<"StudentOnboarding", 'String'>
+  readonly feeProofUploadUrl: Prisma.FieldRef<"StudentOnboarding", 'String'>
+  readonly feeProofFileName: Prisma.FieldRef<"StudentOnboarding", 'String'>
   readonly preAdmissionAssessmentId: Prisma.FieldRef<"StudentOnboarding", 'String'>
   readonly createdAt: Prisma.FieldRef<"StudentOnboarding", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"StudentOnboarding", 'DateTime'>

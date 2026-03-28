@@ -60,6 +60,10 @@ export async function PUT(req: Request) {
       transcriptTemplateUrl: typeof i.transcriptTemplateUrl === "string" ? i.transcriptTemplateUrl : null,
       transcriptTemplateFileName:
         typeof i.transcriptTemplateFileName === "string" ? i.transcriptTemplateFileName : null,
+      studentContractSampleUrl:
+        typeof i.studentContractSampleUrl === "string" ? i.studentContractSampleUrl : null,
+      studentContractSampleFileName:
+        typeof i.studentContractSampleFileName === "string" ? i.studentContractSampleFileName : null,
     },
     update: {
       ...(num(i.minAttendancePercent) !== undefined && { minAttendancePercent: num(i.minAttendancePercent)! }),
@@ -81,6 +85,14 @@ export async function PUT(req: Request) {
       ...(Object.prototype.hasOwnProperty.call(i, "transcriptTemplateFileName") && {
         transcriptTemplateFileName:
           typeof i.transcriptTemplateFileName === "string" ? i.transcriptTemplateFileName : null,
+      }),
+      ...(Object.prototype.hasOwnProperty.call(i, "studentContractSampleUrl") && {
+        studentContractSampleUrl:
+          typeof i.studentContractSampleUrl === "string" ? i.studentContractSampleUrl : null,
+      }),
+      ...(Object.prototype.hasOwnProperty.call(i, "studentContractSampleFileName") && {
+        studentContractSampleFileName:
+          typeof i.studentContractSampleFileName === "string" ? i.studentContractSampleFileName : null,
       }),
     },
   });

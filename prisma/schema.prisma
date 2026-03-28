@@ -298,6 +298,9 @@ model InstitutionSettings {
   certificateTemplateFileName String?
   transcriptTemplateUrl       String?
   transcriptTemplateFileName  String?
+  /** Sample agreement PDF for students (onboarding step 1). */
+  studentContractSampleUrl     String?
+  studentContractSampleFileName String?
 
   updatedAt DateTime @updatedAt
 }
@@ -456,6 +459,13 @@ model StudentOnboarding {
   preAdmissionCompletedAt    DateTime?
   principalConfirmedAt       DateTime?
   contractDocumentUrl        String?
+  /** Student-uploaded signed agreement (PDF or image). */
+  signedContractUploadUrl    String?
+  signedContractFileName     String?
+  governmentIdUploadUrl        String?
+  governmentIdFileName         String?
+  feeProofUploadUrl            String?
+  feeProofFileName             String?
   preAdmissionAssessmentId   String?
   createdAt                  DateTime  @default(now())
   updatedAt                  DateTime  @updatedAt

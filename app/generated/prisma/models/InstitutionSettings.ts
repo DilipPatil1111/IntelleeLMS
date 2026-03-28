@@ -52,6 +52,8 @@ export type InstitutionSettingsMinAggregateOutputType = {
   certificateTemplateFileName: string | null
   transcriptTemplateUrl: string | null
   transcriptTemplateFileName: string | null
+  studentContractSampleUrl: string | null
+  studentContractSampleFileName: string | null
   updatedAt: Date | null
 }
 
@@ -65,6 +67,8 @@ export type InstitutionSettingsMaxAggregateOutputType = {
   certificateTemplateFileName: string | null
   transcriptTemplateUrl: string | null
   transcriptTemplateFileName: string | null
+  studentContractSampleUrl: string | null
+  studentContractSampleFileName: string | null
   updatedAt: Date | null
 }
 
@@ -78,6 +82,8 @@ export type InstitutionSettingsCountAggregateOutputType = {
   certificateTemplateFileName: number
   transcriptTemplateUrl: number
   transcriptTemplateFileName: number
+  studentContractSampleUrl: number
+  studentContractSampleFileName: number
   updatedAt: number
   _all: number
 }
@@ -109,6 +115,8 @@ export type InstitutionSettingsMinAggregateInputType = {
   certificateTemplateFileName?: true
   transcriptTemplateUrl?: true
   transcriptTemplateFileName?: true
+  studentContractSampleUrl?: true
+  studentContractSampleFileName?: true
   updatedAt?: true
 }
 
@@ -122,6 +130,8 @@ export type InstitutionSettingsMaxAggregateInputType = {
   certificateTemplateFileName?: true
   transcriptTemplateUrl?: true
   transcriptTemplateFileName?: true
+  studentContractSampleUrl?: true
+  studentContractSampleFileName?: true
   updatedAt?: true
 }
 
@@ -135,6 +145,8 @@ export type InstitutionSettingsCountAggregateInputType = {
   certificateTemplateFileName?: true
   transcriptTemplateUrl?: true
   transcriptTemplateFileName?: true
+  studentContractSampleUrl?: true
+  studentContractSampleFileName?: true
   updatedAt?: true
   _all?: true
 }
@@ -235,6 +247,8 @@ export type InstitutionSettingsGroupByOutputType = {
   certificateTemplateFileName: string | null
   transcriptTemplateUrl: string | null
   transcriptTemplateFileName: string | null
+  studentContractSampleUrl: string | null
+  studentContractSampleFileName: string | null
   updatedAt: Date
   _count: InstitutionSettingsCountAggregateOutputType | null
   _avg: InstitutionSettingsAvgAggregateOutputType | null
@@ -271,6 +285,8 @@ export type InstitutionSettingsWhereInput = {
   certificateTemplateFileName?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
   transcriptTemplateUrl?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
   transcriptTemplateFileName?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
+  studentContractSampleUrl?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
+  studentContractSampleFileName?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"InstitutionSettings"> | Date | string
 }
 
@@ -284,6 +300,8 @@ export type InstitutionSettingsOrderByWithRelationInput = {
   certificateTemplateFileName?: Prisma.SortOrderInput | Prisma.SortOrder
   transcriptTemplateUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   transcriptTemplateFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  studentContractSampleUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  studentContractSampleFileName?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -300,6 +318,8 @@ export type InstitutionSettingsWhereUniqueInput = Prisma.AtLeast<{
   certificateTemplateFileName?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
   transcriptTemplateUrl?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
   transcriptTemplateFileName?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
+  studentContractSampleUrl?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
+  studentContractSampleFileName?: Prisma.StringNullableFilter<"InstitutionSettings"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"InstitutionSettings"> | Date | string
 }, "id">
 
@@ -313,6 +333,8 @@ export type InstitutionSettingsOrderByWithAggregationInput = {
   certificateTemplateFileName?: Prisma.SortOrderInput | Prisma.SortOrder
   transcriptTemplateUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   transcriptTemplateFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  studentContractSampleUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  studentContractSampleFileName?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.InstitutionSettingsCountOrderByAggregateInput
   _avg?: Prisma.InstitutionSettingsAvgOrderByAggregateInput
@@ -334,6 +356,8 @@ export type InstitutionSettingsScalarWhereWithAggregatesInput = {
   certificateTemplateFileName?: Prisma.StringNullableWithAggregatesFilter<"InstitutionSettings"> | string | null
   transcriptTemplateUrl?: Prisma.StringNullableWithAggregatesFilter<"InstitutionSettings"> | string | null
   transcriptTemplateFileName?: Prisma.StringNullableWithAggregatesFilter<"InstitutionSettings"> | string | null
+  studentContractSampleUrl?: Prisma.StringNullableWithAggregatesFilter<"InstitutionSettings"> | string | null
+  studentContractSampleFileName?: Prisma.StringNullableWithAggregatesFilter<"InstitutionSettings"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"InstitutionSettings"> | Date | string
 }
 
@@ -347,6 +371,8 @@ export type InstitutionSettingsCreateInput = {
   certificateTemplateFileName?: string | null
   transcriptTemplateUrl?: string | null
   transcriptTemplateFileName?: string | null
+  studentContractSampleUrl?: string | null
+  studentContractSampleFileName?: string | null
   updatedAt?: Date | string
 }
 
@@ -360,6 +386,8 @@ export type InstitutionSettingsUncheckedCreateInput = {
   certificateTemplateFileName?: string | null
   transcriptTemplateUrl?: string | null
   transcriptTemplateFileName?: string | null
+  studentContractSampleUrl?: string | null
+  studentContractSampleFileName?: string | null
   updatedAt?: Date | string
 }
 
@@ -373,6 +401,8 @@ export type InstitutionSettingsUpdateInput = {
   certificateTemplateFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTemplateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTemplateFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentContractSampleUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentContractSampleFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -386,6 +416,8 @@ export type InstitutionSettingsUncheckedUpdateInput = {
   certificateTemplateFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTemplateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTemplateFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentContractSampleUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentContractSampleFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -399,6 +431,8 @@ export type InstitutionSettingsCreateManyInput = {
   certificateTemplateFileName?: string | null
   transcriptTemplateUrl?: string | null
   transcriptTemplateFileName?: string | null
+  studentContractSampleUrl?: string | null
+  studentContractSampleFileName?: string | null
   updatedAt?: Date | string
 }
 
@@ -412,6 +446,8 @@ export type InstitutionSettingsUpdateManyMutationInput = {
   certificateTemplateFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTemplateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTemplateFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentContractSampleUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentContractSampleFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -425,6 +461,8 @@ export type InstitutionSettingsUncheckedUpdateManyInput = {
   certificateTemplateFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTemplateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTemplateFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentContractSampleUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentContractSampleFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -438,6 +476,8 @@ export type InstitutionSettingsCountOrderByAggregateInput = {
   certificateTemplateFileName?: Prisma.SortOrder
   transcriptTemplateUrl?: Prisma.SortOrder
   transcriptTemplateFileName?: Prisma.SortOrder
+  studentContractSampleUrl?: Prisma.SortOrder
+  studentContractSampleFileName?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -459,6 +499,8 @@ export type InstitutionSettingsMaxOrderByAggregateInput = {
   certificateTemplateFileName?: Prisma.SortOrder
   transcriptTemplateUrl?: Prisma.SortOrder
   transcriptTemplateFileName?: Prisma.SortOrder
+  studentContractSampleUrl?: Prisma.SortOrder
+  studentContractSampleFileName?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -472,6 +514,8 @@ export type InstitutionSettingsMinOrderByAggregateInput = {
   certificateTemplateFileName?: Prisma.SortOrder
   transcriptTemplateUrl?: Prisma.SortOrder
   transcriptTemplateFileName?: Prisma.SortOrder
+  studentContractSampleUrl?: Prisma.SortOrder
+  studentContractSampleFileName?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -503,6 +547,8 @@ export type InstitutionSettingsSelect<ExtArgs extends runtime.Types.Extensions.I
   certificateTemplateFileName?: boolean
   transcriptTemplateUrl?: boolean
   transcriptTemplateFileName?: boolean
+  studentContractSampleUrl?: boolean
+  studentContractSampleFileName?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["institutionSettings"]>
 
@@ -516,6 +562,8 @@ export type InstitutionSettingsSelectCreateManyAndReturn<ExtArgs extends runtime
   certificateTemplateFileName?: boolean
   transcriptTemplateUrl?: boolean
   transcriptTemplateFileName?: boolean
+  studentContractSampleUrl?: boolean
+  studentContractSampleFileName?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["institutionSettings"]>
 
@@ -529,6 +577,8 @@ export type InstitutionSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime
   certificateTemplateFileName?: boolean
   transcriptTemplateUrl?: boolean
   transcriptTemplateFileName?: boolean
+  studentContractSampleUrl?: boolean
+  studentContractSampleFileName?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["institutionSettings"]>
 
@@ -542,10 +592,12 @@ export type InstitutionSettingsSelectScalar = {
   certificateTemplateFileName?: boolean
   transcriptTemplateUrl?: boolean
   transcriptTemplateFileName?: boolean
+  studentContractSampleUrl?: boolean
+  studentContractSampleFileName?: boolean
   updatedAt?: boolean
 }
 
-export type InstitutionSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "minAttendancePercent" | "minAverageMarksPercent" | "minFeePaidPercent" | "pendingFeesAlertAmount" | "certificateTemplateUrl" | "certificateTemplateFileName" | "transcriptTemplateUrl" | "transcriptTemplateFileName" | "updatedAt", ExtArgs["result"]["institutionSettings"]>
+export type InstitutionSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "minAttendancePercent" | "minAverageMarksPercent" | "minFeePaidPercent" | "pendingFeesAlertAmount" | "certificateTemplateUrl" | "certificateTemplateFileName" | "transcriptTemplateUrl" | "transcriptTemplateFileName" | "studentContractSampleUrl" | "studentContractSampleFileName" | "updatedAt", ExtArgs["result"]["institutionSettings"]>
 
 export type $InstitutionSettingsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InstitutionSettings"
@@ -575,6 +627,11 @@ export type $InstitutionSettingsPayload<ExtArgs extends runtime.Types.Extensions
     certificateTemplateFileName: string | null
     transcriptTemplateUrl: string | null
     transcriptTemplateFileName: string | null
+    /**
+     * * Sample agreement PDF for students (onboarding step 1).
+     */
+    studentContractSampleUrl: string | null
+    studentContractSampleFileName: string | null
     updatedAt: Date
   }, ExtArgs["result"]["institutionSettings"]>
   composites: {}
@@ -1008,6 +1065,8 @@ export interface InstitutionSettingsFieldRefs {
   readonly certificateTemplateFileName: Prisma.FieldRef<"InstitutionSettings", 'String'>
   readonly transcriptTemplateUrl: Prisma.FieldRef<"InstitutionSettings", 'String'>
   readonly transcriptTemplateFileName: Prisma.FieldRef<"InstitutionSettings", 'String'>
+  readonly studentContractSampleUrl: Prisma.FieldRef<"InstitutionSettings", 'String'>
+  readonly studentContractSampleFileName: Prisma.FieldRef<"InstitutionSettings", 'String'>
   readonly updatedAt: Prisma.FieldRef<"InstitutionSettings", 'DateTime'>
 }
     

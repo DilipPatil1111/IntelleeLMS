@@ -16,6 +16,8 @@ type Institution = {
   certificateTemplateFileName: string | null;
   transcriptTemplateUrl: string | null;
   transcriptTemplateFileName: string | null;
+  studentContractSampleUrl: string | null;
+  studentContractSampleFileName: string | null;
 };
 
 type ProgramRow = {
@@ -32,7 +34,7 @@ export default function PrincipalSettingsPage() {
   const [programs, setPrograms] = useState<ProgramRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState<"certificate" | "transcript" | null>(null);
+  const [uploading, setUploading] = useState<"certificate" | "transcript" | "studentContract" | null>(null);
   const [message, setMessage] = useState<{ tone: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
@@ -46,14 +48,13 @@ export default function PrincipalSettingsPage() {
     if (res.ok && data.institution) {
       setInstitution(data.institution);
       setPrograms(data.programs || []);
-      setMessage(null);
     } else {
       setMessage({ tone: "error", text: (data as { error?: string }).error || "Could not load settings." });
     }
     setLoading(false);
   }
 
-  async function save(instOverride?: Institution) {
+  async function save(instOverride?: Institution, successMessage = "Settings saved.") {
     const inst = instOverride ?? institution;
     if (!inst) return;
     setSaving(true);
@@ -71,6 +72,8 @@ export default function PrincipalSettingsPage() {
           certificateTemplateFileName: inst.certificateTemplateFileName,
           transcriptTemplateUrl: inst.transcriptTemplateUrl,
           transcriptTemplateFileName: inst.transcriptTemplateFileName,
+          studentContractSampleUrl: inst.studentContractSampleUrl,
+          studentContractSampleFileName: inst.studentContractSampleFileName,
         },
         programs: programs.map((p) => ({
           id: p.id,
@@ -86,7 +89,7 @@ export default function PrincipalSettingsPage() {
       setMessage({ tone: "error", text: (data as { error?: string }).error || "Save failed." });
       return;
     }
-    setMessage({ tone: "success", text: "Settings saved." });
+    setMessage({ tone: "success", text: successMessage });
     void load();
   }
 
@@ -94,7 +97,7 @@ export default function PrincipalSettingsPage() {
     setPrograms((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)));
   }
 
-  async function uploadTemplate(kind: "certificate" | "transcript", file: File) {
+  async function uploadTemplate(kind: "certificate" | "transcript" | "studentContract", file: File) {
     const inst = institution;
     if (!inst) return;
     setUploading(kind);
@@ -106,33 +109,52 @@ export default function PrincipalSettingsPage() {
     const data = await res.json().catch(() => ({}));
     setUploading(null);
     if (!res.ok) {
-      setMessage({ tone: "error", text: (data as { error?: string }).error || "Upload failed." });
+      setMessage({
+        tone: "error",
+        text: (data as { error?: string }).error || "File was not uploaded. Check the file type and size, or server storage.",
+      });
       return;
     }
     const url = (data as { url?: string }).url;
     const fileName = (data as { fileName?: string }).fileName;
-    if (!url) return;
+    if (!url) {
+      setMessage({
+        tone: "error",
+        text: "Upload response did not include a file URL. Nothing was saved.",
+      });
+      return;
+    }
     const next: Institution = {
       ...inst,
       ...(kind === "certificate"
         ? { certificateTemplateUrl: url, certificateTemplateFileName: fileName ?? null }
-        : { transcriptTemplateUrl: url, transcriptTemplateFileName: fileName ?? null }),
+        : kind === "transcript"
+          ? { transcriptTemplateUrl: url, transcriptTemplateFileName: fileName ?? null }
+          : { studentContractSampleUrl: url, studentContractSampleFileName: fileName ?? null }),
     };
     setInstitution(next);
-    await save(next);
+    const label =
+      kind === "certificate"
+        ? "Graduation certificate template uploaded and saved successfully."
+        : kind === "transcript"
+          ? "Transcript template uploaded and saved successfully."
+          : "Sample student agreement uploaded and saved successfully.";
+    await save(next, label);
   }
 
-  async function clearTemplate(kind: "certificate" | "transcript") {
+  async function clearTemplate(kind: "certificate" | "transcript" | "studentContract") {
     const inst = institution;
     if (!inst) return;
     const next: Institution = {
       ...inst,
       ...(kind === "certificate"
         ? { certificateTemplateUrl: null, certificateTemplateFileName: null }
-        : { transcriptTemplateUrl: null, transcriptTemplateFileName: null }),
+        : kind === "transcript"
+          ? { transcriptTemplateUrl: null, transcriptTemplateFileName: null }
+          : { studentContractSampleUrl: null, studentContractSampleFileName: null }),
     };
     setInstitution(next);
-    await save(next);
+    await save(next, "File removed from settings.");
   }
 
   if (loading && !institution) {
@@ -239,6 +261,57 @@ export default function PrincipalSettingsPage() {
 
       <Card className="mb-6">
         <CardHeader>
+          <CardTitle>Sample student agreement (onboarding)</CardTitle>
+        </CardHeader>
+        <CardContent className="max-w-xl space-y-4">
+          <p className="text-sm text-gray-600">
+            Upload a <strong>PDF or Word</strong> file that students download in <strong>Onboarding → Step 1</strong> before they upload their signed copy. If empty, a program-specific link may still be used when enrollment sets one.
+          </p>
+          {institution.studentContractSampleUrl ? (
+            <p className="text-sm text-gray-600">
+              Current:{" "}
+              <a
+                href={institution.studentContractSampleUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-600 hover:underline"
+              >
+                {institution.studentContractSampleFileName || "Sample agreement"}
+              </a>
+            </p>
+          ) : (
+            <p className="text-sm text-gray-500">No sample agreement uploaded.</p>
+          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,application/pdf"
+              disabled={uploading === "studentContract" || saving}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                e.target.value = "";
+                if (f) void uploadTemplate("studentContract", f);
+              }}
+              className="text-sm text-gray-700"
+            />
+            {institution.studentContractSampleUrl ? (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={saving || uploading !== null}
+                onClick={() => void clearTemplate("studentContract")}
+              >
+                Remove
+              </Button>
+            ) : null}
+            {uploading === "studentContract" ? <span className="text-xs text-gray-500">Uploading…</span> : null}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="mb-6">
+        <CardHeader>
           <CardTitle>Certificate &amp; transcript templates</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6 max-w-xl">
@@ -269,7 +342,7 @@ export default function PrincipalSettingsPage() {
               <input
                 type="file"
                 accept=".pdf,.doc,.docx,application/pdf"
-                disabled={uploading === "certificate" || saving}
+                disabled={uploading !== null || saving}
                 onChange={(e) => {
                   const f = e.target.files?.[0];
                   e.target.value = "";
@@ -312,7 +385,7 @@ export default function PrincipalSettingsPage() {
               <input
                 type="file"
                 accept=".pdf,.doc,.docx,application/pdf"
-                disabled={uploading === "transcript" || saving}
+                disabled={uploading !== null || saving}
                 onChange={(e) => {
                   const f = e.target.files?.[0];
                   e.target.value = "";

@@ -8,11 +8,27 @@ export async function GET() {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const onboarding = await db.studentOnboarding.findUnique({
-    where: { userId: session.user.id },
-  });
+  const [onboarding, institution] = await Promise.all([
+    db.studentOnboarding.findUnique({
+      where: { userId: session.user.id },
+    }),
+    db.institutionSettings.findUnique({ where: { id: 1 } }),
+  ]);
 
-  return NextResponse.json({ onboarding });
+  const sampleContractUrl =
+    institution?.studentContractSampleUrl?.trim() ||
+    onboarding?.contractDocumentUrl?.trim() ||
+    null;
+
+  const sampleContractFileName =
+    institution?.studentContractSampleFileName ||
+    (sampleContractUrl && onboarding?.contractDocumentUrl ? "Sample agreement" : null);
+
+  return NextResponse.json({
+    onboarding,
+    sampleContractUrl,
+    sampleContractFileName,
+  });
 }
 
 export async function PATCH(req: Request) {
@@ -22,18 +38,16 @@ export async function PATCH(req: Request) {
   const body = await req.json();
   const step = body.step as string | undefined;
 
-  const fieldMap: Record<string, "contractAcknowledgedAt" | "governmentIdsUploadedAt" | "feeProofUploadedAt" | "preAdmissionCompletedAt"> = {
-    contract: "contractAcknowledgedAt",
-    ids: "governmentIdsUploadedAt",
-    fee: "feeProofUploadedAt",
-    preAdmission: "preAdmissionCompletedAt",
-  };
-
-  if (!step || !fieldMap[step]) {
-    return NextResponse.json({ error: "Invalid step. Use contract, ids, fee, or preAdmission." }, { status: 400 });
+  /** Steps 1–3 require file upload via POST /api/student/onboarding/upload */
+  if (step !== "preAdmission") {
+    return NextResponse.json(
+      {
+        error:
+          "Use file upload for agreement, ID, and fee proof. Only the pre-admission step can be marked complete here.",
+      },
+      { status: 400 }
+    );
   }
-
-  const field = fieldMap[step];
 
   const existing = await db.studentOnboarding.findUnique({ where: { userId: session.user.id } });
   if (!existing) {
@@ -42,7 +56,7 @@ export async function PATCH(req: Request) {
 
   await db.studentOnboarding.update({
     where: { userId: session.user.id },
-    data: { [field]: new Date() },
+    data: { preAdmissionCompletedAt: new Date() },
   });
 
   const updated = await db.studentOnboarding.findUnique({ where: { userId: session.user.id } });

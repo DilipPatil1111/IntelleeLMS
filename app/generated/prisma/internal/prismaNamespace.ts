@@ -3553,6 +3553,8 @@ export const InstitutionSettingsScalarFieldEnum = {
   certificateTemplateFileName: 'certificateTemplateFileName',
   transcriptTemplateUrl: 'transcriptTemplateUrl',
   transcriptTemplateFileName: 'transcriptTemplateFileName',
+  studentContractSampleUrl: 'studentContractSampleUrl',
+  studentContractSampleFileName: 'studentContractSampleFileName',
   updatedAt: 'updatedAt'
 } as const
 
@@ -3690,6 +3692,12 @@ export const StudentOnboardingScalarFieldEnum = {
   preAdmissionCompletedAt: 'preAdmissionCompletedAt',
   principalConfirmedAt: 'principalConfirmedAt',
   contractDocumentUrl: 'contractDocumentUrl',
+  signedContractUploadUrl: 'signedContractUploadUrl',
+  signedContractFileName: 'signedContractFileName',
+  governmentIdUploadUrl: 'governmentIdUploadUrl',
+  governmentIdFileName: 'governmentIdFileName',
+  feeProofUploadUrl: 'feeProofUploadUrl',
+  feeProofFileName: 'feeProofFileName',
   preAdmissionAssessmentId: 'preAdmissionAssessmentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
