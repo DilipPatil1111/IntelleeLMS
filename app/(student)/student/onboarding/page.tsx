@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +27,7 @@ const FILE_ACCEPT =
   ".pdf,.png,.jpg,.jpeg,.bmp,.gif,.webp,.tif,.tiff,.heic,application/pdf,image/png,image/jpeg,image/bmp,image/gif,image/webp";
 
 export default function StudentOnboardingPage() {
+  const router = useRouter();
   const [onboarding, setOnboarding] = useState<Ob | null>(null);
   const [sampleContractUrl, setSampleContractUrl] = useState<string | null>(null);
   const [sampleContractLabel, setSampleContractLabel] = useState<string | null>(null);
@@ -69,16 +71,29 @@ export default function StudentOnboardingPage() {
       text: (data as { message?: string }).message || "File uploaded successfully.",
     });
     await load();
+    router.refresh();
   }
 
   async function markPreAdmission() {
     setBusy("preAdmission");
-    await fetch("/api/student/onboarding", {
+    setUploadNote(null);
+    const res = await fetch("/api/student/onboarding", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ step: "preAdmission" }),
     });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setUploadNote({
+        step: "preAdmission",
+        tone: "error",
+        text: (data as { error?: string }).error || "Could not mark this step complete.",
+      });
+      setBusy(null);
+      return;
+    }
     await load();
+    router.refresh();
     setBusy(null);
   }
 
@@ -144,12 +159,41 @@ export default function StudentOnboardingPage() {
     onboarding.feeProofUploadedAt &&
     onboarding.preAdmissionCompletedAt;
 
+  const checklistDoneCount = [
+    onboarding.contractAcknowledgedAt,
+    onboarding.governmentIdsUploadedAt,
+    onboarding.feeProofUploadedAt,
+    onboarding.preAdmissionCompletedAt,
+  ].filter(Boolean).length;
+
+  const checklistPercent = Math.round((checklistDoneCount / 4) * 100);
+
   return (
     <>
       <PageHeader
         title="Onboarding"
         description="Finish these steps in any order. Course materials unlock after your principal confirms onboarding."
       />
+
+      <div className="mb-6 rounded-xl border border-indigo-100 bg-gradient-to-r from-indigo-50/90 to-white p-4 shadow-sm">
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <p className="text-sm font-semibold text-indigo-950">Checklist progress</p>
+          <span className="text-sm font-medium text-indigo-700">{checklistDoneCount} of 4 steps</span>
+        </div>
+        <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200/90">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-emerald-500 transition-all duration-500 ease-out"
+            style={{ width: `${checklistPercent}%` }}
+          />
+        </div>
+        <p className="mt-2 text-xs text-slate-600">
+          {onboarding.principalConfirmedAt
+            ? "Your principal has unlocked full course access."
+            : allStudentSteps
+              ? "All steps done — waiting for principal approval to unlock My Program and Attendance."
+              : "Complete each step in any order. You can take assigned assessments from Assessments anytime."}
+        </p>
+      </div>
 
       {allStudentSteps && !onboarding.principalConfirmedAt && (
         <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">

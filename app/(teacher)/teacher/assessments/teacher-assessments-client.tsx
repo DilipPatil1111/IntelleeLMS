@@ -195,7 +195,12 @@ export function TeacherAssessmentsClient() {
                       Created {formatDate(a.createdAt)} — {a._count.attempts} submissions
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link href={`/teacher/assessments/new?copyFrom=${a.id}`}>
+                      <Button variant="ghost" size="sm" title="Start a new assessment prefilled from this one">
+                        New from this
+                      </Button>
+                    </Link>
                     <Link href={`/teacher/assessments/${a.id}`}>
                       <Button variant="outline" size="sm">
                         View

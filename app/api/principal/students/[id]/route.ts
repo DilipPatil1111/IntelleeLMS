@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { deleteStudentUserCascade } from "@/lib/delete-student-user";
 import {
   buildProfileStatusData,
   isValidStudentStatus,
@@ -104,7 +105,37 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  await db.studentProfile.deleteMany({ where: { userId: id } });
-  await db.user.delete({ where: { id } });
+  const principal = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { role: true },
+  });
+  if (principal?.role !== "PRINCIPAL") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const target = await db.user.findUnique({
+    where: { id },
+    select: { role: true },
+  });
+  if (!target) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (target.role !== "STUDENT") {
+    return NextResponse.json({ error: "Only student accounts can be deleted here." }, { status: 400 });
+  }
+
+  try {
+    await deleteStudentUserCascade(id);
+  } catch (e) {
+    console.error("deleteStudentUserCascade", e);
+    return NextResponse.json(
+      {
+        error:
+          e instanceof Error
+            ? e.message
+            : "Could not delete student. Close related records and try again, or contact support.",
+      },
+      { status: 500 }
+    );
+  }
+
   return NextResponse.json({ success: true });
 }

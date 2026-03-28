@@ -26,6 +26,7 @@ export function AssessmentActions({ assessmentId, status, title }: { assessmentI
   const [publishing, setPublishing] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [copying, setCopying] = useState(false);
+  const [copyError, setCopyError] = useState("");
 
   useEffect(() => {
     if (!showPublish) return;
@@ -68,31 +69,53 @@ export function AssessmentActions({ assessmentId, status, title }: { assessmentI
 
   async function handleDelete() {
     setDeleting(true);
-    await fetch(`/api/teacher/assessments/${assessmentId}`, { method: "DELETE" });
-    setDeleting(false);
-    router.push("/teacher/assessments");
+    try {
+      const res = await fetch(`/api/teacher/assessments/${assessmentId}`, { method: "DELETE" });
+      if (!res.ok) return;
+      router.push("/teacher/assessments");
+    } finally {
+      setDeleting(false);
+    }
   }
 
   async function handleCopy() {
     setCopying(true);
+    setCopyError("");
     try {
       const res = await fetch(`/api/teacher/assessments/${assessmentId}/copy`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: copyTitle || undefined }),
       });
-      const data = await res.json();
+      const data = (await res.json()) as { id?: string; error?: string };
+      if (!res.ok) {
+        setCopyError(data.error || `Copy failed (${res.status}).`);
+        setCopying(false);
+        return;
+      }
       if (data.id) {
         setShowCopy(false);
-        router.push(`/teacher/assessments/${data.id}`);
+        router.push(`/teacher/assessments/${data.id}/edit`);
+      } else {
+        setCopyError("No assessment id returned.");
       }
-    } catch { /* ignore */ }
+    } catch {
+      setCopyError("Could not reach the server. Try again.");
+    }
     setCopying(false);
   }
 
   return (
     <>
-      <Button onClick={() => { setCopyTitle(`${title} (Copy)`); setShowCopy(true); }} variant="outline" size="sm">
+      <Button
+        onClick={() => {
+          setCopyTitle(`${title} (Copy)`);
+          setCopyError("");
+          setShowCopy(true);
+        }}
+        variant="outline"
+        size="sm"
+      >
         <Copy className="h-4 w-4 mr-1" /> Copy Quiz
       </Button>
 
@@ -168,6 +191,11 @@ export function AssessmentActions({ assessmentId, status, title }: { assessmentI
         <p className="text-sm text-gray-500 mb-4">
           Create a duplicate of this assessment as a new DRAFT. All questions, options, and correct answers will be copied. Scheduling dates and student submissions are not copied.
         </p>
+        {copyError && (
+          <p className="mb-3 text-sm text-red-600" role="alert">
+            {copyError}
+          </p>
+        )}
         <Input
           label="Title for the copy"
           value={copyTitle}

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useRef, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -31,8 +31,28 @@ interface QuestionForm {
   additionalInfo: string;
 }
 
-export default function CreateAssessmentPage() {
+function toDateTimeLocal(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function toDateInput(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function CreateAssessmentPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const copyFrom = searchParams.get("copyFrom");
+  const pendingSelectionRef = useRef<string[] | null>(null);
+  const [templateLoading, setTemplateLoading] = useState(!!copyFrom);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -104,7 +124,15 @@ export default function CreateAssessmentPage() {
       .then((data) => {
         const list: BatchStudent[] = data.students || [];
         setBatchStudents(list);
-        setSelectedStudentIds(list.map((s) => s.id));
+        const pending = pendingSelectionRef.current;
+        if (pending !== null) {
+          pendingSelectionRef.current = null;
+          const allowed = new Set(list.map((s) => s.id));
+          const picked = pending.filter((id) => allowed.has(id));
+          setSelectedStudentIds(picked.length > 0 ? picked : list.map((s) => s.id));
+        } else {
+          setSelectedStudentIds(list.map((s) => s.id));
+        }
       })
       .catch((e: Error) => {
         setError(e.message || "Failed to load students");
@@ -113,6 +141,112 @@ export default function CreateAssessmentPage() {
       })
       .finally(() => setLoadingBatchStudents(false));
   }, [form.batchId]);
+
+  useEffect(() => {
+    if (!copyFrom) {
+      setTemplateLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setTemplateLoading(true);
+    setError("");
+    fetch(`/api/teacher/assessments/${copyFrom}`)
+      .then((r) => {
+        if (!r.ok) throw new Error("Could not load assessment to use as a template");
+        return r.json();
+      })
+      .then(
+        (data: {
+          assessment?: {
+            title: string;
+            description: string | null;
+            type: string;
+            subjectId: string;
+            batchId: string;
+            totalMarks: number;
+            passingMarks: number | null;
+            duration: number | null;
+            scheduledOpenAt: string | null;
+            scheduledCloseAt: string | null;
+            assessmentDate: string | null;
+            moduleNameText: string | null;
+            topicNameText: string | null;
+            isMandatory: boolean;
+            instructions: string | null;
+            questions: Array<{
+              type: string;
+              questionText: string;
+              marks: number;
+              correctAnswer: string | null;
+              maxLength: number | null;
+              mediaUrl: string | null;
+              mediaType: string | null;
+              additionalInfo: string | null;
+              options: Array<{ optionText: string; isCorrect: boolean }>;
+            }>;
+            assignedStudents?: Array<{ studentId: string }>;
+            batch?: { programId: string } | null;
+          };
+        }) => {
+          if (cancelled || !data.assessment) return;
+          const a = data.assessment;
+          const assigned = (a.assignedStudents || []).map((x) => x.studentId);
+          pendingSelectionRef.current = assigned.length > 0 ? assigned : null;
+
+          setProgramId(a.batch?.programId || "");
+          setForm({
+            title: `${a.title} (Copy)`,
+            description: a.description || "",
+            type: a.type,
+            subjectId: a.subjectId,
+            batchId: a.batchId,
+            moduleNameText: a.moduleNameText || "",
+            topicNameText: a.topicNameText || "",
+            isMandatory: a.isMandatory,
+            totalMarks: a.totalMarks,
+            passingMarks: a.passingMarks ?? 0,
+            duration: a.duration ?? 0,
+            scheduledOpenAt: toDateTimeLocal(a.scheduledOpenAt),
+            scheduledCloseAt: toDateTimeLocal(a.scheduledCloseAt),
+            assessmentDate: toDateInput(a.assessmentDate),
+            instructions: a.instructions || "",
+          });
+
+          const defaultMcqOpts = () => [
+            { optionText: "", isCorrect: false },
+            { optionText: "", isCorrect: false },
+            { optionText: "", isCorrect: false },
+            { optionText: "", isCorrect: false },
+          ];
+          const mapped: QuestionForm[] = (a.questions || []).map((q) => ({
+            type: q.type as "MCQ" | "SHORT" | "PARAGRAPH",
+            questionText: q.questionText,
+            marks: q.marks,
+            correctAnswer: q.correctAnswer || "",
+            options:
+              q.type === "MCQ"
+                ? (q.options || []).length > 0
+                  ? (q.options || []).map((o) => ({ optionText: o.optionText, isCorrect: o.isCorrect }))
+                  : defaultMcqOpts()
+                : [],
+            maxLength: q.maxLength,
+            mediaUrl: q.mediaUrl || "",
+            mediaType: q.mediaType || "",
+            additionalInfo: q.additionalInfo || "",
+          }));
+          setQuestions(mapped);
+        }
+      )
+      .catch((e: Error) => {
+        if (!cancelled) setError(e.message || "Failed to load template");
+      })
+      .finally(() => {
+        if (!cancelled) setTemplateLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [copyFrom]);
 
   useEffect(() => {
     fetch("/api/teacher/options")
@@ -349,6 +483,18 @@ export default function CreateAssessmentPage() {
         </div>
       )}
 
+      {templateLoading && (
+        <div className="mb-4 rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-900">
+          Loading assessment template…
+        </div>
+      )}
+
+      {copyFrom && !templateLoading && (
+        <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+          Prefilled from an existing assessment. Change the title if you like, then continue through the steps to save a new draft or publish.
+        </div>
+      )}
+
       {step === 1 && (
         <Card>
           <CardContent>
@@ -488,6 +634,7 @@ export default function CreateAssessmentPage() {
                 <Button
                   onClick={() => setStep(2)}
                   disabled={
+                    templateLoading ||
                     !form.title ||
                     !form.subjectId ||
                     !form.batchId ||
@@ -791,5 +938,13 @@ export default function CreateAssessmentPage() {
         </div>
       </Modal>
     </>
+  );
+}
+
+export default function CreateAssessmentPage() {
+  return (
+    <Suspense fallback={<p className="text-gray-500 p-8">Loading…</p>}>
+      <CreateAssessmentPageInner />
+    </Suspense>
   );
 }

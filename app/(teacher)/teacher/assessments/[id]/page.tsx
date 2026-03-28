@@ -28,6 +28,10 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
 
   if (!assessment) notFound();
 
+  if (session.user.role === "TEACHER" && assessment.createdById !== session.user.id) {
+    notFound();
+  }
+
   const appUrl = getServerAppUrl();
   const assessmentLink = `${appUrl}/assess/${assessment.linkToken}`;
   const isDraft = assessment.status === "DRAFT";

@@ -297,7 +297,16 @@ export default function PrincipalStudentsPage() {
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this student? This cannot be undone.")) return;
-    await fetch(`/api/principal/students/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/principal/students/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      setSaveBanner({
+        tone: "error",
+        message: (err as { error?: string }).error || "Could not delete student. Try again or contact support.",
+      });
+      return;
+    }
+    setSaveBanner({ tone: "success", message: "Student and related records were removed." });
     loadAll();
   }
 

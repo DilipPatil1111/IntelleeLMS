@@ -66,18 +66,19 @@ export default function StudentProgramPage() {
   useEffect(() => {
     fetch("/api/student/onboarding")
       .then((r) => r.json())
-      .then((data) => {
+      .then((data: { onboarding?: { principalConfirmedAt?: string | null }; studentProfileStatus?: string | null }) => {
         const o = data.onboarding;
+        const spStatus = data.studentProfileStatus;
         if (!o) {
           setOnboardingLocked(false);
           return;
         }
-        const four =
-          o.contractAcknowledgedAt &&
-          o.governmentIdsUploadedAt &&
-          o.feeProofUploadedAt &&
-          o.preAdmissionCompletedAt;
-        setOnboardingLocked(!!(four && !o.principalConfirmedAt));
+        if (spStatus && spStatus !== "ENROLLED") {
+          setOnboardingLocked(false);
+          return;
+        }
+        /** Lock course modules until principal confirms — assessments remain available elsewhere. */
+        setOnboardingLocked(!o.principalConfirmedAt);
       })
       .catch(() => setOnboardingLocked(false));
   }, []);
@@ -125,12 +126,15 @@ export default function StudentProgramPage() {
       <>
         <PageHeader title="My Program" description="Course content" />
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-amber-900">
-          <p className="font-medium">Course content is locked until your principal confirms your onboarding.</p>
+          <p className="font-medium">Course content unlocks after your principal confirms your onboarding.</p>
           <p className="mt-2 text-sm">
-            You have completed the onboarding checklist. Final approval is pending — you will get a notification when your courses are unlocked.
+            You can complete checklist steps, take assigned assessments, and use Fees and Results anytime. When your principal approves onboarding, My Program, Attendance, and the full menu unlock.
           </p>
           <Link href="/student/onboarding" className="mt-4 inline-block text-sm font-medium text-indigo-600 underline">
-            View onboarding status
+            View onboarding checklist
+          </Link>
+          <Link href="/student/assessments" className="mt-4 ml-4 inline-block text-sm font-medium text-indigo-600 underline">
+            My assessments
           </Link>
         </div>
       </>

@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
+import { findAssessmentsForStudentList } from "@/lib/student-assessment-queries";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -31,18 +31,7 @@ export default async function StudentAssessmentsPage() {
     );
   }
 
-  const assessments = await db.assessment.findMany({
-    where: {
-      status: { in: ["PUBLISHED", "CLOSED", "GRADED"] },
-      AND: [studentVisibleAssessmentFilter(user.id, user.studentProfile.batchId)],
-    },
-    include: {
-      subject: true,
-      attempts: { where: { studentId: user.id } },
-      _count: { select: { questions: true } },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const assessments = await findAssessmentsForStudentList(user.id, user.studentProfile.batchId);
 
   return (
     <>

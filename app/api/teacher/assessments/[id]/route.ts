@@ -12,7 +12,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     where: { id },
     include: {
       subject: true,
-      batch: true,
+      batch: { include: { program: true } },
       assignedStudents: { select: { studentId: true } },
       questions: {
         include: { options: { orderBy: { orderIndex: "asc" } } },
@@ -23,6 +23,11 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   if (!assessment) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+  const role = session.user.role;
+  if (role === "TEACHER" && assessment.createdById !== session.user.id) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   return NextResponse.json({ assessment });
 }
 
@@ -30,6 +35,15 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const existing = await db.assessment.findUnique({
+    where: { id },
+    select: { createdById: true },
+  });
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (session.user.role === "TEACHER" && existing.createdById !== session.user.id) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const body = await req.json();
 
@@ -89,6 +103,15 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const existing = await db.assessment.findUnique({
+    where: { id },
+    select: { createdById: true },
+  });
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (session.user.role === "TEACHER" && existing.createdById !== session.user.id) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   // Delete questions (cascades to options), attempts, answers, then assessment
   await db.answer.deleteMany({ where: { attempt: { assessmentId: id } } });

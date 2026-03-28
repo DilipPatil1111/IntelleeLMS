@@ -7,29 +7,23 @@ import { db } from "@/lib/db";
 /** Applied / accepted: only dashboard, profile, apply, notifications */
 const PATH_APPLIED = ["/student", "/student/profile", "/student/apply", "/student/notifications", "/student/feedback"];
 
-/** Enrolled but onboarding not finished: applicant paths + onboarding + fees */
-const PATH_ONBOARDING = [...PATH_APPLIED, "/student/onboarding", "/student/fees"];
+/**
+ * Enrolled (etc.) but principal has not confirmed onboarding yet:
+ * course program + attendance stay hidden; assessments and results stay available so students can complete pre-admission work.
+ */
+const PATH_PRE_PRINCIPAL_UNLOCK = [
+  "/student",
+  "/student/profile",
+  "/student/notifications",
+  "/student/feedback",
+  "/student/onboarding",
+  "/student/fees",
+  "/student/assessments",
+  "/student/results",
+];
 
 /** Cancelled, suspended, expelled, or transferred: limited portal access. */
 const PATH_RESTRICTED = ["/student", "/student/profile", "/student/notifications", "/student/fees", "/student/feedback"];
-
-/** All four student checklist steps (order-independent). Missing row = legacy user → full access. */
-function studentFourStepsComplete(
-  ob: {
-    contractAcknowledgedAt: Date | null;
-    governmentIdsUploadedAt: Date | null;
-    feeProofUploadedAt: Date | null;
-    preAdmissionCompletedAt: Date | null;
-  } | null
-): boolean {
-  if (!ob) return true;
-  return !!(
-    ob.contractAcknowledgedAt &&
-    ob.governmentIdsUploadedAt &&
-    ob.feeProofUploadedAt &&
-    ob.preAdmissionCompletedAt
-  );
-}
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -38,17 +32,32 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const role = (session.user as unknown as Record<string, unknown>).role as string;
   if (role !== "STUDENT") redirect("/login");
 
+  const userId = session.user.id;
+
+  const spQuick = await db.studentProfile.findUnique({
+    where: { userId },
+    select: { status: true },
+  });
+
+  if (
+    spQuick &&
+    (spQuick.status === "ENROLLED" || spQuick.status === "GRADUATED" || spQuick.status === "COMPLETED")
+  ) {
+    await db.studentOnboarding.upsert({
+      where: { userId },
+      create: { userId },
+      update: {},
+    });
+  }
+
   const user = await db.user.findUnique({
-    where: { id: session.user.id },
+    where: { id: userId },
     select: {
       profilePicture: true,
       studentProfile: { select: { status: true } },
       studentOnboarding: {
         select: {
-          contractAcknowledgedAt: true,
-          governmentIdsUploadedAt: true,
-          feeProofUploadedAt: true,
-          preAdmissionCompletedAt: true,
+          principalConfirmedAt: true,
         },
       },
     },
@@ -76,10 +85,11 @@ export default async function StudentLayout({ children }: { children: React.Reac
     allowedPaths = PATH_APPLIED;
   } else if (status === "ENROLLED" || status === "GRADUATED" || status === "COMPLETED") {
     const ob = user?.studentOnboarding;
-    if (!ob || studentFourStepsComplete(ob)) {
+    /** Only active enrolled students wait on principal unlock; graduated/completed retain full portal access. */
+    if (status !== "ENROLLED" || !ob || ob.principalConfirmedAt) {
       allowedPaths = undefined;
     } else {
-      allowedPaths = PATH_ONBOARDING;
+      allowedPaths = PATH_PRE_PRINCIPAL_UNLOCK;
     }
   } else {
     allowedPaths = undefined;

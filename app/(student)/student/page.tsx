@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
+import { countPendingAssessmentsForStudent } from "@/lib/student-assessment-queries";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatCard } from "@/components/ui/stat-card";
@@ -49,13 +49,10 @@ export default async function StudentDashboard() {
       ? Math.round((presentRecords / totalRecords) * 100)
       : 0;
 
-  const pendingAssessments = await db.assessment.count({
-    where: {
-      status: "PUBLISHED",
-      attempts: { none: { studentId: user.id } },
-      AND: [studentVisibleAssessmentFilter(user.id, user.studentProfile?.batchId ?? null)],
-    },
-  });
+  const pendingAssessments = await countPendingAssessmentsForStudent(
+    user.id,
+    user.studentProfile?.batchId ?? null
+  );
 
   const journeyStatus = (user.studentProfile?.status ?? "APPLIED") as StudentStatus;
 

@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
+import { findPublishedAssessmentForTake } from "@/lib/student-assessment-queries";
 import { NextResponse } from "next/server";
 
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -13,19 +13,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     select: { batchId: true },
   });
 
-  const assessment = await db.assessment.findFirst({
-    where: {
-      id,
-      status: "PUBLISHED",
-      AND: [studentVisibleAssessmentFilter(session.user.id, profile?.batchId ?? null)],
-    },
-    include: {
-      questions: {
-        include: { options: { select: { id: true, optionText: true, orderIndex: true } } },
-        orderBy: { orderIndex: "asc" },
-      },
-    },
-  });
+  const assessment = await findPublishedAssessmentForTake(id, session.user.id, profile?.batchId ?? null);
 
   if (!assessment) {
     return NextResponse.json({ error: "Assessment not available" }, { status: 400 });
