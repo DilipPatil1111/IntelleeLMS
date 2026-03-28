@@ -3,15 +3,38 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { registerUser } from "@/lib/actions/auth-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+type ProgramOpt = {
+  id: string;
+  name: string;
+  code: string;
+  batches: { id: string; name: string }[];
+};
 
 export default function RegisterPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState("STUDENT");
+  const [programs, setPrograms] = useState<ProgramOpt[]>([]);
+  const [programId, setProgramId] = useState("");
+
+  useEffect(() => {
+    fetch("/api/public/programs")
+      .then((r) => r.json())
+      .then((d) => setPrograms(d.programs || []))
+      .catch(() => {});
+  }, []);
+
+  const batchOptions = useMemo(() => {
+    const p = programs.find((x) => x.id === programId);
+    return (p?.batches || []).map((b) => ({ value: b.id, label: b.name }));
+  }, [programs, programId]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,6 +52,8 @@ export default function RegisterPage() {
     }
   }
 
+  const programOptions = programs.map((p) => ({ value: p.id, label: `${p.name} (${p.code})` }));
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4 py-8">
       <div className="w-full max-w-lg">
@@ -39,9 +64,7 @@ export default function RegisterPage() {
 
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           {error && (
-            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-600">
-              {error}
-            </div>
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-600">{error}</div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,14 +81,52 @@ export default function RegisterPage() {
               id="role"
               name="role"
               label="Register As"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
               options={[
-                { value: "STUDENT", label: "Student" },
+                { value: "STUDENT", label: "Student (apply for a program)" },
                 { value: "TEACHER", label: "Trainer / Teacher" },
                 { value: "PRINCIPAL", label: "Principal / Admin" },
               ]}
               placeholder="Select your role"
               required
             />
+
+            {role === "STUDENT" && (
+              <div className="space-y-4 rounded-xl border border-indigo-100 bg-indigo-50/50 p-4">
+                <p className="text-sm font-medium text-indigo-900">Program application</p>
+                <p className="text-xs text-gray-600">
+                  Your request will appear under <strong>Applications</strong> for the principal. You can sign in as an applicant until you are enrolled.
+                </p>
+                <Select
+                  id="programId"
+                  name="programId"
+                  label="Program / course"
+                  options={programOptions}
+                  placeholder="Select a program"
+                  required
+                  value={programId}
+                  onChange={(e) => setProgramId(e.target.value)}
+                />
+                <Select
+                  id="batchId"
+                  name="batchId"
+                  label="Preferred batch (optional)"
+                  options={batchOptions}
+                  placeholder={programId ? "Select a batch" : "Select a program first"}
+                  disabled={!programId}
+                />
+                <Textarea
+                  id="personalStatement"
+                  name="personalStatement"
+                  label="Message / statement (optional)"
+                  placeholder="Tell us why you want to join this program..."
+                  rows={3}
+                />
+                <Input id="visaStatus" name="visaStatus" label="Visa status (optional)" placeholder="e.g. Study permit" />
+              </div>
+            )}
+
             <Button type="submit" className="w-full" size="lg" isLoading={loading}>
               Create Account
             </Button>

@@ -86,26 +86,44 @@ export const NotificationType = {
   GENERAL: 'GENERAL',
   TEACHER_SELF_ATTENDANCE_REQUIRED: 'TEACHER_SELF_ATTENDANCE_REQUIRED',
   ANNOUNCEMENT: 'ANNOUNCEMENT',
-  HOLIDAY_NOTICE: 'HOLIDAY_NOTICE'
+  HOLIDAY_NOTICE: 'HOLIDAY_NOTICE',
+  ONBOARDING_STUDENT_COMPLETED: 'ONBOARDING_STUDENT_COMPLETED',
+  ADMISSION_CANCELLED: 'ADMISSION_CANCELLED',
+  STUDENT_SUSPENDED: 'STUDENT_SUSPENDED',
+  COMPLIANCE_WARNING: 'COMPLIANCE_WARNING',
+  STUDENT_EXPELLED: 'STUDENT_EXPELLED',
+  STUDENT_TRANSFERRED: 'STUDENT_TRANSFERRED',
+  GRADUATION_CERTIFICATE_SENT: 'GRADUATION_CERTIFICATE_SENT',
+  FEEDBACK_REPLY: 'FEEDBACK_REPLY'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
 
 
 export const StudentStatus = {
-  APPLICANT: 'APPLICANT',
+  APPLIED: 'APPLIED',
   ACCEPTED: 'ACCEPTED',
   ENROLLED: 'ENROLLED',
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
+  COMPLETED: 'COMPLETED',
+  GRADUATED: 'GRADUATED',
+  RETAKE: 'RETAKE',
+  CANCELLED: 'CANCELLED',
   SUSPENDED: 'SUSPENDED',
   EXPELLED: 'EXPELLED',
-  TRANSFERRED: 'TRANSFERRED',
-  GRADUATED: 'GRADUATED',
-  CANCELLED: 'CANCELLED'
+  TRANSFERRED: 'TRANSFERRED'
 } as const
 
 export type StudentStatus = (typeof StudentStatus)[keyof typeof StudentStatus]
+
+
+export const SuspensionReason = {
+  FEES: 'FEES',
+  ATTENDANCE: 'ATTENDANCE',
+  ACADEMIC: 'ACADEMIC',
+  OTHER: 'OTHER'
+} as const
+
+export type SuspensionReason = (typeof SuspensionReason)[keyof typeof SuspensionReason]
 
 
 export const PolicyType = {
@@ -140,3 +158,21 @@ export const ContentType = {
 } as const
 
 export type ContentType = (typeof ContentType)[keyof typeof ContentType]
+
+
+export const FeedbackCategory = {
+  PROGRAM_CONTENT: 'PROGRAM_CONTENT',
+  TEACHING: 'TEACHING',
+  OTHER: 'OTHER',
+  STUDENT_CONCERN: 'STUDENT_CONCERN'
+} as const
+
+export type FeedbackCategory = (typeof FeedbackCategory)[keyof typeof FeedbackCategory]
+
+
+export const FeedbackAuthorRole = {
+  STUDENT: 'STUDENT',
+  TEACHER: 'TEACHER'
+} as const
+
+export type FeedbackAuthorRole = (typeof FeedbackAuthorRole)[keyof typeof FeedbackAuthorRole]

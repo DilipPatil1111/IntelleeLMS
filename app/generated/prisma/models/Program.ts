@@ -28,10 +28,16 @@ export type AggregateProgram = {
 
 export type ProgramAvgAggregateOutputType = {
   durationYears: number | null
+  minAttendancePercent: number | null
+  minAverageMarksPercent: number | null
+  minFeePaidPercent: number | null
 }
 
 export type ProgramSumAggregateOutputType = {
   durationYears: number | null
+  minAttendancePercent: number | null
+  minAverageMarksPercent: number | null
+  minFeePaidPercent: number | null
 }
 
 export type ProgramMinAggregateOutputType = {
@@ -42,6 +48,9 @@ export type ProgramMinAggregateOutputType = {
   durationYears: number | null
   durationText: string | null
   isActive: boolean | null
+  minAttendancePercent: number | null
+  minAverageMarksPercent: number | null
+  minFeePaidPercent: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +63,9 @@ export type ProgramMaxAggregateOutputType = {
   durationYears: number | null
   durationText: string | null
   isActive: boolean | null
+  minAttendancePercent: number | null
+  minAverageMarksPercent: number | null
+  minFeePaidPercent: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +78,9 @@ export type ProgramCountAggregateOutputType = {
   durationYears: number
   durationText: number
   isActive: number
+  minAttendancePercent: number
+  minAverageMarksPercent: number
+  minFeePaidPercent: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -74,10 +89,16 @@ export type ProgramCountAggregateOutputType = {
 
 export type ProgramAvgAggregateInputType = {
   durationYears?: true
+  minAttendancePercent?: true
+  minAverageMarksPercent?: true
+  minFeePaidPercent?: true
 }
 
 export type ProgramSumAggregateInputType = {
   durationYears?: true
+  minAttendancePercent?: true
+  minAverageMarksPercent?: true
+  minFeePaidPercent?: true
 }
 
 export type ProgramMinAggregateInputType = {
@@ -88,6 +109,9 @@ export type ProgramMinAggregateInputType = {
   durationYears?: true
   durationText?: true
   isActive?: true
+  minAttendancePercent?: true
+  minAverageMarksPercent?: true
+  minFeePaidPercent?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +124,9 @@ export type ProgramMaxAggregateInputType = {
   durationYears?: true
   durationText?: true
   isActive?: true
+  minAttendancePercent?: true
+  minAverageMarksPercent?: true
+  minFeePaidPercent?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +139,9 @@ export type ProgramCountAggregateInputType = {
   durationYears?: true
   durationText?: true
   isActive?: true
+  minAttendancePercent?: true
+  minAverageMarksPercent?: true
+  minFeePaidPercent?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -211,6 +241,9 @@ export type ProgramGroupByOutputType = {
   durationYears: number
   durationText: string | null
   isActive: boolean
+  minAttendancePercent: number | null
+  minAverageMarksPercent: number | null
+  minFeePaidPercent: number | null
   createdAt: Date
   updatedAt: Date
   _count: ProgramCountAggregateOutputType | null
@@ -246,6 +279,9 @@ export type ProgramWhereInput = {
   durationYears?: Prisma.IntFilter<"Program"> | number
   durationText?: Prisma.StringNullableFilter<"Program"> | string | null
   isActive?: Prisma.BoolFilter<"Program"> | boolean
+  minAttendancePercent?: Prisma.FloatNullableFilter<"Program"> | number | null
+  minAverageMarksPercent?: Prisma.FloatNullableFilter<"Program"> | number | null
+  minFeePaidPercent?: Prisma.FloatNullableFilter<"Program"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Program"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Program"> | Date | string
   batches?: Prisma.BatchListRelationFilter
@@ -265,6 +301,9 @@ export type ProgramOrderByWithRelationInput = {
   durationYears?: Prisma.SortOrder
   durationText?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  minAttendancePercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  minAverageMarksPercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  minFeePaidPercent?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   batches?: Prisma.BatchOrderByRelationAggregateInput
@@ -287,6 +326,9 @@ export type ProgramWhereUniqueInput = Prisma.AtLeast<{
   durationYears?: Prisma.IntFilter<"Program"> | number
   durationText?: Prisma.StringNullableFilter<"Program"> | string | null
   isActive?: Prisma.BoolFilter<"Program"> | boolean
+  minAttendancePercent?: Prisma.FloatNullableFilter<"Program"> | number | null
+  minAverageMarksPercent?: Prisma.FloatNullableFilter<"Program"> | number | null
+  minFeePaidPercent?: Prisma.FloatNullableFilter<"Program"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Program"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Program"> | Date | string
   batches?: Prisma.BatchListRelationFilter
@@ -306,6 +348,9 @@ export type ProgramOrderByWithAggregationInput = {
   durationYears?: Prisma.SortOrder
   durationText?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  minAttendancePercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  minAverageMarksPercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  minFeePaidPercent?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ProgramCountOrderByAggregateInput
@@ -326,6 +371,9 @@ export type ProgramScalarWhereWithAggregatesInput = {
   durationYears?: Prisma.IntWithAggregatesFilter<"Program"> | number
   durationText?: Prisma.StringNullableWithAggregatesFilter<"Program"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Program"> | boolean
+  minAttendancePercent?: Prisma.FloatNullableWithAggregatesFilter<"Program"> | number | null
+  minAverageMarksPercent?: Prisma.FloatNullableWithAggregatesFilter<"Program"> | number | null
+  minFeePaidPercent?: Prisma.FloatNullableWithAggregatesFilter<"Program"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Program"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Program"> | Date | string
 }
@@ -338,6 +386,9 @@ export type ProgramCreateInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
@@ -357,6 +408,9 @@ export type ProgramUncheckedCreateInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
@@ -376,6 +430,9 @@ export type ProgramUpdateInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
@@ -395,6 +452,9 @@ export type ProgramUncheckedUpdateInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
@@ -414,6 +474,9 @@ export type ProgramCreateManyInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -426,6 +489,9 @@ export type ProgramUpdateManyMutationInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -438,6 +504,9 @@ export type ProgramUncheckedUpdateManyInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -450,12 +519,18 @@ export type ProgramCountOrderByAggregateInput = {
   durationYears?: Prisma.SortOrder
   durationText?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  minAttendancePercent?: Prisma.SortOrder
+  minAverageMarksPercent?: Prisma.SortOrder
+  minFeePaidPercent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ProgramAvgOrderByAggregateInput = {
   durationYears?: Prisma.SortOrder
+  minAttendancePercent?: Prisma.SortOrder
+  minAverageMarksPercent?: Prisma.SortOrder
+  minFeePaidPercent?: Prisma.SortOrder
 }
 
 export type ProgramMaxOrderByAggregateInput = {
@@ -466,6 +541,9 @@ export type ProgramMaxOrderByAggregateInput = {
   durationYears?: Prisma.SortOrder
   durationText?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  minAttendancePercent?: Prisma.SortOrder
+  minAverageMarksPercent?: Prisma.SortOrder
+  minFeePaidPercent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -478,12 +556,18 @@ export type ProgramMinOrderByAggregateInput = {
   durationYears?: Prisma.SortOrder
   durationText?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  minAttendancePercent?: Prisma.SortOrder
+  minAverageMarksPercent?: Prisma.SortOrder
+  minFeePaidPercent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ProgramSumOrderByAggregateInput = {
   durationYears?: Prisma.SortOrder
+  minAttendancePercent?: Prisma.SortOrder
+  minAverageMarksPercent?: Prisma.SortOrder
+  minFeePaidPercent?: Prisma.SortOrder
 }
 
 export type ProgramScalarRelationFilter = {
@@ -498,6 +582,14 @@ export type ProgramNullableScalarRelationFilter = {
 
 export type IntFieldUpdateOperationsInput = {
   set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
@@ -614,6 +706,9 @@ export type ProgramCreateWithoutBatchesInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   subjects?: Prisma.SubjectCreateNestedManyWithoutProgramInput
@@ -632,6 +727,9 @@ export type ProgramUncheckedCreateWithoutBatchesInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutProgramInput
@@ -666,6 +764,9 @@ export type ProgramUpdateWithoutBatchesInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subjects?: Prisma.SubjectUpdateManyWithoutProgramNestedInput
@@ -684,6 +785,9 @@ export type ProgramUncheckedUpdateWithoutBatchesInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subjects?: Prisma.SubjectUncheckedUpdateManyWithoutProgramNestedInput
@@ -702,6 +806,9 @@ export type ProgramCreateWithoutSubjectsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
@@ -720,6 +827,9 @@ export type ProgramUncheckedCreateWithoutSubjectsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
@@ -754,6 +864,9 @@ export type ProgramUpdateWithoutSubjectsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
@@ -772,6 +885,9 @@ export type ProgramUncheckedUpdateWithoutSubjectsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
@@ -790,6 +906,9 @@ export type ProgramCreateWithoutStudentsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
@@ -808,6 +927,9 @@ export type ProgramUncheckedCreateWithoutStudentsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
@@ -842,6 +964,9 @@ export type ProgramUpdateWithoutStudentsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
@@ -860,6 +985,9 @@ export type ProgramUncheckedUpdateWithoutStudentsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
@@ -878,6 +1006,9 @@ export type ProgramCreateWithoutTeacherProgramsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
@@ -896,6 +1027,9 @@ export type ProgramUncheckedCreateWithoutTeacherProgramsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
@@ -930,6 +1064,9 @@ export type ProgramUpdateWithoutTeacherProgramsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
@@ -948,6 +1085,9 @@ export type ProgramUncheckedUpdateWithoutTeacherProgramsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
@@ -966,6 +1106,9 @@ export type ProgramCreateWithoutFeeStructuresInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
@@ -984,6 +1127,9 @@ export type ProgramUncheckedCreateWithoutFeeStructuresInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
@@ -1018,6 +1164,9 @@ export type ProgramUpdateWithoutFeeStructuresInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
@@ -1036,6 +1185,9 @@ export type ProgramUncheckedUpdateWithoutFeeStructuresInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
@@ -1054,6 +1206,9 @@ export type ProgramCreateWithoutApplicationsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
@@ -1072,6 +1227,9 @@ export type ProgramUncheckedCreateWithoutApplicationsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
@@ -1106,6 +1264,9 @@ export type ProgramUpdateWithoutApplicationsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
@@ -1124,6 +1285,9 @@ export type ProgramUncheckedUpdateWithoutApplicationsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
@@ -1142,6 +1306,9 @@ export type ProgramCreateWithoutAnnouncementsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchCreateNestedManyWithoutProgramInput
@@ -1160,6 +1327,9 @@ export type ProgramUncheckedCreateWithoutAnnouncementsInput = {
   durationYears?: number
   durationText?: string | null
   isActive?: boolean
+  minAttendancePercent?: number | null
+  minAverageMarksPercent?: number | null
+  minFeePaidPercent?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   batches?: Prisma.BatchUncheckedCreateNestedManyWithoutProgramInput
@@ -1194,6 +1364,9 @@ export type ProgramUpdateWithoutAnnouncementsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUpdateManyWithoutProgramNestedInput
@@ -1212,6 +1385,9 @@ export type ProgramUncheckedUpdateWithoutAnnouncementsInput = {
   durationYears?: Prisma.IntFieldUpdateOperationsInput | number
   durationText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minAttendancePercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minAverageMarksPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  minFeePaidPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batches?: Prisma.BatchUncheckedUpdateManyWithoutProgramNestedInput
@@ -1315,6 +1491,9 @@ export type ProgramSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   durationYears?: boolean
   durationText?: boolean
   isActive?: boolean
+  minAttendancePercent?: boolean
+  minAverageMarksPercent?: boolean
+  minFeePaidPercent?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   batches?: boolean | Prisma.Program$batchesArgs<ExtArgs>
@@ -1335,6 +1514,9 @@ export type ProgramSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   durationYears?: boolean
   durationText?: boolean
   isActive?: boolean
+  minAttendancePercent?: boolean
+  minAverageMarksPercent?: boolean
+  minFeePaidPercent?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["program"]>
@@ -1347,6 +1529,9 @@ export type ProgramSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   durationYears?: boolean
   durationText?: boolean
   isActive?: boolean
+  minAttendancePercent?: boolean
+  minAverageMarksPercent?: boolean
+  minFeePaidPercent?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["program"]>
@@ -1359,11 +1544,14 @@ export type ProgramSelectScalar = {
   durationYears?: boolean
   durationText?: boolean
   isActive?: boolean
+  minAttendancePercent?: boolean
+  minAverageMarksPercent?: boolean
+  minFeePaidPercent?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ProgramOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "durationYears" | "durationText" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["program"]>
+export type ProgramOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "durationYears" | "durationText" | "isActive" | "minAttendancePercent" | "minAverageMarksPercent" | "minFeePaidPercent" | "createdAt" | "updatedAt", ExtArgs["result"]["program"]>
 export type ProgramInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   batches?: boolean | Prisma.Program$batchesArgs<ExtArgs>
   subjects?: boolean | Prisma.Program$subjectsArgs<ExtArgs>
@@ -1396,6 +1584,18 @@ export type $ProgramPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     durationYears: number
     durationText: string | null
     isActive: boolean
+    /**
+     * * Overrides InstitutionSettings when set (minimum % attendance required).
+     */
+    minAttendancePercent: number | null
+    /**
+     * * Minimum average score % across graded work (quizzes, tests, assignments, projects).
+     */
+    minAverageMarksPercent: number | null
+    /**
+     * * Minimum % of total program fees that must be paid to remain in good standing.
+     */
+    minFeePaidPercent: number | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["program"]>
@@ -1835,6 +2035,9 @@ export interface ProgramFieldRefs {
   readonly durationYears: Prisma.FieldRef<"Program", 'Int'>
   readonly durationText: Prisma.FieldRef<"Program", 'String'>
   readonly isActive: Prisma.FieldRef<"Program", 'Boolean'>
+  readonly minAttendancePercent: Prisma.FieldRef<"Program", 'Float'>
+  readonly minAverageMarksPercent: Prisma.FieldRef<"Program", 'Float'>
+  readonly minFeePaidPercent: Prisma.FieldRef<"Program", 'Float'>
   readonly createdAt: Prisma.FieldRef<"Program", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Program", 'DateTime'>
 }

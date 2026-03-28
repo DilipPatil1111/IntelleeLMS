@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
@@ -46,6 +47,7 @@ interface SubjectProgress {
 export default function StudentProgramPage() {
   const [progress, setProgress] = useState<SubjectProgress[]>([]);
   const [loading, setLoading] = useState(true);
+  const [onboardingLocked, setOnboardingLocked] = useState(false);
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
   const [topics, setTopics] = useState<Record<string, TopicData[]>>({});
   const [loadingTopics, setLoadingTopics] = useState<string | null>(null);
@@ -54,8 +56,30 @@ export default function StudentProgramPage() {
   useEffect(() => {
     fetch("/api/student/progress")
       .then((r) => r.json())
-      .then((data) => { setProgress(data.progress || []); setLoading(false); })
+      .then((data) => {
+        setProgress(data.progress || []);
+        setLoading(false);
+      })
       .catch(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/student/onboarding")
+      .then((r) => r.json())
+      .then((data) => {
+        const o = data.onboarding;
+        if (!o) {
+          setOnboardingLocked(false);
+          return;
+        }
+        const four =
+          o.contractAcknowledgedAt &&
+          o.governmentIdsUploadedAt &&
+          o.feeProofUploadedAt &&
+          o.preAdmissionCompletedAt;
+        setOnboardingLocked(!!(four && !o.principalConfirmedAt));
+      })
+      .catch(() => setOnboardingLocked(false));
   }, []);
 
   async function loadTopics(moduleId: string) {
@@ -95,6 +119,23 @@ export default function StudentProgramPage() {
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><p className="text-gray-500">Loading program...</p></div>;
+
+  if (onboardingLocked) {
+    return (
+      <>
+        <PageHeader title="My Program" description="Course content" />
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-amber-900">
+          <p className="font-medium">Course content is locked until your principal confirms your onboarding.</p>
+          <p className="mt-2 text-sm">
+            You have completed the onboarding checklist. Final approval is pending — you will get a notification when your courses are unlocked.
+          </p>
+          <Link href="/student/onboarding" className="mt-4 inline-block text-sm font-medium text-indigo-600 underline">
+            View onboarding status
+          </Link>
+        </div>
+      </>
+    );
+  }
 
   if (progress.length === 0) {
     return (

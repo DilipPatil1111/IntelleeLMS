@@ -1,5 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import type { Prisma } from "@/app/generated/prisma/client";
+import type { StudentStatus } from "@/app/generated/prisma/enums";
 import { sendEmail, buildStudentWelcomeEmail } from "@/lib/email";
 import { generateTemporaryPassword } from "@/lib/password";
 import { getLoginPageUrl } from "@/lib/app-url";
@@ -8,12 +10,47 @@ import { NextResponse } from "next/server";
 /** Node runtime: full process.env (Vercel secrets) — Edge would not expose all server env vars. */
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const { searchParams } = new URL(req.url);
+  const q = searchParams.get("q")?.trim();
+  const programId = searchParams.get("programId") || undefined;
+  const batchId = searchParams.get("batchId") || undefined;
+  const status = searchParams.get("status") || undefined;
+  const teacherId = searchParams.get("teacherId") || undefined;
+
+  const and: Prisma.UserWhereInput[] = [{ role: "STUDENT" }];
+
+  if (q) {
+    and.push({
+      OR: [
+        { firstName: { contains: q, mode: "insensitive" } },
+        { lastName: { contains: q, mode: "insensitive" } },
+        { email: { contains: q, mode: "insensitive" } },
+        { studentProfile: { is: { enrollmentNo: { contains: q, mode: "insensitive" } } } },
+      ],
+    });
+  }
+
+  const sp: Prisma.StudentProfileWhereInput = {};
+  if (programId) sp.programId = programId;
+  if (batchId) sp.batchId = batchId;
+  if (status) sp.status = status as StudentStatus;
+  if (teacherId) {
+    sp.batch = {
+      teacherAssignments: {
+        some: { teacherProfile: { userId: teacherId } },
+      },
+    };
+  }
+  if (Object.keys(sp).length > 0) {
+    and.push({ studentProfile: { is: sp } });
+  }
+
   const students = await db.user.findMany({
-    where: { role: "STUDENT" },
+    where: { AND: and },
     include: {
       studentProfile: { include: { program: true, batch: true } },
       attempts: { where: { status: "GRADED" }, select: { percentage: true } },

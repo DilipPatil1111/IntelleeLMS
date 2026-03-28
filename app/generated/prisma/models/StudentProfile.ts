@@ -32,6 +32,9 @@ export type StudentProfileMinAggregateOutputType = {
   batchId: string | null
   status: $Enums.StudentStatus | null
   enrollmentDate: Date | null
+  suspensionReason: $Enums.SuspensionReason | null
+  statusNote: string | null
+  graduationCertificateSentAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +47,9 @@ export type StudentProfileMaxAggregateOutputType = {
   batchId: string | null
   status: $Enums.StudentStatus | null
   enrollmentDate: Date | null
+  suspensionReason: $Enums.SuspensionReason | null
+  statusNote: string | null
+  graduationCertificateSentAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +62,9 @@ export type StudentProfileCountAggregateOutputType = {
   batchId: number
   status: number
   enrollmentDate: number
+  suspensionReason: number
+  statusNote: number
+  graduationCertificateSentAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -70,6 +79,9 @@ export type StudentProfileMinAggregateInputType = {
   batchId?: true
   status?: true
   enrollmentDate?: true
+  suspensionReason?: true
+  statusNote?: true
+  graduationCertificateSentAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +94,9 @@ export type StudentProfileMaxAggregateInputType = {
   batchId?: true
   status?: true
   enrollmentDate?: true
+  suspensionReason?: true
+  statusNote?: true
+  graduationCertificateSentAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +109,9 @@ export type StudentProfileCountAggregateInputType = {
   batchId?: true
   status?: true
   enrollmentDate?: true
+  suspensionReason?: true
+  statusNote?: true
+  graduationCertificateSentAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -179,6 +197,9 @@ export type StudentProfileGroupByOutputType = {
   batchId: string | null
   status: $Enums.StudentStatus
   enrollmentDate: Date | null
+  suspensionReason: $Enums.SuspensionReason | null
+  statusNote: string | null
+  graduationCertificateSentAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: StudentProfileCountAggregateOutputType | null
@@ -212,6 +233,9 @@ export type StudentProfileWhereInput = {
   batchId?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
   status?: Prisma.EnumStudentStatusFilter<"StudentProfile"> | $Enums.StudentStatus
   enrollmentDate?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
+  suspensionReason?: Prisma.EnumSuspensionReasonNullableFilter<"StudentProfile"> | $Enums.SuspensionReason | null
+  statusNote?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
+  graduationCertificateSentAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -228,6 +252,9 @@ export type StudentProfileOrderByWithRelationInput = {
   batchId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   enrollmentDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  suspensionReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  statusNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  graduationCertificateSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -247,6 +274,9 @@ export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
   batchId?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
   status?: Prisma.EnumStudentStatusFilter<"StudentProfile"> | $Enums.StudentStatus
   enrollmentDate?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
+  suspensionReason?: Prisma.EnumSuspensionReasonNullableFilter<"StudentProfile"> | $Enums.SuspensionReason | null
+  statusNote?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
+  graduationCertificateSentAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -263,6 +293,9 @@ export type StudentProfileOrderByWithAggregationInput = {
   batchId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   enrollmentDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  suspensionReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  statusNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  graduationCertificateSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.StudentProfileCountOrderByAggregateInput
@@ -281,6 +314,9 @@ export type StudentProfileScalarWhereWithAggregatesInput = {
   batchId?: Prisma.StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
   status?: Prisma.EnumStudentStatusWithAggregatesFilter<"StudentProfile"> | $Enums.StudentStatus
   enrollmentDate?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentProfile"> | Date | string | null
+  suspensionReason?: Prisma.EnumSuspensionReasonNullableWithAggregatesFilter<"StudentProfile"> | $Enums.SuspensionReason | null
+  statusNote?: Prisma.StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+  graduationCertificateSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
 }
@@ -290,6 +326,9 @@ export type StudentProfileCreateInput = {
   enrollmentNo: string
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
@@ -306,6 +345,9 @@ export type StudentProfileUncheckedCreateInput = {
   batchId?: string | null
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
@@ -316,6 +358,9 @@ export type StudentProfileUpdateInput = {
   enrollmentNo?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -332,6 +377,9 @@ export type StudentProfileUncheckedUpdateInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
@@ -345,6 +393,9 @@ export type StudentProfileCreateManyInput = {
   batchId?: string | null
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -354,6 +405,9 @@ export type StudentProfileUpdateManyMutationInput = {
   enrollmentNo?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -366,6 +420,9 @@ export type StudentProfileUncheckedUpdateManyInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -393,6 +450,9 @@ export type StudentProfileCountOrderByAggregateInput = {
   batchId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   enrollmentDate?: Prisma.SortOrder
+  suspensionReason?: Prisma.SortOrder
+  statusNote?: Prisma.SortOrder
+  graduationCertificateSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -405,6 +465,9 @@ export type StudentProfileMaxOrderByAggregateInput = {
   batchId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   enrollmentDate?: Prisma.SortOrder
+  suspensionReason?: Prisma.SortOrder
+  statusNote?: Prisma.SortOrder
+  graduationCertificateSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -417,6 +480,9 @@ export type StudentProfileMinOrderByAggregateInput = {
   batchId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   enrollmentDate?: Prisma.SortOrder
+  suspensionReason?: Prisma.SortOrder
+  statusNote?: Prisma.SortOrder
+  graduationCertificateSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -546,6 +612,10 @@ export type EnumStudentStatusFieldUpdateOperationsInput = {
   set?: $Enums.StudentStatus
 }
 
+export type NullableEnumSuspensionReasonFieldUpdateOperationsInput = {
+  set?: $Enums.SuspensionReason | null
+}
+
 export type StudentProfileCreateNestedOneWithoutFeePaymentsInput = {
   create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutFeePaymentsInput, Prisma.StudentProfileUncheckedCreateWithoutFeePaymentsInput>
   connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutFeePaymentsInput
@@ -565,6 +635,9 @@ export type StudentProfileCreateWithoutUserInput = {
   enrollmentNo: string
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   program?: Prisma.ProgramCreateNestedOneWithoutStudentsInput
@@ -579,6 +652,9 @@ export type StudentProfileUncheckedCreateWithoutUserInput = {
   batchId?: string | null
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
@@ -605,6 +681,9 @@ export type StudentProfileUpdateWithoutUserInput = {
   enrollmentNo?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   program?: Prisma.ProgramUpdateOneWithoutStudentsNestedInput
@@ -619,6 +698,9 @@ export type StudentProfileUncheckedUpdateWithoutUserInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
@@ -629,6 +711,9 @@ export type StudentProfileCreateWithoutProgramInput = {
   enrollmentNo: string
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
@@ -643,6 +728,9 @@ export type StudentProfileUncheckedCreateWithoutProgramInput = {
   batchId?: string | null
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
@@ -685,6 +773,9 @@ export type StudentProfileScalarWhereInput = {
   batchId?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
   status?: Prisma.EnumStudentStatusFilter<"StudentProfile"> | $Enums.StudentStatus
   enrollmentDate?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
+  suspensionReason?: Prisma.EnumSuspensionReasonNullableFilter<"StudentProfile"> | $Enums.SuspensionReason | null
+  statusNote?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
+  graduationCertificateSentAt?: Prisma.DateTimeNullableFilter<"StudentProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
 }
@@ -694,6 +785,9 @@ export type StudentProfileCreateWithoutBatchInput = {
   enrollmentNo: string
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
@@ -708,6 +802,9 @@ export type StudentProfileUncheckedCreateWithoutBatchInput = {
   programId?: string | null
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
@@ -744,6 +841,9 @@ export type StudentProfileCreateWithoutFeePaymentsInput = {
   enrollmentNo: string
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
@@ -759,6 +859,9 @@ export type StudentProfileUncheckedCreateWithoutFeePaymentsInput = {
   batchId?: string | null
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -784,6 +887,9 @@ export type StudentProfileUpdateWithoutFeePaymentsInput = {
   enrollmentNo?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -799,6 +905,9 @@ export type StudentProfileUncheckedUpdateWithoutFeePaymentsInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -810,6 +919,9 @@ export type StudentProfileCreateManyProgramInput = {
   batchId?: string | null
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -819,6 +931,9 @@ export type StudentProfileUpdateWithoutProgramInput = {
   enrollmentNo?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -833,6 +948,9 @@ export type StudentProfileUncheckedUpdateWithoutProgramInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
@@ -845,6 +963,9 @@ export type StudentProfileUncheckedUpdateManyWithoutProgramInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -856,6 +977,9 @@ export type StudentProfileCreateManyBatchInput = {
   programId?: string | null
   status?: $Enums.StudentStatus
   enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -865,6 +989,9 @@ export type StudentProfileUpdateWithoutBatchInput = {
   enrollmentNo?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
@@ -879,6 +1006,9 @@ export type StudentProfileUncheckedUpdateWithoutBatchInput = {
   programId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
@@ -891,6 +1021,9 @@ export type StudentProfileUncheckedUpdateManyWithoutBatchInput = {
   programId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
   enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -934,6 +1067,9 @@ export type StudentProfileSelect<ExtArgs extends runtime.Types.Extensions.Intern
   batchId?: boolean
   status?: boolean
   enrollmentDate?: boolean
+  suspensionReason?: boolean
+  statusNote?: boolean
+  graduationCertificateSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -951,6 +1087,9 @@ export type StudentProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   batchId?: boolean
   status?: boolean
   enrollmentDate?: boolean
+  suspensionReason?: boolean
+  statusNote?: boolean
+  graduationCertificateSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -966,6 +1105,9 @@ export type StudentProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   batchId?: boolean
   status?: boolean
   enrollmentDate?: boolean
+  suspensionReason?: boolean
+  statusNote?: boolean
+  graduationCertificateSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -981,11 +1123,14 @@ export type StudentProfileSelectScalar = {
   batchId?: boolean
   status?: boolean
   enrollmentDate?: boolean
+  suspensionReason?: boolean
+  statusNote?: boolean
+  graduationCertificateSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type StudentProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "enrollmentNo" | "programId" | "batchId" | "status" | "enrollmentDate" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+export type StudentProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "enrollmentNo" | "programId" | "batchId" | "status" | "enrollmentDate" | "suspensionReason" | "statusNote" | "graduationCertificateSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
 export type StudentProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   program?: boolean | Prisma.StudentProfile$programArgs<ExtArgs>
@@ -1020,6 +1165,15 @@ export type $StudentProfilePayload<ExtArgs extends runtime.Types.Extensions.Inte
     batchId: string | null
     status: $Enums.StudentStatus
     enrollmentDate: Date | null
+    suspensionReason: $Enums.SuspensionReason | null
+    /**
+     * * Principal note when cancelling or suspending (shown in notifications).
+     */
+    statusNote: string | null
+    /**
+     * * Set when graduation certificate email was sent (avoids duplicate sends).
+     */
+    graduationCertificateSentAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["studentProfile"]>
@@ -1456,6 +1610,9 @@ export interface StudentProfileFieldRefs {
   readonly batchId: Prisma.FieldRef<"StudentProfile", 'String'>
   readonly status: Prisma.FieldRef<"StudentProfile", 'StudentStatus'>
   readonly enrollmentDate: Prisma.FieldRef<"StudentProfile", 'DateTime'>
+  readonly suspensionReason: Prisma.FieldRef<"StudentProfile", 'SuspensionReason'>
+  readonly statusNote: Prisma.FieldRef<"StudentProfile", 'String'>
+  readonly graduationCertificateSentAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
 }

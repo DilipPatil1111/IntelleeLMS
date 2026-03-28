@@ -5,27 +5,54 @@ import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { sendEmail, buildRegistrationThankYouEmail } from "@/lib/email";
+import { getLoginPageUrl } from "@/lib/app-url";
 
-const registerSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  middleName: z.string().optional(),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["STUDENT", "TEACHER", "PRINCIPAL"]),
-  phone: z.string().optional(),
-  country: z.string().optional(),
-});
+const registerSchema = z
+  .object({
+    firstName: z.string().min(1, "First name is required"),
+    middleName: z.string().optional(),
+    lastName: z.string().min(1, "Last name is required"),
+    email: z.string().email("Invalid email"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    role: z.enum(["STUDENT", "TEACHER", "PRINCIPAL"]),
+    phone: z.string().optional(),
+    country: z.string().optional(),
+    programId: z.string().optional(),
+    batchId: z.string().optional(),
+    personalStatement: z.string().optional(),
+    visaStatus: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.role === "STUDENT") {
+      if (!data.programId?.trim()) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please select a program to apply for.", path: ["programId"] });
+      }
+    }
+  });
 
 export async function registerUser(formData: FormData) {
   const raw = Object.fromEntries(formData.entries());
   const parsed = registerSchema.safeParse(raw);
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0].message };
+    return { error: parsed.error.issues[0]?.message ?? "Invalid form" };
   }
 
-  const { firstName, middleName, lastName, email, password, role, phone, country } = parsed.data;
+  const {
+    firstName,
+    middleName,
+    lastName,
+    email,
+    password,
+    role,
+    phone,
+    country,
+    programId,
+    batchId,
+    personalStatement,
+    visaStatus,
+  } = parsed.data;
 
   const existing = await db.user.findUnique({ where: { email } });
   if (existing) {
@@ -34,6 +61,80 @@ export async function registerUser(formData: FormData) {
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
+  if (role === "STUDENT" && programId) {
+    const program = await db.program.findFirst({
+      where: { id: programId, isActive: true },
+    });
+    if (!program) {
+      return { error: "Invalid or inactive program" };
+    }
+
+    let validBatchId: string | null = null;
+    if (batchId?.trim()) {
+      const batch = await db.batch.findFirst({
+        where: { id: batchId, programId, isActive: true },
+      });
+      if (!batch) {
+        return { error: "Selected batch does not belong to this program" };
+      }
+      validBatchId = batch.id;
+    }
+
+    const count = await db.studentProfile.count();
+    const enrollmentNo = `STU${String(count + 1).padStart(6, "0")}`;
+
+    await db.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          firstName,
+          middleName: middleName || null,
+          lastName,
+          email,
+          hashedPassword,
+          role: "STUDENT",
+          phone: phone || null,
+          country: country || null,
+          visaStatus: visaStatus?.trim() || null,
+        },
+      });
+
+      await tx.studentProfile.create({
+        data: {
+          userId: user.id,
+          enrollmentNo,
+          programId,
+          batchId: validBatchId,
+          status: "APPLIED",
+        },
+      });
+
+      await tx.programApplication.create({
+        data: {
+          applicantId: user.id,
+          programId,
+          batchId: validBatchId,
+          personalStatement: personalStatement?.trim() || null,
+          status: "PENDING",
+        },
+      });
+
+      const loginUrl = getLoginPageUrl();
+      const payload = buildRegistrationThankYouEmail({
+        firstName,
+        programName: program.name,
+        loginUrl,
+      });
+      await sendEmail({
+        to: user.email,
+        subject: payload.subject,
+        html: payload.html,
+        text: payload.text,
+      });
+    });
+
+    return { success: true };
+  }
+
   const user = await db.user.create({
     data: {
       firstName,
@@ -41,25 +142,11 @@ export async function registerUser(formData: FormData) {
       lastName,
       email,
       hashedPassword,
-      role: role as "STUDENT" | "TEACHER" | "PRINCIPAL",
+      role: role as "TEACHER" | "PRINCIPAL",
       phone: phone || null,
       country: country || null,
     },
   });
-
-  if (role === "STUDENT") {
-    const count = await db.studentProfile.count();
-    await db.studentProfile.create({
-      data: {
-        userId: user.id,
-        enrollmentNo: `STU${String(count + 1).padStart(6, "0")}`,
-        programId: "",
-        batchId: "",
-      },
-    }).catch(() => {
-      // Profile will be completed during onboarding
-    });
-  }
 
   if (role === "TEACHER") {
     const count = await db.teacherProfile.count();
@@ -68,9 +155,7 @@ export async function registerUser(formData: FormData) {
         userId: user.id,
         employeeId: `TCH${String(count + 1).padStart(6, "0")}`,
       },
-    }).catch(() => {
-      // Profile will be completed during onboarding
-    });
+    }).catch(() => {});
   }
 
   return { success: true };

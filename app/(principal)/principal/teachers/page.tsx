@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +9,7 @@ import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Pencil, Trash2, GraduationCap } from "lucide-react";
+import { Select } from "@/components/ui/select";
 
 interface TeacherRow {
   id: string;
@@ -32,6 +33,9 @@ interface TeacherRow {
 export default function PrincipalTeachersPage() {
   const [teachers, setTeachers] = useState<TeacherRow[]>([]);
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedQ, setDebouncedQ] = useState("");
+  const [filterProgramId, setFilterProgramId] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<TeacherRow | null>(null);
   const [form, setForm] = useState({
@@ -49,19 +53,36 @@ export default function PrincipalTeachersPage() {
   });
 
   useEffect(() => {
-    load();
+    const t = setTimeout(() => setDebouncedQ(searchInput.trim()), 350);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  useEffect(() => {
+    void (async () => {
+      const pRes = await fetch("/api/principal/programs");
+      const pData = await pRes.json();
+      setPrograms((pData.programs || []).map((p: { id: string; name: string }) => ({ value: p.id, label: p.name })));
+    })();
   }, []);
 
-  async function load() {
-    const [tRes, pRes] = await Promise.all([
-      fetch("/api/principal/teachers"),
-      fetch("/api/principal/programs"),
-    ]);
+  const loadTeachers = useCallback(async () => {
+    const params = new URLSearchParams();
+    if (debouncedQ) params.set("q", debouncedQ);
+    if (filterProgramId) params.set("programId", filterProgramId);
+    const qs = params.toString();
+    const tRes = await fetch(`/api/principal/teachers${qs ? `?${qs}` : ""}`);
     const tData = await tRes.json();
-    const pData = await pRes.json();
     setTeachers(tData.teachers || []);
-    setPrograms((pData.programs || []).map((p: { id: string; name: string }) => ({ value: p.id, label: p.name })));
-  }
+  }, [debouncedQ, filterProgramId]);
+
+  useEffect(() => {
+    void loadTeachers();
+  }, [loadTeachers]);
+
+  const programFilterOptions = useMemo(
+    () => programs.map((p) => ({ value: p.value, label: p.label })),
+    [programs]
+  );
 
   function openCreate() {
     setEditing(null);
@@ -122,13 +143,13 @@ export default function PrincipalTeachersPage() {
     }
     setShowModal(false);
     setEditing(null);
-    load();
+    void loadTeachers();
   }
 
   async function handleDeactivate(id: string) {
     if (!confirm("Deactivate this teacher? They will no longer be able to sign in.")) return;
     await fetch(`/api/principal/teachers/${id}`, { method: "DELETE" });
-    load();
+    void loadTeachers();
   }
 
   function toggleProgram(pid: string) {
@@ -149,6 +170,26 @@ export default function PrincipalTeachersPage() {
           </Button>
         }
       />
+
+      <div className="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-gray-50/80 p-4 sm:flex-row sm:flex-wrap sm:items-end">
+        <div className="min-w-[200px] flex-1">
+          <Input
+            label="Search teacher"
+            placeholder="Name, email, or employee ID"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+        </div>
+        <div className="w-full min-w-[180px] sm:w-64">
+          <Select
+            label="Program"
+            value={filterProgramId}
+            onChange={(e) => setFilterProgramId(e.target.value)}
+            options={programFilterOptions}
+            placeholder="All programs"
+          />
+        </div>
+      </div>
 
       <div className="space-y-4">
         {teachers.map((t) => (

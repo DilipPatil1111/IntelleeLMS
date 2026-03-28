@@ -10,9 +10,11 @@ interface Props {
   applicationId: string;
   batches: { id: string; name: string }[];
   showEnroll?: boolean;
+  /** Called after a successful action (e.g. refetch list on client-driven pages). */
+  onDone?: () => void;
 }
 
-export function ApplicationActions({ applicationId, batches, showEnroll }: Props) {
+export function ApplicationActions({ applicationId, batches, showEnroll, onDone }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState("");
   const [notes, setNotes] = useState("");
@@ -29,6 +31,7 @@ export function ApplicationActions({ applicationId, batches, showEnroll }: Props
     });
 
     setLoading("");
+    onDone?.();
     router.refresh();
   }
 

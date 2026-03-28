@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -8,33 +8,45 @@ import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 type StudentStatus =
-  | "APPLICANT"
+  | "APPLIED"
   | "ACCEPTED"
   | "ENROLLED"
-  | "ACTIVE"
-  | "INACTIVE"
+  | "COMPLETED"
+  | "GRADUATED"
+  | "RETAKE"
+  | "CANCELLED"
   | "SUSPENDED"
   | "EXPELLED"
-  | "TRANSFERRED"
-  | "GRADUATED"
-  | "CANCELLED";
+  | "TRANSFERRED";
 
 const STUDENT_STATUSES: StudentStatus[] = [
-  "APPLICANT",
+  "APPLIED",
   "ACCEPTED",
   "ENROLLED",
-  "ACTIVE",
-  "INACTIVE",
+  "COMPLETED",
+  "GRADUATED",
+  "RETAKE",
+  "CANCELLED",
   "SUSPENDED",
   "EXPELLED",
   "TRANSFERRED",
-  "GRADUATED",
-  "CANCELLED",
 ];
 
-const statusSelectOptions = STUDENT_STATUSES.map((s) => ({ value: s, label: s }));
+const STATUS_LABELS: Record<StudentStatus, string> = {
+  APPLIED: "Applied",
+  ACCEPTED: "Accepted",
+  ENROLLED: "Enrolled",
+  COMPLETED: "Completed",
+  GRADUATED: "Graduated",
+  RETAKE: "Retake",
+  CANCELLED: "Cancelled",
+  SUSPENDED: "Suspended",
+  EXPELLED: "Expelled",
+  TRANSFERRED: "Transferred",
+};
 
 interface StudentRow {
   id: string;
@@ -68,6 +80,12 @@ interface Batch {
   program?: { id: string; name: string };
 }
 
+interface TeacherOption {
+  id: string;
+  firstName: string;
+  lastName: string;
+}
+
 const emptyForm = {
   firstName: "",
   lastName: "",
@@ -93,9 +111,16 @@ function attendancePct(records: { status: string }[]) {
 }
 
 function statusBadgeVariant(status: StudentStatus): "success" | "warning" | "danger" | "default" {
-  if (status === "ACTIVE" || status === "ENROLLED" || status === "GRADUATED") return "success";
-  if (status === "APPLICANT" || status === "ACCEPTED") return "warning";
-  if (status === "SUSPENDED" || status === "EXPELLED" || status === "CANCELLED") return "danger";
+  if (status === "ENROLLED" || status === "GRADUATED" || status === "COMPLETED") return "success";
+  if (status === "APPLIED" || status === "ACCEPTED" || status === "RETAKE") return "warning";
+  if (
+    status === "SUSPENDED" ||
+    status === "CANCELLED" ||
+    status === "EXPELLED" ||
+    status === "TRANSFERRED"
+  ) {
+    return "danger";
+  }
   return "default";
 }
 
@@ -109,10 +134,33 @@ export default function PrincipalStudentsPage() {
   const [saveBanner, setSaveBanner] = useState<{ tone: "success" | "warning" | "error"; message: string } | null>(
     null
   );
+  const [statusModal, setStatusModal] = useState<{ student: StudentRow; toStatus: StudentStatus } | null>(null);
+  const [suspendReason, setSuspendReason] = useState<"FEES" | "ATTENDANCE" | "ACADEMIC" | "OTHER">("FEES");
+  const [statusNote, setStatusNote] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [filterProgramId, setFilterProgramId] = useState("");
+  const [filterBatchId, setFilterBatchId] = useState("");
+  const [filterStatus, setFilterStatus] = useState<StudentStatus | "">("");
+  const [filterTeacherId, setFilterTeacherId] = useState("");
+  const [teachers, setTeachers] = useState<TeacherOption[]>([]);
 
   const programOptions = useMemo(
     () => programs.map((p) => ({ value: p.id, label: p.name })),
     [programs]
+  );
+
+  const filterBatchOptions = useMemo(() => {
+    const list = filterProgramId ? batches.filter((b) => b.programId === filterProgramId) : batches;
+    return list.map((b) => ({
+      value: b.id,
+      label: b.program ? `${b.name} — ${b.program.name}` : b.name,
+    }));
+  }, [batches, filterProgramId]);
+
+  const teacherSelectOptions = useMemo(
+    () => teachers.map((t) => ({ value: t.id, label: `${t.firstName} ${t.lastName}` })),
+    [teachers]
   );
 
   const batchOptionsForForm = useMemo(() => {
@@ -128,21 +176,53 @@ export default function PrincipalStudentsPage() {
   }, [batches, form.programId]);
 
   useEffect(() => {
-    loadAll();
+    const t = setTimeout(() => setDebouncedSearch(searchInput.trim()), 350);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  useEffect(() => {
+    void loadMeta();
   }, []);
 
-  async function loadAll() {
-    const [sRes, pRes, bRes] = await Promise.all([
-      fetch("/api/principal/students"),
+  const loadStudents = useCallback(async () => {
+    const params = new URLSearchParams();
+    if (debouncedSearch) params.set("q", debouncedSearch);
+    if (filterProgramId) params.set("programId", filterProgramId);
+    if (filterBatchId) params.set("batchId", filterBatchId);
+    if (filterStatus) params.set("status", filterStatus);
+    if (filterTeacherId) params.set("teacherId", filterTeacherId);
+    const q = params.toString();
+    const sRes = await fetch(`/api/principal/students${q ? `?${q}` : ""}`);
+    const sData = await sRes.json();
+    setStudents(sData.students || []);
+  }, [debouncedSearch, filterProgramId, filterBatchId, filterStatus, filterTeacherId]);
+
+  useEffect(() => {
+    void loadStudents();
+  }, [loadStudents]);
+
+  async function loadMeta() {
+    const [pRes, bRes, tRes] = await Promise.all([
       fetch("/api/principal/programs"),
       fetch("/api/principal/batches"),
+      fetch("/api/principal/teachers"),
     ]);
-    const sData = await sRes.json();
     const pData = await pRes.json();
     const bData = await bRes.json();
-    setStudents(sData.students || []);
+    const tData = await tRes.json();
     setPrograms(pData.programs || []);
     setBatches(bData.batches || []);
+    const tList = (tData.teachers || []) as {
+      id: string;
+      firstName: string;
+      lastName: string;
+    }[];
+    setTeachers(tList.map((u) => ({ id: u.id, firstName: u.firstName, lastName: u.lastName })));
+  }
+
+  async function loadAll() {
+    await loadMeta();
+    await loadStudents();
   }
 
   async function handleSave() {
@@ -221,22 +301,68 @@ export default function PrincipalStudentsPage() {
     loadAll();
   }
 
-  async function handleStatusChange(student: StudentRow, status: StudentStatus) {
-    await fetch(`/api/principal/students/${student.id}`, {
+  async function applyStudentStatus(
+    student: StudentRow,
+    status: StudentStatus,
+    extra?: { suspensionReason?: string; statusNote?: string }
+  ) {
+    const payload: Record<string, unknown> = {
+      firstName: student.firstName,
+      lastName: student.lastName,
+      middleName: student.middleName,
+      phone: student.phone,
+      email: student.email,
+      isActive: student.isActive,
+      programId: student.studentProfile?.programId ?? null,
+      batchId: student.studentProfile?.batchId ?? null,
+      status,
+    };
+    if (extra?.suspensionReason) payload.suspensionReason = extra.suspensionReason;
+    if (extra?.statusNote) payload.statusNote = extra.statusNote;
+
+    const res = await fetch(`/api/principal/students/${student.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName: student.firstName,
-        lastName: student.lastName,
-        middleName: student.middleName,
-        phone: student.phone,
-        email: student.email,
-        isActive: student.isActive,
-        programId: student.studentProfile?.programId ?? null,
-        batchId: student.studentProfile?.batchId ?? null,
-        status,
-      }),
+      body: JSON.stringify(payload),
     });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      setSaveBanner({ tone: "error", message: (err as { error?: string }).error || "Could not update status." });
+      return;
+    }
+    loadAll();
+  }
+
+  function handleStatusSelect(student: StudentRow, next: StudentStatus) {
+    if (next === "SUSPENDED" || next === "CANCELLED" || next === "EXPELLED" || next === "TRANSFERRED") {
+      setSuspendReason("FEES");
+      setStatusNote("");
+      setStatusModal({ student, toStatus: next });
+      return;
+    }
+    void applyStudentStatus(student, next);
+  }
+
+  async function confirmStatusModal() {
+    if (!statusModal) return;
+    const { student, toStatus } = statusModal;
+    const note = statusNote.trim();
+    if ((toStatus === "EXPELLED" || toStatus === "TRANSFERRED") && note.length < 10) {
+      setSaveBanner({
+        tone: "error",
+        message: "Please enter at least 10 characters explaining the reason (shown to the student and principals).",
+      });
+      return;
+    }
+    await applyStudentStatus(student, toStatus, {
+      suspensionReason: toStatus === "SUSPENDED" ? suspendReason : undefined,
+      statusNote: note || undefined,
+    });
+    setStatusModal(null);
+  }
+
+  function closeStatusModal() {
+    setStatusModal(null);
     loadAll();
   }
 
@@ -274,6 +400,56 @@ export default function PrincipalStudentsPage() {
         }
       />
 
+      <div className="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-gray-50/80 p-4 sm:flex-row sm:flex-wrap sm:items-end">
+        <div className="min-w-[180px] flex-1">
+          <Input
+            label="Search student"
+            placeholder="Name, email, enrollment no."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+        </div>
+        <div className="w-full min-w-[140px] sm:w-44">
+          <Select
+            label="Program"
+            value={filterProgramId}
+            onChange={(e) => {
+              setFilterProgramId(e.target.value);
+              setFilterBatchId("");
+            }}
+            options={programs.map((p) => ({ value: p.id, label: p.name }))}
+            placeholder="All programs"
+          />
+        </div>
+        <div className="w-full min-w-[140px] sm:w-44">
+          <Select
+            label="Batch"
+            value={filterBatchId}
+            onChange={(e) => setFilterBatchId(e.target.value)}
+            options={filterBatchOptions}
+            placeholder="All batches"
+          />
+        </div>
+        <div className="w-full min-w-[140px] sm:w-44">
+          <Select
+            label="Status"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value as StudentStatus | "")}
+            options={STUDENT_STATUSES.map((s) => ({ value: s, label: STATUS_LABELS[s] }))}
+            placeholder="All statuses"
+          />
+        </div>
+        <div className="w-full min-w-[160px] sm:w-48">
+          <Select
+            label="Teacher (assigned batch)"
+            value={filterTeacherId}
+            onChange={(e) => setFilterTeacherId(e.target.value)}
+            options={teacherSelectOptions}
+            placeholder="All teachers"
+          />
+        </div>
+      </div>
+
       {saveBanner && (
         <div
           className={`mb-4 rounded-lg border px-4 py-3 text-sm ${
@@ -306,7 +482,7 @@ export default function PrincipalStudentsPage() {
             {students.map((s) => {
               const avg = avgScore(s.attempts);
               const attRate = attendancePct(s.attendanceRecords);
-              const st = s.studentProfile?.status ?? "ACTIVE";
+              const st = (s.studentProfile?.status ?? "ENROLLED") as StudentStatus;
               return (
                 <tr key={s.id}>
                   <td className="px-4 py-3 text-sm font-medium text-gray-900">
@@ -317,15 +493,15 @@ export default function PrincipalStudentsPage() {
                   <td className="px-4 py-3 text-sm text-gray-500">{s.studentProfile?.batch?.name || "—"}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
-                      <Badge variant={statusBadgeVariant(st)}>{st}</Badge>
+                      <Badge variant={statusBadgeVariant(st)}>{STATUS_LABELS[st]}</Badge>
                       <select
                         className="rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                         value={st}
-                        onChange={(e) => handleStatusChange(s, e.target.value as StudentStatus)}
+                        onChange={(e) => handleStatusSelect(s, e.target.value as StudentStatus)}
                       >
                         {STUDENT_STATUSES.map((opt) => (
                           <option key={opt} value={opt}>
-                            {opt}
+                            {STATUS_LABELS[opt]}
                           </option>
                         ))}
                       </select>
@@ -365,6 +541,75 @@ export default function PrincipalStudentsPage() {
           </tbody>
         </table>
       </div>
+
+      <Modal
+        isOpen={!!statusModal}
+        onClose={closeStatusModal}
+        title={
+          statusModal?.toStatus === "SUSPENDED"
+            ? "Confirm suspension"
+            : statusModal?.toStatus === "CANCELLED"
+              ? "Confirm cancellation"
+              : statusModal?.toStatus === "EXPELLED"
+                ? "Confirm expulsion"
+                : statusModal?.toStatus === "TRANSFERRED"
+                  ? "Confirm transfer"
+                  : "Confirm status"
+        }
+        className="max-w-md"
+      >
+        {statusModal && (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">
+              {statusModal.toStatus === "SUSPENDED"
+                ? "Suspension may apply for non-payment of fees, low attendance, or incomplete compulsory academic work. The student will receive a notification."
+                : statusModal.toStatus === "CANCELLED"
+                  ? "The student will be notified that their admission has been cancelled."
+                  : statusModal.toStatus === "EXPELLED"
+                    ? "The student and principals will be notified. Enter the policy violation or non-compliance details (required, min. 10 characters)."
+                    : "The student and principals will be notified. Enter the destination institution or transfer details (required, min. 10 characters)."}
+            </p>
+            {statusModal.toStatus === "SUSPENDED" && (
+              <Select
+                label="Reason"
+                value={suspendReason}
+                onChange={(e) => setSuspendReason(e.target.value as typeof suspendReason)}
+                options={[
+                  { value: "FEES", label: "Fees — non-payment or insufficient payment" },
+                  { value: "ATTENDANCE", label: "Attendance — below required %" },
+                  { value: "ACADEMIC", label: "Academic — compulsory assignments, tests, quizzes, or projects" },
+                  { value: "OTHER", label: "Other non-compliance" },
+                ]}
+              />
+            )}
+            <Textarea
+              label={
+                statusModal.toStatus === "EXPELLED" || statusModal.toStatus === "TRANSFERRED"
+                  ? "Details (required — min. 10 characters)"
+                  : "Note to student (optional)"
+              }
+              value={statusNote}
+              onChange={(e) => setStatusNote(e.target.value)}
+              rows={3}
+              placeholder={
+                statusModal.toStatus === "EXPELLED"
+                  ? "e.g. Expelled under code of conduct for plagiarism on …"
+                  : statusModal.toStatus === "TRANSFERRED"
+                    ? "e.g. Transferred to … College, program …, effective …"
+                    : "Shown in the in-app notification."
+              }
+            />
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="outline" onClick={closeStatusModal}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={() => void confirmStatusModal()}>
+                Confirm
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
 
       <Modal
         isOpen={showModal}

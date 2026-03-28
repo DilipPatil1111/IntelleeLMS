@@ -221,6 +221,7 @@ export type BatchWhereInput = {
   assessments?: Prisma.AssessmentListRelationFilter
   attendanceSessions?: Prisma.AttendanceSessionListRelationFilter
   announcements?: Prisma.AnnouncementListRelationFilter
+  programApplications?: Prisma.ProgramApplicationListRelationFilter
 }
 
 export type BatchOrderByWithRelationInput = {
@@ -240,6 +241,7 @@ export type BatchOrderByWithRelationInput = {
   assessments?: Prisma.AssessmentOrderByRelationAggregateInput
   attendanceSessions?: Prisma.AttendanceSessionOrderByRelationAggregateInput
   announcements?: Prisma.AnnouncementOrderByRelationAggregateInput
+  programApplications?: Prisma.ProgramApplicationOrderByRelationAggregateInput
 }
 
 export type BatchWhereUniqueInput = Prisma.AtLeast<{
@@ -262,6 +264,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
   assessments?: Prisma.AssessmentListRelationFilter
   attendanceSessions?: Prisma.AttendanceSessionListRelationFilter
   announcements?: Prisma.AnnouncementListRelationFilter
+  programApplications?: Prisma.ProgramApplicationListRelationFilter
 }, "id">
 
 export type BatchOrderByWithAggregationInput = {
@@ -309,6 +312,7 @@ export type BatchCreateInput = {
   assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateInput = {
@@ -326,6 +330,7 @@ export type BatchUncheckedCreateInput = {
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUpdateInput = {
@@ -343,6 +348,7 @@ export type BatchUpdateInput = {
   assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateInput = {
@@ -360,6 +366,7 @@ export type BatchUncheckedUpdateInput = {
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateManyInput = {
@@ -594,6 +601,22 @@ export type BatchUpdateOneRequiredWithoutAttendanceSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutAttendanceSessionsInput, Prisma.BatchUpdateWithoutAttendanceSessionsInput>, Prisma.BatchUncheckedUpdateWithoutAttendanceSessionsInput>
 }
 
+export type BatchCreateNestedOneWithoutProgramApplicationsInput = {
+  create?: Prisma.XOR<Prisma.BatchCreateWithoutProgramApplicationsInput, Prisma.BatchUncheckedCreateWithoutProgramApplicationsInput>
+  connectOrCreate?: Prisma.BatchCreateOrConnectWithoutProgramApplicationsInput
+  connect?: Prisma.BatchWhereUniqueInput
+}
+
+export type BatchUpdateOneWithoutProgramApplicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.BatchCreateWithoutProgramApplicationsInput, Prisma.BatchUncheckedCreateWithoutProgramApplicationsInput>
+  connectOrCreate?: Prisma.BatchCreateOrConnectWithoutProgramApplicationsInput
+  upsert?: Prisma.BatchUpsertWithoutProgramApplicationsInput
+  disconnect?: Prisma.BatchWhereInput | boolean
+  delete?: Prisma.BatchWhereInput | boolean
+  connect?: Prisma.BatchWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutProgramApplicationsInput, Prisma.BatchUpdateWithoutProgramApplicationsInput>, Prisma.BatchUncheckedUpdateWithoutProgramApplicationsInput>
+}
+
 export type BatchCreateNestedOneWithoutAnnouncementsInput = {
   create?: Prisma.XOR<Prisma.BatchCreateWithoutAnnouncementsInput, Prisma.BatchUncheckedCreateWithoutAnnouncementsInput>
   connectOrCreate?: Prisma.BatchCreateOrConnectWithoutAnnouncementsInput
@@ -624,6 +647,7 @@ export type BatchCreateWithoutProgramInput = {
   assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutProgramInput = {
@@ -640,6 +664,7 @@ export type BatchUncheckedCreateWithoutProgramInput = {
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutProgramInput = {
@@ -697,6 +722,7 @@ export type BatchCreateWithoutAcademicYearInput = {
   assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutAcademicYearInput = {
@@ -713,6 +739,7 @@ export type BatchUncheckedCreateWithoutAcademicYearInput = {
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutAcademicYearInput = {
@@ -755,6 +782,7 @@ export type BatchCreateWithoutStudentsInput = {
   assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutStudentsInput = {
@@ -771,6 +799,7 @@ export type BatchUncheckedCreateWithoutStudentsInput = {
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutStudentsInput = {
@@ -803,6 +832,7 @@ export type BatchUpdateWithoutStudentsInput = {
   assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutStudentsInput = {
@@ -819,6 +849,7 @@ export type BatchUncheckedUpdateWithoutStudentsInput = {
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutTeacherAssignmentsInput = {
@@ -835,6 +866,7 @@ export type BatchCreateWithoutTeacherAssignmentsInput = {
   assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutTeacherAssignmentsInput = {
@@ -851,6 +883,7 @@ export type BatchUncheckedCreateWithoutTeacherAssignmentsInput = {
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutTeacherAssignmentsInput = {
@@ -883,6 +916,7 @@ export type BatchUpdateWithoutTeacherAssignmentsInput = {
   assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutTeacherAssignmentsInput = {
@@ -899,6 +933,7 @@ export type BatchUncheckedUpdateWithoutTeacherAssignmentsInput = {
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutAssessmentsInput = {
@@ -915,6 +950,7 @@ export type BatchCreateWithoutAssessmentsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutAssessmentsInput = {
@@ -931,6 +967,7 @@ export type BatchUncheckedCreateWithoutAssessmentsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutAssessmentsInput = {
@@ -963,6 +1000,7 @@ export type BatchUpdateWithoutAssessmentsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutAssessmentsInput = {
@@ -979,6 +1017,7 @@ export type BatchUncheckedUpdateWithoutAssessmentsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutAttendanceSessionsInput = {
@@ -995,6 +1034,7 @@ export type BatchCreateWithoutAttendanceSessionsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutBatchInput
   assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutAttendanceSessionsInput = {
@@ -1011,6 +1051,7 @@ export type BatchUncheckedCreateWithoutAttendanceSessionsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutBatchInput
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutAttendanceSessionsInput = {
@@ -1043,6 +1084,7 @@ export type BatchUpdateWithoutAttendanceSessionsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutBatchNestedInput
   assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutAttendanceSessionsInput = {
@@ -1058,6 +1100,91 @@ export type BatchUncheckedUpdateWithoutAttendanceSessionsInput = {
   students?: Prisma.StudentProfileUncheckedUpdateManyWithoutBatchNestedInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutBatchNestedInput
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
+}
+
+export type BatchCreateWithoutProgramApplicationsInput = {
+  id?: string
+  name: string
+  startDate: Date | string
+  endDate: Date | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  program: Prisma.ProgramCreateNestedOneWithoutBatchesInput
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutBatchesInput
+  students?: Prisma.StudentProfileCreateNestedManyWithoutBatchInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutBatchInput
+  assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
+  attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+}
+
+export type BatchUncheckedCreateWithoutProgramApplicationsInput = {
+  id?: string
+  name: string
+  programId: string
+  academicYearId: string
+  startDate: Date | string
+  endDate: Date | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutBatchInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutBatchInput
+  assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
+  attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+}
+
+export type BatchCreateOrConnectWithoutProgramApplicationsInput = {
+  where: Prisma.BatchWhereUniqueInput
+  create: Prisma.XOR<Prisma.BatchCreateWithoutProgramApplicationsInput, Prisma.BatchUncheckedCreateWithoutProgramApplicationsInput>
+}
+
+export type BatchUpsertWithoutProgramApplicationsInput = {
+  update: Prisma.XOR<Prisma.BatchUpdateWithoutProgramApplicationsInput, Prisma.BatchUncheckedUpdateWithoutProgramApplicationsInput>
+  create: Prisma.XOR<Prisma.BatchCreateWithoutProgramApplicationsInput, Prisma.BatchUncheckedCreateWithoutProgramApplicationsInput>
+  where?: Prisma.BatchWhereInput
+}
+
+export type BatchUpdateToOneWithWhereWithoutProgramApplicationsInput = {
+  where?: Prisma.BatchWhereInput
+  data: Prisma.XOR<Prisma.BatchUpdateWithoutProgramApplicationsInput, Prisma.BatchUncheckedUpdateWithoutProgramApplicationsInput>
+}
+
+export type BatchUpdateWithoutProgramApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  program?: Prisma.ProgramUpdateOneRequiredWithoutBatchesNestedInput
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutBatchesNestedInput
+  students?: Prisma.StudentProfileUpdateManyWithoutBatchNestedInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutBatchNestedInput
+  assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
+  attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+}
+
+export type BatchUncheckedUpdateWithoutProgramApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  programId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentProfileUncheckedUpdateManyWithoutBatchNestedInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutBatchNestedInput
+  assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
+  attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
 }
 
@@ -1075,6 +1202,7 @@ export type BatchCreateWithoutAnnouncementsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutBatchInput
   assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutAnnouncementsInput = {
@@ -1091,6 +1219,7 @@ export type BatchUncheckedCreateWithoutAnnouncementsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutBatchInput
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutAnnouncementsInput = {
@@ -1123,6 +1252,7 @@ export type BatchUpdateWithoutAnnouncementsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutBatchNestedInput
   assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutAnnouncementsInput = {
@@ -1139,6 +1269,7 @@ export type BatchUncheckedUpdateWithoutAnnouncementsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutBatchNestedInput
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateManyProgramInput = {
@@ -1166,6 +1297,7 @@ export type BatchUpdateWithoutProgramInput = {
   assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutProgramInput = {
@@ -1182,6 +1314,7 @@ export type BatchUncheckedUpdateWithoutProgramInput = {
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateManyWithoutProgramInput = {
@@ -1220,6 +1353,7 @@ export type BatchUpdateWithoutAcademicYearInput = {
   assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutAcademicYearInput = {
@@ -1236,6 +1370,7 @@ export type BatchUncheckedUpdateWithoutAcademicYearInput = {
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateManyWithoutAcademicYearInput = {
@@ -1260,6 +1395,7 @@ export type BatchCountOutputType = {
   assessments: number
   attendanceSessions: number
   announcements: number
+  programApplications: number
 }
 
 export type BatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1268,6 +1404,7 @@ export type BatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   assessments?: boolean | BatchCountOutputTypeCountAssessmentsArgs
   attendanceSessions?: boolean | BatchCountOutputTypeCountAttendanceSessionsArgs
   announcements?: boolean | BatchCountOutputTypeCountAnnouncementsArgs
+  programApplications?: boolean | BatchCountOutputTypeCountProgramApplicationsArgs
 }
 
 /**
@@ -1315,6 +1452,13 @@ export type BatchCountOutputTypeCountAnnouncementsArgs<ExtArgs extends runtime.T
   where?: Prisma.AnnouncementWhereInput
 }
 
+/**
+ * BatchCountOutputType without action
+ */
+export type BatchCountOutputTypeCountProgramApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramApplicationWhereInput
+}
+
 
 export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1333,6 +1477,7 @@ export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   assessments?: boolean | Prisma.Batch$assessmentsArgs<ExtArgs>
   attendanceSessions?: boolean | Prisma.Batch$attendanceSessionsArgs<ExtArgs>
   announcements?: boolean | Prisma.Batch$announcementsArgs<ExtArgs>
+  programApplications?: boolean | Prisma.Batch$programApplicationsArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batch"]>
 
@@ -1385,6 +1530,7 @@ export type BatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   assessments?: boolean | Prisma.Batch$assessmentsArgs<ExtArgs>
   attendanceSessions?: boolean | Prisma.Batch$attendanceSessionsArgs<ExtArgs>
   announcements?: boolean | Prisma.Batch$announcementsArgs<ExtArgs>
+  programApplications?: boolean | Prisma.Batch$programApplicationsArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BatchIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1406,6 +1552,7 @@ export type $BatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     assessments: Prisma.$AssessmentPayload<ExtArgs>[]
     attendanceSessions: Prisma.$AttendanceSessionPayload<ExtArgs>[]
     announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
+    programApplications: Prisma.$ProgramApplicationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1818,6 +1965,7 @@ export interface Prisma__BatchClient<T, Null = never, ExtArgs extends runtime.Ty
   assessments<T extends Prisma.Batch$assessmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$assessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceSessions<T extends Prisma.Batch$attendanceSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$attendanceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   announcements<T extends Prisma.Batch$announcementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programApplications<T extends Prisma.Batch$programApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$programApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2374,6 +2522,30 @@ export type Batch$announcementsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
+}
+
+/**
+ * Batch.programApplications
+ */
+export type Batch$programApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramApplication
+   */
+  select?: Prisma.ProgramApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramApplication
+   */
+  omit?: Prisma.ProgramApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramApplicationInclude<ExtArgs> | null
+  where?: Prisma.ProgramApplicationWhereInput
+  orderBy?: Prisma.ProgramApplicationOrderByWithRelationInput | Prisma.ProgramApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramApplicationScalarFieldEnum | Prisma.ProgramApplicationScalarFieldEnum[]
 }
 
 /**

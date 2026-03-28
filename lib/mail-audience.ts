@@ -35,7 +35,7 @@ export async function resolveStudentEmails(filters: {
   const profiles = await db.studentProfile.findMany({
     where: {
       ...where,
-      status: { in: ["ACTIVE", "ENROLLED", "ACCEPTED"] },
+      status: { in: ["APPLIED", "ENROLLED", "ACCEPTED", "COMPLETED"] },
     },
     include: { user: { select: { email: true, isActive: true } } },
   });

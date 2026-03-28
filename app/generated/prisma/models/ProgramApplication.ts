@@ -28,6 +28,7 @@ export type ProgramApplicationMinAggregateOutputType = {
   id: string | null
   applicantId: string | null
   programId: string | null
+  batchId: string | null
   status: $Enums.ApplicationStatus | null
   personalStatement: string | null
   documents: string | null
@@ -42,6 +43,7 @@ export type ProgramApplicationMaxAggregateOutputType = {
   id: string | null
   applicantId: string | null
   programId: string | null
+  batchId: string | null
   status: $Enums.ApplicationStatus | null
   personalStatement: string | null
   documents: string | null
@@ -56,6 +58,7 @@ export type ProgramApplicationCountAggregateOutputType = {
   id: number
   applicantId: number
   programId: number
+  batchId: number
   status: number
   personalStatement: number
   documents: number
@@ -72,6 +75,7 @@ export type ProgramApplicationMinAggregateInputType = {
   id?: true
   applicantId?: true
   programId?: true
+  batchId?: true
   status?: true
   personalStatement?: true
   documents?: true
@@ -86,6 +90,7 @@ export type ProgramApplicationMaxAggregateInputType = {
   id?: true
   applicantId?: true
   programId?: true
+  batchId?: true
   status?: true
   personalStatement?: true
   documents?: true
@@ -100,6 +105,7 @@ export type ProgramApplicationCountAggregateInputType = {
   id?: true
   applicantId?: true
   programId?: true
+  batchId?: true
   status?: true
   personalStatement?: true
   documents?: true
@@ -187,6 +193,7 @@ export type ProgramApplicationGroupByOutputType = {
   id: string
   applicantId: string
   programId: string
+  batchId: string | null
   status: $Enums.ApplicationStatus
   personalStatement: string | null
   documents: string | null
@@ -222,6 +229,7 @@ export type ProgramApplicationWhereInput = {
   id?: Prisma.StringFilter<"ProgramApplication"> | string
   applicantId?: Prisma.StringFilter<"ProgramApplication"> | string
   programId?: Prisma.StringFilter<"ProgramApplication"> | string
+  batchId?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
   status?: Prisma.EnumApplicationStatusFilter<"ProgramApplication"> | $Enums.ApplicationStatus
   personalStatement?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
   documents?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
@@ -232,12 +240,14 @@ export type ProgramApplicationWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"ProgramApplication"> | Date | string
   applicant?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   program?: Prisma.XOR<Prisma.ProgramScalarRelationFilter, Prisma.ProgramWhereInput>
+  batch?: Prisma.XOR<Prisma.BatchNullableScalarRelationFilter, Prisma.BatchWhereInput> | null
 }
 
 export type ProgramApplicationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   applicantId?: Prisma.SortOrder
   programId?: Prisma.SortOrder
+  batchId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   personalStatement?: Prisma.SortOrderInput | Prisma.SortOrder
   documents?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -248,6 +258,7 @@ export type ProgramApplicationOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   applicant?: Prisma.UserOrderByWithRelationInput
   program?: Prisma.ProgramOrderByWithRelationInput
+  batch?: Prisma.BatchOrderByWithRelationInput
 }
 
 export type ProgramApplicationWhereUniqueInput = Prisma.AtLeast<{
@@ -257,6 +268,7 @@ export type ProgramApplicationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ProgramApplicationWhereInput | Prisma.ProgramApplicationWhereInput[]
   applicantId?: Prisma.StringFilter<"ProgramApplication"> | string
   programId?: Prisma.StringFilter<"ProgramApplication"> | string
+  batchId?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
   status?: Prisma.EnumApplicationStatusFilter<"ProgramApplication"> | $Enums.ApplicationStatus
   personalStatement?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
   documents?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
@@ -267,12 +279,14 @@ export type ProgramApplicationWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"ProgramApplication"> | Date | string
   applicant?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   program?: Prisma.XOR<Prisma.ProgramScalarRelationFilter, Prisma.ProgramWhereInput>
+  batch?: Prisma.XOR<Prisma.BatchNullableScalarRelationFilter, Prisma.BatchWhereInput> | null
 }, "id">
 
 export type ProgramApplicationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   applicantId?: Prisma.SortOrder
   programId?: Prisma.SortOrder
+  batchId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   personalStatement?: Prisma.SortOrderInput | Prisma.SortOrder
   documents?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -293,6 +307,7 @@ export type ProgramApplicationScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ProgramApplication"> | string
   applicantId?: Prisma.StringWithAggregatesFilter<"ProgramApplication"> | string
   programId?: Prisma.StringWithAggregatesFilter<"ProgramApplication"> | string
+  batchId?: Prisma.StringNullableWithAggregatesFilter<"ProgramApplication"> | string | null
   status?: Prisma.EnumApplicationStatusWithAggregatesFilter<"ProgramApplication"> | $Enums.ApplicationStatus
   personalStatement?: Prisma.StringNullableWithAggregatesFilter<"ProgramApplication"> | string | null
   documents?: Prisma.StringNullableWithAggregatesFilter<"ProgramApplication"> | string | null
@@ -315,12 +330,14 @@ export type ProgramApplicationCreateInput = {
   updatedAt?: Date | string
   applicant: Prisma.UserCreateNestedOneWithoutApplicationsInput
   program: Prisma.ProgramCreateNestedOneWithoutApplicationsInput
+  batch?: Prisma.BatchCreateNestedOneWithoutProgramApplicationsInput
 }
 
 export type ProgramApplicationUncheckedCreateInput = {
   id?: string
   applicantId: string
   programId: string
+  batchId?: string | null
   status?: $Enums.ApplicationStatus
   personalStatement?: string | null
   documents?: string | null
@@ -343,12 +360,14 @@ export type ProgramApplicationUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applicant?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
   program?: Prisma.ProgramUpdateOneRequiredWithoutApplicationsNestedInput
+  batch?: Prisma.BatchUpdateOneWithoutProgramApplicationsNestedInput
 }
 
 export type ProgramApplicationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   applicantId?: Prisma.StringFieldUpdateOperationsInput | string
   programId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -363,6 +382,7 @@ export type ProgramApplicationCreateManyInput = {
   id?: string
   applicantId: string
   programId: string
+  batchId?: string | null
   status?: $Enums.ApplicationStatus
   personalStatement?: string | null
   documents?: string | null
@@ -389,6 +409,7 @@ export type ProgramApplicationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   applicantId?: Prisma.StringFieldUpdateOperationsInput | string
   programId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -413,6 +434,7 @@ export type ProgramApplicationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   applicantId?: Prisma.SortOrder
   programId?: Prisma.SortOrder
+  batchId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   personalStatement?: Prisma.SortOrder
   documents?: Prisma.SortOrder
@@ -427,6 +449,7 @@ export type ProgramApplicationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   applicantId?: Prisma.SortOrder
   programId?: Prisma.SortOrder
+  batchId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   personalStatement?: Prisma.SortOrder
   documents?: Prisma.SortOrder
@@ -441,6 +464,7 @@ export type ProgramApplicationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   applicantId?: Prisma.SortOrder
   programId?: Prisma.SortOrder
+  batchId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   personalStatement?: Prisma.SortOrder
   documents?: Prisma.SortOrder
@@ -535,6 +559,48 @@ export type ProgramApplicationUncheckedUpdateManyWithoutProgramNestedInput = {
   deleteMany?: Prisma.ProgramApplicationScalarWhereInput | Prisma.ProgramApplicationScalarWhereInput[]
 }
 
+export type ProgramApplicationCreateNestedManyWithoutBatchInput = {
+  create?: Prisma.XOR<Prisma.ProgramApplicationCreateWithoutBatchInput, Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput> | Prisma.ProgramApplicationCreateWithoutBatchInput[] | Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput[]
+  connectOrCreate?: Prisma.ProgramApplicationCreateOrConnectWithoutBatchInput | Prisma.ProgramApplicationCreateOrConnectWithoutBatchInput[]
+  createMany?: Prisma.ProgramApplicationCreateManyBatchInputEnvelope
+  connect?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+}
+
+export type ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput = {
+  create?: Prisma.XOR<Prisma.ProgramApplicationCreateWithoutBatchInput, Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput> | Prisma.ProgramApplicationCreateWithoutBatchInput[] | Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput[]
+  connectOrCreate?: Prisma.ProgramApplicationCreateOrConnectWithoutBatchInput | Prisma.ProgramApplicationCreateOrConnectWithoutBatchInput[]
+  createMany?: Prisma.ProgramApplicationCreateManyBatchInputEnvelope
+  connect?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+}
+
+export type ProgramApplicationUpdateManyWithoutBatchNestedInput = {
+  create?: Prisma.XOR<Prisma.ProgramApplicationCreateWithoutBatchInput, Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput> | Prisma.ProgramApplicationCreateWithoutBatchInput[] | Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput[]
+  connectOrCreate?: Prisma.ProgramApplicationCreateOrConnectWithoutBatchInput | Prisma.ProgramApplicationCreateOrConnectWithoutBatchInput[]
+  upsert?: Prisma.ProgramApplicationUpsertWithWhereUniqueWithoutBatchInput | Prisma.ProgramApplicationUpsertWithWhereUniqueWithoutBatchInput[]
+  createMany?: Prisma.ProgramApplicationCreateManyBatchInputEnvelope
+  set?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+  disconnect?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+  delete?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+  connect?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+  update?: Prisma.ProgramApplicationUpdateWithWhereUniqueWithoutBatchInput | Prisma.ProgramApplicationUpdateWithWhereUniqueWithoutBatchInput[]
+  updateMany?: Prisma.ProgramApplicationUpdateManyWithWhereWithoutBatchInput | Prisma.ProgramApplicationUpdateManyWithWhereWithoutBatchInput[]
+  deleteMany?: Prisma.ProgramApplicationScalarWhereInput | Prisma.ProgramApplicationScalarWhereInput[]
+}
+
+export type ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput = {
+  create?: Prisma.XOR<Prisma.ProgramApplicationCreateWithoutBatchInput, Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput> | Prisma.ProgramApplicationCreateWithoutBatchInput[] | Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput[]
+  connectOrCreate?: Prisma.ProgramApplicationCreateOrConnectWithoutBatchInput | Prisma.ProgramApplicationCreateOrConnectWithoutBatchInput[]
+  upsert?: Prisma.ProgramApplicationUpsertWithWhereUniqueWithoutBatchInput | Prisma.ProgramApplicationUpsertWithWhereUniqueWithoutBatchInput[]
+  createMany?: Prisma.ProgramApplicationCreateManyBatchInputEnvelope
+  set?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+  disconnect?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+  delete?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+  connect?: Prisma.ProgramApplicationWhereUniqueInput | Prisma.ProgramApplicationWhereUniqueInput[]
+  update?: Prisma.ProgramApplicationUpdateWithWhereUniqueWithoutBatchInput | Prisma.ProgramApplicationUpdateWithWhereUniqueWithoutBatchInput[]
+  updateMany?: Prisma.ProgramApplicationUpdateManyWithWhereWithoutBatchInput | Prisma.ProgramApplicationUpdateManyWithWhereWithoutBatchInput[]
+  deleteMany?: Prisma.ProgramApplicationScalarWhereInput | Prisma.ProgramApplicationScalarWhereInput[]
+}
+
 export type EnumApplicationStatusFieldUpdateOperationsInput = {
   set?: $Enums.ApplicationStatus
 }
@@ -550,11 +616,13 @@ export type ProgramApplicationCreateWithoutApplicantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   program: Prisma.ProgramCreateNestedOneWithoutApplicationsInput
+  batch?: Prisma.BatchCreateNestedOneWithoutProgramApplicationsInput
 }
 
 export type ProgramApplicationUncheckedCreateWithoutApplicantInput = {
   id?: string
   programId: string
+  batchId?: string | null
   status?: $Enums.ApplicationStatus
   personalStatement?: string | null
   documents?: string | null
@@ -598,6 +666,7 @@ export type ProgramApplicationScalarWhereInput = {
   id?: Prisma.StringFilter<"ProgramApplication"> | string
   applicantId?: Prisma.StringFilter<"ProgramApplication"> | string
   programId?: Prisma.StringFilter<"ProgramApplication"> | string
+  batchId?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
   status?: Prisma.EnumApplicationStatusFilter<"ProgramApplication"> | $Enums.ApplicationStatus
   personalStatement?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
   documents?: Prisma.StringNullableFilter<"ProgramApplication"> | string | null
@@ -619,11 +688,13 @@ export type ProgramApplicationCreateWithoutProgramInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   applicant: Prisma.UserCreateNestedOneWithoutApplicationsInput
+  batch?: Prisma.BatchCreateNestedOneWithoutProgramApplicationsInput
 }
 
 export type ProgramApplicationUncheckedCreateWithoutProgramInput = {
   id?: string
   applicantId: string
+  batchId?: string | null
   status?: $Enums.ApplicationStatus
   personalStatement?: string | null
   documents?: string | null
@@ -660,9 +731,64 @@ export type ProgramApplicationUpdateManyWithWhereWithoutProgramInput = {
   data: Prisma.XOR<Prisma.ProgramApplicationUpdateManyMutationInput, Prisma.ProgramApplicationUncheckedUpdateManyWithoutProgramInput>
 }
 
+export type ProgramApplicationCreateWithoutBatchInput = {
+  id?: string
+  status?: $Enums.ApplicationStatus
+  personalStatement?: string | null
+  documents?: string | null
+  reviewNotes?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  applicant: Prisma.UserCreateNestedOneWithoutApplicationsInput
+  program: Prisma.ProgramCreateNestedOneWithoutApplicationsInput
+}
+
+export type ProgramApplicationUncheckedCreateWithoutBatchInput = {
+  id?: string
+  applicantId: string
+  programId: string
+  status?: $Enums.ApplicationStatus
+  personalStatement?: string | null
+  documents?: string | null
+  reviewNotes?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ProgramApplicationCreateOrConnectWithoutBatchInput = {
+  where: Prisma.ProgramApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProgramApplicationCreateWithoutBatchInput, Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput>
+}
+
+export type ProgramApplicationCreateManyBatchInputEnvelope = {
+  data: Prisma.ProgramApplicationCreateManyBatchInput | Prisma.ProgramApplicationCreateManyBatchInput[]
+  skipDuplicates?: boolean
+}
+
+export type ProgramApplicationUpsertWithWhereUniqueWithoutBatchInput = {
+  where: Prisma.ProgramApplicationWhereUniqueInput
+  update: Prisma.XOR<Prisma.ProgramApplicationUpdateWithoutBatchInput, Prisma.ProgramApplicationUncheckedUpdateWithoutBatchInput>
+  create: Prisma.XOR<Prisma.ProgramApplicationCreateWithoutBatchInput, Prisma.ProgramApplicationUncheckedCreateWithoutBatchInput>
+}
+
+export type ProgramApplicationUpdateWithWhereUniqueWithoutBatchInput = {
+  where: Prisma.ProgramApplicationWhereUniqueInput
+  data: Prisma.XOR<Prisma.ProgramApplicationUpdateWithoutBatchInput, Prisma.ProgramApplicationUncheckedUpdateWithoutBatchInput>
+}
+
+export type ProgramApplicationUpdateManyWithWhereWithoutBatchInput = {
+  where: Prisma.ProgramApplicationScalarWhereInput
+  data: Prisma.XOR<Prisma.ProgramApplicationUpdateManyMutationInput, Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchInput>
+}
+
 export type ProgramApplicationCreateManyApplicantInput = {
   id?: string
   programId: string
+  batchId?: string | null
   status?: $Enums.ApplicationStatus
   personalStatement?: string | null
   documents?: string | null
@@ -684,11 +810,13 @@ export type ProgramApplicationUpdateWithoutApplicantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   program?: Prisma.ProgramUpdateOneRequiredWithoutApplicationsNestedInput
+  batch?: Prisma.BatchUpdateOneWithoutProgramApplicationsNestedInput
 }
 
 export type ProgramApplicationUncheckedUpdateWithoutApplicantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   programId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -702,6 +830,7 @@ export type ProgramApplicationUncheckedUpdateWithoutApplicantInput = {
 export type ProgramApplicationUncheckedUpdateManyWithoutApplicantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   programId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -715,6 +844,7 @@ export type ProgramApplicationUncheckedUpdateManyWithoutApplicantInput = {
 export type ProgramApplicationCreateManyProgramInput = {
   id?: string
   applicantId: string
+  batchId?: string | null
   status?: $Enums.ApplicationStatus
   personalStatement?: string | null
   documents?: string | null
@@ -736,11 +866,13 @@ export type ProgramApplicationUpdateWithoutProgramInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applicant?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
+  batch?: Prisma.BatchUpdateOneWithoutProgramApplicationsNestedInput
 }
 
 export type ProgramApplicationUncheckedUpdateWithoutProgramInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   applicantId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -754,6 +886,63 @@ export type ProgramApplicationUncheckedUpdateWithoutProgramInput = {
 export type ProgramApplicationUncheckedUpdateManyWithoutProgramInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   applicantId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ProgramApplicationCreateManyBatchInput = {
+  id?: string
+  applicantId: string
+  programId: string
+  status?: $Enums.ApplicationStatus
+  personalStatement?: string | null
+  documents?: string | null
+  reviewNotes?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ProgramApplicationUpdateWithoutBatchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  applicant?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
+  program?: Prisma.ProgramUpdateOneRequiredWithoutApplicationsNestedInput
+}
+
+export type ProgramApplicationUncheckedUpdateWithoutBatchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  applicantId?: Prisma.StringFieldUpdateOperationsInput | string
+  programId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ProgramApplicationUncheckedUpdateManyWithoutBatchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  applicantId?: Prisma.StringFieldUpdateOperationsInput | string
+  programId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   personalStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -770,6 +959,7 @@ export type ProgramApplicationSelect<ExtArgs extends runtime.Types.Extensions.In
   id?: boolean
   applicantId?: boolean
   programId?: boolean
+  batchId?: boolean
   status?: boolean
   personalStatement?: boolean
   documents?: boolean
@@ -780,12 +970,14 @@ export type ProgramApplicationSelect<ExtArgs extends runtime.Types.Extensions.In
   updatedAt?: boolean
   applicant?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   program?: boolean | Prisma.ProgramDefaultArgs<ExtArgs>
+  batch?: boolean | Prisma.ProgramApplication$batchArgs<ExtArgs>
 }, ExtArgs["result"]["programApplication"]>
 
 export type ProgramApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   applicantId?: boolean
   programId?: boolean
+  batchId?: boolean
   status?: boolean
   personalStatement?: boolean
   documents?: boolean
@@ -796,12 +988,14 @@ export type ProgramApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.
   updatedAt?: boolean
   applicant?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   program?: boolean | Prisma.ProgramDefaultArgs<ExtArgs>
+  batch?: boolean | Prisma.ProgramApplication$batchArgs<ExtArgs>
 }, ExtArgs["result"]["programApplication"]>
 
 export type ProgramApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   applicantId?: boolean
   programId?: boolean
+  batchId?: boolean
   status?: boolean
   personalStatement?: boolean
   documents?: boolean
@@ -812,12 +1006,14 @@ export type ProgramApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.
   updatedAt?: boolean
   applicant?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   program?: boolean | Prisma.ProgramDefaultArgs<ExtArgs>
+  batch?: boolean | Prisma.ProgramApplication$batchArgs<ExtArgs>
 }, ExtArgs["result"]["programApplication"]>
 
 export type ProgramApplicationSelectScalar = {
   id?: boolean
   applicantId?: boolean
   programId?: boolean
+  batchId?: boolean
   status?: boolean
   personalStatement?: boolean
   documents?: boolean
@@ -828,18 +1024,21 @@ export type ProgramApplicationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProgramApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "applicantId" | "programId" | "status" | "personalStatement" | "documents" | "reviewNotes" | "reviewedById" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["programApplication"]>
+export type ProgramApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "applicantId" | "programId" | "batchId" | "status" | "personalStatement" | "documents" | "reviewNotes" | "reviewedById" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["programApplication"]>
 export type ProgramApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   applicant?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   program?: boolean | Prisma.ProgramDefaultArgs<ExtArgs>
+  batch?: boolean | Prisma.ProgramApplication$batchArgs<ExtArgs>
 }
 export type ProgramApplicationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   applicant?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   program?: boolean | Prisma.ProgramDefaultArgs<ExtArgs>
+  batch?: boolean | Prisma.ProgramApplication$batchArgs<ExtArgs>
 }
 export type ProgramApplicationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   applicant?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   program?: boolean | Prisma.ProgramDefaultArgs<ExtArgs>
+  batch?: boolean | Prisma.ProgramApplication$batchArgs<ExtArgs>
 }
 
 export type $ProgramApplicationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -847,11 +1046,13 @@ export type $ProgramApplicationPayload<ExtArgs extends runtime.Types.Extensions.
   objects: {
     applicant: Prisma.$UserPayload<ExtArgs>
     program: Prisma.$ProgramPayload<ExtArgs>
+    batch: Prisma.$BatchPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     applicantId: string
     programId: string
+    batchId: string | null
     status: $Enums.ApplicationStatus
     personalStatement: string | null
     documents: string | null
@@ -1256,6 +1457,7 @@ export interface Prisma__ProgramApplicationClient<T, Null = never, ExtArgs exten
   readonly [Symbol.toStringTag]: "PrismaPromise"
   applicant<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   program<T extends Prisma.ProgramDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProgramDefaultArgs<ExtArgs>>): Prisma.Prisma__ProgramClient<runtime.Types.Result.GetResult<Prisma.$ProgramPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  batch<T extends Prisma.ProgramApplication$batchArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProgramApplication$batchArgs<ExtArgs>>): Prisma.Prisma__BatchClient<runtime.Types.Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1288,6 +1490,7 @@ export interface ProgramApplicationFieldRefs {
   readonly id: Prisma.FieldRef<"ProgramApplication", 'String'>
   readonly applicantId: Prisma.FieldRef<"ProgramApplication", 'String'>
   readonly programId: Prisma.FieldRef<"ProgramApplication", 'String'>
+  readonly batchId: Prisma.FieldRef<"ProgramApplication", 'String'>
   readonly status: Prisma.FieldRef<"ProgramApplication", 'ApplicationStatus'>
   readonly personalStatement: Prisma.FieldRef<"ProgramApplication", 'String'>
   readonly documents: Prisma.FieldRef<"ProgramApplication", 'String'>
@@ -1694,6 +1897,25 @@ export type ProgramApplicationDeleteManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many ProgramApplications to delete.
    */
   limit?: number
+}
+
+/**
+ * ProgramApplication.batch
+ */
+export type ProgramApplication$batchArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Batch
+   */
+  select?: Prisma.BatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Batch
+   */
+  omit?: Prisma.BatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BatchInclude<ExtArgs> | null
+  where?: Prisma.BatchWhereInput
 }
 
 /**

@@ -20,6 +20,9 @@
 # production
 /build
 
+# uploaded templates (certificate / transcript); keep local only
+public/uploads/
+
 # misc
 .DS_Store
 *.pem

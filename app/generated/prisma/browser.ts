@@ -23,6 +23,11 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
+ * Model Feedback
+ * 
+ */
+export type Feedback = Prisma.FeedbackModel
+/**
  * Model Account
  * 
  */
@@ -42,6 +47,11 @@ export type VerificationToken = Prisma.VerificationTokenModel
  * 
  */
 export type Program = Prisma.ProgramModel
+/**
+ * Model InstitutionSettings
+ * * Single-row defaults for compliance thresholds (principal Settings). Programs may override per field.
+ */
+export type InstitutionSettings = Prisma.InstitutionSettingsModel
 /**
  * Model AcademicYear
  * 
@@ -82,6 +92,11 @@ export type TopicProgress = Prisma.TopicProgressModel
  * 
  */
 export type StudentProfile = Prisma.StudentProfileModel
+/**
+ * Model StudentOnboarding
+ * * Post-enrollment checklist; created when a student is enrolled from an application.
+ */
+export type StudentOnboarding = Prisma.StudentOnboardingModel
 /**
  * Model TeacherProfile
  * 

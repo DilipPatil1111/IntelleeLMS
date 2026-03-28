@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import type { Prisma } from "@/app/generated/prisma/client";
 import { sendEmail, buildStudentWelcomeEmail } from "@/lib/email";
 import { generateTemporaryPassword } from "@/lib/password";
 import { getLoginPageUrl } from "@/lib/app-url";
@@ -7,12 +8,33 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const { searchParams } = new URL(req.url);
+  const q = searchParams.get("q")?.trim();
+  const programId = searchParams.get("programId") || undefined;
+
+  const and: Prisma.UserWhereInput[] = [{ role: "TEACHER" }];
+  if (q) {
+    and.push({
+      OR: [
+        { firstName: { contains: q, mode: "insensitive" } },
+        { lastName: { contains: q, mode: "insensitive" } },
+        { email: { contains: q, mode: "insensitive" } },
+        { teacherProfile: { is: { employeeId: { contains: q, mode: "insensitive" } } } },
+      ],
+    });
+  }
+  if (programId) {
+    and.push({
+      teacherProfile: { is: { teacherPrograms: { some: { programId } } } },
+    });
+  }
+
   const teachers = await db.user.findMany({
-    where: { role: "TEACHER" },
+    where: { AND: and },
     include: {
       teacherProfile: {
         include: {

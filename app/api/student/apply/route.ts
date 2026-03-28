@@ -26,7 +26,11 @@ export async function POST(req: Request) {
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
-  const { programId, personalStatement } = body;
+  const { programId, personalStatement, batchId } = body as {
+    programId?: string;
+    personalStatement?: string;
+    batchId?: string;
+  };
 
   if (!programId) return NextResponse.json({ error: "Program is required" }, { status: 400 });
 
@@ -35,8 +39,26 @@ export async function POST(req: Request) {
   });
   if (existing) return NextResponse.json({ error: "You already have an active application for this program" }, { status: 400 });
 
+  let validBatchId: string | null = null;
+  if (batchId && typeof batchId === "string") {
+    const b = await db.batch.findFirst({
+      where: { id: batchId, programId, isActive: true },
+    });
+    if (b) validBatchId = b.id;
+  }
+
   const application = await db.programApplication.create({
-    data: { applicantId: session.user.id, programId, personalStatement: personalStatement || null },
+    data: {
+      applicantId: session.user.id,
+      programId,
+      batchId: validBatchId,
+      personalStatement: personalStatement || null,
+    },
+  });
+
+  await db.studentProfile.updateMany({
+    where: { userId: session.user.id },
+    data: { programId, batchId: validBatchId, status: "APPLIED" },
   });
 
   // Create auto-reply notification

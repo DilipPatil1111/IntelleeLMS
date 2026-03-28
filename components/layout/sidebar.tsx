@@ -7,7 +7,7 @@ import {
   LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
-  Shield, FolderOpen, Megaphone,
+  Shield, FolderOpen, Megaphone, MessageSquare,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -22,12 +22,14 @@ const studentNav: NavItem[] = [
   { label: "Dashboard", href: "/student", icon: LayoutDashboard },
   { label: "My Profile", href: "/student/profile", icon: Users },
   { label: "Apply", href: "/student/apply", icon: FileCheck },
+  { label: "Onboarding", href: "/student/onboarding", icon: ClipboardList },
   { label: "My Program", href: "/student/program", icon: BookMarked },
   { label: "Assessments", href: "/student/assessments", icon: FileText },
   { label: "Results", href: "/student/results", icon: Award },
   { label: "Attendance", href: "/student/attendance", icon: Calendar },
   { label: "Fees", href: "/student/fees", icon: DollarSign },
   { label: "Notifications", href: "/student/notifications", icon: Bell },
+  { label: "Feedback", href: "/student/feedback", icon: MessageSquare },
 ];
 
 const teacherNav: NavItem[] = [
@@ -38,6 +40,7 @@ const teacherNav: NavItem[] = [
   { label: "Grading", href: "/teacher/grading", icon: BookOpen },
   { label: "Attendance", href: "/teacher/attendance", icon: Calendar },
   { label: "Students", href: "/teacher/students", icon: GraduationCap },
+  { label: "Feedback", href: "/teacher/feedback", icon: MessageSquare },
   { label: "Reports", href: "/teacher/reports", icon: BarChart3 },
   { label: "Subjects", href: "/teacher/subjects", icon: BookOpen },
   { label: "Course Content", href: "/teacher/modules", icon: BookMarked },
@@ -47,6 +50,8 @@ const teacherNav: NavItem[] = [
 const principalNav: NavItem[] = [
   { label: "Dashboard", href: "/principal", icon: LayoutDashboard },
   { label: "Applications", href: "/principal/applications", icon: FileCheck },
+  { label: "Feedback", href: "/principal/feedback", icon: MessageSquare },
+  { label: "Onboarding review", href: "/principal/onboarding-review", icon: ClipboardList },
   { label: "All Assessments", href: "/principal/assessments", icon: FileText },
   { label: "Students", href: "/principal/students", icon: GraduationCap },
   { label: "Teachers", href: "/principal/teachers", icon: Users },
@@ -54,7 +59,6 @@ const principalNav: NavItem[] = [
   { label: "Programs", href: "/principal/programs", icon: BookOpen },
   { label: "Batches", href: "/principal/batches", icon: Layers },
   { label: "Reports", href: "/principal/reports", icon: BarChart3 },
-  { label: "Academic Year", href: "/principal/academic-year", icon: Calendar },
   { label: "Holidays", href: "/principal/holidays", icon: Calendar },
   { label: "Email Templates", href: "/principal/email-templates", icon: Bell },
   { label: "Announcements", href: "/principal/announcements", icon: Megaphone },

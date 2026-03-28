@@ -52,10 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Feedback: 'Feedback',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Program: 'Program',
+  InstitutionSettings: 'InstitutionSettings',
   AcademicYear: 'AcademicYear',
   Batch: 'Batch',
   Subject: 'Subject',
@@ -64,6 +66,7 @@ export const ModelName = {
   TopicContent: 'TopicContent',
   TopicProgress: 'TopicProgress',
   StudentProfile: 'StudentProfile',
+  StudentOnboarding: 'StudentOnboarding',
   TeacherProfile: 'TeacherProfile',
   TeacherProgram: 'TeacherProgram',
   TeacherSubjectAssignment: 'TeacherSubjectAssignment',
@@ -133,6 +136,25 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const FeedbackScalarFieldEnum = {
+  id: 'id',
+  authorId: 'authorId',
+  authorRole: 'authorRole',
+  category: 'category',
+  aboutStudentId: 'aboutStudentId',
+  aboutTeacherId: 'aboutTeacherId',
+  title: 'title',
+  message: 'message',
+  principalReply: 'principalReply',
+  repliedAt: 'repliedAt',
+  repliedById: 'repliedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeedbackScalarFieldEnum = (typeof FeedbackScalarFieldEnum)[keyof typeof FeedbackScalarFieldEnum]
+
+
 export const AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -178,11 +200,30 @@ export const ProgramScalarFieldEnum = {
   durationYears: 'durationYears',
   durationText: 'durationText',
   isActive: 'isActive',
+  minAttendancePercent: 'minAttendancePercent',
+  minAverageMarksPercent: 'minAverageMarksPercent',
+  minFeePaidPercent: 'minFeePaidPercent',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ProgramScalarFieldEnum = (typeof ProgramScalarFieldEnum)[keyof typeof ProgramScalarFieldEnum]
+
+
+export const InstitutionSettingsScalarFieldEnum = {
+  id: 'id',
+  minAttendancePercent: 'minAttendancePercent',
+  minAverageMarksPercent: 'minAverageMarksPercent',
+  minFeePaidPercent: 'minFeePaidPercent',
+  pendingFeesAlertAmount: 'pendingFeesAlertAmount',
+  certificateTemplateUrl: 'certificateTemplateUrl',
+  certificateTemplateFileName: 'certificateTemplateFileName',
+  transcriptTemplateUrl: 'transcriptTemplateUrl',
+  transcriptTemplateFileName: 'transcriptTemplateFileName',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InstitutionSettingsScalarFieldEnum = (typeof InstitutionSettingsScalarFieldEnum)[keyof typeof InstitutionSettingsScalarFieldEnum]
 
 
 export const AcademicYearScalarFieldEnum = {
@@ -297,11 +338,31 @@ export const StudentProfileScalarFieldEnum = {
   batchId: 'batchId',
   status: 'status',
   enrollmentDate: 'enrollmentDate',
+  suspensionReason: 'suspensionReason',
+  statusNote: 'statusNote',
+  graduationCertificateSentAt: 'graduationCertificateSentAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
+
+
+export const StudentOnboardingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  contractAcknowledgedAt: 'contractAcknowledgedAt',
+  governmentIdsUploadedAt: 'governmentIdsUploadedAt',
+  feeProofUploadedAt: 'feeProofUploadedAt',
+  preAdmissionCompletedAt: 'preAdmissionCompletedAt',
+  principalConfirmedAt: 'principalConfirmedAt',
+  contractDocumentUrl: 'contractDocumentUrl',
+  preAdmissionAssessmentId: 'preAdmissionAssessmentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentOnboardingScalarFieldEnum = (typeof StudentOnboardingScalarFieldEnum)[keyof typeof StudentOnboardingScalarFieldEnum]
 
 
 export const TeacherProfileScalarFieldEnum = {
@@ -567,6 +628,7 @@ export const ProgramApplicationScalarFieldEnum = {
   id: 'id',
   applicantId: 'applicantId',
   programId: 'programId',
+  batchId: 'batchId',
   status: 'status',
   personalStatement: 'personalStatement',
   documents: 'documents',

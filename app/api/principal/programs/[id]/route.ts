@@ -9,6 +9,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
   const body = await req.json();
   const durationText = typeof body.durationText === "string" ? body.durationText.trim() : "";
+  const optFloat = (v: unknown) =>
+    v === null || v === "" ? null : typeof v === "number" && Number.isFinite(v) ? v : undefined;
+
   const program = await db.program.update({
     where: { id },
     data: {
@@ -17,6 +20,15 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       description: body.description || null,
       durationYears: typeof body.durationYears === "number" ? body.durationYears : 1,
       durationText: durationText || null,
+      ...(Object.prototype.hasOwnProperty.call(body, "minAttendancePercent") && {
+        minAttendancePercent: optFloat(body.minAttendancePercent) ?? null,
+      }),
+      ...(Object.prototype.hasOwnProperty.call(body, "minAverageMarksPercent") && {
+        minAverageMarksPercent: optFloat(body.minAverageMarksPercent) ?? null,
+      }),
+      ...(Object.prototype.hasOwnProperty.call(body, "minFeePaidPercent") && {
+        minFeePaidPercent: optFloat(body.minFeePaidPercent) ?? null,
+      }),
     },
   });
 

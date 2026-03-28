@@ -66,19 +66,39 @@ enum NotificationType {
   TEACHER_SELF_ATTENDANCE_REQUIRED
   ANNOUNCEMENT
   HOLIDAY_NOTICE
+  ONBOARDING_STUDENT_COMPLETED
+  ADMISSION_CANCELLED
+  STUDENT_SUSPENDED
+  COMPLIANCE_WARNING
+  STUDENT_EXPELLED
+  STUDENT_TRANSFERRED
+  GRADUATION_CERTIFICATE_SENT
+  FEEDBACK_REPLY
 }
 
+/** Admission / enrollment lifecycle (principal may set Cancelled, Suspended, Expelled, Transferred). */
 enum StudentStatus {
-  APPLICANT
+  APPLIED
   ACCEPTED
   ENROLLED
-  ACTIVE
-  INACTIVE
+  /** Completed academic requirements for the current phase (e.g. year) — not yet final graduation. */
+  COMPLETED
+  /** All academic and compliance requirements met; graduation certificate issued. */
+  GRADUATED
+  /** Stopped for this intake; may rejoin in a future year. */
+  RETAKE
+  CANCELLED
   SUSPENDED
   EXPELLED
   TRANSFERRED
-  GRADUATED
-  CANCELLED
+}
+
+/** Recorded when status is SUSPENDED (fees, attendance, or academic non-compliance). */
+enum SuspensionReason {
+  FEES
+  ATTENDANCE
+  ACADEMIC
+  OTHER
 }
 
 enum PolicyType {
@@ -104,6 +124,19 @@ enum ContentType {
   DOCUMENT
   URL
   PRESENTATION
+}
+
+enum FeedbackCategory {
+  PROGRAM_CONTENT
+  TEACHING
+  OTHER
+  /** Teacher-only: observation or concern about a specific student. */
+  STUDENT_CONCERN
+}
+
+enum FeedbackAuthorRole {
+  STUDENT
+  TEACHER
 }
 
 // ─── Auth / Users ────────────────────────────────────────────────────
@@ -150,6 +183,37 @@ model User {
   teacherAttendances   TeacherAttendance[]
   announcementRecipients AnnouncementRecipient[]
   announcementsCreated Announcement[] @relation("AnnouncementCreator")
+  createdAssessments     Assessment[] @relation("AssessmentCreator")
+  studentOnboarding    StudentOnboarding?
+  feedbackAuthored       Feedback[] @relation("FeedbackAuthor")
+  feedbackAboutStudent   Feedback[] @relation("FeedbackAboutStudent")
+  feedbackAboutTeacher   Feedback[] @relation("FeedbackAboutTeacher")
+  feedbackReplies        Feedback[] @relation("FeedbackRepliedBy")
+}
+
+model Feedback {
+  id             String             @id @default(cuid())
+  authorId       String
+  authorRole     FeedbackAuthorRole
+  category       FeedbackCategory
+  aboutStudentId String?
+  aboutTeacherId String?
+  title          String?
+  message        String
+  principalReply String?
+  repliedAt      DateTime?
+  repliedById    String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  author       User  @relation("FeedbackAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  aboutStudent User? @relation("FeedbackAboutStudent", fields: [aboutStudentId], references: [id], onDelete: SetNull)
+  aboutTeacher User? @relation("FeedbackAboutTeacher", fields: [aboutTeacherId], references: [id], onDelete: SetNull)
+  repliedBy    User? @relation("FeedbackRepliedBy", fields: [repliedById], references: [id], onDelete: SetNull)
+
+  @@index([authorId])
+  @@index([aboutStudentId])
+  @@index([createdAt])
 }
 
 model Account {
@@ -198,6 +262,12 @@ model Program {
   durationYears Int    @default(1)
   durationText  String?
   isActive    Boolean  @default(true)
+  /** Overrides InstitutionSettings when set (minimum % attendance required). */
+  minAttendancePercent    Float?
+  /** Minimum average score % across graded work (quizzes, tests, assignments, projects). */
+  minAverageMarksPercent  Float?
+  /** Minimum % of total program fees that must be paid to remain in good standing. */
+  minFeePaidPercent       Float?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -208,6 +278,28 @@ model Program {
   applications  ProgramApplication[]
   teacherPrograms TeacherProgram[]
   announcements Announcement[]
+}
+
+/** Single-row defaults for compliance thresholds (principal Settings). Programs may override per field. */
+model InstitutionSettings {
+  id Int @id @default(1)
+
+  /** Minimum attendance % required (program default when Program.minAttendancePercent is null). */
+  minAttendancePercent   Float @default(75)
+  /** Minimum average marks % (quizzes, tests, assignments, projects). */
+  minAverageMarksPercent Float @default(40)
+  /** Minimum % of assigned fees that must be paid (student-wise; alerts when below). */
+  minFeePaidPercent      Float @default(50)
+  /** Optional: alert when total pending fees exceed this amount (same currency as fee structures). */
+  pendingFeesAlertAmount Float?
+
+  /** Public URL path to uploaded certificate template (e.g. /uploads/templates/...). */
+  certificateTemplateUrl     String?
+  certificateTemplateFileName String?
+  transcriptTemplateUrl       String?
+  transcriptTemplateFileName  String?
+
+  updatedAt DateTime @updatedAt
 }
 
 model AcademicYear {
@@ -242,6 +334,7 @@ model Batch {
   assessments    Assessment[]
   attendanceSessions AttendanceSession[]
   announcements Announcement[]
+  programApplications ProgramApplication[]
 }
 
 model Subject {
@@ -337,8 +430,13 @@ model StudentProfile {
   enrollmentNo   String        @unique
   programId      String?
   batchId        String?
-  status         StudentStatus @default(APPLICANT)
+  status         StudentStatus @default(APPLIED)
   enrollmentDate DateTime?
+  suspensionReason SuspensionReason?
+  /** Principal note when cancelling or suspending (shown in notifications). */
+  statusNote       String?
+  /** Set when graduation certificate email was sent (avoids duplicate sends). */
+  graduationCertificateSentAt DateTime?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
@@ -346,6 +444,23 @@ model StudentProfile {
   program        Program?      @relation(fields: [programId], references: [id])
   batch          Batch?        @relation(fields: [batchId], references: [id])
   feePayments    FeePayment[]
+}
+
+/** Post-enrollment checklist; created when a student is enrolled from an application. */
+model StudentOnboarding {
+  id                         String    @id @default(cuid())
+  userId                     String    @unique
+  contractAcknowledgedAt     DateTime?
+  governmentIdsUploadedAt    DateTime?
+  feeProofUploadedAt         DateTime?
+  preAdmissionCompletedAt    DateTime?
+  principalConfirmedAt       DateTime?
+  contractDocumentUrl        String?
+  preAdmissionAssessmentId   String?
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model TeacherProfile {
@@ -449,6 +564,7 @@ model Assessment {
 
   subject          Subject          @relation(fields: [subjectId], references: [id])
   batch            Batch            @relation(fields: [batchId], references: [id])
+  creator          User             @relation("AssessmentCreator", fields: [createdById], references: [id])
   module           Module?          @relation("ModuleAssessments", fields: [moduleId], references: [id])
   topic            Topic?           @relation("TopicAssessments", fields: [topicId], references: [id])
   questions        Question[]
@@ -645,6 +761,7 @@ model ProgramApplication {
   id             String            @id @default(cuid())
   applicantId    String
   programId      String
+  batchId        String?
   status         ApplicationStatus @default(PENDING)
   personalStatement String?
   documents      String?
@@ -656,6 +773,7 @@ model ProgramApplication {
 
   applicant      User              @relation(fields: [applicantId], references: [id])
   program        Program           @relation(fields: [programId], references: [id])
+  batch          Batch?            @relation(fields: [batchId], references: [id])
 }
 
 // ─── Policies & Templates ───────────────────────────────────────────

@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getServerAppUrl } from "@/lib/app-url";
+import { sendEmail, buildEnrollmentOnboardingEmail } from "@/lib/email";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -65,12 +66,34 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       create: { userId: application.applicantId, programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
     });
 
-    // Enrollment confirmation email
+    await db.studentOnboarding.upsert({
+      where: { userId: application.applicantId },
+      create: { userId: application.applicantId },
+      update: {},
+    });
+
+    const onboardingUrl = `${appUrl.replace(/\/$/, "")}/student/onboarding`;
+    const studentUrl = `${appUrl.replace(/\/$/, "")}/student`;
+
+    const enrollPayload = buildEnrollmentOnboardingEmail({
+      firstName: application.applicant.firstName,
+      programName: application.program.name,
+      enrollmentNo,
+      studentUrl,
+      onboardingUrl,
+    });
+    await sendEmail({
+      to: application.applicant.email,
+      subject: enrollPayload.subject,
+      html: enrollPayload.html,
+      text: enrollPayload.text,
+    });
+
     const template = await db.emailTemplate.findUnique({ where: { name: "enrollment_confirmed" } });
-    const subject = template?.subject || `Enrollment Confirmed - ${application.program.name}`;
+    const subject = template?.subject || enrollPayload.subject;
     const emailBody = template?.body
       ? template.body.replace("{{firstName}}", application.applicant.firstName).replace("{{programName}}", application.program.name).replace("{{profileLink}}", `${appUrl}/student/profile`)
-      : `Dear ${application.applicant.firstName},\n\nYour enrollment in ${application.program.name} has been confirmed.\n\nYour enrollment number is: ${enrollmentNo}\n\nLogin to your dashboard: ${appUrl}/student\n\nBest regards,\nIntellee College`;
+      : enrollPayload.text;
 
     await db.scheduledEmail.create({
       data: { emailType: "ENROLLMENT_CONFIRMED", recipientEmail: application.applicant.email, subject, body: emailBody, scheduledAt: new Date() },

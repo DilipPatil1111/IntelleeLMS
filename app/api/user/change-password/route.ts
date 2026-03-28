@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
   if (user.role === "STUDENT" && wasForcedChange) {
     const profile = await db.studentProfile.findUnique({ where: { userId: user.id } });
-    if (profile && (profile.status === "ACCEPTED" || profile.status === "ACTIVE")) {
+    if (profile && profile.status === "ACCEPTED") {
       await db.studentProfile.update({
         where: { userId: user.id },
         data: { status: "ENROLLED" },

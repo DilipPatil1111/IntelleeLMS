@@ -32,6 +32,8 @@ interface SendEmailParams {
   subject: string;
   html?: string;
   text?: string;
+  /** Resend accepts Buffer or base64 string per attachment. */
+  attachments?: { filename: string; content: Buffer }[];
 }
 
 export type SendEmailResult =
@@ -39,7 +41,7 @@ export type SendEmailResult =
   | { ok: true; mock: false; id?: string }
   | { ok: false; error: string };
 
-export async function sendEmail({ to, subject, html, text }: SendEmailParams): Promise<SendEmailResult> {
+export async function sendEmail({ to, subject, html, text, attachments }: SendEmailParams): Promise<SendEmailResult> {
   const client = getResendClient();
   if (!client) {
     console.warn(
@@ -58,6 +60,14 @@ export async function sendEmail({ to, subject, html, text }: SendEmailParams): P
       subject,
       html: htmlBody,
       text: textBody || htmlBody.replace(/<[^>]+>/g, " ").trim() || "(no body)",
+      ...(attachments?.length
+        ? {
+            attachments: attachments.map((a) => ({
+              filename: a.filename,
+              content: a.content,
+            })),
+          }
+        : {}),
     });
     if (result.error) {
       const errMsg = result.error.message || "Resend rejected the send";
@@ -87,7 +97,7 @@ export function buildAssessmentInviteEmail(assessmentTitle: string, link: string
   };
 }
 
-function escapeHtml(text: string): string {
+export function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
@@ -123,6 +133,65 @@ export function buildStudentWelcomeEmail(params: {
       </div>
     `,
     text: `Hello ${firstName},\n\nYour account email: ${email}\nTemporary password: ${temporaryPassword}\n\nSign in (copy this link into your browser if needed):\n${loginUrl}\n\nYou must change your password after signing in.`,
+  };
+}
+
+export function buildRegistrationThankYouEmail(params: {
+  firstName: string;
+  programName: string;
+  loginUrl: string;
+}) {
+  const { firstName, programName, loginUrl } = params;
+  const href = escapeHtmlAttribute(loginUrl);
+  return {
+    subject: `Thank you for applying — ${programName}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4f46e5;">Intellee College</h2>
+        <p>Hello ${escapeHtml(firstName)},</p>
+        <p>Thank you for applying to <strong>${escapeHtml(programName)}</strong>. We have received your application.</p>
+        <p>Our admissions team will review it. You can sign in anytime to check your status under <strong>Apply</strong> in your student portal.</p>
+        <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open student portal</a></p>
+        <pre style="margin:12px 0;padding:12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-all;">${escapeHtml(loginUrl)}</pre>
+        <p style="color:#6b7280;font-size:13px;">You will receive another email when your application is accepted or if we need more information.</p>
+      </div>
+    `,
+    text: `Hello ${firstName},\n\nThank you for applying to ${programName}. We have received your application.\n\nPortal: ${loginUrl}\n`,
+  };
+}
+
+export function buildEnrollmentOnboardingEmail(params: {
+  firstName: string;
+  programName: string;
+  enrollmentNo: string;
+  studentUrl: string;
+  onboardingUrl: string;
+}) {
+  const { firstName, programName, enrollmentNo, studentUrl, onboardingUrl } = params;
+  const h1 = escapeHtmlAttribute(studentUrl);
+  const h2 = escapeHtmlAttribute(onboardingUrl);
+  return {
+    subject: `Enrollment confirmed — ${programName}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4f46e5;">Intellee College</h2>
+        <p>Dear ${escapeHtml(firstName)},</p>
+        <p>Congratulations! Your enrollment in <strong>${escapeHtml(programName)}</strong> is confirmed.</p>
+        <p><strong>Enrollment number:</strong> ${escapeHtml(enrollmentNo)}</p>
+        <p><strong>Next steps — onboarding</strong></p>
+        <ol style="padding-left: 20px; color: #374151;">
+          <li>Sign your student agreement (acknowledge in the portal).</li>
+          <li>Upload government-issued photo ID.</li>
+          <li>Submit first fee payment proof (screenshot or receipt).</li>
+          <li>Complete the pre-admission assessment when assigned.</li>
+        </ol>
+        <p>Course content becomes available after your principal confirms your onboarding.</p>
+        <p><a href="${h2}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Go to Onboarding</a></p>
+        <p><a href="${h1}" style="color: #4f46e5;">Student dashboard</a></p>
+        <pre style="margin:12px 0;padding:12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-all;">${escapeHtml(onboardingUrl)}</pre>
+      </div>
+    `,
+    text: `Dear ${firstName},\n\nYour enrollment in ${programName} is confirmed. Enrollment #: ${enrollmentNo}\n\nComplete onboarding: ${onboardingUrl}\nDashboard: ${studentUrl}\n`,
   };
 }
 

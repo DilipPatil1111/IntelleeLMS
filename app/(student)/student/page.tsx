@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, ClipboardList, Calendar, Award } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
+import { StudentJourneyProgress } from "@/components/student/student-journey-progress";
+import type { StudentStatus } from "@/app/generated/prisma/enums";
 
 export default async function StudentDashboard() {
   const session = await auth();
@@ -54,6 +56,8 @@ export default async function StudentDashboard() {
     },
   });
 
+  const journeyStatus = (user.studentProfile?.status ?? "APPLIED") as StudentStatus;
+
   return (
     <>
       <PageHeader
@@ -64,6 +68,8 @@ export default async function StudentDashboard() {
             : "Complete your profile to get started"
         }
       />
+
+      <StudentJourneyProgress status={journeyStatus} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard
@@ -181,6 +187,7 @@ export default async function StudentDashboard() {
                   href: "/student/notifications",
                   icon: "🔔",
                 },
+                { label: "Feedback", href: "/student/feedback", icon: "💬" },
               ].map((link) => (
                 <Link
                   key={link.href}

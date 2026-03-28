@@ -362,6 +362,7 @@ export type AssessmentWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Assessment"> | Date | string
   subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
+  creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   module?: Prisma.XOR<Prisma.ModuleNullableScalarRelationFilter, Prisma.ModuleWhereInput> | null
   topic?: Prisma.XOR<Prisma.TopicNullableScalarRelationFilter, Prisma.TopicWhereInput> | null
   questions?: Prisma.QuestionListRelationFilter
@@ -395,6 +396,7 @@ export type AssessmentOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   subject?: Prisma.SubjectOrderByWithRelationInput
   batch?: Prisma.BatchOrderByWithRelationInput
+  creator?: Prisma.UserOrderByWithRelationInput
   module?: Prisma.ModuleOrderByWithRelationInput
   topic?: Prisma.TopicOrderByWithRelationInput
   questions?: Prisma.QuestionOrderByRelationAggregateInput
@@ -431,6 +433,7 @@ export type AssessmentWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Assessment"> | Date | string
   subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
   batch?: Prisma.XOR<Prisma.BatchScalarRelationFilter, Prisma.BatchWhereInput>
+  creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   module?: Prisma.XOR<Prisma.ModuleNullableScalarRelationFilter, Prisma.ModuleWhereInput> | null
   topic?: Prisma.XOR<Prisma.TopicNullableScalarRelationFilter, Prisma.TopicWhereInput> | null
   questions?: Prisma.QuestionListRelationFilter
@@ -503,7 +506,6 @@ export type AssessmentCreateInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -518,6 +520,7 @@ export type AssessmentCreateInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
   batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
   topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
   questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
@@ -561,7 +564,6 @@ export type AssessmentUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -576,6 +578,7 @@ export type AssessmentUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
   topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
@@ -644,7 +647,6 @@ export type AssessmentUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -789,6 +791,48 @@ export type AssessmentScalarRelationFilter = {
 export type AssessmentNullableScalarRelationFilter = {
   is?: Prisma.AssessmentWhereInput | null
   isNot?: Prisma.AssessmentWhereInput | null
+}
+
+export type AssessmentCreateNestedManyWithoutCreatorInput = {
+  create?: Prisma.XOR<Prisma.AssessmentCreateWithoutCreatorInput, Prisma.AssessmentUncheckedCreateWithoutCreatorInput> | Prisma.AssessmentCreateWithoutCreatorInput[] | Prisma.AssessmentUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.AssessmentCreateOrConnectWithoutCreatorInput | Prisma.AssessmentCreateOrConnectWithoutCreatorInput[]
+  createMany?: Prisma.AssessmentCreateManyCreatorInputEnvelope
+  connect?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+}
+
+export type AssessmentUncheckedCreateNestedManyWithoutCreatorInput = {
+  create?: Prisma.XOR<Prisma.AssessmentCreateWithoutCreatorInput, Prisma.AssessmentUncheckedCreateWithoutCreatorInput> | Prisma.AssessmentCreateWithoutCreatorInput[] | Prisma.AssessmentUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.AssessmentCreateOrConnectWithoutCreatorInput | Prisma.AssessmentCreateOrConnectWithoutCreatorInput[]
+  createMany?: Prisma.AssessmentCreateManyCreatorInputEnvelope
+  connect?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+}
+
+export type AssessmentUpdateManyWithoutCreatorNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentCreateWithoutCreatorInput, Prisma.AssessmentUncheckedCreateWithoutCreatorInput> | Prisma.AssessmentCreateWithoutCreatorInput[] | Prisma.AssessmentUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.AssessmentCreateOrConnectWithoutCreatorInput | Prisma.AssessmentCreateOrConnectWithoutCreatorInput[]
+  upsert?: Prisma.AssessmentUpsertWithWhereUniqueWithoutCreatorInput | Prisma.AssessmentUpsertWithWhereUniqueWithoutCreatorInput[]
+  createMany?: Prisma.AssessmentCreateManyCreatorInputEnvelope
+  set?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+  disconnect?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+  delete?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+  connect?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+  update?: Prisma.AssessmentUpdateWithWhereUniqueWithoutCreatorInput | Prisma.AssessmentUpdateWithWhereUniqueWithoutCreatorInput[]
+  updateMany?: Prisma.AssessmentUpdateManyWithWhereWithoutCreatorInput | Prisma.AssessmentUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.AssessmentScalarWhereInput | Prisma.AssessmentScalarWhereInput[]
+}
+
+export type AssessmentUncheckedUpdateManyWithoutCreatorNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentCreateWithoutCreatorInput, Prisma.AssessmentUncheckedCreateWithoutCreatorInput> | Prisma.AssessmentCreateWithoutCreatorInput[] | Prisma.AssessmentUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.AssessmentCreateOrConnectWithoutCreatorInput | Prisma.AssessmentCreateOrConnectWithoutCreatorInput[]
+  upsert?: Prisma.AssessmentUpsertWithWhereUniqueWithoutCreatorInput | Prisma.AssessmentUpsertWithWhereUniqueWithoutCreatorInput[]
+  createMany?: Prisma.AssessmentCreateManyCreatorInputEnvelope
+  set?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+  disconnect?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+  delete?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+  connect?: Prisma.AssessmentWhereUniqueInput | Prisma.AssessmentWhereUniqueInput[]
+  update?: Prisma.AssessmentUpdateWithWhereUniqueWithoutCreatorInput | Prisma.AssessmentUpdateWithWhereUniqueWithoutCreatorInput[]
+  updateMany?: Prisma.AssessmentUpdateManyWithWhereWithoutCreatorInput | Prisma.AssessmentUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.AssessmentScalarWhereInput | Prisma.AssessmentScalarWhereInput[]
 }
 
 export type AssessmentCreateNestedManyWithoutBatchInput = {
@@ -967,14 +1011,6 @@ export type EnumAssessmentStatusFieldUpdateOperationsInput = {
   set?: $Enums.AssessmentStatus
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type AssessmentCreateNestedOneWithoutQuestionsInput = {
   create?: Prisma.XOR<Prisma.AssessmentCreateWithoutQuestionsInput, Prisma.AssessmentUncheckedCreateWithoutQuestionsInput>
   connectOrCreate?: Prisma.AssessmentCreateOrConnectWithoutQuestionsInput
@@ -1033,13 +1069,12 @@ export type AssessmentUpdateOneWithoutScheduledEmailsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentUpdateToOneWithWhereWithoutScheduledEmailsInput, Prisma.AssessmentUpdateWithoutScheduledEmailsInput>, Prisma.AssessmentUncheckedUpdateWithoutScheduledEmailsInput>
 }
 
-export type AssessmentCreateWithoutBatchInput = {
+export type AssessmentCreateWithoutCreatorInput = {
   id?: string
   title: string
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1053,6 +1088,117 @@ export type AssessmentCreateWithoutBatchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
+  batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
+  topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutAssessmentInput
+  shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
+  scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
+}
+
+export type AssessmentUncheckedCreateWithoutCreatorInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type: $Enums.AssessmentType
+  status?: $Enums.AssessmentStatus
+  subjectId: string
+  batchId: string
+  moduleId?: string | null
+  topicId?: string | null
+  isMandatory?: boolean
+  totalMarks: number
+  passingMarks?: number | null
+  duration?: number | null
+  scheduledOpenAt?: Date | string | null
+  scheduledCloseAt?: Date | string | null
+  resultsReleaseAt?: Date | string | null
+  assessmentDate?: Date | string | null
+  linkToken?: string
+  instructions?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutAssessmentInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutAssessmentInput
+  shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
+  scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
+}
+
+export type AssessmentCreateOrConnectWithoutCreatorInput = {
+  where: Prisma.AssessmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentCreateWithoutCreatorInput, Prisma.AssessmentUncheckedCreateWithoutCreatorInput>
+}
+
+export type AssessmentCreateManyCreatorInputEnvelope = {
+  data: Prisma.AssessmentCreateManyCreatorInput | Prisma.AssessmentCreateManyCreatorInput[]
+  skipDuplicates?: boolean
+}
+
+export type AssessmentUpsertWithWhereUniqueWithoutCreatorInput = {
+  where: Prisma.AssessmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.AssessmentUpdateWithoutCreatorInput, Prisma.AssessmentUncheckedUpdateWithoutCreatorInput>
+  create: Prisma.XOR<Prisma.AssessmentCreateWithoutCreatorInput, Prisma.AssessmentUncheckedCreateWithoutCreatorInput>
+}
+
+export type AssessmentUpdateWithWhereUniqueWithoutCreatorInput = {
+  where: Prisma.AssessmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.AssessmentUpdateWithoutCreatorInput, Prisma.AssessmentUncheckedUpdateWithoutCreatorInput>
+}
+
+export type AssessmentUpdateManyWithWhereWithoutCreatorInput = {
+  where: Prisma.AssessmentScalarWhereInput
+  data: Prisma.XOR<Prisma.AssessmentUpdateManyMutationInput, Prisma.AssessmentUncheckedUpdateManyWithoutCreatorInput>
+}
+
+export type AssessmentScalarWhereInput = {
+  AND?: Prisma.AssessmentScalarWhereInput | Prisma.AssessmentScalarWhereInput[]
+  OR?: Prisma.AssessmentScalarWhereInput[]
+  NOT?: Prisma.AssessmentScalarWhereInput | Prisma.AssessmentScalarWhereInput[]
+  id?: Prisma.StringFilter<"Assessment"> | string
+  title?: Prisma.StringFilter<"Assessment"> | string
+  description?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  type?: Prisma.EnumAssessmentTypeFilter<"Assessment"> | $Enums.AssessmentType
+  status?: Prisma.EnumAssessmentStatusFilter<"Assessment"> | $Enums.AssessmentStatus
+  subjectId?: Prisma.StringFilter<"Assessment"> | string
+  batchId?: Prisma.StringFilter<"Assessment"> | string
+  createdById?: Prisma.StringFilter<"Assessment"> | string
+  moduleId?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  topicId?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  isMandatory?: Prisma.BoolFilter<"Assessment"> | boolean
+  totalMarks?: Prisma.FloatFilter<"Assessment"> | number
+  passingMarks?: Prisma.FloatNullableFilter<"Assessment"> | number | null
+  duration?: Prisma.IntNullableFilter<"Assessment"> | number | null
+  scheduledOpenAt?: Prisma.DateTimeNullableFilter<"Assessment"> | Date | string | null
+  scheduledCloseAt?: Prisma.DateTimeNullableFilter<"Assessment"> | Date | string | null
+  resultsReleaseAt?: Prisma.DateTimeNullableFilter<"Assessment"> | Date | string | null
+  assessmentDate?: Prisma.DateTimeNullableFilter<"Assessment"> | Date | string | null
+  linkToken?: Prisma.StringFilter<"Assessment"> | string
+  instructions?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Assessment"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Assessment"> | Date | string
+}
+
+export type AssessmentCreateWithoutBatchInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type: $Enums.AssessmentType
+  status?: $Enums.AssessmentStatus
+  isMandatory?: boolean
+  totalMarks: number
+  passingMarks?: number | null
+  duration?: number | null
+  scheduledOpenAt?: Date | string | null
+  scheduledCloseAt?: Date | string | null
+  resultsReleaseAt?: Date | string | null
+  assessmentDate?: Date | string | null
+  linkToken?: string
+  instructions?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
   topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
   questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
@@ -1115,41 +1261,12 @@ export type AssessmentUpdateManyWithWhereWithoutBatchInput = {
   data: Prisma.XOR<Prisma.AssessmentUpdateManyMutationInput, Prisma.AssessmentUncheckedUpdateManyWithoutBatchInput>
 }
 
-export type AssessmentScalarWhereInput = {
-  AND?: Prisma.AssessmentScalarWhereInput | Prisma.AssessmentScalarWhereInput[]
-  OR?: Prisma.AssessmentScalarWhereInput[]
-  NOT?: Prisma.AssessmentScalarWhereInput | Prisma.AssessmentScalarWhereInput[]
-  id?: Prisma.StringFilter<"Assessment"> | string
-  title?: Prisma.StringFilter<"Assessment"> | string
-  description?: Prisma.StringNullableFilter<"Assessment"> | string | null
-  type?: Prisma.EnumAssessmentTypeFilter<"Assessment"> | $Enums.AssessmentType
-  status?: Prisma.EnumAssessmentStatusFilter<"Assessment"> | $Enums.AssessmentStatus
-  subjectId?: Prisma.StringFilter<"Assessment"> | string
-  batchId?: Prisma.StringFilter<"Assessment"> | string
-  createdById?: Prisma.StringFilter<"Assessment"> | string
-  moduleId?: Prisma.StringNullableFilter<"Assessment"> | string | null
-  topicId?: Prisma.StringNullableFilter<"Assessment"> | string | null
-  isMandatory?: Prisma.BoolFilter<"Assessment"> | boolean
-  totalMarks?: Prisma.FloatFilter<"Assessment"> | number
-  passingMarks?: Prisma.FloatNullableFilter<"Assessment"> | number | null
-  duration?: Prisma.IntNullableFilter<"Assessment"> | number | null
-  scheduledOpenAt?: Prisma.DateTimeNullableFilter<"Assessment"> | Date | string | null
-  scheduledCloseAt?: Prisma.DateTimeNullableFilter<"Assessment"> | Date | string | null
-  resultsReleaseAt?: Prisma.DateTimeNullableFilter<"Assessment"> | Date | string | null
-  assessmentDate?: Prisma.DateTimeNullableFilter<"Assessment"> | Date | string | null
-  linkToken?: Prisma.StringFilter<"Assessment"> | string
-  instructions?: Prisma.StringNullableFilter<"Assessment"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Assessment"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Assessment"> | Date | string
-}
-
 export type AssessmentCreateWithoutSubjectInput = {
   id?: string
   title: string
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1163,6 +1280,7 @@ export type AssessmentCreateWithoutSubjectInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
   topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
   questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
@@ -1231,7 +1349,6 @@ export type AssessmentCreateWithoutModuleInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1246,6 +1363,7 @@ export type AssessmentCreateWithoutModuleInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
   batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
   questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
   attempts?: Prisma.AttemptCreateNestedManyWithoutAssessmentInput
@@ -1313,7 +1431,6 @@ export type AssessmentCreateWithoutTopicInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1328,6 +1445,7 @@ export type AssessmentCreateWithoutTopicInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
   batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
   questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
   attempts?: Prisma.AttemptCreateNestedManyWithoutAssessmentInput
@@ -1395,7 +1513,6 @@ export type AssessmentCreateWithoutQuestionsInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1410,6 +1527,7 @@ export type AssessmentCreateWithoutQuestionsInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
   batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
   topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
   attempts?: Prisma.AttemptCreateNestedManyWithoutAssessmentInput
@@ -1467,7 +1585,6 @@ export type AssessmentUpdateWithoutQuestionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1482,6 +1599,7 @@ export type AssessmentUpdateWithoutQuestionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
   topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
   attempts?: Prisma.AttemptUpdateManyWithoutAssessmentNestedInput
@@ -1523,7 +1641,6 @@ export type AssessmentCreateWithoutAttemptsInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1538,6 +1655,7 @@ export type AssessmentCreateWithoutAttemptsInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
   batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
   topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
   questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
@@ -1595,7 +1713,6 @@ export type AssessmentUpdateWithoutAttemptsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1610,6 +1727,7 @@ export type AssessmentUpdateWithoutAttemptsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
   topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
@@ -1651,7 +1769,6 @@ export type AssessmentCreateWithoutSharesInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1666,6 +1783,7 @@ export type AssessmentCreateWithoutSharesInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
   batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
   topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
   questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
@@ -1723,7 +1841,6 @@ export type AssessmentUpdateWithoutSharesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1738,6 +1855,7 @@ export type AssessmentUpdateWithoutSharesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
   topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
@@ -1779,7 +1897,6 @@ export type AssessmentCreateWithoutScheduledEmailsInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
-  createdById: string
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1794,6 +1911,7 @@ export type AssessmentCreateWithoutScheduledEmailsInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
   batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
   module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
   topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
   questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
@@ -1851,7 +1969,6 @@ export type AssessmentUpdateWithoutScheduledEmailsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1866,6 +1983,7 @@ export type AssessmentUpdateWithoutScheduledEmailsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
   topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
@@ -1901,6 +2019,110 @@ export type AssessmentUncheckedUpdateWithoutScheduledEmailsInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
+export type AssessmentCreateManyCreatorInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type: $Enums.AssessmentType
+  status?: $Enums.AssessmentStatus
+  subjectId: string
+  batchId: string
+  moduleId?: string | null
+  topicId?: string | null
+  isMandatory?: boolean
+  totalMarks: number
+  passingMarks?: number | null
+  duration?: number | null
+  scheduledOpenAt?: Date | string | null
+  scheduledCloseAt?: Date | string | null
+  resultsReleaseAt?: Date | string | null
+  assessmentDate?: Date | string | null
+  linkToken?: string
+  instructions?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AssessmentUpdateWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scheduledOpenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledCloseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resultsReleaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  assessmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  linkToken?: Prisma.StringFieldUpdateOperationsInput | string
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
+  batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
+  topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutAssessmentNestedInput
+  shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
+  scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
+}
+
+export type AssessmentUncheckedUpdateWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.StringFieldUpdateOperationsInput | string
+  moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scheduledOpenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledCloseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resultsReleaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  assessmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  linkToken?: Prisma.StringFieldUpdateOperationsInput | string
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutAssessmentNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutAssessmentNestedInput
+  shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
+  scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
+}
+
+export type AssessmentUncheckedUpdateManyWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.StringFieldUpdateOperationsInput | string
+  moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scheduledOpenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledCloseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resultsReleaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  assessmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  linkToken?: Prisma.StringFieldUpdateOperationsInput | string
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type AssessmentCreateManyBatchInput = {
   id?: string
   title: string
@@ -1931,7 +2153,6 @@ export type AssessmentUpdateWithoutBatchInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1945,6 +2166,7 @@ export type AssessmentUpdateWithoutBatchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
   topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
@@ -2035,7 +2257,6 @@ export type AssessmentUpdateWithoutSubjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2049,6 +2270,7 @@ export type AssessmentUpdateWithoutSubjectInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
   topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
@@ -2139,7 +2361,6 @@ export type AssessmentUpdateWithoutModuleInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2154,6 +2375,7 @@ export type AssessmentUpdateWithoutModuleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
   attempts?: Prisma.AttemptUpdateManyWithoutAssessmentNestedInput
@@ -2243,7 +2465,6 @@ export type AssessmentUpdateWithoutTopicInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2258,6 +2479,7 @@ export type AssessmentUpdateWithoutTopicInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
   module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
   attempts?: Prisma.AttemptUpdateManyWithoutAssessmentNestedInput
@@ -2400,6 +2622,7 @@ export type AssessmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   updatedAt?: boolean
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   module?: boolean | Prisma.Assessment$moduleArgs<ExtArgs>
   topic?: boolean | Prisma.Assessment$topicArgs<ExtArgs>
   questions?: boolean | Prisma.Assessment$questionsArgs<ExtArgs>
@@ -2434,6 +2657,7 @@ export type AssessmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   updatedAt?: boolean
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   module?: boolean | Prisma.Assessment$moduleArgs<ExtArgs>
   topic?: boolean | Prisma.Assessment$topicArgs<ExtArgs>
 }, ExtArgs["result"]["assessment"]>
@@ -2463,6 +2687,7 @@ export type AssessmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   updatedAt?: boolean
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   module?: boolean | Prisma.Assessment$moduleArgs<ExtArgs>
   topic?: boolean | Prisma.Assessment$topicArgs<ExtArgs>
 }, ExtArgs["result"]["assessment"]>
@@ -2496,6 +2721,7 @@ export type AssessmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type AssessmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   module?: boolean | Prisma.Assessment$moduleArgs<ExtArgs>
   topic?: boolean | Prisma.Assessment$topicArgs<ExtArgs>
   questions?: boolean | Prisma.Assessment$questionsArgs<ExtArgs>
@@ -2507,12 +2733,14 @@ export type AssessmentInclude<ExtArgs extends runtime.Types.Extensions.InternalA
 export type AssessmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   module?: boolean | Prisma.Assessment$moduleArgs<ExtArgs>
   topic?: boolean | Prisma.Assessment$topicArgs<ExtArgs>
 }
 export type AssessmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   module?: boolean | Prisma.Assessment$moduleArgs<ExtArgs>
   topic?: boolean | Prisma.Assessment$topicArgs<ExtArgs>
 }
@@ -2522,6 +2750,7 @@ export type $AssessmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
   objects: {
     subject: Prisma.$SubjectPayload<ExtArgs>
     batch: Prisma.$BatchPayload<ExtArgs>
+    creator: Prisma.$UserPayload<ExtArgs>
     module: Prisma.$ModulePayload<ExtArgs> | null
     topic: Prisma.$TopicPayload<ExtArgs> | null
     questions: Prisma.$QuestionPayload<ExtArgs>[]
@@ -2948,6 +3177,7 @@ export interface Prisma__AssessmentClient<T, Null = never, ExtArgs extends runti
   readonly [Symbol.toStringTag]: "PrismaPromise"
   subject<T extends Prisma.SubjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubjectDefaultArgs<ExtArgs>>): Prisma.Prisma__SubjectClient<runtime.Types.Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   batch<T extends Prisma.BatchDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BatchDefaultArgs<ExtArgs>>): Prisma.Prisma__BatchClient<runtime.Types.Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   module<T extends Prisma.Assessment$moduleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assessment$moduleArgs<ExtArgs>>): Prisma.Prisma__ModuleClient<runtime.Types.Result.GetResult<Prisma.$ModulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   topic<T extends Prisma.Assessment$topicArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assessment$topicArgs<ExtArgs>>): Prisma.Prisma__TopicClient<runtime.Types.Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   questions<T extends Prisma.Assessment$questionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assessment$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
