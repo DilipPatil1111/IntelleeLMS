@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
-import type { Prisma } from "@/app/generated/prisma/client";
+import { Prisma } from "@/app/generated/prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -47,75 +47,121 @@ export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const assessment = await db.assessment.create({
-    data: {
-      title: body.title,
-      description: body.description || null,
-      type: body.type,
-      status: body.status || "DRAFT",
-      subjectId: body.subjectId,
-      batchId: body.batchId,
-      createdById: session.user.id,
-      totalMarks: body.totalMarks || 0,
-      passingMarks: body.passingMarks || null,
-      duration: body.duration || null,
-      scheduledOpenAt: body.scheduledOpenAt ? new Date(body.scheduledOpenAt) : null,
-      scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
-      assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
-      instructions: body.instructions || null,
-      moduleId: body.moduleNameText?.trim() ? null : body.moduleId || null,
-      topicId: body.topicNameText?.trim() ? null : body.topicId || null,
-      moduleNameText: body.moduleNameText?.trim() || null,
-      topicNameText: body.topicNameText?.trim() || null,
-      isMandatory: body.isMandatory || false,
-      questions: {
-        create: (body.questions || []).map((q: Record<string, unknown>, idx: number) => ({
-          type: q.type,
-          questionText: q.questionText,
-          marks: q.marks || 1,
-          orderIndex: idx,
-          correctAnswer: q.correctAnswer || null,
-          maxLength: q.maxLength || null,
-          mediaUrl: (q.mediaUrl as string) || null,
-          mediaType: (q.mediaType as string) || null,
-          additionalInfo: (q.additionalInfo as string) || null,
-          options: {
-            create: ((q.options as Array<Record<string, unknown>>) || []).map((o: Record<string, unknown>, oIdx: number) => ({
-              optionText: o.optionText,
-              isCorrect: o.isCorrect || false,
-              orderIndex: oIdx,
-            })),
-          },
-        })),
-      },
-    },
-  });
-
-  const rawIds = body.assignedStudentIds as string[] | undefined;
-  const batchHasStudents =
-    (await db.studentProfile.count({ where: { batchId: assessment.batchId } })) > 0;
-
-  if (rawIds !== undefined && rawIds !== null) {
-    const assigned = [...new Set(rawIds.filter(Boolean))];
-    if (batchHasStudents && assigned.length === 0) {
+    if (!body.subjectId || !body.batchId) {
       return NextResponse.json(
-        { error: "Select at least one student in this batch to assign the assessment." },
+        { error: "Subject and batch are required. Go back to step 1 and select both." },
         { status: 400 }
       );
     }
-    await syncAssessmentAssignedStudents(assessment.id, assigned);
-  } else {
-    const inBatch = await db.studentProfile.findMany({
-      where: { batchId: assessment.batchId },
-      select: { userId: true },
-    });
-    await syncAssessmentAssignedStudents(
-      assessment.id,
-      inBatch.map((p) => p.userId)
-    );
-  }
 
-  return NextResponse.json({ id: assessment.id });
+    const rawIds = body.assignedStudentIds as string[] | undefined;
+    const batchHasStudents =
+      (await db.studentProfile.count({ where: { batchId: body.batchId } })) > 0;
+
+    if (rawIds !== undefined && rawIds !== null) {
+      const assigned = [...new Set(rawIds.filter(Boolean))];
+      if (batchHasStudents && assigned.length === 0) {
+        return NextResponse.json(
+          { error: "Select at least one student in this batch to assign the assessment." },
+          { status: 400 }
+        );
+      }
+      if (assigned.length > 0) {
+        const validInBatch = await db.studentProfile.count({
+          where: { batchId: body.batchId, userId: { in: assigned } },
+        });
+        if (validInBatch !== assigned.length) {
+          return NextResponse.json(
+            {
+              error:
+                "One or more selected students are not in this batch. Refresh the page and pick students again.",
+            },
+            { status: 400 }
+          );
+        }
+      }
+    }
+
+    const assessment = await db.assessment.create({
+      data: {
+        title: body.title,
+        description: body.description || null,
+        type: body.type,
+        status: body.status || "DRAFT",
+        subjectId: body.subjectId,
+        batchId: body.batchId,
+        createdById: session.user.id,
+        totalMarks: body.totalMarks || 0,
+        passingMarks: body.passingMarks ?? null,
+        duration: body.duration ?? null,
+        scheduledOpenAt: body.scheduledOpenAt ? new Date(body.scheduledOpenAt) : null,
+        scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
+        assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
+        instructions: body.instructions || null,
+        moduleId: body.moduleNameText?.trim() ? null : body.moduleId || null,
+        topicId: body.topicNameText?.trim() ? null : body.topicId || null,
+        moduleNameText: body.moduleNameText?.trim() || null,
+        topicNameText: body.topicNameText?.trim() || null,
+        isMandatory: body.isMandatory || false,
+        questions: {
+          create: (body.questions || []).map((q: Record<string, unknown>, idx: number) => ({
+            type: q.type,
+            questionText: q.questionText,
+            marks: q.marks || 1,
+            orderIndex: idx,
+            correctAnswer: q.correctAnswer || null,
+            maxLength: q.maxLength ?? null,
+            mediaUrl: (q.mediaUrl as string) || null,
+            mediaType: (q.mediaType as string) || null,
+            additionalInfo: (q.additionalInfo as string) || null,
+            options: {
+              create: ((q.options as Array<Record<string, unknown>>) || []).map((o: Record<string, unknown>, oIdx: number) => ({
+                optionText: o.optionText,
+                isCorrect: o.isCorrect || false,
+                orderIndex: oIdx,
+              })),
+            },
+          })),
+        },
+      },
+    });
+
+    if (rawIds !== undefined && rawIds !== null) {
+      const assigned = [...new Set(rawIds.filter(Boolean))];
+      await syncAssessmentAssignedStudents(assessment.id, assigned);
+    } else {
+      const inBatch = await db.studentProfile.findMany({
+        where: { batchId: assessment.batchId },
+        select: { userId: true },
+      });
+      await syncAssessmentAssignedStudents(
+        assessment.id,
+        inBatch.map((p) => p.userId)
+      );
+    }
+
+    return NextResponse.json({ id: assessment.id });
+  } catch (e) {
+    console.error("POST /api/teacher/assessments", e);
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2003") {
+        return NextResponse.json(
+          {
+            error:
+              "Invalid subject, batch, or student link. Re-select program, subject, and batch on step 1, then try again.",
+          },
+          { status: 400 }
+        );
+      }
+      if (e.code === "P2025") {
+        return NextResponse.json({ error: "Record not found." }, { status: 400 });
+      }
+    }
+    const message =
+      e instanceof Error ? e.message : "Could not create assessment. If this persists, ensure the database migration for AssessmentAssignedStudent has been applied.";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

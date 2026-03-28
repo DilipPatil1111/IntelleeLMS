@@ -287,14 +287,27 @@ export default function CreateAssessmentPage() {
           assignedStudentIds: selectedStudentIds,
         }),
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data: { id?: string; error?: string } = {};
+      try {
+        data = text ? (JSON.parse(text) as { id?: string; error?: string }) : {};
+      } catch {
+        setError(text?.slice(0, 200) || "Invalid response from server.");
+        return;
+      }
+      if (!res.ok) {
+        setError(data.error || `Request failed (${res.status}).`);
+        return;
+      }
       if (data.error) {
         setError(data.error);
-      } else {
+      } else if (data.id) {
         router.push(`/teacher/assessments/${data.id}`);
+      } else {
+        setError("No assessment id returned. Try again or contact support.");
       }
-    } catch {
-      setError("Failed to create assessment");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to create assessment");
     }
     setLoading(false);
   }
