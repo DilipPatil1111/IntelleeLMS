@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import type { Prisma } from "@/app/generated/prisma/client";
 import { NextResponse } from "next/server";
 
@@ -91,6 +92,30 @@ export async function POST(req: Request) {
       },
     },
   });
+
+  const rawIds = body.assignedStudentIds as string[] | undefined;
+  const batchHasStudents =
+    (await db.studentProfile.count({ where: { batchId: assessment.batchId } })) > 0;
+
+  if (rawIds !== undefined && rawIds !== null) {
+    const assigned = [...new Set(rawIds.filter(Boolean))];
+    if (batchHasStudents && assigned.length === 0) {
+      return NextResponse.json(
+        { error: "Select at least one student in this batch to assign the assessment." },
+        { status: 400 }
+      );
+    }
+    await syncAssessmentAssignedStudents(assessment.id, assigned);
+  } else {
+    const inBatch = await db.studentProfile.findMany({
+      where: { batchId: assessment.batchId },
+      select: { userId: true },
+    });
+    await syncAssessmentAssignedStudents(
+      assessment.id,
+      inBatch.map((p) => p.userId)
+    );
+  }
 
   return NextResponse.json({ id: assessment.id });
 }

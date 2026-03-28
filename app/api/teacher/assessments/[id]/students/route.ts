@@ -14,12 +14,18 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   if (!assessment) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const profiles = await db.studentProfile.findMany({
-    where: { batchId: assessment.batchId },
-    include: {
-      user: { select: { id: true, firstName: true, lastName: true, email: true } },
-    },
-  });
+  const [profiles, assignedRows] = await Promise.all([
+    db.studentProfile.findMany({
+      where: { batchId: assessment.batchId },
+      include: {
+        user: { select: { id: true, firstName: true, lastName: true, email: true } },
+      },
+    }),
+    db.assessmentAssignedStudent.findMany({
+      where: { assessmentId: id },
+      select: { studentId: true },
+    }),
+  ]);
 
   const students = profiles.map((p) => ({
     id: p.user.id,
@@ -28,5 +34,11 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     email: p.user.email,
   }));
 
-  return NextResponse.json({ students });
+  const assignedStudentIds = assignedRows.map((r) => r.studentId);
+
+  return NextResponse.json({
+    students,
+    /** Empty = legacy assessment (treat as whole batch in UI until publish saves rows). */
+    assignedStudentIds,
+  });
 }

@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,8 +33,8 @@ export default async function StudentAssessmentsPage() {
 
   const assessments = await db.assessment.findMany({
     where: {
-      batchId: user.studentProfile.batchId ?? undefined,
       status: { in: ["PUBLISHED", "CLOSED", "GRADED"] },
+      AND: [studentVisibleAssessmentFilter(user.id, user.studentProfile.batchId)],
     },
     include: {
       subject: true,

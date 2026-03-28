@@ -128,6 +128,11 @@ export type FeePayment = Prisma.FeePaymentModel
  */
 export type Assessment = Prisma.AssessmentModel
 /**
+ * Model AssessmentAssignedStudent
+ * 
+ */
+export type AssessmentAssignedStudent = Prisma.AssessmentAssignedStudentModel
+/**
  * Model Question
  * 
  */

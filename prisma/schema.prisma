@@ -189,6 +189,7 @@ model User {
   feedbackAboutStudent   Feedback[] @relation("FeedbackAboutStudent")
   feedbackAboutTeacher   Feedback[] @relation("FeedbackAboutTeacher")
   feedbackReplies        Feedback[] @relation("FeedbackRepliedBy")
+  assessmentAssignments  AssessmentAssignedStudent[] @relation("AssessmentAssignedStudents")
 }
 
 model Feedback {
@@ -585,6 +586,21 @@ model Assessment {
   attempts         Attempt[]
   shares           AssessmentShare[]
   scheduledEmails  ScheduledEmail[]
+  /** When empty, any student in the batch may see the assessment (legacy). */
+  assignedStudents AssessmentAssignedStudent[]
+}
+
+model AssessmentAssignedStudent {
+  id            String   @id @default(cuid())
+  assessmentId  String
+  studentId     String
+  createdAt     DateTime @default(now())
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  student    User       @relation("AssessmentAssignedStudents", fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([assessmentId, studentId])
+  @@index([studentId])
 }
 
 model Question {

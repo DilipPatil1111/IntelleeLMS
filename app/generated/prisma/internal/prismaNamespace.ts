@@ -406,6 +406,7 @@ export const ModelName = {
   FeeStructure: 'FeeStructure',
   FeePayment: 'FeePayment',
   Assessment: 'Assessment',
+  AssessmentAssignedStudent: 'AssessmentAssignedStudent',
   Question: 'Question',
   QuestionOption: 'QuestionOption',
   Attempt: 'Attempt',
@@ -439,7 +440,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "assessment" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog"
+    modelProps: "user" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2068,6 +2069,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AssessmentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AssessmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    AssessmentAssignedStudent: {
+      payload: Prisma.$AssessmentAssignedStudentPayload<ExtArgs>
+      fields: Prisma.AssessmentAssignedStudentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AssessmentAssignedStudentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AssessmentAssignedStudentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>
+        }
+        findFirst: {
+          args: Prisma.AssessmentAssignedStudentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AssessmentAssignedStudentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>
+        }
+        findMany: {
+          args: Prisma.AssessmentAssignedStudentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>[]
+        }
+        create: {
+          args: Prisma.AssessmentAssignedStudentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>
+        }
+        createMany: {
+          args: Prisma.AssessmentAssignedStudentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AssessmentAssignedStudentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>[]
+        }
+        delete: {
+          args: Prisma.AssessmentAssignedStudentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>
+        }
+        update: {
+          args: Prisma.AssessmentAssignedStudentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>
+        }
+        deleteMany: {
+          args: Prisma.AssessmentAssignedStudentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AssessmentAssignedStudentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AssessmentAssignedStudentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>[]
+        }
+        upsert: {
+          args: Prisma.AssessmentAssignedStudentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentAssignedStudentPayload>
+        }
+        aggregate: {
+          args: Prisma.AssessmentAssignedStudentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAssessmentAssignedStudent>
+        }
+        groupBy: {
+          args: Prisma.AssessmentAssignedStudentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentAssignedStudentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AssessmentAssignedStudentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentAssignedStudentCountAggregateOutputType> | number
         }
       }
     }
@@ -3801,6 +3876,16 @@ export const AssessmentScalarFieldEnum = {
 export type AssessmentScalarFieldEnum = (typeof AssessmentScalarFieldEnum)[keyof typeof AssessmentScalarFieldEnum]
 
 
+export const AssessmentAssignedStudentScalarFieldEnum = {
+  id: 'id',
+  assessmentId: 'assessmentId',
+  studentId: 'studentId',
+  createdAt: 'createdAt'
+} as const
+
+export type AssessmentAssignedStudentScalarFieldEnum = (typeof AssessmentAssignedStudentScalarFieldEnum)[keyof typeof AssessmentAssignedStudentScalarFieldEnum]
+
+
 export const QuestionScalarFieldEnum = {
   id: 'id',
   assessmentId: 'assessmentId',
@@ -4493,6 +4578,7 @@ export type GlobalOmitConfig = {
   feeStructure?: Prisma.FeeStructureOmit
   feePayment?: Prisma.FeePaymentOmit
   assessment?: Prisma.AssessmentOmit
+  assessmentAssignedStudent?: Prisma.AssessmentAssignedStudentOmit
   question?: Prisma.QuestionOmit
   questionOption?: Prisma.QuestionOptionOmit
   attempt?: Prisma.AttemptOmit

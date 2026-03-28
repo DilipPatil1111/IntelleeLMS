@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import { getServerAppUrl } from "@/lib/app-url";
 import { NextResponse } from "next/server";
 
@@ -20,6 +21,15 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   });
 
   if (!assessment) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  if (!selectedStudentIds.length) {
+    return NextResponse.json(
+      { error: "Select at least one student to assign this assessment." },
+      { status: 400 }
+    );
+  }
+
+  await syncAssessmentAssignedStudents(id, selectedStudentIds);
 
   await db.assessment.update({
     where: { id },

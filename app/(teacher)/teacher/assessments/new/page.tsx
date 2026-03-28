@@ -12,6 +12,13 @@ import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
 import { Plus, Trash2, Sparkles, Film, FileUp } from "lucide-react";
 
+interface BatchStudent {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 interface QuestionForm {
   type: "MCQ" | "SHORT" | "PARAGRAPH";
   questionText: string;
@@ -77,6 +84,35 @@ export default function CreateAssessmentPage() {
   const [aiTypes, setAiTypes] = useState<string[]>(["MCQ"]);
   const [aiGenerating, setAiGenerating] = useState(false);
   const [importingFile, setImportingFile] = useState(false);
+
+  const [batchStudents, setBatchStudents] = useState<BatchStudent[]>([]);
+  const [loadingBatchStudents, setLoadingBatchStudents] = useState(false);
+  const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!form.batchId) {
+      setBatchStudents([]);
+      setSelectedStudentIds([]);
+      return;
+    }
+    setLoadingBatchStudents(true);
+    fetch(`/api/teacher/batches/${form.batchId}/students`)
+      .then((r) => {
+        if (!r.ok) throw new Error("Could not load students for this batch");
+        return r.json();
+      })
+      .then((data) => {
+        const list: BatchStudent[] = data.students || [];
+        setBatchStudents(list);
+        setSelectedStudentIds(list.map((s) => s.id));
+      })
+      .catch((e: Error) => {
+        setError(e.message || "Failed to load students");
+        setBatchStudents([]);
+        setSelectedStudentIds([]);
+      })
+      .finally(() => setLoadingBatchStudents(false));
+  }, [form.batchId]);
 
   useEffect(() => {
     fetch("/api/teacher/options")
@@ -231,6 +267,12 @@ export default function CreateAssessmentPage() {
     setLoading(true);
     setError("");
 
+    if (batchStudents.length > 0 && selectedStudentIds.length === 0) {
+      setError("Select at least one student to assign this assessment (or use Select all).");
+      setLoading(false);
+      return;
+    }
+
     const totalMarks = questions.reduce((sum, q) => sum + q.marks, 0);
 
     try {
@@ -242,6 +284,7 @@ export default function CreateAssessmentPage() {
           totalMarks,
           status: publish ? "PUBLISHED" : "DRAFT",
           questions,
+          assignedStudentIds: selectedStudentIds,
         }),
       });
       const data = await res.json();
@@ -329,6 +372,78 @@ export default function CreateAssessmentPage() {
                 <Select label="Batch" value={form.batchId} onChange={(e) => setForm({ ...form, batchId: e.target.value })} options={batchOptions} placeholder="Select batch" />
                 <Input label="Duration (minutes)" type="number" value={form.duration || ""} onChange={(e) => setForm({ ...form, duration: parseInt(e.target.value) || 0 })} />
               </div>
+
+              {form.batchId && (
+                <div className="rounded-lg border border-gray-200 bg-gray-50/50 p-4 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Assign to students</p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Only selected students will see this assessment after it is published.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setSelectedStudentIds(batchStudents.map((s) => s.id))}
+                        disabled={batchStudents.length === 0 || loadingBatchStudents}
+                      >
+                        Select all
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setSelectedStudentIds([])}
+                        disabled={batchStudents.length === 0 || loadingBatchStudents}
+                      >
+                        Deselect all
+                      </Button>
+                    </div>
+                  </div>
+                  {loadingBatchStudents ? (
+                    <p className="text-sm text-gray-500">Loading students in this batch…</p>
+                  ) : batchStudents.length === 0 ? (
+                    <p className="text-sm text-amber-800 bg-amber-50 border border-amber-100 rounded-md px-3 py-2">
+                      No students are enrolled in this batch yet. You can still save a draft; add students to the batch, then edit the assessment to assign them before publishing.
+                    </p>
+                  ) : (
+                    <div className="max-h-52 overflow-y-auto rounded-md border border-gray-200 bg-white divide-y divide-gray-100">
+                      {batchStudents.map((s) => (
+                        <label
+                          key={s.id}
+                          className="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            checked={selectedStudentIds.includes(s.id)}
+                            onChange={() =>
+                              setSelectedStudentIds((prev) =>
+                                prev.includes(s.id) ? prev.filter((x) => x !== s.id) : [...prev, s.id]
+                              )
+                            }
+                          />
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {s.firstName} {s.lastName}
+                            </p>
+                            <p className="text-xs text-gray-500 truncate">{s.email}</p>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                  {batchStudents.length > 0 && (
+                    <p className="text-xs text-gray-600">
+                      <span className="font-medium text-gray-800">{selectedStudentIds.length}</span> of{" "}
+                      {batchStudents.length} student{batchStudents.length !== 1 ? "s" : ""} selected
+                    </p>
+                  )}
+                </div>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Input label="Passing Marks" type="number" value={form.passingMarks || ""} onChange={(e) => setForm({ ...form, passingMarks: parseInt(e.target.value) || 0 })} />
                 <Input label="Assessment Date" type="date" value={form.assessmentDate} onChange={(e) => setForm({ ...form, assessmentDate: e.target.value })} />
@@ -364,7 +479,8 @@ export default function CreateAssessmentPage() {
                     !form.subjectId ||
                     !form.batchId ||
                     programs.length === 0 ||
-                    (programs.length > 1 && !resolvedProgramId)
+                    (programs.length > 1 && !resolvedProgramId) ||
+                    (batchStudents.length > 0 && selectedStudentIds.length === 0)
                   }
                 >
                   Next: Add Questions
@@ -559,6 +675,14 @@ export default function CreateAssessmentPage() {
               <div><p className="text-xs text-gray-500">Total Marks</p><p className="font-medium">{questions.reduce((s, q) => s + q.marks, 0)}</p></div>
               <div><p className="text-xs text-gray-500">Passing Marks</p><p className="font-medium">{form.passingMarks || "Not set"}</p></div>
               <div><p className="text-xs text-gray-500">Duration</p><p className="font-medium">{form.duration ? `${form.duration} min` : "Unlimited"}</p></div>
+              <div className="col-span-2">
+                <p className="text-xs text-gray-500">Assigned students</p>
+                <p className="font-medium">
+                  {batchStudents.length === 0
+                    ? "No students in batch (assign when enrollments exist)"
+                    : `${selectedStudentIds.length} of ${batchStudents.length} selected`}
+                </p>
+              </div>
             </div>
 
             <div className="mb-6 space-y-2">

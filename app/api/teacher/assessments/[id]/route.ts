@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import { NextResponse } from "next/server";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -12,6 +13,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     include: {
       subject: true,
       batch: true,
+      assignedStudents: { select: { studentId: true } },
       questions: {
         include: { options: { orderBy: { orderIndex: "asc" } } },
         orderBy: { orderIndex: "asc" },
@@ -74,6 +76,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       },
     },
   });
+
+  const assigned = (body.assignedStudentIds as string[] | undefined)?.filter(Boolean);
+  if (assigned !== undefined) {
+    await syncAssessmentAssignedStudents(id, assigned);
+  }
 
   return NextResponse.json({ id: assessment.id });
 }

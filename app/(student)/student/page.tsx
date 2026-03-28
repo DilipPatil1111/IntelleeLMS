@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatCard } from "@/components/ui/stat-card";
@@ -50,9 +51,9 @@ export default async function StudentDashboard() {
 
   const pendingAssessments = await db.assessment.count({
     where: {
-      batchId: user.studentProfile?.batchId || "",
       status: "PUBLISHED",
       attempts: { none: { studentId: user.id } },
+      AND: [studentVisibleAssessmentFilter(user.id, user.studentProfile?.batchId ?? null)],
     },
   });
 

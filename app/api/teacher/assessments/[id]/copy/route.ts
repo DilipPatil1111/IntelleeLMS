@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -13,6 +14,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const source = await db.assessment.findUnique({
     where: { id },
     include: {
+      assignedStudents: { select: { studentId: true } },
       questions: {
         include: { options: { orderBy: { orderIndex: "asc" } } },
         orderBy: { orderIndex: "asc" },
@@ -60,6 +62,20 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       },
     },
   });
+
+  const fromSource = source.assignedStudents.map((a) => a.studentId);
+  if (fromSource.length > 0) {
+    await syncAssessmentAssignedStudents(copy.id, fromSource);
+  } else {
+    const inBatch = await db.studentProfile.findMany({
+      where: { batchId: copy.batchId },
+      select: { userId: true },
+    });
+    await syncAssessmentAssignedStudents(
+      copy.id,
+      inBatch.map((p) => p.userId)
+    );
+  }
 
   return NextResponse.json({ id: copy.id });
 }

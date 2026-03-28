@@ -28,29 +28,30 @@ export function AssessmentActions({ assessmentId, status, title }: { assessmentI
   const [copying, setCopying] = useState(false);
 
   useEffect(() => {
-    if (showPublish) {
-      fetch(`/api/teacher/assessments/${assessmentId}/students`)
-        .then((r) => r.json())
-        .then((data) => {
-          const list = data.students || [];
-          setStudents(list);
-          setSelectedIds(list.map((s: Student) => s.id));
-        });
-    }
+    if (!showPublish) return;
+    fetch(`/api/teacher/assessments/${assessmentId}/students`)
+      .then((r) => r.json())
+      .then((data: { students?: Student[]; assignedStudentIds?: string[] }) => {
+        const list = data.students || [];
+        setStudents(list);
+        const assigned = data.assignedStudentIds ?? [];
+        const inBatch = new Set(list.map((s) => s.id));
+        if (assigned.length > 0) {
+          setSelectedIds(assigned.filter((id) => inBatch.has(id)));
+        } else {
+          setSelectedIds(list.map((s) => s.id));
+        }
+      })
+      .catch(() => {
+        setStudents([]);
+        setSelectedIds([]);
+      });
   }, [showPublish, assessmentId]);
 
   function toggleStudent(id: string) {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
-  }
-
-  function toggleAll() {
-    if (selectedIds.length === students.length) {
-      setSelectedIds([]);
-    } else {
-      setSelectedIds(students.map((s) => s.id));
-    }
   }
 
   async function handlePublish() {
@@ -110,12 +111,24 @@ export function AssessmentActions({ assessmentId, status, title }: { assessmentI
       <Modal isOpen={showPublish} onClose={() => setShowPublish(false)} title="Publish Assessment" className="max-w-xl">
         <p className="text-sm text-gray-500 mb-4">Select which students should receive this assessment. All students in the batch are selected by default.</p>
 
-        <div className="mb-3 flex items-center justify-between">
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-            <input type="checkbox" checked={selectedIds.length === students.length && students.length > 0} onChange={toggleAll} className="rounded text-indigo-600" />
-            Select All ({students.length})
-          </label>
-          <span className="text-xs text-gray-400">{selectedIds.length} selected</span>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-800"
+              onClick={() => setSelectedIds(students.map((s) => s.id))}
+            >
+              Select all
+            </button>
+            <button
+              type="button"
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+              onClick={() => setSelectedIds([])}
+            >
+              Deselect all
+            </button>
+          </div>
+          <span className="text-xs text-gray-500">{selectedIds.length} of {students.length} selected</span>
         </div>
 
         <div className="max-h-64 overflow-y-auto border border-gray-200 rounded-lg divide-y divide-gray-100">
