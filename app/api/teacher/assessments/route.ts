@@ -64,8 +64,10 @@ export async function POST(req: Request) {
       scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
       assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
       instructions: body.instructions || null,
-      moduleId: body.moduleId || null,
-      topicId: body.topicId || null,
+      moduleId: body.moduleNameText?.trim() ? null : body.moduleId || null,
+      topicId: body.topicNameText?.trim() ? null : body.topicId || null,
+      moduleNameText: body.moduleNameText?.trim() || null,
+      topicNameText: body.topicNameText?.trim() || null,
       isMandatory: body.isMandatory || false,
       questions: {
         create: (body.questions || []).map((q: Record<string, unknown>, idx: number) => ({

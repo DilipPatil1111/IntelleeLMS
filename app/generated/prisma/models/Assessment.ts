@@ -49,6 +49,8 @@ export type AssessmentMinAggregateOutputType = {
   createdById: string | null
   moduleId: string | null
   topicId: string | null
+  moduleNameText: string | null
+  topicNameText: string | null
   isMandatory: boolean | null
   totalMarks: number | null
   passingMarks: number | null
@@ -74,6 +76,8 @@ export type AssessmentMaxAggregateOutputType = {
   createdById: string | null
   moduleId: string | null
   topicId: string | null
+  moduleNameText: string | null
+  topicNameText: string | null
   isMandatory: boolean | null
   totalMarks: number | null
   passingMarks: number | null
@@ -99,6 +103,8 @@ export type AssessmentCountAggregateOutputType = {
   createdById: number
   moduleId: number
   topicId: number
+  moduleNameText: number
+  topicNameText: number
   isMandatory: number
   totalMarks: number
   passingMarks: number
@@ -138,6 +144,8 @@ export type AssessmentMinAggregateInputType = {
   createdById?: true
   moduleId?: true
   topicId?: true
+  moduleNameText?: true
+  topicNameText?: true
   isMandatory?: true
   totalMarks?: true
   passingMarks?: true
@@ -163,6 +171,8 @@ export type AssessmentMaxAggregateInputType = {
   createdById?: true
   moduleId?: true
   topicId?: true
+  moduleNameText?: true
+  topicNameText?: true
   isMandatory?: true
   totalMarks?: true
   passingMarks?: true
@@ -188,6 +198,8 @@ export type AssessmentCountAggregateInputType = {
   createdById?: true
   moduleId?: true
   topicId?: true
+  moduleNameText?: true
+  topicNameText?: true
   isMandatory?: true
   totalMarks?: true
   passingMarks?: true
@@ -300,6 +312,8 @@ export type AssessmentGroupByOutputType = {
   createdById: string
   moduleId: string | null
   topicId: string | null
+  moduleNameText: string | null
+  topicNameText: string | null
   isMandatory: boolean
   totalMarks: number
   passingMarks: number | null
@@ -348,6 +362,8 @@ export type AssessmentWhereInput = {
   createdById?: Prisma.StringFilter<"Assessment"> | string
   moduleId?: Prisma.StringNullableFilter<"Assessment"> | string | null
   topicId?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  moduleNameText?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  topicNameText?: Prisma.StringNullableFilter<"Assessment"> | string | null
   isMandatory?: Prisma.BoolFilter<"Assessment"> | boolean
   totalMarks?: Prisma.FloatFilter<"Assessment"> | number
   passingMarks?: Prisma.FloatNullableFilter<"Assessment"> | number | null
@@ -382,6 +398,8 @@ export type AssessmentOrderByWithRelationInput = {
   createdById?: Prisma.SortOrder
   moduleId?: Prisma.SortOrderInput | Prisma.SortOrder
   topicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  moduleNameText?: Prisma.SortOrderInput | Prisma.SortOrder
+  topicNameText?: Prisma.SortOrderInput | Prisma.SortOrder
   isMandatory?: Prisma.SortOrder
   totalMarks?: Prisma.SortOrder
   passingMarks?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -420,6 +438,8 @@ export type AssessmentWhereUniqueInput = Prisma.AtLeast<{
   createdById?: Prisma.StringFilter<"Assessment"> | string
   moduleId?: Prisma.StringNullableFilter<"Assessment"> | string | null
   topicId?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  moduleNameText?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  topicNameText?: Prisma.StringNullableFilter<"Assessment"> | string | null
   isMandatory?: Prisma.BoolFilter<"Assessment"> | boolean
   totalMarks?: Prisma.FloatFilter<"Assessment"> | number
   passingMarks?: Prisma.FloatNullableFilter<"Assessment"> | number | null
@@ -453,6 +473,8 @@ export type AssessmentOrderByWithAggregationInput = {
   createdById?: Prisma.SortOrder
   moduleId?: Prisma.SortOrderInput | Prisma.SortOrder
   topicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  moduleNameText?: Prisma.SortOrderInput | Prisma.SortOrder
+  topicNameText?: Prisma.SortOrderInput | Prisma.SortOrder
   isMandatory?: Prisma.SortOrder
   totalMarks?: Prisma.SortOrder
   passingMarks?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -486,6 +508,8 @@ export type AssessmentScalarWhereWithAggregatesInput = {
   createdById?: Prisma.StringWithAggregatesFilter<"Assessment"> | string
   moduleId?: Prisma.StringNullableWithAggregatesFilter<"Assessment"> | string | null
   topicId?: Prisma.StringNullableWithAggregatesFilter<"Assessment"> | string | null
+  moduleNameText?: Prisma.StringNullableWithAggregatesFilter<"Assessment"> | string | null
+  topicNameText?: Prisma.StringNullableWithAggregatesFilter<"Assessment"> | string | null
   isMandatory?: Prisma.BoolWithAggregatesFilter<"Assessment"> | boolean
   totalMarks?: Prisma.FloatWithAggregatesFilter<"Assessment"> | number
   passingMarks?: Prisma.FloatNullableWithAggregatesFilter<"Assessment"> | number | null
@@ -506,6 +530,8 @@ export type AssessmentCreateInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -540,6 +566,8 @@ export type AssessmentUncheckedCreateInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -564,6 +592,8 @@ export type AssessmentUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -598,6 +628,8 @@ export type AssessmentUncheckedUpdateInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -627,6 +659,8 @@ export type AssessmentCreateManyInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -647,6 +681,8 @@ export type AssessmentUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -672,6 +708,8 @@ export type AssessmentUncheckedUpdateManyInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -707,6 +745,8 @@ export type AssessmentCountOrderByAggregateInput = {
   createdById?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   topicId?: Prisma.SortOrder
+  moduleNameText?: Prisma.SortOrder
+  topicNameText?: Prisma.SortOrder
   isMandatory?: Prisma.SortOrder
   totalMarks?: Prisma.SortOrder
   passingMarks?: Prisma.SortOrder
@@ -738,6 +778,8 @@ export type AssessmentMaxOrderByAggregateInput = {
   createdById?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   topicId?: Prisma.SortOrder
+  moduleNameText?: Prisma.SortOrder
+  topicNameText?: Prisma.SortOrder
   isMandatory?: Prisma.SortOrder
   totalMarks?: Prisma.SortOrder
   passingMarks?: Prisma.SortOrder
@@ -763,6 +805,8 @@ export type AssessmentMinOrderByAggregateInput = {
   createdById?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   topicId?: Prisma.SortOrder
+  moduleNameText?: Prisma.SortOrder
+  topicNameText?: Prisma.SortOrder
   isMandatory?: Prisma.SortOrder
   totalMarks?: Prisma.SortOrder
   passingMarks?: Prisma.SortOrder
@@ -1075,6 +1119,8 @@ export type AssessmentCreateWithoutCreatorInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1107,6 +1153,8 @@ export type AssessmentUncheckedCreateWithoutCreatorInput = {
   batchId: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1165,6 +1213,8 @@ export type AssessmentScalarWhereInput = {
   createdById?: Prisma.StringFilter<"Assessment"> | string
   moduleId?: Prisma.StringNullableFilter<"Assessment"> | string | null
   topicId?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  moduleNameText?: Prisma.StringNullableFilter<"Assessment"> | string | null
+  topicNameText?: Prisma.StringNullableFilter<"Assessment"> | string | null
   isMandatory?: Prisma.BoolFilter<"Assessment"> | boolean
   totalMarks?: Prisma.FloatFilter<"Assessment"> | number
   passingMarks?: Prisma.FloatNullableFilter<"Assessment"> | number | null
@@ -1185,6 +1235,8 @@ export type AssessmentCreateWithoutBatchInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1217,6 +1269,8 @@ export type AssessmentUncheckedCreateWithoutBatchInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1267,6 +1321,8 @@ export type AssessmentCreateWithoutSubjectInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1299,6 +1355,8 @@ export type AssessmentUncheckedCreateWithoutSubjectInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1349,6 +1407,8 @@ export type AssessmentCreateWithoutModuleInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1381,6 +1441,8 @@ export type AssessmentUncheckedCreateWithoutModuleInput = {
   batchId: string
   createdById: string
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1431,6 +1493,8 @@ export type AssessmentCreateWithoutTopicInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1463,6 +1527,8 @@ export type AssessmentUncheckedCreateWithoutTopicInput = {
   batchId: string
   createdById: string
   moduleId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1513,6 +1579,8 @@ export type AssessmentCreateWithoutQuestionsInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1546,6 +1614,8 @@ export type AssessmentUncheckedCreateWithoutQuestionsInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1585,6 +1655,8 @@ export type AssessmentUpdateWithoutQuestionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1618,6 +1690,8 @@ export type AssessmentUncheckedUpdateWithoutQuestionsInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1641,6 +1715,8 @@ export type AssessmentCreateWithoutAttemptsInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1674,6 +1750,8 @@ export type AssessmentUncheckedCreateWithoutAttemptsInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1713,6 +1791,8 @@ export type AssessmentUpdateWithoutAttemptsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1746,6 +1826,8 @@ export type AssessmentUncheckedUpdateWithoutAttemptsInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1769,6 +1851,8 @@ export type AssessmentCreateWithoutSharesInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1802,6 +1886,8 @@ export type AssessmentUncheckedCreateWithoutSharesInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1841,6 +1927,8 @@ export type AssessmentUpdateWithoutSharesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1874,6 +1962,8 @@ export type AssessmentUncheckedUpdateWithoutSharesInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1897,6 +1987,8 @@ export type AssessmentCreateWithoutScheduledEmailsInput = {
   description?: string | null
   type: $Enums.AssessmentType
   status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1930,6 +2022,8 @@ export type AssessmentUncheckedCreateWithoutScheduledEmailsInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -1969,6 +2063,8 @@ export type AssessmentUpdateWithoutScheduledEmailsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2002,6 +2098,8 @@ export type AssessmentUncheckedUpdateWithoutScheduledEmailsInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2029,6 +2127,8 @@ export type AssessmentCreateManyCreatorInput = {
   batchId: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -2049,6 +2149,8 @@ export type AssessmentUpdateWithoutCreatorInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2081,6 +2183,8 @@ export type AssessmentUncheckedUpdateWithoutCreatorInput = {
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2109,6 +2213,8 @@ export type AssessmentUncheckedUpdateManyWithoutCreatorInput = {
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2133,6 +2239,8 @@ export type AssessmentCreateManyBatchInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -2153,6 +2261,8 @@ export type AssessmentUpdateWithoutBatchInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2185,6 +2295,8 @@ export type AssessmentUncheckedUpdateWithoutBatchInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2213,6 +2325,8 @@ export type AssessmentUncheckedUpdateManyWithoutBatchInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2237,6 +2351,8 @@ export type AssessmentCreateManySubjectInput = {
   createdById: string
   moduleId?: string | null
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -2257,6 +2373,8 @@ export type AssessmentUpdateWithoutSubjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2289,6 +2407,8 @@ export type AssessmentUncheckedUpdateWithoutSubjectInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2317,6 +2437,8 @@ export type AssessmentUncheckedUpdateManyWithoutSubjectInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2341,6 +2463,8 @@ export type AssessmentCreateManyModuleInput = {
   batchId: string
   createdById: string
   topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -2361,6 +2485,8 @@ export type AssessmentUpdateWithoutModuleInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2393,6 +2519,8 @@ export type AssessmentUncheckedUpdateWithoutModuleInput = {
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2421,6 +2549,8 @@ export type AssessmentUncheckedUpdateManyWithoutModuleInput = {
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2445,6 +2575,8 @@ export type AssessmentCreateManyTopicInput = {
   batchId: string
   createdById: string
   moduleId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
   isMandatory?: boolean
   totalMarks: number
   passingMarks?: number | null
@@ -2465,6 +2597,8 @@ export type AssessmentUpdateWithoutTopicInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2497,6 +2631,8 @@ export type AssessmentUncheckedUpdateWithoutTopicInput = {
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2525,6 +2661,8 @@ export type AssessmentUncheckedUpdateManyWithoutTopicInput = {
   batchId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
   totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2608,6 +2746,8 @@ export type AssessmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   createdById?: boolean
   moduleId?: boolean
   topicId?: boolean
+  moduleNameText?: boolean
+  topicNameText?: boolean
   isMandatory?: boolean
   totalMarks?: boolean
   passingMarks?: boolean
@@ -2643,6 +2783,8 @@ export type AssessmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   createdById?: boolean
   moduleId?: boolean
   topicId?: boolean
+  moduleNameText?: boolean
+  topicNameText?: boolean
   isMandatory?: boolean
   totalMarks?: boolean
   passingMarks?: boolean
@@ -2673,6 +2815,8 @@ export type AssessmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   createdById?: boolean
   moduleId?: boolean
   topicId?: boolean
+  moduleNameText?: boolean
+  topicNameText?: boolean
   isMandatory?: boolean
   totalMarks?: boolean
   passingMarks?: boolean
@@ -2703,6 +2847,8 @@ export type AssessmentSelectScalar = {
   createdById?: boolean
   moduleId?: boolean
   topicId?: boolean
+  moduleNameText?: boolean
+  topicNameText?: boolean
   isMandatory?: boolean
   totalMarks?: boolean
   passingMarks?: boolean
@@ -2717,7 +2863,7 @@ export type AssessmentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AssessmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "type" | "status" | "subjectId" | "batchId" | "createdById" | "moduleId" | "topicId" | "isMandatory" | "totalMarks" | "passingMarks" | "duration" | "scheduledOpenAt" | "scheduledCloseAt" | "resultsReleaseAt" | "assessmentDate" | "linkToken" | "instructions" | "createdAt" | "updatedAt", ExtArgs["result"]["assessment"]>
+export type AssessmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "type" | "status" | "subjectId" | "batchId" | "createdById" | "moduleId" | "topicId" | "moduleNameText" | "topicNameText" | "isMandatory" | "totalMarks" | "passingMarks" | "duration" | "scheduledOpenAt" | "scheduledCloseAt" | "resultsReleaseAt" | "assessmentDate" | "linkToken" | "instructions" | "createdAt" | "updatedAt", ExtArgs["result"]["assessment"]>
 export type AssessmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   batch?: boolean | Prisma.BatchDefaultArgs<ExtArgs>
@@ -2769,6 +2915,14 @@ export type $AssessmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     createdById: string
     moduleId: string | null
     topicId: string | null
+    /**
+     * * Free-form module label when not linking to a structured Module row.
+     */
+    moduleNameText: string | null
+    /**
+     * * Free-form topic label when not linking to a structured Topic row.
+     */
+    topicNameText: string | null
     isMandatory: boolean
     totalMarks: number
     passingMarks: number | null
@@ -3223,6 +3377,8 @@ export interface AssessmentFieldRefs {
   readonly createdById: Prisma.FieldRef<"Assessment", 'String'>
   readonly moduleId: Prisma.FieldRef<"Assessment", 'String'>
   readonly topicId: Prisma.FieldRef<"Assessment", 'String'>
+  readonly moduleNameText: Prisma.FieldRef<"Assessment", 'String'>
+  readonly topicNameText: Prisma.FieldRef<"Assessment", 'String'>
   readonly isMandatory: Prisma.FieldRef<"Assessment", 'Boolean'>
   readonly totalMarks: Prisma.FieldRef<"Assessment", 'Float'>
   readonly passingMarks: Prisma.FieldRef<"Assessment", 'Float'>

@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 }
 
 function parseCSV(content: string): ParsedQuestion[] {
-  const lines = content.split(/\r?\n/).filter((l) => l.trim());
+  const lines = content.replace(/^\uFEFF/, "").split(/\r?\n/).filter((l) => l.trim());
   if (lines.length < 2) return [];
 
   const headerLine = lines[0].toLowerCase();
@@ -63,12 +63,13 @@ function parseCSV(content: string): ParsedQuestion[] {
     if (normalized.includes("type") || normalized === "questiontype") colMap.type = i;
     else if (normalized.includes("question") && !normalized.includes("type")) colMap.question = i;
     else if (normalized === "marks" || normalized === "mark" || normalized === "points") colMap.marks = i;
+    else if (normalized === "correctoption" || normalized === "correctchoice") colMap.correctOption = i;
     else if (normalized.includes("correct") && normalized.includes("answer")) colMap.correctAnswer = i;
     else if (normalized === "optiona" || normalized === "option1") colMap.optionA = i;
     else if (normalized === "optionb" || normalized === "option2") colMap.optionB = i;
     else if (normalized === "optionc" || normalized === "option3") colMap.optionC = i;
     else if (normalized === "optiond" || normalized === "option4") colMap.optionD = i;
-    else if (normalized === "correctoption" || normalized === "answer") colMap.correctOption = i;
+    else if (normalized === "answer" && colMap.correctAnswer === undefined) colMap.correctAnswer = i;
   });
 
   if (colMap.question === undefined) return [];
@@ -85,11 +86,17 @@ function parseCSV(content: string): ParsedQuestion[] {
 
     const questionText = cols[colMap.question].trim();
     const marks = parseFloat(cols[colMap.marks ?? -1]) || (type === "MCQ" ? 2 : type === "SHORT" ? 3 : 7);
-    const correctAnswer = (cols[colMap.correctAnswer ?? -1] || "").trim();
+    const correctAnswerCell =
+      colMap.correctAnswer !== undefined ? (cols[colMap.correctAnswer] || "").trim() : "";
+    const correctAnswer = correctAnswerCell;
 
     const options: { optionText: string; isCorrect: boolean }[] = [];
     if (type === "MCQ") {
-      const correctOpt = (cols[colMap.correctOption ?? -1] || "A").trim().toUpperCase();
+      /** Prefer dedicated "Correct option" column; else "Correct Answer" (A–D), as in standard MCQ CSV templates. */
+      const correctOptCell =
+        colMap.correctOption !== undefined ? (cols[colMap.correctOption] || "").trim() : correctAnswerCell;
+      const letterMatch = correctOptCell.toUpperCase().match(/[ABCD]/);
+      const correctOpt = letterMatch ? letterMatch[0] : "A";
       const optTexts = [
         cols[colMap.optionA ?? -1],
         cols[colMap.optionB ?? -1],

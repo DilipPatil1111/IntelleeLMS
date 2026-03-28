@@ -3782,6 +3782,8 @@ export const AssessmentScalarFieldEnum = {
   createdById: 'createdById',
   moduleId: 'moduleId',
   topicId: 'topicId',
+  moduleNameText: 'moduleNameText',
+  topicNameText: 'topicNameText',
   isMandatory: 'isMandatory',
   totalMarks: 'totalMarks',
   passingMarks: 'passingMarks',

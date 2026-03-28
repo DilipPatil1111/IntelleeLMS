@@ -35,6 +35,11 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       passingMarks: source.passingMarks,
       duration: source.duration,
       instructions: source.instructions,
+      moduleId: source.moduleId,
+      topicId: source.topicId,
+      moduleNameText: source.moduleNameText,
+      topicNameText: source.topicNameText,
+      isMandatory: source.isMandatory,
       questions: {
         create: source.questions.map((q, idx) => ({
           type: q.type,

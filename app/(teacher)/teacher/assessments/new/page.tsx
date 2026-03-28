@@ -29,8 +29,23 @@ export default function CreateAssessmentPage() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [subjects, setSubjects] = useState<{ value: string; label: string }[]>([]);
-  const [batches, setBatches] = useState<{ value: string; label: string }[]>([]);
+  const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
+  const [programId, setProgramId] = useState("");
+  const [allSubjects, setAllSubjects] = useState<{ value: string; label: string; programId: string }[]>([]);
+  const [allBatches, setAllBatches] = useState<{ value: string; label: string; programId: string }[]>([]);
+
+  const subjectOptions =
+    programs.length > 1 && !programId
+      ? []
+      : programId
+        ? allSubjects.filter((s) => s.programId === programId)
+        : allSubjects;
+  const batchOptions =
+    programs.length > 1 && !programId
+      ? []
+      : programId
+        ? allBatches.filter((b) => b.programId === programId)
+        : allBatches;
 
   const [form, setForm] = useState({
     title: "",
@@ -38,8 +53,8 @@ export default function CreateAssessmentPage() {
     type: "QUIZ",
     subjectId: "",
     batchId: "",
-    moduleId: "",
-    topicId: "",
+    moduleNameText: "",
+    topicNameText: "",
     isMandatory: false,
     totalMarks: 0,
     passingMarks: 0,
@@ -51,8 +66,6 @@ export default function CreateAssessmentPage() {
   });
 
   const [questions, setQuestions] = useState<QuestionForm[]>([]);
-  const [modules, setModules] = useState<{ value: string; label: string }[]>([]);
-  const [topicsList, setTopicsList] = useState<{ value: string; label: string }[]>([]);
 
   // AI Generate dialog state
   const [showAIDialog, setShowAIDialog] = useState(false);
@@ -63,35 +76,16 @@ export default function CreateAssessmentPage() {
   const [importingFile, setImportingFile] = useState(false);
 
   useEffect(() => {
-    if (form.subjectId) {
-      fetch(`/api/teacher/modules?subjectId=${form.subjectId}`)
-        .then((r) => r.json())
-        .then((data) => {
-          setModules((data.modules || []).map((m: { id: string; name: string }) => ({ value: m.id, label: m.name })));
-          setForm((f) => ({ ...f, moduleId: "", topicId: "" }));
-          setTopicsList([]);
-        });
-    }
-  }, [form.subjectId]);
-
-  useEffect(() => {
-    if (form.moduleId) {
-      fetch(`/api/teacher/modules/${form.moduleId}`)
-        .then((r) => r.json())
-        .then((data) => {
-          const topics = data.module?.topics || [];
-          setTopicsList(topics.map((t: { id: string; name: string }) => ({ value: t.id, label: t.name })));
-          setForm((f) => ({ ...f, topicId: "" }));
-        });
-    }
-  }, [form.moduleId]);
-
-  useEffect(() => {
     fetch("/api/teacher/options")
       .then((r) => r.json())
       .then((data) => {
-        setSubjects(data.subjects || []);
-        setBatches(data.batches || []);
+        const progs = data.programs || [];
+        setPrograms(progs);
+        setAllSubjects(data.subjects || []);
+        setAllBatches(data.batches || []);
+        if (progs.length === 1) {
+          setProgramId(progs[0].value);
+        }
       });
   }, []);
 
@@ -295,16 +289,29 @@ export default function CreateAssessmentPage() {
             <div className="space-y-4">
               <Input label="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Midterm Quiz - Chapter 3" required />
               <Textarea label="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Brief description..." />
+              {programs.length > 1 && (
+                <Select
+                  label="Program"
+                  value={programId}
+                  onChange={(e) => {
+                    const next = e.target.value;
+                    setProgramId(next);
+                    setForm((f) => ({ ...f, subjectId: "", batchId: "" }));
+                  }}
+                  options={programs}
+                  placeholder="Select program"
+                />
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Select label="Type" value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} options={[
                   { value: "QUIZ", label: "Quiz" }, { value: "TEST", label: "Test" },
                   { value: "ASSIGNMENT", label: "Assignment" }, { value: "PROJECT", label: "Project" },
                   { value: "HOMEWORK", label: "Homework" },
                 ]} />
-                <Select label="Subject" value={form.subjectId} onChange={(e) => setForm({ ...form, subjectId: e.target.value })} options={subjects} placeholder="Select subject" />
+                <Select label="Subject" value={form.subjectId} onChange={(e) => setForm({ ...form, subjectId: e.target.value })} options={subjectOptions} placeholder="Select subject" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Select label="Batch" value={form.batchId} onChange={(e) => setForm({ ...form, batchId: e.target.value })} options={batches} placeholder="Select batch" />
+                <Select label="Batch" value={form.batchId} onChange={(e) => setForm({ ...form, batchId: e.target.value })} options={batchOptions} placeholder="Select batch" />
                 <Input label="Duration (minutes)" type="number" value={form.duration || ""} onChange={(e) => setForm({ ...form, duration: parseInt(e.target.value) || 0 })} />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -316,8 +323,18 @@ export default function CreateAssessmentPage() {
                 <Input label="Close At" type="datetime-local" value={form.scheduledCloseAt} onChange={(e) => setForm({ ...form, scheduledCloseAt: e.target.value })} />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Select label="Module (optional)" value={form.moduleId} onChange={(e) => setForm({ ...form, moduleId: e.target.value })} options={[{ value: "", label: "None" }, ...modules]} placeholder="Link to module" />
-                <Select label="Topic (optional)" value={form.topicId} onChange={(e) => setForm({ ...form, topicId: e.target.value })} options={[{ value: "", label: "None" }, ...topicsList]} placeholder="Link to topic" />
+                <Input
+                  label="Module (optional)"
+                  value={form.moduleNameText}
+                  onChange={(e) => setForm({ ...form, moduleNameText: e.target.value })}
+                  placeholder="e.g. Unit 3 — Data structures"
+                />
+                <Input
+                  label="Topic (optional)"
+                  value={form.topicNameText}
+                  onChange={(e) => setForm({ ...form, topicNameText: e.target.value })}
+                  placeholder="e.g. Binary trees"
+                />
               </div>
               <label className="flex items-center gap-2 text-sm text-gray-700">
                 <input type="checkbox" checked={form.isMandatory} onChange={(e) => setForm({ ...form, isMandatory: e.target.checked })} className="rounded text-indigo-600" />
@@ -325,7 +342,15 @@ export default function CreateAssessmentPage() {
               </label>
               <Textarea label="Instructions" value={form.instructions} onChange={(e) => setForm({ ...form, instructions: e.target.value })} placeholder="Special instructions for students..." />
               <div className="flex justify-end">
-                <Button onClick={() => setStep(2)} disabled={!form.title || !form.subjectId || !form.batchId}>
+                <Button
+                  onClick={() => setStep(2)}
+                  disabled={
+                    !form.title ||
+                    !form.subjectId ||
+                    !form.batchId ||
+                    (programs.length > 1 && !programId)
+                  }
+                >
                   Next: Add Questions
                 </Button>
               </div>
@@ -374,6 +399,19 @@ export default function CreateAssessmentPage() {
               />
             </div>
           </div>
+          <p className="text-xs text-gray-500 mb-6 max-w-3xl leading-relaxed">
+            <span className="font-medium text-gray-600">CSV for MCQs:</span> Row 1 must be headers:{" "}
+            <code className="rounded bg-gray-100 px-1 py-0.5 text-[11px]">Question</code>,{" "}
+            <code className="rounded bg-gray-100 px-1 py-0.5 text-[11px]">Option A</code>–
+            <code className="rounded bg-gray-100 px-1 py-0.5 text-[11px]">Option D</code>,{" "}
+            <code className="rounded bg-gray-100 px-1 py-0.5 text-[11px]">Correct Answer</code>{" "}
+            (single letter <code className="rounded bg-gray-100 px-0.5">A</code>,{" "}
+            <code className="rounded bg-gray-100 px-0.5">B</code>,{" "}
+            <code className="rounded bg-gray-100 px-0.5">C</code>, or{" "}
+            <code className="rounded bg-gray-100 px-0.5">D</code>). Optional:{" "}
+            <code className="rounded bg-gray-100 px-1 py-0.5 text-[11px]">Type</code>,{" "}
+            <code className="rounded bg-gray-100 px-1 py-0.5 text-[11px]">Marks</code>.
+          </p>
 
           {questions.length === 0 && (
             <Card className="mb-4">
@@ -582,7 +620,7 @@ export default function CreateAssessmentPage() {
 
           <div className="rounded-lg bg-indigo-50 border border-indigo-100 p-3">
             <p className="text-xs text-indigo-700">
-              <strong>Subject:</strong> {subjects.find((s) => s.value === form.subjectId)?.label || "Not selected"}<br />
+              <strong>Subject:</strong> {allSubjects.find((s) => s.value === form.subjectId)?.label || "Not selected"}<br />
               <strong>Will generate:</strong> {aiCount} questions about &quot;{aiTopic || "..."}&quot; ({aiTypes.join(", ") || "none selected"})
             </p>
           </div>
