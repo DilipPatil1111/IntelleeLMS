@@ -5,6 +5,8 @@ import type { StudentStatus } from "@/app/generated/prisma/enums";
 import { sendEmail, buildStudentWelcomeEmail } from "@/lib/email";
 import { generateTemporaryPassword } from "@/lib/password";
 import { getLoginPageUrl, getServerAppUrl } from "@/lib/app-url";
+import { principalStudentSearchAndClauses } from "@/lib/principal-student-search";
+import { mapStudentStatusToApplicationStatus } from "@/lib/sync-program-applications";
 import { NextResponse } from "next/server";
 
 /** Node runtime: full process.env (Vercel secrets) — Edge would not expose all server env vars. */
@@ -13,6 +15,8 @@ export const runtime = "nodejs";
 export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const role = (session.user as unknown as Record<string, unknown>).role as string;
+  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q")?.trim();
@@ -24,14 +28,7 @@ export async function GET(req: Request) {
   const and: Prisma.UserWhereInput[] = [{ role: "STUDENT" }];
 
   if (q) {
-    and.push({
-      OR: [
-        { firstName: { contains: q, mode: "insensitive" } },
-        { lastName: { contains: q, mode: "insensitive" } },
-        { email: { contains: q, mode: "insensitive" } },
-        { studentProfile: { is: { enrollmentNo: { contains: q, mode: "insensitive" } } } },
-      ],
-    });
+    and.push(...principalStudentSearchAndClauses(q));
   }
 
   const sp: Prisma.StudentProfileWhereInput = {};
@@ -59,12 +56,21 @@ export async function GET(req: Request) {
     orderBy: { firstName: "asc" },
   });
 
-  return NextResponse.json({ students });
+  return NextResponse.json(
+    { students },
+    {
+      headers: {
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+      },
+    }
+  );
 }
 
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const role = (session.user as unknown as Record<string, unknown>).role as string;
+  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const bcrypt = await import("bcryptjs");
@@ -86,27 +92,44 @@ export async function POST(req: Request) {
     );
   }
 
-  const user = await db.user.create({
-    data: {
-      email,
-      firstName: body.firstName,
-      lastName: body.lastName,
-      middleName: body.middleName || null,
-      phone: body.phone || null,
-      hashedPassword,
-      mustChangePassword: true,
-      role: "STUDENT",
-      studentProfile: {
-        create: {
-          enrollmentNo: body.enrollmentNo || `STU-${Date.now()}`,
-          programId: body.programId || null,
-          batchId: body.batchId || null,
-          enrollmentDate: new Date(),
-          status: body.status ?? "ACCEPTED",
+  const spStatus = (body.status as StudentStatus | undefined) ?? "ACCEPTED";
+
+  const user = await db.$transaction(async (tx) => {
+    const u = await tx.user.create({
+      data: {
+        email,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        middleName: body.middleName || null,
+        phone: body.phone || null,
+        hashedPassword,
+        mustChangePassword: true,
+        role: "STUDENT",
+        studentProfile: {
+          create: {
+            enrollmentNo: body.enrollmentNo || `STU-${Date.now()}`,
+            programId: body.programId || null,
+            batchId: body.batchId || null,
+            enrollmentDate: new Date(),
+            status: spStatus,
+          },
         },
+        studentOnboarding: { create: {} },
       },
-      studentOnboarding: { create: {} },
-    },
+    });
+
+    if (body.programId) {
+      await tx.programApplication.create({
+        data: {
+          applicantId: u.id,
+          programId: body.programId,
+          batchId: body.batchId || null,
+          status: mapStudentStatusToApplicationStatus(spStatus),
+        },
+      });
+    }
+
+    return u;
   });
 
   const loginUrl = getLoginPageUrl();

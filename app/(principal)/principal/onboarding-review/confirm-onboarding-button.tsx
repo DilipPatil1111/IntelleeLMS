@@ -13,7 +13,10 @@ export function ConfirmOnboardingButton({ userId }: { userId: string }) {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`/api/principal/students/${userId}/onboarding/confirm`, { method: "POST" });
+      const res = await fetch(`/api/principal/students/${userId}/onboarding/confirm`, {
+        method: "POST",
+        credentials: "include",
+      });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
         setError(data.error || `Request failed (${res.status})`);

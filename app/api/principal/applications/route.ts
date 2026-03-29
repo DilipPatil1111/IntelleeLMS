@@ -2,11 +2,16 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/app/generated/prisma/client";
 import type { ApplicationStatus } from "@/app/generated/prisma/enums";
+import { syncMissingProgramApplicationsFromProfiles } from "@/lib/sync-program-applications";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const role = (session.user as unknown as Record<string, unknown>).role as string;
+  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  await syncMissingProgramApplicationsFromProfiles();
 
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q")?.trim();
@@ -38,6 +43,14 @@ export async function GET(req: Request) {
           email: true,
           phone: true,
           profilePicture: true,
+          studentProfile: {
+            select: {
+              enrollmentNo: true,
+              programId: true,
+              batchId: true,
+              status: true,
+            },
+          },
         },
       },
       program: {

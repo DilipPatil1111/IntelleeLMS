@@ -19,19 +19,34 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
 
   const previousStatus = profile.status;
 
-  await db.studentOnboarding.upsert({
-    where: { userId: studentUserId },
-    update: { principalConfirmedAt: new Date() },
-    create: { userId: studentUserId, principalConfirmedAt: new Date() },
+  await db.$transaction(async (tx) => {
+    await tx.studentOnboarding.upsert({
+      where: { userId: studentUserId },
+      update: { principalConfirmedAt: new Date() },
+      create: { userId: studentUserId, principalConfirmedAt: new Date() },
+    });
+
+    if (previousStatus === "ACCEPTED") {
+      await tx.studentProfile.update({
+        where: { userId: studentUserId },
+        data: { status: "ENROLLED" },
+      });
+    }
+
+    if (profile.programId) {
+      await tx.programApplication.updateMany({
+        where: { applicantId: studentUserId, programId: profile.programId },
+        data: { status: "ENROLLED" },
+      });
+    }
   });
 
-  await db.studentProfile.update({
-    where: { userId: studentUserId },
-    data: { status: "ENROLLED" },
-  });
-
-  if (previousStatus !== "ENROLLED") {
-    await notifyStudentStatusChange(studentUserId, previousStatus, "ENROLLED");
+  if (previousStatus === "ACCEPTED") {
+    try {
+      await notifyStudentStatusChange(studentUserId, "ACCEPTED", "ENROLLED");
+    } catch (e) {
+      console.error("notifyStudentStatusChange after onboarding confirm", e);
+    }
   }
 
   return NextResponse.json({ success: true });

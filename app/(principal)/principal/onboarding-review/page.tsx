@@ -9,13 +9,16 @@ export default async function OnboardingReviewPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  /** Core steps (agreement, ID, fee). Pre-admission (step 4) is optional for this queue so principals can confirm when ready. */
   const pending = await db.studentOnboarding.findMany({
     where: {
       contractAcknowledgedAt: { not: null },
       governmentIdsUploadedAt: { not: null },
       feeProofUploadedAt: { not: null },
-      preAdmissionCompletedAt: { not: null },
       principalConfirmedAt: null,
+      user: {
+        studentProfile: { status: "ACCEPTED" },
+      },
     },
     include: {
       user: { select: { id: true, firstName: true, lastName: true, email: true } },
@@ -27,7 +30,7 @@ export default async function OnboardingReviewPage() {
     <>
       <PageHeader
         title="Onboarding review"
-        description="Students who finished all checklist items and are waiting for final approval to unlock course content"
+        description="Students who completed agreement, ID, and fee steps (pre-admission is optional). Confirm to set their record to Enrolled and unlock the full portal."
       />
       {pending.length === 0 ? (
         <Card>

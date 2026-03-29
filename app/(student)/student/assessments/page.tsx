@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { findAssessmentsForStudentList } from "@/lib/student-assessment-queries";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +10,7 @@ import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function StudentAssessmentsPage() {
+  await connection();
   const session = await auth();
   if (!session?.user) redirect("/login");
 
@@ -89,7 +91,15 @@ export default async function StudentAssessmentsPage() {
                         </p>
                       )}
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+                      {attempt && (
+                        <Link
+                          href={`/student/assessments/${assessment.id}/results`}
+                          className="rounded-lg border border-indigo-200 bg-white px-4 py-2 text-sm font-medium text-indigo-700 shadow-sm hover:bg-indigo-50"
+                        >
+                          Detailed results
+                        </Link>
+                      )}
                       {attempt?.status === "GRADED" ? (
                         <Badge
                           variant={

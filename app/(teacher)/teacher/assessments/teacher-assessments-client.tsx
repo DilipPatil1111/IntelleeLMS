@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
+import { FileBarChart } from "lucide-react";
 
 type AssessmentType = "QUIZ" | "TEST" | "ASSIGNMENT" | "PROJECT" | "HOMEWORK";
 type AssessmentStatus = "DRAFT" | "PUBLISHED" | "CLOSED" | "GRADED";
@@ -204,6 +205,12 @@ export function TeacherAssessmentsClient() {
                     <Link href={`/teacher/assessments/${a.id}`}>
                       <Button variant="outline" size="sm">
                         View
+                      </Button>
+                    </Link>
+                    <Link href={`/teacher/assessments/${a.id}/results`}>
+                      <Button variant="outline" size="sm" title="Student-wise results (view only)">
+                        <FileBarChart className="h-4 w-4 mr-1" />
+                        Results
                       </Button>
                     </Link>
                     {a.status === "DRAFT" && (
