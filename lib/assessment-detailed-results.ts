@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
 import type { Answer, Question, QuestionOption } from "@/app/generated/prisma/client";
 
 export type PassFail = "PASS" | "FAIL" | "PENDING";
@@ -129,7 +130,17 @@ function buildQuestionRows(
   });
 }
 
-export async function getAssessmentResultsReportData(assessmentId: string): Promise<AssessmentResultsReportData | null> {
+export type GetAssessmentResultsReportOptions = {
+  /** When set, only this student's attempt is included (student portal). */
+  forStudentId?: string;
+};
+
+export async function getAssessmentResultsReportData(
+  assessmentId: string,
+  options?: GetAssessmentResultsReportOptions
+): Promise<AssessmentResultsReportData | null> {
+  const forStudentId = options?.forStudentId;
+
   const assessment = await db.assessment.findUnique({
     where: { id: assessmentId },
     include: {
@@ -138,6 +149,7 @@ export async function getAssessmentResultsReportData(assessmentId: string): Prom
       creator: { select: { firstName: true, lastName: true, email: true } },
       questions: { include: { options: { orderBy: { orderIndex: "asc" } } }, orderBy: { orderIndex: "asc" } },
       attempts: {
+        where: forStudentId ? { studentId: forStudentId } : undefined,
         include: {
           student: {
             select: {
@@ -155,6 +167,7 @@ export async function getAssessmentResultsReportData(assessmentId: string): Prom
   });
 
   if (!assessment) return null;
+  if (forStudentId && assessment.attempts.length === 0) return null;
 
   const thresholdMeta = {
     passingMarks: assessment.passingMarks,
@@ -226,4 +239,26 @@ export async function canViewAssessmentResults(
   if (role === "PRINCIPAL") return true;
   if (role === "TEACHER" && a.createdById === userId) return true;
   return false;
+}
+
+/**
+ * Student may load their own detailed results if the assessment is visible to them and they have an attempt.
+ */
+export async function canStudentViewOwnAssessmentResults(studentUserId: string, assessmentId: string): Promise<boolean> {
+  const user = await db.user.findUnique({
+    where: { id: studentUserId },
+    select: { studentProfile: { select: { batchId: true } } },
+  });
+  const batchId = user?.studentProfile?.batchId;
+  if (!batchId) return false;
+
+  const row = await db.assessment.findFirst({
+    where: {
+      id: assessmentId,
+      AND: [studentVisibleAssessmentFilter(studentUserId, batchId)],
+      attempts: { some: { studentId: studentUserId } },
+    },
+    select: { id: true },
+  });
+  return !!row;
 }

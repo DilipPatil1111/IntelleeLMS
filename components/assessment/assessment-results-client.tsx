@@ -10,7 +10,7 @@ import type { AssessmentResultsReportData } from "@/lib/assessment-detailed-resu
 import { formatDateTime } from "@/lib/utils";
 import { ArrowLeft, Download, Loader2 } from "lucide-react";
 
-type Role = "teacher" | "principal";
+type Role = "teacher" | "principal" | "student";
 
 export function AssessmentResultsClient({
   assessmentId,
@@ -24,8 +24,14 @@ export function AssessmentResultsClient({
   const [loading, setLoading] = useState(true);
   const [pdfLoading, setPdfLoading] = useState(false);
 
-  const apiPrefix = role === "principal" ? "principal" : "teacher";
-  const backHref = role === "principal" ? "/principal/assessments" : `/teacher/assessments/${assessmentId}`;
+  const apiPrefix =
+    role === "principal" ? "principal" : role === "student" ? "student" : "teacher";
+  const backHref =
+    role === "principal"
+      ? "/principal/assessments"
+      : role === "student"
+        ? "/student/assessments"
+        : `/teacher/assessments/${assessmentId}`;
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -92,11 +98,14 @@ export function AssessmentResultsClient({
   }
 
   const { assessment, studentResults, collegeName } = data;
+  const resultsTitle = role === "student" ? "Your results" : "Student-wise results";
+  const reportSubtitle =
+    role === "student" ? "Your detailed assessment report" : "Detailed assessment report";
 
   return (
     <>
       <PageHeader
-        title="Student-wise results"
+        title={resultsTitle}
         description={`${assessment.title} — ${assessment.programName} — ${assessment.batchName}`}
         actions={
           <div className="flex flex-wrap gap-2">
@@ -116,7 +125,7 @@ export function AssessmentResultsClient({
 
       <div className="mb-6 rounded-xl border border-indigo-100 bg-gradient-to-r from-indigo-50/90 to-white p-6 shadow-sm">
         <p className="text-center text-xl font-semibold text-indigo-950">{collegeName}</p>
-        <p className="text-center text-sm text-gray-600 mt-1">Detailed assessment report</p>
+        <p className="text-center text-sm text-gray-600 mt-1">{reportSubtitle}</p>
       </div>
 
       <Card className="mb-8">
@@ -173,7 +182,9 @@ export function AssessmentResultsClient({
 
       <div className="space-y-8">
         {studentResults.length === 0 ? (
-          <p className="text-center text-gray-500 py-8">No submissions yet.</p>
+          <p className="text-center text-gray-500 py-8">
+            {role === "student" ? "No submission found for this assessment." : "No submissions yet."}
+          </p>
         ) : (
           studentResults.map((s) => (
             <Card key={s.attemptId}>
