@@ -113,11 +113,11 @@ function getStatusChangeContent(
   }
   if (next === "ENROLLED") {
     return {
-      title: "Enrolled",
+      title: "Full access unlocked",
       message:
-        "Your enrollment is active. Complete any onboarding tasks in the portal and attend your scheduled classes.",
+        "Your principal has confirmed your onboarding. My Program, attendance, and the rest of the student portal are now available for your batch.",
       type: "GENERAL",
-      link: "/student",
+      link: "/student/program",
     };
   }
   if (next === "ACCEPTED") {
@@ -177,16 +177,27 @@ export async function notifyStudentStatusChange(
     }
   }
 
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    select: { email: true, firstName: true },
-  });
+  const [user, profile] = await Promise.all([
+    db.user.findUnique({
+      where: { id: userId },
+      select: { email: true, firstName: true },
+    }),
+    db.studentProfile.findUnique({
+      where: { userId },
+      select: { enrollmentNo: true, program: { select: { name: true } }, batch: { select: { name: true } } },
+    }),
+  ]);
   if (user?.email) {
     await sendStudentStatusChangeEmail({
       to: user.email,
       firstName: user.firstName,
       title: copy.title,
       message: copy.message,
+      previousStatus: previous,
+      nextStatus: next,
+      programName: profile?.program?.name ?? null,
+      batchName: profile?.batch?.name ?? null,
+      enrollmentNo: profile?.enrollmentNo ?? null,
     });
   }
 }

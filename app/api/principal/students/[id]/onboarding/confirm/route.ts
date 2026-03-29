@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { notifyStudentStatusChange } from "@/lib/student-status";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -16,27 +17,21 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
   const profile = await db.studentProfile.findUnique({ where: { userId: studentUserId } });
   if (!profile) return NextResponse.json({ error: "Student not found" }, { status: 404 });
 
+  const previousStatus = profile.status;
+
   await db.studentOnboarding.upsert({
     where: { userId: studentUserId },
     update: { principalConfirmedAt: new Date() },
     create: { userId: studentUserId, principalConfirmedAt: new Date() },
   });
 
-  const user = await db.user.findUnique({
-    where: { id: studentUserId },
-    select: { email: true, firstName: true },
+  await db.studentProfile.update({
+    where: { userId: studentUserId },
+    data: { status: "ENROLLED" },
   });
 
-  if (user?.email) {
-    await db.notification.create({
-      data: {
-        userId: studentUserId,
-        type: "GENERAL",
-        title: "Onboarding approved",
-        message: "Your principal has confirmed your onboarding. Full course access is now available.",
-        link: "/student/program",
-      },
-    });
+  if (previousStatus !== "ENROLLED") {
+    await notifyStudentStatusChange(studentUserId, previousStatus, "ENROLLED");
   }
 
   return NextResponse.json({ success: true });

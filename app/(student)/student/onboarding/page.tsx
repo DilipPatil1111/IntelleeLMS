@@ -45,7 +45,22 @@ export default function StudentOnboardingPage() {
   }
 
   useEffect(() => {
-    void load();
+    let cancelled = false;
+    void fetch("/api/student/onboarding")
+      .then((r) => r.json())
+      .then((data: { onboarding?: Ob | null; sampleContractUrl?: string | null; sampleContractFileName?: string | null }) => {
+        if (cancelled) return;
+        setOnboarding(data.onboarding || null);
+        setSampleContractUrl(data.sampleContractUrl || null);
+        setSampleContractLabel(data.sampleContractFileName || null);
+        setLoading(false);
+      })
+      .catch(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   async function uploadStep(step: "contract" | "ids" | "fee", file: File) {
@@ -74,18 +89,18 @@ export default function StudentOnboardingPage() {
     router.refresh();
   }
 
-  async function markPreAdmission() {
-    setBusy("preAdmission");
+  async function markOnboardingStep(step: "contract" | "governmentIds" | "feeProof" | "preAdmission") {
+    setBusy(step);
     setUploadNote(null);
     const res = await fetch("/api/student/onboarding", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ step: "preAdmission" }),
+      body: JSON.stringify({ step }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
       setUploadNote({
-        step: "preAdmission",
+        step: step === "governmentIds" ? "ids" : step === "feeProof" ? "fee" : step === "contract" ? "contract" : "preAdmission",
         tone: "error",
         text: (data as { error?: string }).error || "Could not mark this step complete.",
       });
@@ -130,26 +145,30 @@ export default function StudentOnboardingPage() {
     }
   }
 
-  const steps: { key: "contract" | "ids" | "fee" | "preAdmission"; title: string; desc: string }[] = [
+  const steps: { key: "contract" | "ids" | "fee" | "preAdmission"; patchStep: "contract" | "governmentIds" | "feeProof" | "preAdmission"; title: string; desc: string }[] = [
     {
       key: "contract",
+      patchStep: "contract",
       title: "Step 1 — Signed student agreement",
-      desc: "Download the sample agreement if provided, sign it, then upload your signed copy (PDF or clear scan).",
+      desc: "Download the sample agreement if provided. You may upload a signed copy, or use Mark complete for now — your principal may request documents later.",
     },
     {
       key: "ids",
+      patchStep: "governmentIds",
       title: "Step 2 — Government photo ID",
-      desc: "Upload a clear photo or scan of your government-issued ID (PDF, PNG, JPG, BMP, or other common image formats).",
+      desc: "Upload a clear scan when ready, or mark complete without a file for now.",
     },
     {
       key: "fee",
+      patchStep: "feeProof",
       title: "Step 3 — First payment proof",
-      desc: "Upload a receipt, screenshot, or bank proof of your first payment (PDF or image).",
+      desc: "Upload a receipt or screenshot when ready, or mark complete for now.",
     },
     {
       key: "preAdmission",
+      patchStep: "preAdmission",
       title: "Step 4 — Pre-admission test",
-      desc: "Complete the assigned quiz or assessment from your program. Your instructor or principal will share the link when applicable.",
+      desc: "Complete the assigned assessment when shared, or mark complete when applicable.",
     },
   ];
 
@@ -191,7 +210,7 @@ export default function StudentOnboardingPage() {
             ? "Your principal has unlocked full course access."
             : allStudentSteps
               ? "All steps done — waiting for principal approval to unlock My Program and Attendance."
-              : "Complete each step in any order. You can take assigned assessments from Assessments anytime."}
+              : "Complete each step in any order. Uploads are optional for now — use Mark complete to proceed. Assessments and Results stay available from the sidebar."}
         </p>
       </div>
 
@@ -287,29 +306,45 @@ export default function StudentOnboardingPage() {
                     )}
 
                     {s.key !== "preAdmission" && !complete && (
-                      <label className="mt-3 flex cursor-pointer flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-100">
-                          <Upload className="h-4 w-4" />
-                          {busy === s.key ? "Uploading…" : "Choose file"}
-                        </span>
-                        <input
-                          type="file"
-                          accept={FILE_ACCEPT}
-                          className="sr-only"
+                      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+                        <label className="flex cursor-pointer flex-wrap items-center gap-2">
+                          <span className="inline-flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-100">
+                            <Upload className="h-4 w-4" />
+                            {busy === s.key ? "Uploading…" : "Choose file"}
+                          </span>
+                          <input
+                            type="file"
+                            accept={FILE_ACCEPT}
+                            className="sr-only"
+                            disabled={busy !== null}
+                            onChange={(e) => {
+                              const f = e.target.files?.[0];
+                              e.target.value = "";
+                              if (f) void uploadStep(s.key as "contract" | "ids" | "fee", f);
+                            }}
+                          />
+                          <span className="text-xs text-gray-500">PDF, PNG, JPG… (max 12 MB)</span>
+                        </label>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="secondary"
+                          isLoading={busy === s.patchStep}
                           disabled={busy !== null}
-                          onChange={(e) => {
-                            const f = e.target.files?.[0];
-                            e.target.value = "";
-                            if (f) void uploadStep(s.key as "contract" | "ids" | "fee", f);
-                          }}
-                        />
-                        <span className="text-xs text-gray-500">PDF, PNG, JPG, BMP, GIF, WebP, TIFF, HEIC (max 12 MB)</span>
-                      </label>
+                          onClick={() => void markOnboardingStep(s.patchStep)}
+                        >
+                          Mark complete (no upload)
+                        </Button>
+                      </div>
                     )}
                   </div>
                 </div>
                 {s.key === "preAdmission" && !complete && (
-                  <Button size="sm" isLoading={busy === "preAdmission"} onClick={() => void markPreAdmission()}>
+                  <Button
+                    size="sm"
+                    isLoading={busy === "preAdmission"}
+                    onClick={() => void markOnboardingStep("preAdmission")}
+                  >
                     Mark complete
                   </Button>
                 )}

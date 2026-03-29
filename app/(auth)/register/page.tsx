@@ -92,6 +92,26 @@ export default function RegisterPage() {
               required
             />
 
+            {role === "TEACHER" && (
+              <div className="space-y-3 rounded-xl border border-violet-100 bg-violet-50/50 p-4">
+                <p className="text-sm font-medium text-violet-900">Programs you can teach</p>
+                <p className="text-xs text-gray-600">
+                  Select one or more programs. A principal will assign you to specific subjects and batches after review — you will appear under <strong>Unassigned teachers</strong> until then.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {programs.map((p) => (
+                    <label key={p.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                      <input type="checkbox" name="programIds" value={p.id} />
+                      {p.name}
+                    </label>
+                  ))}
+                </div>
+                {programs.length === 0 && (
+                  <p className="text-xs text-amber-800">No programs are available yet. Contact the college — you can still register and an admin will link programs later.</p>
+                )}
+              </div>
+            )}
+
             {role === "STUDENT" && (
               <div className="space-y-4 rounded-xl border border-indigo-100 bg-indigo-50/50 p-4">
                 <p className="text-sm font-medium text-indigo-900">Program application</p>

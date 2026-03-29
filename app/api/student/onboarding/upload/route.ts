@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { ONBOARDING_ALLOWED_EXT, ONBOARDING_MAX_BYTES, writePublicUpload } from "@/lib/file-upload";
+import { notifyPrincipalsIfOnboardingChecklistJustCompleted } from "@/lib/notify-principals-onboarding-complete";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -33,6 +34,12 @@ export async function POST(req: Request) {
   if (!existing) {
     return NextResponse.json({ error: "No onboarding record. Complete enrollment first." }, { status: 400 });
   }
+
+  const wasCompleteBefore =
+    !!existing.contractAcknowledgedAt &&
+    !!existing.governmentIdsUploadedAt &&
+    !!existing.feeProofUploadedAt &&
+    !!existing.preAdmissionCompletedAt;
 
   const buf = Buffer.from(await file.arrayBuffer());
   const subdir = `onboarding/${session.user.id}`;
@@ -75,32 +82,7 @@ export async function POST(req: Request) {
 
   const updated = await db.studentOnboarding.findUnique({ where: { userId: session.user.id } });
 
-  const allDone =
-    updated &&
-    updated.contractAcknowledgedAt &&
-    updated.governmentIdsUploadedAt &&
-    updated.feeProofUploadedAt &&
-    updated.preAdmissionCompletedAt;
-
-  if (allDone) {
-    const student = await db.user.findUnique({
-      where: { id: session.user.id },
-      select: { firstName: true, lastName: true },
-    });
-    const name = student ? `${student.firstName} ${student.lastName}` : "A student";
-    const principals = await db.user.findMany({ where: { role: "PRINCIPAL" }, select: { id: true } });
-    if (principals.length > 0) {
-      await db.notification.createMany({
-        data: principals.map((p) => ({
-          userId: p.id,
-          type: "ONBOARDING_STUDENT_COMPLETED" as const,
-          title: "Onboarding checklist complete",
-          message: `${name} completed all onboarding steps. Confirm in Students when ready.`,
-          link: "/principal/students",
-        })),
-      });
-    }
-  }
+  await notifyPrincipalsIfOnboardingChecklistJustCompleted(session.user.id, wasCompleteBefore);
 
   return NextResponse.json({
     success: true,

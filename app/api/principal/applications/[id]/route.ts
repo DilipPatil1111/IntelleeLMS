@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getServerAppUrl } from "@/lib/app-url";
-import { sendEmail, buildEnrollmentOnboardingEmail } from "@/lib/email";
+import { sendEmail, buildEnrollmentOnboardingEmail, buildApplicationRejectedEmail } from "@/lib/email";
+import { notifyStudentStatusChange } from "@/lib/student-status";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -21,6 +22,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const appUrl = getServerAppUrl();
 
   if (action === "accept") {
+    const prevProfile = await db.studentProfile.findUnique({
+      where: { userId: application.applicantId },
+      select: { status: true },
+    });
+
     await db.programApplication.update({
       where: { id },
       data: { status: "ACCEPTED", reviewedById: session.user.id, reviewedAt: new Date(), reviewNotes },
@@ -31,24 +37,38 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       data: { status: "ACCEPTED" },
     });
 
-    // Acceptance email
-    const template = await db.emailTemplate.findUnique({ where: { name: "application_accepted" } });
-    const subject = template?.subject || `Congratulations! Application Accepted - ${application.program.name}`;
-    const emailBody = template?.body
-      ? template.body.replace("{{firstName}}", application.applicant.firstName).replace("{{programName}}", application.program.name)
-      : `Dear ${application.applicant.firstName},\n\nCongratulations! Your application to ${application.program.name} has been accepted.\n\nYou will receive enrollment details shortly.\n\nBest regards,\nIntellee College`;
-
-    await db.scheduledEmail.create({
-      data: { emailType: "APPLICATION_ACCEPTED", recipientEmail: application.applicant.email, subject, body: emailBody, scheduledAt: new Date() },
-    });
-
-    await db.notification.create({
-      data: { userId: application.applicantId, type: "APPLICATION_ACCEPTED", title: "Application Accepted!", message: `Your application to ${application.program.name} has been accepted.` },
-    });
+    const prev = prevProfile?.status ?? "APPLIED";
+    if (prev !== "ACCEPTED") {
+      await notifyStudentStatusChange(application.applicantId, prev, "ACCEPTED");
+    }
   } else if (action === "reject") {
     await db.programApplication.update({
       where: { id },
       data: { status: "REJECTED", reviewedById: session.user.id, reviewedAt: new Date(), reviewNotes },
+    });
+
+    const portalUrl = `${appUrl.replace(/\/$/, "")}/student`;
+    const rejectedPayload = buildApplicationRejectedEmail({
+      firstName: application.applicant.firstName,
+      programName: application.program.name,
+      reviewNotes: typeof reviewNotes === "string" ? reviewNotes : null,
+      portalUrl,
+    });
+    await sendEmail({
+      to: application.applicant.email,
+      subject: rejectedPayload.subject,
+      html: rejectedPayload.html,
+      text: rejectedPayload.text,
+    });
+
+    await db.notification.create({
+      data: {
+        userId: application.applicantId,
+        type: "GENERAL",
+        title: "Application not approved",
+        message: `Your application to ${application.program.name} was not approved for this intake. Check your email for details.`,
+        link: "/student/apply",
+      },
     });
   } else if (action === "enroll") {
     if (!batchId) return NextResponse.json({ error: "Batch is required for enrollment" }, { status: 400 });
@@ -60,10 +80,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       data: { status: "ENROLLED", reviewedById: session.user.id, reviewedAt: new Date() },
     });
 
+    /** Placement confirmed: student is ACCEPTED until onboarding is finished and principal unlocks (then ENROLLED). */
     await db.studentProfile.upsert({
       where: { userId: application.applicantId },
-      update: { programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
-      create: { userId: application.applicantId, programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
+      update: { programId: application.programId, batchId, status: "ACCEPTED", enrollmentNo, enrollmentDate: new Date() },
+      create: { userId: application.applicantId, programId: application.programId, batchId, status: "ACCEPTED", enrollmentNo, enrollmentDate: new Date() },
     });
 
     await db.studentOnboarding.upsert({
@@ -100,7 +121,13 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     });
 
     await db.notification.create({
-      data: { userId: application.applicantId, type: "ENROLLMENT_CONFIRMED", title: "Enrollment Confirmed!", message: `You are now enrolled in ${application.program.name}. Enrollment #${enrollmentNo}`, link: `${appUrl}/student` },
+      data: {
+        userId: application.applicantId,
+        type: "ENROLLMENT_CONFIRMED",
+        title: "Placement confirmed — complete onboarding",
+        message: `Your place in ${application.program.name} is confirmed (enrollment #${enrollmentNo}). Open Onboarding in the student portal to finish the checklist. Full course access unlocks after your principal reviews and approves.`,
+        link: `${appUrl.replace(/\/$/, "")}/student/onboarding`,
+      },
     });
   }
 

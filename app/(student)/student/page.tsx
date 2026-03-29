@@ -20,6 +20,7 @@ export default async function StudentDashboard() {
     where: { id: session.user.id },
     include: {
       studentProfile: { include: { program: true, batch: true } },
+      studentOnboarding: { select: { principalConfirmedAt: true } },
       attempts: {
         include: { assessment: { include: { subject: true } } },
         orderBy: { createdAt: "desc" },
@@ -56,6 +57,11 @@ export default async function StudentDashboard() {
 
   const journeyStatus = (user.studentProfile?.status ?? "APPLIED") as StudentStatus;
 
+  const onboardingPhase =
+    user.studentProfile?.status === "ACCEPTED" &&
+    user.studentOnboarding &&
+    !user.studentOnboarding.principalConfirmedAt;
+
   return (
     <>
       <PageHeader
@@ -66,6 +72,22 @@ export default async function StudentDashboard() {
             : "Complete your profile to get started"
         }
       />
+
+      {onboardingPhase && (
+        <div className="mb-6 rounded-xl border border-indigo-200 bg-indigo-50/90 px-4 py-4 text-sm text-indigo-950 shadow-sm">
+          <p className="font-semibold">Complete your onboarding</p>
+          <p className="mt-1 text-indigo-900/90">
+            Your place is confirmed. Open the Onboarding section to finish the checklist steps (you can mark items complete without uploading files for now).
+            When all steps are done, your principal will unlock full access including <strong>My Program</strong> and attendance.
+          </p>
+          <Link
+            href="/student/onboarding"
+            className="mt-3 inline-flex rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+          >
+            Go to Onboarding
+          </Link>
+        </div>
+      )}
 
       <StudentJourneyProgress status={journeyStatus} />
 

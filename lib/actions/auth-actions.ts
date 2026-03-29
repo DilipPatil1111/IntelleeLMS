@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { sendEmail, buildRegistrationThankYouEmail } from "@/lib/email";
+import { sendEmail, buildRegistrationThankYouEmail, buildTeacherSelfRegistrationEmail } from "@/lib/email";
 import { getLoginPageUrl } from "@/lib/app-url";
 
 const registerSchema = z
@@ -135,28 +135,67 @@ export async function registerUser(formData: FormData) {
     return { success: true };
   }
 
-  const user = await db.user.create({
+  if (role === "TEACHER") {
+    const rawPrograms = formData.getAll("programIds").filter((x): x is string => typeof x === "string");
+    const programIds = [...new Set(rawPrograms)].filter(Boolean);
+
+    await db.$transaction(async (tx) => {
+      const tpCount = await tx.teacherProfile.count();
+      const user = await tx.user.create({
+        data: {
+          firstName,
+          middleName: middleName || null,
+          lastName,
+          email,
+          hashedPassword,
+          role: "TEACHER",
+          phone: phone || null,
+          country: country || null,
+        },
+      });
+      await tx.teacherProfile.create({
+        data: {
+          userId: user.id,
+          employeeId: `TCH${String(tpCount + 1).padStart(6, "0")}`,
+          ...(programIds.length > 0 && {
+            teacherPrograms: { create: programIds.map((programId) => ({ programId })) },
+          }),
+        },
+      });
+    });
+
+    const programs =
+      programIds.length > 0
+        ? await db.program.findMany({ where: { id: { in: programIds } }, select: { name: true } })
+        : [];
+    const loginUrl = getLoginPageUrl();
+    const teacherWelcome = buildTeacherSelfRegistrationEmail({
+      firstName,
+      loginUrl,
+      programNames: programs.map((p) => p.name),
+    });
+    await sendEmail({
+      to: email,
+      subject: teacherWelcome.subject,
+      html: teacherWelcome.html,
+      text: teacherWelcome.text,
+    });
+
+    return { success: true };
+  }
+
+  await db.user.create({
     data: {
       firstName,
       middleName: middleName || null,
       lastName,
       email,
       hashedPassword,
-      role: role as "TEACHER" | "PRINCIPAL",
+      role: "PRINCIPAL",
       phone: phone || null,
       country: country || null,
     },
   });
-
-  if (role === "TEACHER") {
-    const count = await db.teacherProfile.count();
-    await db.teacherProfile.create({
-      data: {
-        userId: user.id,
-        employeeId: `TCH${String(count + 1).padStart(6, "0")}`,
-      },
-    }).catch(() => {});
-  }
 
   return { success: true };
 }

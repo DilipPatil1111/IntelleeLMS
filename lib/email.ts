@@ -102,7 +102,7 @@ export function escapeHtml(text: string): string {
 }
 
 /** Safe for double-quoted HTML attributes (e.g. href). */
-function escapeHtmlAttribute(text: string): string {
+export function escapeHtmlAttribute(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/\r?\n/g, "");
 }
 
@@ -111,10 +111,19 @@ export function buildStudentWelcomeEmail(params: {
   email: string;
   temporaryPassword: string;
   loginUrl: string;
+  /** Shown when admin placed the student in a program — onboarding opens after first login. */
+  onboardingUrl?: string | null;
 }) {
-  const { firstName, email, temporaryPassword, loginUrl } = params;
+  const { firstName, email, temporaryPassword, loginUrl, onboardingUrl } = params;
   const href = escapeHtmlAttribute(loginUrl);
   const loginUrlVisible = escapeHtml(loginUrl);
+  const ob = onboardingUrl?.trim();
+  const hOb = ob ? escapeHtmlAttribute(ob) : "";
+  const onboardingBlock = ob
+    ? `<p style="color: #374151; font-size: 14px;">After you sign in and set your password, open <strong>Onboarding</strong> in the student portal to complete the enrollment checklist. Your principal will unlock full course access after review.</p>
+        <p><a href="${hOb}" style="background: #059669; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open Onboarding (after login)</a></p>`
+    : "";
+  const onboardingText = ob ? `\nAfter login, complete onboarding: ${ob}\n` : "";
   return {
     subject: "Your Intellee College account is ready",
     html: `
@@ -129,10 +138,11 @@ export function buildStudentWelcomeEmail(params: {
         <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Sign in</a></p>
         <p style="color: #374151; font-size: 14px;">If the button does not open the site, copy this address into your browser:</p>
         <p style="word-break: break-all; font-size: 14px; color: #1f2937;"><a href="${href}" style="color: #4f46e5;">${loginUrlVisible}</a></p>
+        ${onboardingBlock}
         <p style="color: #6b7280; font-size: 13px;">For security, delete this email after you have saved your new password. Never share your password with anyone.</p>
       </div>
     `,
-    text: `Hello ${firstName},\n\nYour account email: ${email}\nTemporary password: ${temporaryPassword}\n\nSign in (copy this link into your browser if needed):\n${loginUrl}\n\nYou must change your password after signing in.`,
+    text: `Hello ${firstName},\n\nYour account email: ${email}\nTemporary password: ${temporaryPassword}\n\nSign in:\n${loginUrl}\n\nYou must change your password after signing in.${onboardingText}`,
   };
 }
 
@@ -180,18 +190,146 @@ export function buildEnrollmentOnboardingEmail(params: {
         <p><strong>Enrollment number:</strong> ${escapeHtml(enrollmentNo)}</p>
         <p><strong>Next steps — onboarding</strong></p>
         <ol style="padding-left: 20px; color: #374151;">
-          <li>Sign your student agreement (acknowledge in the portal).</li>
-          <li>Upload government-issued photo ID.</li>
-          <li>Submit first fee payment proof (screenshot or receipt).</li>
-          <li>Complete the pre-admission assessment when assigned.</li>
+          <li>Student agreement — upload a signed copy if you have one, or mark the step complete in the portal for now.</li>
+          <li>Government photo ID — upload when ready, or mark complete to proceed without a file (principal may request documents later).</li>
+          <li>Fee payment proof — upload when ready, or mark complete for now.</li>
+          <li>Pre-admission assessment — complete when assigned, or mark complete when applicable.</li>
         </ol>
-        <p>Course content becomes available after your principal confirms your onboarding.</p>
+        <p>When every step is marked done, your principal is notified to review and unlock full access. <strong>My Program</strong> and attendance unlock after that approval; you can still use Assessments and Results during onboarding.</p>
         <p><a href="${h2}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Go to Onboarding</a></p>
         <p><a href="${h1}" style="color: #4f46e5;">Student dashboard</a></p>
         <pre style="margin:12px 0;padding:12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-all;">${escapeHtml(onboardingUrl)}</pre>
       </div>
     `,
     text: `Dear ${firstName},\n\nYour enrollment in ${programName} is confirmed. Enrollment #: ${enrollmentNo}\n\nComplete onboarding: ${onboardingUrl}\nDashboard: ${studentUrl}\n`,
+  };
+}
+
+/** Email when principal creates a teacher account (optional subject/batch assignments). */
+export function buildPrincipalTeacherInviteEmail(params: {
+  firstName: string;
+  email: string;
+  temporaryPassword: string;
+  loginUrl: string;
+  assignmentLines: { programName: string; batchName: string; subjectName: string }[];
+}) {
+  const { firstName, email, temporaryPassword, loginUrl, assignmentLines } = params;
+  const href = escapeHtmlAttribute(loginUrl);
+  const loginUrlVisible = escapeHtml(loginUrl);
+  const listHtml =
+    assignmentLines.length > 0
+      ? `<ul style="padding-left:20px;line-height:1.6;">${assignmentLines
+          .map(
+            (r) =>
+              `<li><strong>${escapeHtml(r.subjectName)}</strong> — ${escapeHtml(r.programName)} — Batch: ${escapeHtml(r.batchName)}</li>`
+          )
+          .join("")}</ul>`
+      : "<p><em>No subject/class row was added yet — your principal can assign you later.</em></p>";
+  return {
+    subject: "Your Intellee teacher account is ready",
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4f46e5;">Intellee College</h2>
+        <p>Hello ${escapeHtml(firstName)},</p>
+        <p>An administrator has created your <strong>teacher</strong> account. Below are your sign-in details and any program / batch / subject assignments.</p>
+        ${listHtml}
+        <div style="background: #f3f4f6; border-radius: 8px; padding: 16px; margin: 16px 0;">
+          <p style="margin: 0;"><strong>Email:</strong> ${escapeHtml(email)}</p>
+          <p style="margin: 8px 0 0;"><strong>Temporary password:</strong> <code style="background: #e5e7eb; padding: 4px 8px; border-radius: 4px;">${escapeHtml(temporaryPassword)}</code></p>
+        </div>
+        <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Sign in</a></p>
+        <p style="color: #374151; font-size: 14px;"><strong>First sign-in:</strong> you will be asked to choose a new password and confirm it before accessing your teacher dashboard.</p>
+        <p style="word-break: break-all; font-size: 14px; color: #6b7280;">${loginUrlVisible}</p>
+      </div>
+    `,
+    text: `Hello ${firstName},\n\nYour teacher account was created.\nEmail: ${email}\nTemporary password: ${temporaryPassword}\n\nSign in: ${loginUrl}\n\nOn first login you must set a new password before using the teacher portal.\n`,
+  };
+}
+
+/** Application rejected by admissions (program application, not student status enum). */
+export function buildApplicationRejectedEmail(params: {
+  firstName: string;
+  programName: string;
+  reviewNotes?: string | null;
+  portalUrl: string;
+}) {
+  const { firstName, programName, reviewNotes, portalUrl } = params;
+  const href = escapeHtmlAttribute(portalUrl);
+  const note = reviewNotes?.trim();
+  return {
+    subject: `Update on your application — ${programName}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4f46e5;">Intellee College</h2>
+        <p>Hello ${escapeHtml(firstName)},</p>
+        <p>Thank you for your interest in <strong>${escapeHtml(programName)}</strong>. After review, we are unable to offer admission for this intake.</p>
+        ${note ? `<p style="color: #374151;"><strong>Note from admissions:</strong> ${escapeHtml(note)}</p>` : ""}
+        <p>If you have questions, contact the admissions office. You may apply again in a future intake when applications open.</p>
+        <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open student portal</a></p>
+        <p style="word-break: break-all; font-size: 13px; color: #6b7280;">${escapeHtml(portalUrl)}</p>
+      </div>
+    `,
+    text: `Hello ${firstName},\n\nWe are unable to offer admission to ${programName} for this intake.${note ? `\n\nNote: ${note}` : ""}\n\nPortal: ${portalUrl}\n`,
+  };
+}
+
+/** Teacher self-service registration completed. */
+export function buildTeacherSelfRegistrationEmail(params: {
+  firstName: string;
+  loginUrl: string;
+  programNames: string[];
+}) {
+  const { firstName, loginUrl, programNames } = params;
+  const href = escapeHtmlAttribute(loginUrl);
+  const list =
+    programNames.length > 0
+      ? `<ul style="padding-left:20px;">${programNames.map((n) => `<li>${escapeHtml(n)}</li>`).join("")}</ul>`
+      : "<p><em>No programs were selected — your principal can link programs later.</em></p>";
+  return {
+    subject: "Welcome to Intellee College — teacher account created",
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4f46e5;">Intellee College</h2>
+        <p>Hello ${escapeHtml(firstName)},</p>
+        <p>Your <strong>teacher</strong> account has been created successfully. You can sign in with the email and password you used to register.</p>
+        <p><strong>Programs you selected:</strong></p>
+        ${list}
+        <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Sign in to teacher portal</a></p>
+        <p style="word-break: break-all; font-size: 13px; color: #6b7280;">${escapeHtml(loginUrl)}</p>
+      </div>
+    `,
+    text: `Hello ${firstName},\n\nYour teacher account was created.\nPrograms: ${programNames.join(", ") || "None"}\n\nSign in: ${loginUrl}\n`,
+  };
+}
+
+export function buildTeacherCoursesAssignedEmail(params: {
+  firstName: string;
+  rows: { programName: string; batchName: string; subjectName: string }[];
+  loginUrl: string;
+}) {
+  const { firstName, rows, loginUrl } = params;
+  const href = escapeHtmlAttribute(loginUrl);
+  const listHtml = rows
+    .map(
+      (r) =>
+        `<li><strong>${escapeHtml(r.subjectName)}</strong> — ${escapeHtml(r.programName)} — Batch: ${escapeHtml(r.batchName)}</li>`
+    )
+    .join("");
+  const listText = rows.map((r) => `- ${r.subjectName} (${r.programName}, ${r.batchName})`).join("\n");
+  return {
+    subject: "You have been assigned to teach — Intellee College",
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #4f46e5;">Intellee College</h2>
+        <p>Hello ${escapeHtml(firstName)},</p>
+        <p><strong>Congratulations!</strong> Your principal has assigned you to the following program and class work:</p>
+        <ul style="line-height: 1.6;">${listHtml}</ul>
+        <p>Sign in to your teacher portal to view your schedule, students, and course content.</p>
+        <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open teacher portal</a></p>
+        <p style="word-break: break-all; font-size: 14px; color: #6b7280;">${escapeHtml(loginUrl)}</p>
+      </div>
+    `,
+    text: `Hello ${firstName},\n\nCongratulations! You have been assigned to teach:\n\n${listText}\n\nTeacher portal: ${loginUrl}\n`,
   };
 }
 

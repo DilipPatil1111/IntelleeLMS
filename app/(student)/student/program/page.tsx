@@ -73,12 +73,12 @@ export default function StudentProgramPage() {
           setOnboardingLocked(false);
           return;
         }
-        if (spStatus && spStatus !== "ENROLLED") {
-          setOnboardingLocked(false);
+        /** ACCEPTED = onboarding phase: hide course modules until principal unlocks (→ ENROLLED). */
+        if (spStatus === "ACCEPTED") {
+          setOnboardingLocked(!o.principalConfirmedAt);
           return;
         }
-        /** Lock course modules until principal confirms — assessments remain available elsewhere. */
-        setOnboardingLocked(!o.principalConfirmedAt);
+        setOnboardingLocked(false);
       })
       .catch(() => setOnboardingLocked(false));
   }, []);

@@ -1,14 +1,11 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { FeedbackCategory } from "@/app/generated/prisma/enums";
+import { getTeacherVisibleBatchIds } from "@/lib/teacher-visible-batches";
 import { NextResponse } from "next/server";
 
 async function teacherHasAccessToStudent(teacherUserId: string, studentUserId: string): Promise<boolean> {
-  const profile = await db.teacherProfile.findUnique({
-    where: { userId: teacherUserId },
-    include: { subjectAssignments: true },
-  });
-  const batchIds = [...new Set(profile?.subjectAssignments.map((a) => a.batchId) ?? [])];
+  const batchIds = await getTeacherVisibleBatchIds(teacherUserId);
   if (batchIds.length === 0) return false;
   const sp = await db.studentProfile.findUnique({ where: { userId: studentUserId } });
   return !!(sp?.batchId && batchIds.includes(sp.batchId));

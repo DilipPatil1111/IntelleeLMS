@@ -7,6 +7,7 @@ import {
   notifyStudentStatusChange,
 } from "@/lib/student-status";
 import { sendGraduationCertificateEmail } from "@/lib/graduation-certificate";
+import { sendStudentProgramBatchChangeEmail } from "@/lib/student-status-email";
 import type { SuspensionReason } from "@/app/generated/prisma/enums";
 import { NextResponse } from "next/server";
 
@@ -19,6 +20,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
   const existing = await db.studentProfile.findUnique({ where: { userId: id } });
   const prevStatus = existing?.status;
+  const prevProgramId = existing?.programId ?? null;
+  const prevBatchId = existing?.batchId ?? null;
 
   await db.user.update({
     where: { id },
@@ -94,6 +97,23 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
           ...(body.batchId !== undefined && { batchId: body.batchId || null }),
         },
       });
+      const nextProf = await db.studentProfile.findUnique({
+        where: { userId: id },
+        include: { program: true, batch: true },
+      });
+      const userRow = await db.user.findUnique({ where: { id }, select: { email: true, firstName: true } });
+      if (
+        userRow?.email &&
+        (prevProgramId !== nextProf?.programId || prevBatchId !== nextProf?.batchId)
+      ) {
+        await sendStudentProgramBatchChangeEmail({
+          to: userRow.email,
+          firstName: userRow.firstName,
+          programName: nextProf?.program?.name ?? null,
+          batchName: nextProf?.batch?.name ?? null,
+          enrollmentNo: nextProf?.enrollmentNo ?? null,
+        });
+      }
     }
   }
 

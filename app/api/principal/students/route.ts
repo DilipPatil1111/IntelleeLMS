@@ -4,7 +4,7 @@ import type { Prisma } from "@/app/generated/prisma/client";
 import type { StudentStatus } from "@/app/generated/prisma/enums";
 import { sendEmail, buildStudentWelcomeEmail } from "@/lib/email";
 import { generateTemporaryPassword } from "@/lib/password";
-import { getLoginPageUrl } from "@/lib/app-url";
+import { getLoginPageUrl, getServerAppUrl } from "@/lib/app-url";
 import { NextResponse } from "next/server";
 
 /** Node runtime: full process.env (Vercel secrets) — Edge would not expose all server env vars. */
@@ -74,9 +74,21 @@ export async function POST(req: Request) {
       : generateTemporaryPassword();
   const hashedPassword = await bcrypt.hash(plainPassword, 12);
 
+  const email = typeof body.email === "string" ? body.email.trim() : "";
+  const existing = await db.user.findUnique({ where: { email } });
+  if (existing) {
+    return NextResponse.json(
+      {
+        error:
+          "This email is already registered. Use a different email for each person — a teacher account cannot share an email with a student.",
+      },
+      { status: 409 }
+    );
+  }
+
   const user = await db.user.create({
     data: {
-      email: body.email,
+      email,
       firstName: body.firstName,
       lastName: body.lastName,
       middleName: body.middleName || null,
@@ -89,19 +101,23 @@ export async function POST(req: Request) {
           enrollmentNo: body.enrollmentNo || `STU-${Date.now()}`,
           programId: body.programId || null,
           batchId: body.batchId || null,
-          // ACCEPTED = invited via portal; becomes ENROLLED after first password change (see change-password API)
+          enrollmentDate: new Date(),
           status: body.status ?? "ACCEPTED",
         },
       },
+      studentOnboarding: { create: {} },
     },
   });
 
   const loginUrl = getLoginPageUrl();
+  const base = getServerAppUrl().replace(/\/$/, "");
+  const onboardingUrl = `${base}/student/onboarding`;
   const emailPayload = buildStudentWelcomeEmail({
     firstName: user.firstName,
     email: user.email,
     temporaryPassword: plainPassword,
     loginUrl,
+    onboardingUrl,
   });
   const emailResult = await sendEmail({
     to: user.email,

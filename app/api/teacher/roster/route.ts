@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/app/generated/prisma/client";
+import { getTeacherVisibleBatchIds } from "@/lib/teacher-visible-batches";
 import { NextResponse } from "next/server";
 
 /** Students in batches assigned to the current teacher, with optional search/filters. */
@@ -13,12 +14,8 @@ export async function GET(req: Request) {
   const programId = searchParams.get("programId") || undefined;
   const batchId = searchParams.get("batchId") || undefined;
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    include: { teacherProfile: { include: { subjectAssignments: true } } },
-  });
+  const batchIds = await getTeacherVisibleBatchIds(session.user.id);
 
-  const batchIds = [...new Set(user?.teacherProfile?.subjectAssignments.map((a) => a.batchId) || [])];
   const batchesMeta = await db.batch.findMany({
     where: { id: { in: batchIds } },
     select: { id: true, name: true, programId: true },

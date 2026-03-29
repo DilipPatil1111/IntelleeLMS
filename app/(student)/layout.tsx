@@ -4,12 +4,11 @@ import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { getInitials } from "@/lib/utils";
 import { db } from "@/lib/db";
 
-/** Applied / accepted: only dashboard, profile, apply, notifications */
+/** Applied (and similar): dashboard, profile, apply, notifications — before placement / onboarding checklist. */
 const PATH_APPLIED = ["/student", "/student/profile", "/student/apply", "/student/notifications", "/student/feedback"];
 
 /**
- * Enrolled (etc.) but principal has not confirmed onboarding yet:
- * course program + attendance stay hidden; assessments and results stay available so students can complete pre-admission work.
+ * Placement confirmed (ACCEPTED) with an onboarding row: onboarding + assessments + results + fees until principal unlocks → ENROLLED.
  */
 const PATH_PRE_PRINCIPAL_UNLOCK = [
   "/student",
@@ -34,32 +33,12 @@ export default async function StudentLayout({ children }: { children: React.Reac
 
   const userId = session.user.id;
 
-  const spQuick = await db.studentProfile.findUnique({
-    where: { userId },
-    select: { status: true },
-  });
-
-  if (
-    spQuick &&
-    (spQuick.status === "ENROLLED" || spQuick.status === "GRADUATED" || spQuick.status === "COMPLETED")
-  ) {
-    await db.studentOnboarding.upsert({
-      where: { userId },
-      create: { userId },
-      update: {},
-    });
-  }
-
   const user = await db.user.findUnique({
     where: { id: userId },
     select: {
       profilePicture: true,
       studentProfile: { select: { status: true } },
-      studentOnboarding: {
-        select: {
-          principalConfirmedAt: true,
-        },
-      },
+      studentOnboarding: { select: { id: true, principalConfirmedAt: true } },
     },
   });
 
@@ -69,6 +48,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
 
   const sp = user?.studentProfile;
   const status = sp?.status;
+  const hasOnboardingRow = !!user?.studentOnboarding;
 
   let allowedPaths: string[] | undefined;
 
@@ -81,16 +61,14 @@ export default async function StudentLayout({ children }: { children: React.Reac
     status === "TRANSFERRED"
   ) {
     allowedPaths = PATH_RESTRICTED;
-  } else if (status === "APPLIED" || status === "ACCEPTED" || status === "RETAKE") {
+  } else if (status === "APPLIED" || status === "RETAKE") {
     allowedPaths = PATH_APPLIED;
+  } else if (status === "ACCEPTED") {
+    /** Batch/placement confirmed and checklist row exists → onboarding phase. Otherwise still “application accepted” only. */
+    allowedPaths = hasOnboardingRow ? PATH_PRE_PRINCIPAL_UNLOCK : PATH_APPLIED;
   } else if (status === "ENROLLED" || status === "GRADUATED" || status === "COMPLETED") {
-    const ob = user?.studentOnboarding;
-    /** Only active enrolled students wait on principal unlock; graduated/completed retain full portal access. */
-    if (status !== "ENROLLED" || !ob || ob.principalConfirmedAt) {
-      allowedPaths = undefined;
-    } else {
-      allowedPaths = PATH_PRE_PRINCIPAL_UNLOCK;
-    }
+    /** Fully enrolled (principal unlocked) or alumni-style statuses → full navigation. */
+    allowedPaths = undefined;
   } else {
     allowedPaths = undefined;
   }

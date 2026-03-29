@@ -1,8 +1,13 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { notifyPrincipalsIfOnboardingChecklistJustCompleted } from "@/lib/notify-principals-onboarding-complete";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+
+function shouldEnsureOnboardingRow(status: string | undefined): boolean {
+  return status === "ENROLLED" || status === "GRADUATED" || status === "COMPLETED";
+}
 
 export async function GET() {
   const session = await auth();
@@ -13,8 +18,8 @@ export async function GET() {
     select: { role: true, studentProfile: { select: { id: true, status: true } } },
   });
 
-  /** Ensure checklist row exists for enrolled students (fixes missing "Mark complete" when row was never created). */
-  if (user?.role === "STUDENT" && user.studentProfile) {
+  /** Legacy / edge: ensure row only for fully enrolled statuses (not APPLIED / bare ACCEPTED). */
+  if (user?.role === "STUDENT" && user.studentProfile && shouldEnsureOnboardingRow(user.studentProfile.status)) {
     await db.studentOnboarding.upsert({
       where: { userId: session.user.id },
       create: { userId: session.user.id },
@@ -46,6 +51,8 @@ export async function GET() {
   });
 }
 
+const MARKABLE_STEPS = new Set(["contract", "governmentIds", "feeProof", "preAdmission"]);
+
 export async function PATCH(req: Request) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -53,12 +60,10 @@ export async function PATCH(req: Request) {
   const body = await req.json();
   const step = body.step as string | undefined;
 
-  /** Steps 1–3 require file upload via POST /api/student/onboarding/upload */
-  if (step !== "preAdmission") {
+  if (!step || !MARKABLE_STEPS.has(step)) {
     return NextResponse.json(
       {
-        error:
-          "Use file upload for agreement, ID, and fee proof. Only the pre-admission step can be marked complete here.",
+        error: "Invalid step. Use contract, governmentIds, feeProof, or preAdmission.",
       },
       { status: 400 }
     );
@@ -66,42 +71,33 @@ export async function PATCH(req: Request) {
 
   const existing = await db.studentOnboarding.findUnique({ where: { userId: session.user.id } });
   if (!existing) {
-    return NextResponse.json({ error: "No onboarding record. Complete enrollment first." }, { status: 400 });
+    return NextResponse.json({ error: "No onboarding record. Your placement must be confirmed first." }, { status: 400 });
   }
+
+  const wasCompleteBefore =
+    !!existing.contractAcknowledgedAt &&
+    !!existing.governmentIdsUploadedAt &&
+    !!existing.feeProofUploadedAt &&
+    !!existing.preAdmissionCompletedAt;
+
+  const now = new Date();
+  const data =
+    step === "contract"
+      ? { contractAcknowledgedAt: now }
+      : step === "governmentIds"
+        ? { governmentIdsUploadedAt: now }
+        : step === "feeProof"
+          ? { feeProofUploadedAt: now }
+          : { preAdmissionCompletedAt: now };
 
   await db.studentOnboarding.update({
     where: { userId: session.user.id },
-    data: { preAdmissionCompletedAt: new Date() },
+    data,
   });
 
   const updated = await db.studentOnboarding.findUnique({ where: { userId: session.user.id } });
 
-  const allDone =
-    updated &&
-    updated.contractAcknowledgedAt &&
-    updated.governmentIdsUploadedAt &&
-    updated.feeProofUploadedAt &&
-    updated.preAdmissionCompletedAt;
-
-  if (allDone) {
-    const student = await db.user.findUnique({
-      where: { id: session.user.id },
-      select: { firstName: true, lastName: true },
-    });
-    const name = student ? `${student.firstName} ${student.lastName}` : "A student";
-    const principals = await db.user.findMany({ where: { role: "PRINCIPAL" }, select: { id: true } });
-    if (principals.length > 0) {
-      await db.notification.createMany({
-        data: principals.map((p) => ({
-          userId: p.id,
-          type: "ONBOARDING_STUDENT_COMPLETED" as const,
-          title: "Onboarding checklist complete",
-          message: `${name} completed all onboarding steps. Confirm in Students when ready.`,
-          link: "/principal/students",
-        })),
-      });
-    }
-  }
+  await notifyPrincipalsIfOnboardingChecklistJustCompleted(session.user.id, wasCompleteBefore);
 
   return NextResponse.json({ success: true, onboarding: updated });
 }
