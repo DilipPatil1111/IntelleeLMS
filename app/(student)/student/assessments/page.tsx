@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { findAssessmentsForStudentList } from "@/lib/student-assessment-queries";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +10,7 @@ import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function StudentAssessmentsPage() {
+  await connection();
   const session = await auth();
   if (!session?.user) redirect("/login");
 
