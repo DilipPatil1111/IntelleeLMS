@@ -50,6 +50,9 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
               </Link>
             )}
             <AssessmentActions assessmentId={assessment.id} status={assessment.status} title={assessment.title} />
+            <Link href={`/teacher/assessments/${assessment.id}/results`}>
+              <Button variant="outline">Student-wise results</Button>
+            </Link>
             <Link href={`/teacher/grading?assessmentId=${assessment.id}`}>
               <Button variant="outline">Grade Submissions</Button>
             </Link>

@@ -1,12 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { formatDate } from "@/lib/utils";
+import { FileBarChart } from "lucide-react";
 
 type AssessmentType = "QUIZ" | "TEST" | "ASSIGNMENT" | "PROJECT" | "HOMEWORK";
 type AssessmentStatus = "DRAFT" | "PUBLISHED" | "CLOSED" | "GRADED";
@@ -175,7 +178,7 @@ export function PrincipalAssessmentsClient() {
             <Card key={a.id}>
               <CardContent>
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                  <div>
+                  <div className="flex-1">
                     <div className="mb-1 flex flex-wrap items-center gap-2">
                       <h3 className="text-base font-semibold text-gray-900">{a.title}</h3>
                       <Badge variant={a.type === "QUIZ" ? "info" : a.type === "TEST" ? "warning" : "default"}>
@@ -199,6 +202,12 @@ export function PrincipalAssessmentsClient() {
                       )}
                     </p>
                   </div>
+                  <Link href={`/principal/assessments/${a.id}/results`}>
+                    <Button variant="outline" size="sm">
+                      <FileBarChart className="h-4 w-4 mr-1" />
+                      Results & PDF
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
