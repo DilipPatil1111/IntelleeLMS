@@ -8,6 +8,7 @@ import {
 } from "@/lib/student-status";
 import { sendGraduationCertificateEmail } from "@/lib/graduation-certificate";
 import { sendStudentProgramBatchChangeEmail } from "@/lib/student-status-email";
+import { syncProgramApplicationsWithProfileEnrolled } from "@/lib/sync-enrollment-status";
 import type { SuspensionReason } from "@/app/generated/prisma/enums";
 import { NextResponse } from "next/server";
 
@@ -15,6 +16,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const role = (session.user as unknown as Record<string, unknown>).role as string;
+  if (role !== "PRINCIPAL") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const body = await req.json();
 
@@ -70,6 +76,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         );
       }
 
+      const mergedProgramId =
+        body.programId !== undefined ? body.programId || null : existing.programId ?? null;
+
       await db.studentProfile.update({
         where: { userId: id },
         data: {
@@ -79,6 +88,10 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
           ...(prevStatus === "GRADUATED" && next !== "GRADUATED" ? { graduationCertificateSentAt: null } : {}),
         },
       });
+
+      if (next === "ENROLLED") {
+        await syncProgramApplicationsWithProfileEnrolled(id, mergedProgramId);
+      }
 
       if (prevStatus && prevStatus !== next) {
         await notifyStudentStatusChange(id, prevStatus, next, {

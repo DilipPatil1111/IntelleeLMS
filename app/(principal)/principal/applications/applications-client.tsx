@@ -22,6 +22,12 @@ interface ApplicationRow {
     email: string;
     phone: string | null;
     profilePicture: string | null;
+    studentProfile: {
+      enrollmentNo: string;
+      programId: string | null;
+      batchId: string | null;
+      status: string;
+    } | null;
   };
   program: {
     id: string;
@@ -30,6 +36,15 @@ interface ApplicationRow {
     batches: { id: string; name: string }[];
   };
   batch: { id: string; name: string } | null;
+}
+
+function isPlacementPreRecorded(app: ApplicationRow): boolean {
+  const sp = app.applicant.studentProfile;
+  if (!sp?.enrollmentNo || !sp.batchId) return false;
+  if (app.status !== "ACCEPTED") return false;
+  if (sp.status !== "ACCEPTED") return false;
+  if (app.batch && app.batch.id !== sp.batchId) return false;
+  return true;
 }
 
 const STATUS_OPTS: { value: ApplicationStatus; label: string }[] = [
@@ -170,7 +185,14 @@ export function ApplicationsClient() {
                 )}
                 {app.status === "ACCEPTED" && (
                   <div className="mt-3">
-                    <ApplicationActions applicationId={app.id} batches={app.program.batches} showEnroll onDone={load} />
+                    <ApplicationActions
+                      applicationId={app.id}
+                      batches={app.program.batches}
+                      showEnroll
+                      placementPreRecorded={isPlacementPreRecorded(app)}
+                      defaultBatchId={app.applicant.studentProfile?.batchId ?? undefined}
+                      onDone={load}
+                    />
                   </div>
                 )}
               </CardContent>

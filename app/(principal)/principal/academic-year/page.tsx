@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-/** Academic years are managed when creating batches; the standalone tab was removed as redundant. */
+/** Legacy path: academic years are managed under /principal/academic-years */
 export default function AcademicYearRedirectPage() {
-  redirect("/principal/batches");
+  redirect("/principal/academic-years");
 }

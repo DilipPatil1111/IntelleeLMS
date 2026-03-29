@@ -3,12 +3,18 @@ import { db } from "@/lib/db";
 import { getServerAppUrl } from "@/lib/app-url";
 import { sendEmail, buildEnrollmentOnboardingEmail, buildApplicationRejectedEmail } from "@/lib/email";
 import { notifyStudentStatusChange } from "@/lib/student-status";
+import {
+  syncProgramApplicationsWithProfileEnrolled,
+  syncStudentProfileWithApplicationEnrolled,
+} from "@/lib/sync-enrollment-status";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const role = (session.user as unknown as Record<string, unknown>).role as string;
+  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const { action, batchId, reviewNotes } = body as { action: string; batchId?: string; reviewNotes?: string };
@@ -73,6 +79,32 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   } else if (action === "enroll") {
     if (!batchId) return NextResponse.json({ error: "Batch is required for enrollment" }, { status: 400 });
 
+    const profile = await db.studentProfile.findUnique({
+      where: { userId: application.applicantId },
+    });
+
+    /** Admin pre-added student: program/batch/enrollment already set; only align application + skip duplicate placement emails. */
+    const placementAlreadyRecorded =
+      profile?.programId === application.programId &&
+      profile?.batchId === batchId &&
+      Boolean(profile?.enrollmentNo) &&
+      profile.status === "ACCEPTED" &&
+      application.status === "ACCEPTED";
+
+    if (placementAlreadyRecorded) {
+      await db.programApplication.update({
+        where: { id },
+        data: {
+          status: "ENROLLED",
+          batchId,
+          reviewedById: session.user.id,
+          reviewedAt: new Date(),
+        },
+      });
+      await syncStudentProfileWithApplicationEnrolled(application.applicantId, application.programId);
+      return NextResponse.json({ success: true, skippedPlacementEmails: true });
+    }
+
     const enrollmentNo = `STU-${Date.now().toString(36).toUpperCase()}`;
 
     await db.programApplication.update({
@@ -80,12 +112,14 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       data: { status: "ENROLLED", reviewedById: session.user.id, reviewedAt: new Date() },
     });
 
-    /** Placement confirmed: student is ACCEPTED until onboarding is finished and principal unlocks (then ENROLLED). */
+    /** Align profile with application ENROLLED (same lifecycle as ProgramApplication). */
     await db.studentProfile.upsert({
       where: { userId: application.applicantId },
-      update: { programId: application.programId, batchId, status: "ACCEPTED", enrollmentNo, enrollmentDate: new Date() },
-      create: { userId: application.applicantId, programId: application.programId, batchId, status: "ACCEPTED", enrollmentNo, enrollmentDate: new Date() },
+      update: { programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
+      create: { userId: application.applicantId, programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
     });
+
+    await syncProgramApplicationsWithProfileEnrolled(application.applicantId, application.programId);
 
     await db.studentOnboarding.upsert({
       where: { userId: application.applicantId },

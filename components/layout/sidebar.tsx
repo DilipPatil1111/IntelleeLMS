@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar,
+  LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar, CalendarRange,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
   Shield, FolderOpen, Megaphone, MessageSquare,
@@ -57,6 +57,7 @@ const principalNav: NavItem[] = [
   { label: "Teachers", href: "/principal/teachers", icon: Users },
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
   { label: "Programs", href: "/principal/programs", icon: BookOpen },
+  { label: "Academic years", href: "/principal/academic-years", icon: CalendarRange },
   { label: "Batches", href: "/principal/batches", icon: Layers },
   { label: "Reports", href: "/principal/reports", icon: BarChart3 },
   { label: "Holidays", href: "/principal/holidays", icon: Calendar },

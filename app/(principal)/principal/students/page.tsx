@@ -96,6 +96,7 @@ const emptyForm = {
   batchId: "",
   enrollmentNo: "",
   isActive: true,
+  status: "ACCEPTED" as StudentStatus,
 };
 
 function avgScore(attempts: { percentage: number | null }[]) {
@@ -134,7 +135,7 @@ export default function PrincipalStudentsPage() {
   const [saveBanner, setSaveBanner] = useState<{ tone: "success" | "warning" | "error"; message: string } | null>(
     null
   );
-  const [statusModal, setStatusModal] = useState<{ student: StudentRow; toStatus: StudentStatus } | null>(null);
+  const [statusModal, setStatusModal] = useState<{ toStatus: StudentStatus } | null>(null);
   const [suspendReason, setSuspendReason] = useState<"FEES" | "ATTENDANCE" | "ACADEMIC" | "OTHER">("FEES");
   const [statusNote, setStatusNote] = useState("");
   const [searchInput, setSearchInput] = useState("");
@@ -180,10 +181,6 @@ export default function PrincipalStudentsPage() {
     return () => clearTimeout(t);
   }, [searchInput]);
 
-  useEffect(() => {
-    void loadMeta();
-  }, []);
-
   const loadStudents = useCallback(async () => {
     const params = new URLSearchParams();
     if (debouncedSearch) params.set("q", debouncedSearch);
@@ -192,20 +189,32 @@ export default function PrincipalStudentsPage() {
     if (filterStatus) params.set("status", filterStatus);
     if (filterTeacherId) params.set("teacherId", filterTeacherId);
     const q = params.toString();
-    const sRes = await fetch(`/api/principal/students${q ? `?${q}` : ""}`);
+    const sRes = await fetch(`/api/principal/students${q ? `?${q}` : ""}`, { cache: "no-store" });
     const sData = await sRes.json();
     setStudents(sData.students || []);
   }, [debouncedSearch, filterProgramId, filterBatchId, filterStatus, filterTeacherId]);
 
   useEffect(() => {
+    // Fetch when filters / debounced search change (standard data-sync pattern).
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loadStudents updates list state from API
     void loadStudents();
   }, [loadStudents]);
 
-  async function loadMeta() {
+  /** After onboarding confirm or status changes in another tab, list stays fresh when returning here. */
+  useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === "visible") void loadStudents();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, [loadStudents]);
+
+  const loadMeta = useCallback(async () => {
+    const fetchOpts = { cache: "no-store" as const };
     const [pRes, bRes, tRes] = await Promise.all([
-      fetch("/api/principal/programs"),
-      fetch("/api/principal/batches"),
-      fetch("/api/principal/teachers"),
+      fetch("/api/principal/programs", fetchOpts),
+      fetch("/api/principal/batches", fetchOpts),
+      fetch("/api/principal/teachers", fetchOpts),
     ]);
     const pData = await pRes.json();
     const bData = await bRes.json();
@@ -218,35 +227,59 @@ export default function PrincipalStudentsPage() {
       lastName: string;
     }[];
     setTeachers(tList.map((u) => ({ id: u.id, firstName: u.firstName, lastName: u.lastName })));
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time programs/batches/teachers for filters
+    void loadMeta();
+  }, [loadMeta]);
 
   async function loadAll() {
     await loadMeta();
     await loadStudents();
   }
 
+  async function putStudentUpdate(extras?: { suspensionReason?: string; statusNote?: string }): Promise<boolean> {
+    if (!editing) return false;
+    const body: Record<string, unknown> = {
+      firstName: form.firstName,
+      lastName: form.lastName,
+      middleName: form.middleName || null,
+      phone: form.phone || null,
+      email: form.email,
+      isActive: form.isActive,
+      programId: form.programId || null,
+      batchId: form.batchId || null,
+      status: form.status,
+    };
+    if (extras?.suspensionReason) body.suspensionReason = extras.suspensionReason;
+    if (extras?.statusNote) body.statusNote = extras.statusNote;
+
+    const res = await fetch(`/api/principal/students/${editing.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      setSaveBanner({ tone: "error", message: (err as { error?: string }).error || "Could not update student." });
+      return false;
+    }
+    setSaveBanner({ tone: "success", message: "Student updated." });
+    return true;
+  }
+
   async function handleSave() {
     if (editing) {
-      const res = await fetch(`/api/principal/students/${editing.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: form.firstName,
-          lastName: form.lastName,
-          middleName: form.middleName || null,
-          phone: form.phone || null,
-          email: form.email,
-          isActive: form.isActive,
-          programId: form.programId || null,
-          batchId: form.batchId || null,
-        }),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        setSaveBanner({ tone: "error", message: (err as { error?: string }).error || "Could not update student." });
+      const needsConfirm = ["SUSPENDED", "CANCELLED", "EXPELLED", "TRANSFERRED"].includes(form.status);
+      if (needsConfirm) {
+        setSuspendReason("FEES");
+        setStatusNote("");
+        setStatusModal({ toStatus: form.status });
         return;
       }
-      setSaveBanner({ tone: "success", message: "Student updated." });
+      const ok = await putStudentUpdate();
+      if (!ok) return;
     } else {
       const res = await fetch("/api/principal/students", {
         method: "POST",
@@ -259,6 +292,7 @@ export default function PrincipalStudentsPage() {
           programId: form.programId || null,
           batchId: form.batchId || null,
           enrollmentNo: form.enrollmentNo.trim() || undefined,
+          status: form.status,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -310,51 +344,9 @@ export default function PrincipalStudentsPage() {
     loadAll();
   }
 
-  async function applyStudentStatus(
-    student: StudentRow,
-    status: StudentStatus,
-    extra?: { suspensionReason?: string; statusNote?: string }
-  ) {
-    const payload: Record<string, unknown> = {
-      firstName: student.firstName,
-      lastName: student.lastName,
-      middleName: student.middleName,
-      phone: student.phone,
-      email: student.email,
-      isActive: student.isActive,
-      programId: student.studentProfile?.programId ?? null,
-      batchId: student.studentProfile?.batchId ?? null,
-      status,
-    };
-    if (extra?.suspensionReason) payload.suspensionReason = extra.suspensionReason;
-    if (extra?.statusNote) payload.statusNote = extra.statusNote;
-
-    const res = await fetch(`/api/principal/students/${student.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      setSaveBanner({ tone: "error", message: (err as { error?: string }).error || "Could not update status." });
-      return;
-    }
-    loadAll();
-  }
-
-  function handleStatusSelect(student: StudentRow, next: StudentStatus) {
-    if (next === "SUSPENDED" || next === "CANCELLED" || next === "EXPELLED" || next === "TRANSFERRED") {
-      setSuspendReason("FEES");
-      setStatusNote("");
-      setStatusModal({ student, toStatus: next });
-      return;
-    }
-    void applyStudentStatus(student, next);
-  }
-
   async function confirmStatusModal() {
     if (!statusModal) return;
-    const { student, toStatus } = statusModal;
+    const { toStatus } = statusModal;
     const note = statusNote.trim();
     if ((toStatus === "EXPELLED" || toStatus === "TRANSFERRED") && note.length < 10) {
       setSaveBanner({
@@ -363,16 +355,20 @@ export default function PrincipalStudentsPage() {
       });
       return;
     }
-    await applyStudentStatus(student, toStatus, {
+    const ok = await putStudentUpdate({
       suspensionReason: toStatus === "SUSPENDED" ? suspendReason : undefined,
       statusNote: note || undefined,
     });
+    if (!ok) return;
     setStatusModal(null);
+    setShowModal(false);
+    setEditing(null);
+    setForm(emptyForm);
+    loadAll();
   }
 
   function closeStatusModal() {
     setStatusModal(null);
-    loadAll();
   }
 
   function openAdd() {
@@ -393,6 +389,7 @@ export default function PrincipalStudentsPage() {
       batchId: s.studentProfile?.batchId || "",
       enrollmentNo: s.studentProfile?.enrollmentNo || "",
       isActive: s.isActive,
+      status: (s.studentProfile?.status ?? "APPLIED") as StudentStatus,
     });
     setShowModal(true);
   }
@@ -491,30 +488,22 @@ export default function PrincipalStudentsPage() {
             {students.map((s) => {
               const avg = avgScore(s.attempts);
               const attRate = attendancePct(s.attendanceRecords);
-              const st = (s.studentProfile?.status ?? "ENROLLED") as StudentStatus;
+              const sp = s.studentProfile;
+              const st = sp?.status as StudentStatus | undefined;
               return (
                 <tr key={s.id}>
                   <td className="px-4 py-3 text-sm font-medium text-gray-900">
                     {s.firstName} {s.lastName}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-500">{s.email}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500">{s.studentProfile?.program?.name || "—"}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500">{s.studentProfile?.batch?.name || "—"}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500">{sp?.program?.name || "—"}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500">{sp?.batch?.name || "—"}</td>
                   <td className="px-4 py-3">
-                    <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
+                    {sp && st ? (
                       <Badge variant={statusBadgeVariant(st)}>{STATUS_LABELS[st]}</Badge>
-                      <select
-                        className="rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-                        value={st}
-                        onChange={(e) => handleStatusSelect(s, e.target.value as StudentStatus)}
-                      >
-                        {STUDENT_STATUSES.map((opt) => (
-                          <option key={opt} value={opt}>
-                            {STATUS_LABELS[opt]}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    ) : (
+                      <span className="text-sm text-gray-400">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <Badge variant={avg >= 50 ? "success" : avg > 0 ? "danger" : "default"}>{avg}%</Badge>
@@ -670,6 +659,12 @@ export default function PrincipalStudentsPage() {
             onChange={(e) => setForm({ ...form, batchId: e.target.value })}
             options={batchOptionsForForm}
             placeholder={form.programId ? "Select batch" : "Select program first"}
+          />
+          <Select
+            label="Enrollment status"
+            value={form.status}
+            onChange={(e) => setForm({ ...form, status: e.target.value as StudentStatus })}
+            options={STUDENT_STATUSES.map((s) => ({ value: s, label: STATUS_LABELS[s] }))}
           />
           <Input
             label="Enrollment No. (optional — auto if empty)"
