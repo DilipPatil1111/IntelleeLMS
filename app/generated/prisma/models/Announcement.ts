@@ -34,6 +34,12 @@ export type AnnouncementMinAggregateOutputType = {
   academicYearId: string | null
   recipientAll: boolean | null
   sendEmail: boolean | null
+  emailCopyToSender: boolean | null
+  allPrograms: boolean | null
+  allBatches: boolean | null
+  allTeachers: boolean | null
+  sendToStudents: boolean | null
+  sendToTeachers: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +54,12 @@ export type AnnouncementMaxAggregateOutputType = {
   academicYearId: string | null
   recipientAll: boolean | null
   sendEmail: boolean | null
+  emailCopyToSender: boolean | null
+  allPrograms: boolean | null
+  allBatches: boolean | null
+  allTeachers: boolean | null
+  sendToStudents: boolean | null
+  sendToTeachers: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +74,15 @@ export type AnnouncementCountAggregateOutputType = {
   academicYearId: number
   recipientAll: number
   sendEmail: number
+  emailCopyToSender: number
+  allPrograms: number
+  allBatches: number
+  programIds: number
+  batchIds: number
+  allTeachers: number
+  teacherIds: number
+  sendToStudents: number
+  sendToTeachers: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -78,6 +99,12 @@ export type AnnouncementMinAggregateInputType = {
   academicYearId?: true
   recipientAll?: true
   sendEmail?: true
+  emailCopyToSender?: true
+  allPrograms?: true
+  allBatches?: true
+  allTeachers?: true
+  sendToStudents?: true
+  sendToTeachers?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +119,12 @@ export type AnnouncementMaxAggregateInputType = {
   academicYearId?: true
   recipientAll?: true
   sendEmail?: true
+  emailCopyToSender?: true
+  allPrograms?: true
+  allBatches?: true
+  allTeachers?: true
+  sendToStudents?: true
+  sendToTeachers?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +139,15 @@ export type AnnouncementCountAggregateInputType = {
   academicYearId?: true
   recipientAll?: true
   sendEmail?: true
+  emailCopyToSender?: true
+  allPrograms?: true
+  allBatches?: true
+  programIds?: true
+  batchIds?: true
+  allTeachers?: true
+  teacherIds?: true
+  sendToStudents?: true
+  sendToTeachers?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -193,6 +235,15 @@ export type AnnouncementGroupByOutputType = {
   academicYearId: string | null
   recipientAll: boolean
   sendEmail: boolean
+  emailCopyToSender: boolean
+  allPrograms: boolean
+  allBatches: boolean
+  programIds: string[]
+  batchIds: string[]
+  allTeachers: boolean
+  teacherIds: string[]
+  sendToStudents: boolean
+  sendToTeachers: boolean
   createdAt: Date
   updatedAt: Date
   _count: AnnouncementCountAggregateOutputType | null
@@ -228,6 +279,15 @@ export type AnnouncementWhereInput = {
   academicYearId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   recipientAll?: Prisma.BoolFilter<"Announcement"> | boolean
   sendEmail?: Prisma.BoolFilter<"Announcement"> | boolean
+  emailCopyToSender?: Prisma.BoolFilter<"Announcement"> | boolean
+  allPrograms?: Prisma.BoolFilter<"Announcement"> | boolean
+  allBatches?: Prisma.BoolFilter<"Announcement"> | boolean
+  programIds?: Prisma.StringNullableListFilter<"Announcement">
+  batchIds?: Prisma.StringNullableListFilter<"Announcement">
+  allTeachers?: Prisma.BoolFilter<"Announcement"> | boolean
+  teacherIds?: Prisma.StringNullableListFilter<"Announcement">
+  sendToStudents?: Prisma.BoolFilter<"Announcement"> | boolean
+  sendToTeachers?: Prisma.BoolFilter<"Announcement"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -247,6 +307,15 @@ export type AnnouncementOrderByWithRelationInput = {
   academicYearId?: Prisma.SortOrderInput | Prisma.SortOrder
   recipientAll?: Prisma.SortOrder
   sendEmail?: Prisma.SortOrder
+  emailCopyToSender?: Prisma.SortOrder
+  allPrograms?: Prisma.SortOrder
+  allBatches?: Prisma.SortOrder
+  programIds?: Prisma.SortOrder
+  batchIds?: Prisma.SortOrder
+  allTeachers?: Prisma.SortOrder
+  teacherIds?: Prisma.SortOrder
+  sendToStudents?: Prisma.SortOrder
+  sendToTeachers?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   creator?: Prisma.UserOrderByWithRelationInput
@@ -269,6 +338,15 @@ export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
   academicYearId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   recipientAll?: Prisma.BoolFilter<"Announcement"> | boolean
   sendEmail?: Prisma.BoolFilter<"Announcement"> | boolean
+  emailCopyToSender?: Prisma.BoolFilter<"Announcement"> | boolean
+  allPrograms?: Prisma.BoolFilter<"Announcement"> | boolean
+  allBatches?: Prisma.BoolFilter<"Announcement"> | boolean
+  programIds?: Prisma.StringNullableListFilter<"Announcement">
+  batchIds?: Prisma.StringNullableListFilter<"Announcement">
+  allTeachers?: Prisma.BoolFilter<"Announcement"> | boolean
+  teacherIds?: Prisma.StringNullableListFilter<"Announcement">
+  sendToStudents?: Prisma.BoolFilter<"Announcement"> | boolean
+  sendToTeachers?: Prisma.BoolFilter<"Announcement"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -288,6 +366,15 @@ export type AnnouncementOrderByWithAggregationInput = {
   academicYearId?: Prisma.SortOrderInput | Prisma.SortOrder
   recipientAll?: Prisma.SortOrder
   sendEmail?: Prisma.SortOrder
+  emailCopyToSender?: Prisma.SortOrder
+  allPrograms?: Prisma.SortOrder
+  allBatches?: Prisma.SortOrder
+  programIds?: Prisma.SortOrder
+  batchIds?: Prisma.SortOrder
+  allTeachers?: Prisma.SortOrder
+  teacherIds?: Prisma.SortOrder
+  sendToStudents?: Prisma.SortOrder
+  sendToTeachers?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AnnouncementCountOrderByAggregateInput
@@ -308,6 +395,15 @@ export type AnnouncementScalarWhereWithAggregatesInput = {
   academicYearId?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   recipientAll?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
   sendEmail?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
+  emailCopyToSender?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
+  allPrograms?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
+  allBatches?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
+  programIds?: Prisma.StringNullableListFilter<"Announcement">
+  batchIds?: Prisma.StringNullableListFilter<"Announcement">
+  allTeachers?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
+  teacherIds?: Prisma.StringNullableListFilter<"Announcement">
+  sendToStudents?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
+  sendToTeachers?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
 }
@@ -318,6 +414,15 @@ export type AnnouncementCreateInput = {
   body: string
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutAnnouncementsCreatedInput
@@ -337,6 +442,15 @@ export type AnnouncementUncheckedCreateInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput
@@ -348,6 +462,15 @@ export type AnnouncementUpdateInput = {
   body?: Prisma.StringFieldUpdateOperationsInput | string
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutAnnouncementsCreatedNestedInput
@@ -367,6 +490,15 @@ export type AnnouncementUncheckedUpdateInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput
@@ -382,6 +514,15 @@ export type AnnouncementCreateManyInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -392,6 +533,15 @@ export type AnnouncementUpdateManyMutationInput = {
   body?: Prisma.StringFieldUpdateOperationsInput | string
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -406,6 +556,15 @@ export type AnnouncementUncheckedUpdateManyInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -430,6 +589,15 @@ export type AnnouncementCountOrderByAggregateInput = {
   academicYearId?: Prisma.SortOrder
   recipientAll?: Prisma.SortOrder
   sendEmail?: Prisma.SortOrder
+  emailCopyToSender?: Prisma.SortOrder
+  allPrograms?: Prisma.SortOrder
+  allBatches?: Prisma.SortOrder
+  programIds?: Prisma.SortOrder
+  batchIds?: Prisma.SortOrder
+  allTeachers?: Prisma.SortOrder
+  teacherIds?: Prisma.SortOrder
+  sendToStudents?: Prisma.SortOrder
+  sendToTeachers?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -444,6 +612,12 @@ export type AnnouncementMaxOrderByAggregateInput = {
   academicYearId?: Prisma.SortOrder
   recipientAll?: Prisma.SortOrder
   sendEmail?: Prisma.SortOrder
+  emailCopyToSender?: Prisma.SortOrder
+  allPrograms?: Prisma.SortOrder
+  allBatches?: Prisma.SortOrder
+  allTeachers?: Prisma.SortOrder
+  sendToStudents?: Prisma.SortOrder
+  sendToTeachers?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -458,6 +632,12 @@ export type AnnouncementMinOrderByAggregateInput = {
   academicYearId?: Prisma.SortOrder
   recipientAll?: Prisma.SortOrder
   sendEmail?: Prisma.SortOrder
+  emailCopyToSender?: Prisma.SortOrder
+  allPrograms?: Prisma.SortOrder
+  allBatches?: Prisma.SortOrder
+  allTeachers?: Prisma.SortOrder
+  sendToStudents?: Prisma.SortOrder
+  sendToTeachers?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -635,6 +815,33 @@ export type AnnouncementUncheckedUpdateManyWithoutBatchNestedInput = {
   deleteMany?: Prisma.AnnouncementScalarWhereInput | Prisma.AnnouncementScalarWhereInput[]
 }
 
+export type AnnouncementCreateprogramIdsInput = {
+  set: string[]
+}
+
+export type AnnouncementCreatebatchIdsInput = {
+  set: string[]
+}
+
+export type AnnouncementCreateteacherIdsInput = {
+  set: string[]
+}
+
+export type AnnouncementUpdateprogramIdsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type AnnouncementUpdatebatchIdsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type AnnouncementUpdateteacherIdsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type AnnouncementCreateNestedOneWithoutRecipientsInput = {
   create?: Prisma.XOR<Prisma.AnnouncementCreateWithoutRecipientsInput, Prisma.AnnouncementUncheckedCreateWithoutRecipientsInput>
   connectOrCreate?: Prisma.AnnouncementCreateOrConnectWithoutRecipientsInput
@@ -655,6 +862,15 @@ export type AnnouncementCreateWithoutCreatorInput = {
   body: string
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   program?: Prisma.ProgramCreateNestedOneWithoutAnnouncementsInput
@@ -672,6 +888,15 @@ export type AnnouncementUncheckedCreateWithoutCreatorInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput
@@ -716,6 +941,15 @@ export type AnnouncementScalarWhereInput = {
   academicYearId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   recipientAll?: Prisma.BoolFilter<"Announcement"> | boolean
   sendEmail?: Prisma.BoolFilter<"Announcement"> | boolean
+  emailCopyToSender?: Prisma.BoolFilter<"Announcement"> | boolean
+  allPrograms?: Prisma.BoolFilter<"Announcement"> | boolean
+  allBatches?: Prisma.BoolFilter<"Announcement"> | boolean
+  programIds?: Prisma.StringNullableListFilter<"Announcement">
+  batchIds?: Prisma.StringNullableListFilter<"Announcement">
+  allTeachers?: Prisma.BoolFilter<"Announcement"> | boolean
+  teacherIds?: Prisma.StringNullableListFilter<"Announcement">
+  sendToStudents?: Prisma.BoolFilter<"Announcement"> | boolean
+  sendToTeachers?: Prisma.BoolFilter<"Announcement"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
 }
@@ -726,6 +960,15 @@ export type AnnouncementCreateWithoutProgramInput = {
   body: string
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutAnnouncementsCreatedInput
@@ -743,6 +986,15 @@ export type AnnouncementUncheckedCreateWithoutProgramInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput
@@ -780,6 +1032,15 @@ export type AnnouncementCreateWithoutAcademicYearInput = {
   body: string
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutAnnouncementsCreatedInput
@@ -797,6 +1058,15 @@ export type AnnouncementUncheckedCreateWithoutAcademicYearInput = {
   batchId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput
@@ -834,6 +1104,15 @@ export type AnnouncementCreateWithoutBatchInput = {
   body: string
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutAnnouncementsCreatedInput
@@ -851,6 +1130,15 @@ export type AnnouncementUncheckedCreateWithoutBatchInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutAnnouncementInput
@@ -888,6 +1176,15 @@ export type AnnouncementCreateWithoutRecipientsInput = {
   body: string
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutAnnouncementsCreatedInput
@@ -906,6 +1203,15 @@ export type AnnouncementUncheckedCreateWithoutRecipientsInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -932,6 +1238,15 @@ export type AnnouncementUpdateWithoutRecipientsInput = {
   body?: Prisma.StringFieldUpdateOperationsInput | string
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutAnnouncementsCreatedNestedInput
@@ -950,6 +1265,15 @@ export type AnnouncementUncheckedUpdateWithoutRecipientsInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -963,6 +1287,15 @@ export type AnnouncementCreateManyCreatorInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -973,6 +1306,15 @@ export type AnnouncementUpdateWithoutCreatorInput = {
   body?: Prisma.StringFieldUpdateOperationsInput | string
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   program?: Prisma.ProgramUpdateOneWithoutAnnouncementsNestedInput
@@ -990,6 +1332,15 @@ export type AnnouncementUncheckedUpdateWithoutCreatorInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput
@@ -1004,6 +1355,15 @@ export type AnnouncementUncheckedUpdateManyWithoutCreatorInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1017,6 +1377,15 @@ export type AnnouncementCreateManyProgramInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1027,6 +1396,15 @@ export type AnnouncementUpdateWithoutProgramInput = {
   body?: Prisma.StringFieldUpdateOperationsInput | string
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutAnnouncementsCreatedNestedInput
@@ -1044,6 +1422,15 @@ export type AnnouncementUncheckedUpdateWithoutProgramInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput
@@ -1058,6 +1445,15 @@ export type AnnouncementUncheckedUpdateManyWithoutProgramInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1071,6 +1467,15 @@ export type AnnouncementCreateManyAcademicYearInput = {
   batchId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1081,6 +1486,15 @@ export type AnnouncementUpdateWithoutAcademicYearInput = {
   body?: Prisma.StringFieldUpdateOperationsInput | string
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutAnnouncementsCreatedNestedInput
@@ -1098,6 +1512,15 @@ export type AnnouncementUncheckedUpdateWithoutAcademicYearInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput
@@ -1112,6 +1535,15 @@ export type AnnouncementUncheckedUpdateManyWithoutAcademicYearInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1125,6 +1557,15 @@ export type AnnouncementCreateManyBatchInput = {
   academicYearId?: string | null
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: Prisma.AnnouncementCreateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementCreatebatchIdsInput | string[]
+  allTeachers?: boolean
+  teacherIds?: Prisma.AnnouncementCreateteacherIdsInput | string[]
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1135,6 +1576,15 @@ export type AnnouncementUpdateWithoutBatchInput = {
   body?: Prisma.StringFieldUpdateOperationsInput | string
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutAnnouncementsCreatedNestedInput
@@ -1152,6 +1602,15 @@ export type AnnouncementUncheckedUpdateWithoutBatchInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutAnnouncementNestedInput
@@ -1166,6 +1625,15 @@ export type AnnouncementUncheckedUpdateManyWithoutBatchInput = {
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientAll?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sendEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailCopyToSender?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allPrograms?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allBatches?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  programIds?: Prisma.AnnouncementUpdateprogramIdsInput | string[]
+  batchIds?: Prisma.AnnouncementUpdatebatchIdsInput | string[]
+  allTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  teacherIds?: Prisma.AnnouncementUpdateteacherIdsInput | string[]
+  sendToStudents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendToTeachers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1211,6 +1679,15 @@ export type AnnouncementSelect<ExtArgs extends runtime.Types.Extensions.Internal
   academicYearId?: boolean
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: boolean
+  batchIds?: boolean
+  allTeachers?: boolean
+  teacherIds?: boolean
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1231,6 +1708,15 @@ export type AnnouncementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   academicYearId?: boolean
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: boolean
+  batchIds?: boolean
+  allTeachers?: boolean
+  teacherIds?: boolean
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1249,6 +1735,15 @@ export type AnnouncementSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   academicYearId?: boolean
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: boolean
+  batchIds?: boolean
+  allTeachers?: boolean
+  teacherIds?: boolean
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1267,11 +1762,20 @@ export type AnnouncementSelectScalar = {
   academicYearId?: boolean
   recipientAll?: boolean
   sendEmail?: boolean
+  emailCopyToSender?: boolean
+  allPrograms?: boolean
+  allBatches?: boolean
+  programIds?: boolean
+  batchIds?: boolean
+  allTeachers?: boolean
+  teacherIds?: boolean
+  sendToStudents?: boolean
+  sendToTeachers?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "body" | "createdById" | "programId" | "batchId" | "academicYearId" | "recipientAll" | "sendEmail" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
+export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "body" | "createdById" | "programId" | "batchId" | "academicYearId" | "recipientAll" | "sendEmail" | "emailCopyToSender" | "allPrograms" | "allBatches" | "programIds" | "batchIds" | "allTeachers" | "teacherIds" | "sendToStudents" | "sendToTeachers" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
 export type AnnouncementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   program?: boolean | Prisma.Announcement$programArgs<ExtArgs>
@@ -1311,7 +1815,25 @@ export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.Intern
     batchId: string | null
     academicYearId: string | null
     recipientAll: boolean
+    /**
+     * * When true, student recipients are emailed (default on publish).
+     */
     sendEmail: boolean
+    /**
+     * * When true, a copy was also sent to the creator (principal).
+     */
+    emailCopyToSender: boolean
+    /**
+     * * Audience: all programs vs selected `programIds` (legacy `programId` still used for display on old rows).
+     */
+    allPrograms: boolean
+    allBatches: boolean
+    programIds: string[]
+    batchIds: string[]
+    allTeachers: boolean
+    teacherIds: string[]
+    sendToStudents: boolean
+    sendToTeachers: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["announcement"]>
@@ -1751,6 +2273,15 @@ export interface AnnouncementFieldRefs {
   readonly academicYearId: Prisma.FieldRef<"Announcement", 'String'>
   readonly recipientAll: Prisma.FieldRef<"Announcement", 'Boolean'>
   readonly sendEmail: Prisma.FieldRef<"Announcement", 'Boolean'>
+  readonly emailCopyToSender: Prisma.FieldRef<"Announcement", 'Boolean'>
+  readonly allPrograms: Prisma.FieldRef<"Announcement", 'Boolean'>
+  readonly allBatches: Prisma.FieldRef<"Announcement", 'Boolean'>
+  readonly programIds: Prisma.FieldRef<"Announcement", 'String[]'>
+  readonly batchIds: Prisma.FieldRef<"Announcement", 'String[]'>
+  readonly allTeachers: Prisma.FieldRef<"Announcement", 'Boolean'>
+  readonly teacherIds: Prisma.FieldRef<"Announcement", 'String[]'>
+  readonly sendToStudents: Prisma.FieldRef<"Announcement", 'Boolean'>
+  readonly sendToTeachers: Prisma.FieldRef<"Announcement", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Announcement", 'DateTime'>
 }

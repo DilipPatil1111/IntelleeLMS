@@ -9,6 +9,7 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
+export type * from './models/UserPortalGrant'
 export type * from './models/Feedback'
 export type * from './models/Account'
 export type * from './models/Session'
@@ -40,6 +41,7 @@ export type * from './models/AttendanceSession'
 export type * from './models/TeacherAttendance'
 export type * from './models/AttendanceRecord'
 export type * from './models/Holiday'
+export type * from './models/ProgramCalendarSlot'
 export type * from './models/ScheduledEmail'
 export type * from './models/Notification'
 export type * from './models/ProgramApplication'

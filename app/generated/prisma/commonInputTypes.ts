@@ -460,6 +460,40 @@ export type EnumHolidayTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumHolidayTypeFilter<$PrismaModel>
 }
 
+export type EnumProgramCalendarSlotTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProgramCalendarSlotType | Prisma.EnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ProgramCalendarSlotType[] | Prisma.ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProgramCalendarSlotType[] | Prisma.ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProgramCalendarSlotTypeFilter<$PrismaModel> | $Enums.ProgramCalendarSlotType
+}
+
+export type EnumProgramSessionCategoryNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProgramSessionCategory | Prisma.EnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ProgramSessionCategory[] | Prisma.ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ProgramSessionCategory[] | Prisma.ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumProgramSessionCategoryNullableFilter<$PrismaModel> | $Enums.ProgramSessionCategory | null
+}
+
+export type EnumProgramCalendarSlotTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProgramCalendarSlotType | Prisma.EnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ProgramCalendarSlotType[] | Prisma.ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProgramCalendarSlotType[] | Prisma.ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProgramCalendarSlotTypeWithAggregatesFilter<$PrismaModel> | $Enums.ProgramCalendarSlotType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProgramCalendarSlotTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProgramCalendarSlotTypeFilter<$PrismaModel>
+}
+
+export type EnumProgramSessionCategoryNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProgramSessionCategory | Prisma.EnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ProgramSessionCategory[] | Prisma.ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ProgramSessionCategory[] | Prisma.ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumProgramSessionCategoryNullableWithAggregatesFilter<$PrismaModel> | $Enums.ProgramSessionCategory | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProgramSessionCategoryNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProgramSessionCategoryNullableFilter<$PrismaModel>
+}
+
 export type EnumNotificationTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.NotificationType | Prisma.EnumNotificationTypeFieldRefInput<$PrismaModel>
   in?: $Enums.NotificationType[] | Prisma.ListEnumNotificationTypeFieldRefInput<$PrismaModel>
@@ -946,6 +980,40 @@ export type NestedEnumHolidayTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumHolidayTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumHolidayTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumProgramCalendarSlotTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProgramCalendarSlotType | Prisma.EnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ProgramCalendarSlotType[] | Prisma.ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProgramCalendarSlotType[] | Prisma.ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProgramCalendarSlotTypeFilter<$PrismaModel> | $Enums.ProgramCalendarSlotType
+}
+
+export type NestedEnumProgramSessionCategoryNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProgramSessionCategory | Prisma.EnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ProgramSessionCategory[] | Prisma.ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ProgramSessionCategory[] | Prisma.ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumProgramSessionCategoryNullableFilter<$PrismaModel> | $Enums.ProgramSessionCategory | null
+}
+
+export type NestedEnumProgramCalendarSlotTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProgramCalendarSlotType | Prisma.EnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ProgramCalendarSlotType[] | Prisma.ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ProgramCalendarSlotType[] | Prisma.ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumProgramCalendarSlotTypeWithAggregatesFilter<$PrismaModel> | $Enums.ProgramCalendarSlotType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProgramCalendarSlotTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProgramCalendarSlotTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumProgramSessionCategoryNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProgramSessionCategory | Prisma.EnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ProgramSessionCategory[] | Prisma.ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ProgramSessionCategory[] | Prisma.ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumProgramSessionCategoryNullableWithAggregatesFilter<$PrismaModel> | $Enums.ProgramSessionCategory | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumProgramSessionCategoryNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumProgramSessionCategoryNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {

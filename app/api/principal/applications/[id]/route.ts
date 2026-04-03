@@ -7,14 +7,14 @@ import {
   syncProgramApplicationsWithProfileEnrolled,
   syncStudentProfileWithApplicationEnrolled,
 } from "@/lib/sync-enrollment-status";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const role = (session.user as unknown as Record<string, unknown>).role as string;
-  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const { action, batchId, reviewNotes } = body as { action: string; batchId?: string; reviewNotes?: string };

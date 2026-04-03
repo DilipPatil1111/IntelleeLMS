@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { PageHeader } from "@/components/layout/page-header";
 import { TeacherCharts } from "./teacher-charts";
 
@@ -50,6 +51,13 @@ export default async function TeacherReportsPage() {
         title="Reports"
         description="View assessment performance analytics"
       />
+      <p className="mb-6 text-sm text-gray-600">
+        For attendance by program dates and batch, use the{" "}
+        <Link href="/teacher/attendance?view=grid" className="font-medium text-indigo-600 hover:underline">
+          attendance grid
+        </Link>
+        .
+      </p>
       <TeacherCharts data={chartData} />
     </>
   );

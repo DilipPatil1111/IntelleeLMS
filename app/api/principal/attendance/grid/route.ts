@@ -1,0 +1,62 @@
+import { auth } from "@/lib/auth";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
+import { NextResponse } from "next/server";
+import { loadAttendanceGridData, saveAttendanceGridCells } from "@/lib/attendance-grid-server";
+import { evaluateLowAttendanceForStudents } from "@/lib/attendance-threshold";
+
+export const runtime = "nodejs";
+
+export async function GET(req: Request) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+    const { searchParams } = new URL(req.url);
+    const batchId = searchParams.get("batchId");
+    const subjectId = searchParams.get("subjectId");
+    if (!batchId || !subjectId) return NextResponse.json({ error: "batchId and subjectId required" }, { status: 400 });
+
+    const data = await loadAttendanceGridData(batchId, subjectId);
+    if (!data) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    return NextResponse.json(JSON.parse(JSON.stringify(data)) as typeof data);
+  } catch (e) {
+    console.error("[principal/attendance/grid GET]", e);
+    const message = e instanceof Error ? e.message : "Internal error";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+    const body = await req.json().catch(() => ({}));
+    const { batchId, subjectId, changes } = body as {
+      batchId?: string;
+      subjectId?: string;
+      changes?: { date: string; studentId: string; letter: string }[];
+    };
+    if (!batchId || !subjectId || !Array.isArray(changes)) {
+      return NextResponse.json({ error: "batchId, subjectId, changes[] required" }, { status: 400 });
+    }
+
+    const { updatedStudents } = await saveAttendanceGridCells({
+      batchId,
+      subjectId,
+      createdById: session.user.id,
+      changes,
+    });
+
+    await evaluateLowAttendanceForStudents(batchId, updatedStudents);
+
+    return NextResponse.json({ ok: true, updatedStudents });
+  } catch (e) {
+    console.error("[principal/attendance/grid POST]", e);
+    const message = e instanceof Error ? e.message : "Internal error";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}

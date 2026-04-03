@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
 import {
   TEMPLATE_ALLOWED_EXT,
   TEMPLATE_MAX_BYTES,
@@ -12,8 +13,7 @@ export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const role = (session.user as unknown as Record<string, unknown>).role as string;
-  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   let formData: FormData;
   try {

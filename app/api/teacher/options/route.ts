@@ -1,45 +1,25 @@
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
+import { hasTeacherPortalAccess } from "@/lib/portal-access";
+import { getTeacherCatalogForOptions } from "@/lib/teacher-catalog-options";
 import { NextResponse } from "next/server";
 
 type OptionRow = { value: string; label: string; programId: string };
 
 /**
- * Dropdown data for teacher flows (assessments, attendance, etc.).
- * Uses the full active catalog: programs, subjects, and batches in the institution.
- * Relying only on TeacherProgram / TeacherSubjectAssignment left teachers with empty
- * lists when principals had not yet linked them.
+ * Dropdown data for teacher flows (attendance, assessments, etc.).
+ * Lists only programs / subjects / batches linked via TeacherSubjectAssignment or
+ * TeacherProgram so choices match {@link getTeacherVisibleBatchIds} — student lists
+ * and attendance APIs stay consistent.
  */
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
-  });
-
-  if (user?.role !== "TEACHER") {
+  if (!hasTeacherPortalAccess(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const [programRows, subjectRows, batchRows] = await Promise.all([
-    db.program.findMany({
-      where: { isActive: true },
-      orderBy: { name: "asc" },
-      select: { id: true, name: true },
-    }),
-    db.subject.findMany({
-      where: { isActive: true },
-      include: { program: true },
-      orderBy: { name: "asc" },
-    }),
-    db.batch.findMany({
-      where: { isActive: true },
-      include: { program: true },
-      orderBy: { name: "asc" },
-    }),
-  ]);
+  const { programRows, subjectRows, batchRows } = await getTeacherCatalogForOptions(session.user.id);
 
   const subjects: OptionRow[] = subjectRows.map((s) => ({
     value: s.id,

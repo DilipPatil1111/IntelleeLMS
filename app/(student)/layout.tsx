@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { getInitials } from "@/lib/utils";
 import { db } from "@/lib/db";
+import { getPortalSwitcherLinks, hasStudentPortalAccess } from "@/lib/portal-access";
 
 /** Applied (and similar): dashboard, profile, apply, notifications — before placement / onboarding checklist. */
 const PATH_APPLIED = ["/student", "/student/profile", "/student/apply", "/student/notifications", "/student/feedback"];
@@ -19,6 +20,8 @@ const PATH_PRE_PRINCIPAL_UNLOCK = [
   "/student/fees",
   "/student/assessments",
   "/student/results",
+  "/student/full-calendar",
+  "/student/holidays",
 ];
 
 /** Cancelled, suspended, expelled, or transferred: limited portal access. */
@@ -28,8 +31,8 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const role = (session.user as unknown as Record<string, unknown>).role as string;
-  if (role !== "STUDENT") redirect("/login");
+  /** Match proxy + APIs: primary STUDENT role or granted student portal (same as hasStudentPortalAccess everywhere else). */
+  if (!hasStudentPortalAccess(session)) redirect("/login");
 
   const userId = session.user.id;
 
@@ -80,6 +83,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
       userInitials={initials}
       profilePicture={user?.profilePicture ?? undefined}
       allowedPaths={allowedPaths}
+      portalSwitcherLinks={getPortalSwitcherLinks(session)}
     >
       {children}
     </DashboardShell>

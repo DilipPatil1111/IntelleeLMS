@@ -17,7 +17,7 @@ export async function GET() {
       },
       batches: {
         where: { isActive: true },
-        select: { id: true, name: true, programId: true },
+        select: { id: true, name: true, programId: true, startDate: true, endDate: true },
         orderBy: { name: "asc" },
       },
     },

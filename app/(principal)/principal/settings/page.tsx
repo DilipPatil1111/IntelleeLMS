@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { PortalAccessSettings } from "@/components/settings/portal-access-settings";
 
 type Institution = {
   id: number;
@@ -193,6 +194,8 @@ export default function PrincipalSettingsPage() {
           {message.text}
         </div>
       )}
+
+      <PortalAccessSettings />
 
       <Card className="mb-6">
         <CardHeader>

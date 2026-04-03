@@ -4,7 +4,7 @@ import { sendEmail } from "@/lib/email";
 import { resolveStudentEmails } from "@/lib/mail-audience";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -15,20 +15,31 @@ export async function GET() {
 
   const programIds = profile?.teacherPrograms.map((tp) => tp.programId) || [];
 
-  const list = await db.announcement.findMany({
-    where: {
-      OR: [{ programId: { in: programIds } }, { createdById: session.user.id }],
-    },
-    include: {
-      creator: { select: { firstName: true, lastName: true } },
-      program: { select: { name: true } },
-      batch: { select: { name: true } },
-    },
-    orderBy: { createdAt: "desc" },
-    take: 50,
-  });
+  const where = {
+    OR: [{ programId: { in: programIds } }, { createdById: session.user.id }],
+  };
 
-  return NextResponse.json({ announcements: list });
+  const { searchParams } = new URL(req.url);
+  const page = Math.max(1, Number.parseInt(searchParams.get("page") || "1", 10) || 1);
+  let pageSize = Number.parseInt(searchParams.get("pageSize") || "10", 10) || 10;
+  pageSize = Math.min(Math.max(1, pageSize), 50);
+
+  const [total, list] = await Promise.all([
+    db.announcement.count({ where }),
+    db.announcement.findMany({
+      where,
+      include: {
+        creator: { select: { firstName: true, lastName: true } },
+        program: { select: { name: true } },
+        batch: { select: { name: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+  ]);
+
+  return NextResponse.json({ announcements: list, total, page, pageSize });
 }
 
 export async function POST(req: Request) {

@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import { computeStudentBatchAttendancePercent } from "@/lib/attendance-threshold";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +13,18 @@ import { Calendar, CheckCircle2, XCircle, Clock } from "lucide-react";
 export default async function StudentAttendancePage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
+
+  const profile = await db.studentProfile.findUnique({
+    where: { userId: session.user.id },
+    include: { program: true, batch: true },
+  });
+
+  const inst = await db.institutionSettings.findUnique({ where: { id: 1 } });
+  const requiredPct =
+    profile?.program?.minAttendancePercent ?? inst?.minAttendancePercent ?? 75;
+  const batchPct = profile?.batchId
+    ? await computeStudentBatchAttendancePercent(session.user.id, profile.batchId)
+    : null;
 
   const records = await db.attendanceRecord.findMany({
     where: { studentId: session.user.id },
@@ -33,6 +47,31 @@ export default async function StudentAttendancePage() {
         title="My Attendance"
         description="Track your attendance across all subjects"
       />
+      {profile?.program && (
+        <div className="mb-6 rounded-xl border border-indigo-100 bg-indigo-50/80 px-4 py-3 text-sm text-indigo-950">
+          <p>
+            <strong>{profile.program.name}</strong>
+            {profile.batch && <> — {profile.batch.name}</>}
+          </p>
+          <p className="mt-1">
+            Required attendance: <strong>{requiredPct}%</strong>
+            {batchPct != null && (
+              <>
+                {" "}
+                · Your batch attendance: <strong>{batchPct}%</strong>
+                {batchPct < requiredPct ? (
+                  <span className="text-red-700 font-medium"> (below requirement)</span>
+                ) : (
+                  <span className="text-emerald-800"> (meeting requirement)</span>
+                )}
+              </>
+            )}
+          </p>
+          <Link href="/student/full-calendar" className="mt-2 inline-block text-indigo-700 underline font-medium">
+            View Full Calendar
+          </Link>
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard
           title="Total Sessions"

@@ -1,4 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
+import { hasPrincipalPortalAccess, hasStudentPortalAccess, hasTeacherPortalAccess } from "@/lib/portal-access";
+import type { Session } from "next-auth";
 
 export const authConfig: NextAuthConfig = {
   session: { strategy: "jwt" },
@@ -12,6 +14,8 @@ export const authConfig: NextAuthConfig = {
         token.role = (user as unknown as Record<string, unknown>).role;
         token.id = user.id;
         token.mustChangePassword = (user as unknown as Record<string, unknown>).mustChangePassword as boolean;
+        const gp = (user as unknown as Record<string, unknown>).grantedPortals;
+        token.grantedPortals = Array.isArray(gp) ? gp : [];
       }
       // Keep JWT edge-safe: do not import Prisma here (middleware bundles this file).
       // Client can call session.update({ mustChangePassword: false }) if we add a flow without signOut.
@@ -19,6 +23,9 @@ export const authConfig: NextAuthConfig = {
         const s = session as Record<string, unknown>;
         if (typeof s.mustChangePassword === "boolean") {
           token.mustChangePassword = s.mustChangePassword;
+        }
+        if (Array.isArray(s.grantedPortals)) {
+          token.grantedPortals = s.grantedPortals as ("STUDENT" | "TEACHER" | "PRINCIPAL")[];
         }
       }
       return token;
@@ -28,6 +35,9 @@ export const authConfig: NextAuthConfig = {
         (session.user as unknown as Record<string, unknown>).id = token.id;
         (session.user as unknown as Record<string, unknown>).role = token.role;
         (session.user as unknown as Record<string, unknown>).mustChangePassword = token.mustChangePassword;
+        (session.user as unknown as Record<string, unknown>).grantedPortals = Array.isArray(token.grantedPortals)
+          ? token.grantedPortals
+          : [];
       }
       return session;
     },
@@ -52,11 +62,13 @@ export const authConfig: NextAuthConfig = {
         return Response.redirect(new URL("/change-password", nextUrl));
       }
 
-      const role = (auth?.user as unknown as Record<string, unknown>)?.role as string;
+      const session = {
+        user: auth?.user,
+      } as Session;
 
-      if (pathname.startsWith("/student") && role !== "STUDENT") return false;
-      if (pathname.startsWith("/teacher") && role !== "TEACHER" && role !== "PRINCIPAL") return false;
-      if (pathname.startsWith("/principal") && role !== "PRINCIPAL") return false;
+      if (pathname.startsWith("/student") && !hasStudentPortalAccess(session)) return false;
+      if (pathname.startsWith("/teacher") && !hasTeacherPortalAccess(session)) return false;
+      if (pathname.startsWith("/principal") && !hasPrincipalPortalAccess(session)) return false;
 
       return true;
     },

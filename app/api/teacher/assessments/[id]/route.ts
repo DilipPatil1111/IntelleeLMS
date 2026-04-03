@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -23,8 +24,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   if (!assessment) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const role = session.user.role;
-  if (role === "TEACHER" && assessment.createdById !== session.user.id) {
+  if (isTeacherOwnershipRestricted(session) && assessment.createdById !== session.user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -41,7 +41,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     select: { createdById: true },
   });
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (session.user.role === "TEACHER" && existing.createdById !== session.user.id) {
+  if (isTeacherOwnershipRestricted(session) && existing.createdById !== session.user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -109,7 +109,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
     select: { createdById: true },
   });
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (session.user.role === "TEACHER" && existing.createdById !== session.user.id) {
+  if (isTeacherOwnershipRestricted(session) && existing.createdById !== session.user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

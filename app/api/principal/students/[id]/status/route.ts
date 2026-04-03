@@ -8,6 +8,7 @@ import {
 import { sendGraduationCertificateEmail } from "@/lib/graduation-certificate";
 import { syncProgramApplicationsWithProfileEnrolled } from "@/lib/sync-enrollment-status";
 import type { SuspensionReason } from "@/app/generated/prisma/enums";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 /** Dedicated status update (optional note / suspension reason). */
@@ -16,8 +17,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const role = (session.user as unknown as Record<string, unknown>).role as string;
-  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const { status } = body;

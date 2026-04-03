@@ -335,6 +335,9 @@ export type UserWhereInput = {
   feedbackAboutTeacher?: Prisma.FeedbackListRelationFilter
   feedbackReplies?: Prisma.FeedbackListRelationFilter
   assessmentAssignments?: Prisma.AssessmentAssignedStudentListRelationFilter
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotListRelationFilter
+  portalGrantsReceived?: Prisma.UserPortalGrantListRelationFilter
+  portalGrantsCreated?: Prisma.UserPortalGrantListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -384,6 +387,9 @@ export type UserOrderByWithRelationInput = {
   feedbackAboutTeacher?: Prisma.FeedbackOrderByRelationAggregateInput
   feedbackReplies?: Prisma.FeedbackOrderByRelationAggregateInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentOrderByRelationAggregateInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotOrderByRelationAggregateInput
+  portalGrantsReceived?: Prisma.UserPortalGrantOrderByRelationAggregateInput
+  portalGrantsCreated?: Prisma.UserPortalGrantOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -436,6 +442,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   feedbackAboutTeacher?: Prisma.FeedbackListRelationFilter
   feedbackReplies?: Prisma.FeedbackListRelationFilter
   assessmentAssignments?: Prisma.AssessmentAssignedStudentListRelationFilter
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotListRelationFilter
+  portalGrantsReceived?: Prisma.UserPortalGrantListRelationFilter
+  portalGrantsCreated?: Prisma.UserPortalGrantListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -539,6 +548,9 @@ export type UserCreateInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -588,6 +600,9 @@ export type UserUncheckedCreateInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUpdateInput = {
@@ -637,6 +652,9 @@ export type UserUpdateInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -686,6 +704,9 @@ export type UserUncheckedUpdateInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -874,6 +895,36 @@ export type BoolFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutPortalGrantsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutPortalGrantsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPortalGrantsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutPortalGrantsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPortalGrantsReceivedInput, Prisma.UserUpdateWithoutPortalGrantsReceivedInput>, Prisma.UserUncheckedUpdateWithoutPortalGrantsReceivedInput>
+}
+
+export type UserUpdateOneWithoutPortalGrantsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutPortalGrantsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPortalGrantsCreatedInput, Prisma.UserUpdateWithoutPortalGrantsCreatedInput>, Prisma.UserUncheckedUpdateWithoutPortalGrantsCreatedInput>
 }
 
 export type UserCreateNestedOneWithoutFeedbackAuthoredInput = {
@@ -1134,6 +1185,20 @@ export type UserUpdateOneRequiredWithoutAttendanceRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAttendanceRecordsInput, Prisma.UserUpdateWithoutAttendanceRecordsInput>, Prisma.UserUncheckedUpdateWithoutAttendanceRecordsInput>
 }
 
+export type UserCreateNestedOneWithoutProgramCalendarSlotsAsTeacherInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramCalendarSlotsAsTeacherInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutProgramCalendarSlotsAsTeacherNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramCalendarSlotsAsTeacherInput
+  upsert?: Prisma.UserUpsertWithoutProgramCalendarSlotsAsTeacherInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUpdateWithoutProgramCalendarSlotsAsTeacherInput>, Prisma.UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput>
+}
+
 export type UserCreateNestedOneWithoutNotificationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
@@ -1256,6 +1321,446 @@ export type UserUpdateOneRequiredWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type UserCreateWithoutPortalGrantsReceivedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutPortalGrantsReceivedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutPortalGrantsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
+}
+
+export type UserCreateWithoutPortalGrantsCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPortalGrantsCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPortalGrantsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsCreatedInput>
+}
+
+export type UserUpsertWithoutPortalGrantsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedUpdateWithoutPortalGrantsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPortalGrantsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedUpdateWithoutPortalGrantsReceivedInput>
+}
+
+export type UserUpdateWithoutPortalGrantsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPortalGrantsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUpsertWithoutPortalGrantsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedUpdateWithoutPortalGrantsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPortalGrantsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedUpdateWithoutPortalGrantsCreatedInput>
+}
+
+export type UserUpdateWithoutPortalGrantsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPortalGrantsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutFeedbackAuthoredInput = {
   id?: string
   email: string
@@ -1302,6 +1807,9 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -1350,6 +1858,9 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -1403,6 +1914,9 @@ export type UserCreateWithoutFeedbackAboutStudentInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
@@ -1451,6 +1965,9 @@ export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAboutStudentInput = {
@@ -1504,6 +2021,9 @@ export type UserCreateWithoutFeedbackAboutTeacherInput = {
   feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
@@ -1552,6 +2072,9 @@ export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAboutTeacherInput = {
@@ -1605,6 +2128,9 @@ export type UserCreateWithoutFeedbackRepliesInput = {
   feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
@@ -1653,6 +2179,9 @@ export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackRepliesInput = {
@@ -1717,6 +2246,9 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -1765,6 +2297,9 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackAboutStudentInput = {
@@ -1824,6 +2359,9 @@ export type UserUpdateWithoutFeedbackAboutStudentInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
@@ -1872,6 +2410,9 @@ export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackAboutTeacherInput = {
@@ -1931,6 +2472,9 @@ export type UserUpdateWithoutFeedbackAboutTeacherInput = {
   feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
@@ -1979,6 +2523,9 @@ export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackRepliesInput = {
@@ -2038,6 +2585,9 @@ export type UserUpdateWithoutFeedbackRepliesInput = {
   feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
@@ -2086,6 +2636,9 @@ export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -2134,6 +2687,9 @@ export type UserCreateWithoutAccountsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -2182,6 +2738,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -2246,6 +2805,9 @@ export type UserUpdateWithoutAccountsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -2294,6 +2856,9 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -2342,6 +2907,9 @@ export type UserCreateWithoutSessionsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -2390,6 +2958,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -2454,6 +3025,9 @@ export type UserUpdateWithoutSessionsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -2502,6 +3076,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTopicProgressInput = {
@@ -2550,6 +3127,9 @@ export type UserCreateWithoutTopicProgressInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTopicProgressInput = {
@@ -2598,6 +3178,9 @@ export type UserUncheckedCreateWithoutTopicProgressInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTopicProgressInput = {
@@ -2662,6 +3245,9 @@ export type UserUpdateWithoutTopicProgressInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTopicProgressInput = {
@@ -2710,6 +3296,9 @@ export type UserUncheckedUpdateWithoutTopicProgressInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutStudentProfileInput = {
@@ -2758,6 +3347,9 @@ export type UserCreateWithoutStudentProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -2806,6 +3398,9 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -2870,6 +3465,9 @@ export type UserUpdateWithoutStudentProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -2918,6 +3516,9 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutStudentOnboardingInput = {
@@ -2966,6 +3567,9 @@ export type UserCreateWithoutStudentOnboardingInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutStudentOnboardingInput = {
@@ -3014,6 +3618,9 @@ export type UserUncheckedCreateWithoutStudentOnboardingInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutStudentOnboardingInput = {
@@ -3078,6 +3685,9 @@ export type UserUpdateWithoutStudentOnboardingInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
@@ -3126,6 +3736,9 @@ export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTeacherProfileInput = {
@@ -3174,6 +3787,9 @@ export type UserCreateWithoutTeacherProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTeacherProfileInput = {
@@ -3222,6 +3838,9 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTeacherProfileInput = {
@@ -3286,6 +3905,9 @@ export type UserUpdateWithoutTeacherProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherProfileInput = {
@@ -3334,6 +3956,9 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCreatedAssessmentsInput = {
@@ -3382,6 +4007,9 @@ export type UserCreateWithoutCreatedAssessmentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -3430,6 +4058,9 @@ export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -3494,6 +4125,9 @@ export type UserUpdateWithoutCreatedAssessmentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -3542,6 +4176,9 @@ export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAssessmentAssignmentsInput = {
@@ -3590,6 +4227,9 @@ export type UserCreateWithoutAssessmentAssignmentsInput = {
   feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
@@ -3638,6 +4278,9 @@ export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentAssignmentsInput = {
@@ -3702,6 +4345,9 @@ export type UserUpdateWithoutAssessmentAssignmentsInput = {
   feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
@@ -3750,6 +4396,9 @@ export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAttemptsInput = {
@@ -3798,6 +4447,9 @@ export type UserCreateWithoutAttemptsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAttemptsInput = {
@@ -3846,6 +4498,9 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAttemptsInput = {
@@ -3910,6 +4565,9 @@ export type UserUpdateWithoutAttemptsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttemptsInput = {
@@ -3958,6 +4616,9 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAnswersInput = {
@@ -4006,6 +4667,9 @@ export type UserCreateWithoutAnswersInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAnswersInput = {
@@ -4054,6 +4718,9 @@ export type UserUncheckedCreateWithoutAnswersInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAnswersInput = {
@@ -4118,6 +4785,9 @@ export type UserUpdateWithoutAnswersInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnswersInput = {
@@ -4166,6 +4836,9 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAssessmentSharesInput = {
@@ -4214,6 +4887,9 @@ export type UserCreateWithoutAssessmentSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentSharesInput = {
@@ -4262,6 +4938,9 @@ export type UserUncheckedCreateWithoutAssessmentSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentSharesInput = {
@@ -4315,6 +4994,9 @@ export type UserCreateWithoutCreatedSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSharesInput = {
@@ -4363,6 +5045,9 @@ export type UserUncheckedCreateWithoutCreatedSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSharesInput = {
@@ -4427,6 +5112,9 @@ export type UserUpdateWithoutAssessmentSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
@@ -4475,6 +5163,9 @@ export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutCreatedSharesInput = {
@@ -4534,6 +5225,9 @@ export type UserUpdateWithoutCreatedSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSharesInput = {
@@ -4582,6 +5276,9 @@ export type UserUncheckedUpdateWithoutCreatedSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTeacherAttendancesInput = {
@@ -4630,6 +5327,9 @@ export type UserCreateWithoutTeacherAttendancesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
@@ -4678,6 +5378,9 @@ export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTeacherAttendancesInput = {
@@ -4742,6 +5445,9 @@ export type UserUpdateWithoutTeacherAttendancesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
@@ -4790,6 +5496,9 @@ export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAttendanceRecordsInput = {
@@ -4838,6 +5547,9 @@ export type UserCreateWithoutAttendanceRecordsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -4886,6 +5598,9 @@ export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -4950,6 +5665,9 @@ export type UserUpdateWithoutAttendanceRecordsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -4998,6 +5716,229 @@ export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutProgramCalendarSlotsAsTeacherInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutProgramCalendarSlotsAsTeacherInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput>
+}
+
+export type UserUpsertWithoutProgramCalendarSlotsAsTeacherInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProgramCalendarSlotsAsTeacherInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput>
+}
+
+export type UserUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -5046,6 +5987,9 @@ export type UserCreateWithoutNotificationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -5094,6 +6038,9 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -5158,6 +6105,9 @@ export type UserUpdateWithoutNotificationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -5206,6 +6156,9 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -5254,6 +6207,9 @@ export type UserCreateWithoutApplicationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -5302,6 +6258,9 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -5366,6 +6325,9 @@ export type UserUpdateWithoutApplicationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -5414,6 +6376,9 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCreatedDocumentsInput = {
@@ -5462,6 +6427,9 @@ export type UserCreateWithoutCreatedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
@@ -5510,6 +6478,9 @@ export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDocumentsInput = {
@@ -5563,6 +6534,9 @@ export type UserCreateWithoutSharedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSharedDocumentsInput = {
@@ -5611,6 +6585,9 @@ export type UserUncheckedCreateWithoutSharedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSharedDocumentsInput = {
@@ -5675,6 +6652,9 @@ export type UserUpdateWithoutCreatedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
@@ -5723,6 +6703,9 @@ export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutSharedDocumentsInput = {
@@ -5814,6 +6797,9 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
@@ -5862,6 +6848,9 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementsCreatedInput = {
@@ -5926,6 +6915,9 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
@@ -5974,6 +6966,9 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAnnouncementRecipientsInput = {
@@ -6022,6 +7017,9 @@ export type UserCreateWithoutAnnouncementRecipientsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
@@ -6070,6 +7068,9 @@ export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementRecipientsInput = {
@@ -6134,6 +7135,9 @@ export type UserUpdateWithoutAnnouncementRecipientsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
@@ -6182,6 +7186,9 @@ export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -6230,6 +7237,9 @@ export type UserCreateWithoutAuditLogsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -6278,6 +7288,9 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -6342,6 +7355,9 @@ export type UserUpdateWithoutAuditLogsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -6390,6 +7406,9 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpdateWithoutSharedDocumentsInput = {
@@ -6438,6 +7457,9 @@ export type UserUpdateWithoutSharedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
@@ -6486,6 +7508,9 @@ export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutSharedDocumentsInput = {
@@ -6540,6 +7565,9 @@ export type UserCountOutputType = {
   feedbackAboutTeacher: number
   feedbackReplies: number
   assessmentAssignments: number
+  programCalendarSlotsAsTeacher: number
+  portalGrantsReceived: number
+  portalGrantsCreated: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6565,6 +7593,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   feedbackAboutTeacher?: boolean | UserCountOutputTypeCountFeedbackAboutTeacherArgs
   feedbackReplies?: boolean | UserCountOutputTypeCountFeedbackRepliesArgs
   assessmentAssignments?: boolean | UserCountOutputTypeCountAssessmentAssignmentsArgs
+  programCalendarSlotsAsTeacher?: boolean | UserCountOutputTypeCountProgramCalendarSlotsAsTeacherArgs
+  portalGrantsReceived?: boolean | UserCountOutputTypeCountPortalGrantsReceivedArgs
+  portalGrantsCreated?: boolean | UserCountOutputTypeCountPortalGrantsCreatedArgs
 }
 
 /**
@@ -6731,6 +7762,27 @@ export type UserCountOutputTypeCountAssessmentAssignmentsArgs<ExtArgs extends ru
   where?: Prisma.AssessmentAssignedStudentWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProgramCalendarSlotsAsTeacherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramCalendarSlotWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPortalGrantsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserPortalGrantWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPortalGrantsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserPortalGrantWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6779,6 +7831,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   feedbackAboutTeacher?: boolean | Prisma.User$feedbackAboutTeacherArgs<ExtArgs>
   feedbackReplies?: boolean | Prisma.User$feedbackRepliesArgs<ExtArgs>
   assessmentAssignments?: boolean | Prisma.User$assessmentAssignmentsArgs<ExtArgs>
+  programCalendarSlotsAsTeacher?: boolean | Prisma.User$programCalendarSlotsAsTeacherArgs<ExtArgs>
+  portalGrantsReceived?: boolean | Prisma.User$portalGrantsReceivedArgs<ExtArgs>
+  portalGrantsCreated?: boolean | Prisma.User$portalGrantsCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -6881,6 +7936,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   feedbackAboutTeacher?: boolean | Prisma.User$feedbackAboutTeacherArgs<ExtArgs>
   feedbackReplies?: boolean | Prisma.User$feedbackRepliesArgs<ExtArgs>
   assessmentAssignments?: boolean | Prisma.User$assessmentAssignmentsArgs<ExtArgs>
+  programCalendarSlotsAsTeacher?: boolean | Prisma.User$programCalendarSlotsAsTeacherArgs<ExtArgs>
+  portalGrantsReceived?: boolean | Prisma.User$portalGrantsReceivedArgs<ExtArgs>
+  portalGrantsCreated?: boolean | Prisma.User$portalGrantsCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -6914,6 +7972,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     feedbackAboutTeacher: Prisma.$FeedbackPayload<ExtArgs>[]
     feedbackReplies: Prisma.$FeedbackPayload<ExtArgs>[]
     assessmentAssignments: Prisma.$AssessmentAssignedStudentPayload<ExtArgs>[]
+    programCalendarSlotsAsTeacher: Prisma.$ProgramCalendarSlotPayload<ExtArgs>[]
+    portalGrantsReceived: Prisma.$UserPortalGrantPayload<ExtArgs>[]
+    portalGrantsCreated: Prisma.$UserPortalGrantPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -7356,6 +8417,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   feedbackAboutTeacher<T extends Prisma.User$feedbackAboutTeacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackAboutTeacherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   feedbackReplies<T extends Prisma.User$feedbackRepliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackRepliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessmentAssignments<T extends Prisma.User$assessmentAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assessmentAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentAssignedStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programCalendarSlotsAsTeacher<T extends Prisma.User$programCalendarSlotsAsTeacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programCalendarSlotsAsTeacherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCalendarSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  portalGrantsReceived<T extends Prisma.User$portalGrantsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$portalGrantsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPortalGrantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  portalGrantsCreated<T extends Prisma.User$portalGrantsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$portalGrantsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPortalGrantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8381,6 +9445,78 @@ export type User$assessmentAssignmentsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.AssessmentAssignedStudentScalarFieldEnum | Prisma.AssessmentAssignedStudentScalarFieldEnum[]
+}
+
+/**
+ * User.programCalendarSlotsAsTeacher
+ */
+export type User$programCalendarSlotsAsTeacherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramCalendarSlot
+   */
+  select?: Prisma.ProgramCalendarSlotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramCalendarSlot
+   */
+  omit?: Prisma.ProgramCalendarSlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramCalendarSlotInclude<ExtArgs> | null
+  where?: Prisma.ProgramCalendarSlotWhereInput
+  orderBy?: Prisma.ProgramCalendarSlotOrderByWithRelationInput | Prisma.ProgramCalendarSlotOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramCalendarSlotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramCalendarSlotScalarFieldEnum | Prisma.ProgramCalendarSlotScalarFieldEnum[]
+}
+
+/**
+ * User.portalGrantsReceived
+ */
+export type User$portalGrantsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPortalGrant
+   */
+  select?: Prisma.UserPortalGrantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPortalGrant
+   */
+  omit?: Prisma.UserPortalGrantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPortalGrantInclude<ExtArgs> | null
+  where?: Prisma.UserPortalGrantWhereInput
+  orderBy?: Prisma.UserPortalGrantOrderByWithRelationInput | Prisma.UserPortalGrantOrderByWithRelationInput[]
+  cursor?: Prisma.UserPortalGrantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserPortalGrantScalarFieldEnum | Prisma.UserPortalGrantScalarFieldEnum[]
+}
+
+/**
+ * User.portalGrantsCreated
+ */
+export type User$portalGrantsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPortalGrant
+   */
+  select?: Prisma.UserPortalGrantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPortalGrant
+   */
+  omit?: Prisma.UserPortalGrantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPortalGrantInclude<ExtArgs> | null
+  where?: Prisma.UserPortalGrantWhereInput
+  orderBy?: Prisma.UserPortalGrantOrderByWithRelationInput | Prisma.UserPortalGrantOrderByWithRelationInput[]
+  cursor?: Prisma.UserPortalGrantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserPortalGrantScalarFieldEnum | Prisma.UserPortalGrantScalarFieldEnum[]
 }
 
 /**

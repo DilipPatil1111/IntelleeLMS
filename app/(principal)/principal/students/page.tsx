@@ -138,8 +138,8 @@ export default function PrincipalStudentsPage() {
   const [statusModal, setStatusModal] = useState<{ toStatus: StudentStatus } | null>(null);
   const [suspendReason, setSuspendReason] = useState<"FEES" | "ATTENDANCE" | "ACADEMIC" | "OTHER">("FEES");
   const [statusNote, setStatusNote] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [filterStudentId, setFilterStudentId] = useState("");
+  const [studentPickerOptions, setStudentPickerOptions] = useState<{ value: string; label: string }[]>([]);
   const [filterProgramId, setFilterProgramId] = useState("");
   const [filterBatchId, setFilterBatchId] = useState("");
   const [filterStatus, setFilterStatus] = useState<StudentStatus | "">("");
@@ -176,14 +176,27 @@ export default function PrincipalStudentsPage() {
       .map((b) => ({ value: b.id, label: b.name }));
   }, [batches, form.programId]);
 
+  const refreshStudentPicker = useCallback(async () => {
+    const r = await fetch("/api/principal/students", { cache: "no-store" });
+    const d = await r.json();
+    const rows = (d.students || []) as StudentRow[];
+    setStudentPickerOptions(
+      rows
+        .map((u) => ({
+          value: u.id,
+          label: `${u.firstName} ${u.lastName}`.trim() || u.email,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" })),
+    );
+  }, []);
+
   useEffect(() => {
-    const t = setTimeout(() => setDebouncedSearch(searchInput.trim()), 350);
-    return () => clearTimeout(t);
-  }, [searchInput]);
+    void refreshStudentPicker();
+  }, [refreshStudentPicker]);
 
   const loadStudents = useCallback(async () => {
     const params = new URLSearchParams();
-    if (debouncedSearch) params.set("q", debouncedSearch);
+    if (filterStudentId) params.set("studentId", filterStudentId);
     if (filterProgramId) params.set("programId", filterProgramId);
     if (filterBatchId) params.set("batchId", filterBatchId);
     if (filterStatus) params.set("status", filterStatus);
@@ -192,7 +205,7 @@ export default function PrincipalStudentsPage() {
     const sRes = await fetch(`/api/principal/students${q ? `?${q}` : ""}`, { cache: "no-store" });
     const sData = await sRes.json();
     setStudents(sData.students || []);
-  }, [debouncedSearch, filterProgramId, filterBatchId, filterStatus, filterTeacherId]);
+  }, [filterStudentId, filterProgramId, filterBatchId, filterStatus, filterTeacherId]);
 
   useEffect(() => {
     // Fetch when filters / debounced search change (standard data-sync pattern).
@@ -237,6 +250,7 @@ export default function PrincipalStudentsPage() {
   async function loadAll() {
     await loadMeta();
     await loadStudents();
+    await refreshStudentPicker();
   }
 
   async function putStudentUpdate(extras?: { suspensionReason?: string; statusNote?: string }): Promise<boolean> {
@@ -407,12 +421,13 @@ export default function PrincipalStudentsPage() {
       />
 
       <div className="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-gray-50/80 p-4 sm:flex-row sm:flex-wrap sm:items-end">
-        <div className="min-w-[180px] flex-1">
-          <Input
-            label="Search student"
-            placeholder="Name, email, enrollment no."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+        <div className="w-full min-w-[200px] flex-1 sm:max-w-xs">
+          <Select
+            label="Student"
+            value={filterStudentId}
+            onChange={(e) => setFilterStudentId(e.target.value)}
+            options={studentPickerOptions}
+            placeholder="All students"
           />
         </div>
         <div className="w-full min-w-[140px] sm:w-44">

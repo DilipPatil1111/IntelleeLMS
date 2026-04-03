@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  UserPortalGrant: 'UserPortalGrant',
   Feedback: 'Feedback',
   Account: 'Account',
   Session: 'Session',
@@ -416,6 +417,7 @@ export const ModelName = {
   TeacherAttendance: 'TeacherAttendance',
   AttendanceRecord: 'AttendanceRecord',
   Holiday: 'Holiday',
+  ProgramCalendarSlot: 'ProgramCalendarSlot',
   ScheduledEmail: 'ScheduledEmail',
   Notification: 'Notification',
   ProgramApplication: 'ProgramApplication',
@@ -440,7 +442,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog"
+    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -515,6 +517,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserPortalGrant: {
+      payload: Prisma.$UserPortalGrantPayload<ExtArgs>
+      fields: Prisma.UserPortalGrantFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserPortalGrantFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserPortalGrantFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>
+        }
+        findFirst: {
+          args: Prisma.UserPortalGrantFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserPortalGrantFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>
+        }
+        findMany: {
+          args: Prisma.UserPortalGrantFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>[]
+        }
+        create: {
+          args: Prisma.UserPortalGrantCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>
+        }
+        createMany: {
+          args: Prisma.UserPortalGrantCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserPortalGrantCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>[]
+        }
+        delete: {
+          args: Prisma.UserPortalGrantDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>
+        }
+        update: {
+          args: Prisma.UserPortalGrantUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserPortalGrantDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserPortalGrantUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserPortalGrantUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserPortalGrantUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPortalGrantPayload>
+        }
+        aggregate: {
+          args: Prisma.UserPortalGrantAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserPortalGrant>
+        }
+        groupBy: {
+          args: Prisma.UserPortalGrantGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserPortalGrantGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserPortalGrantCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserPortalGrantCountAggregateOutputType> | number
         }
       }
     }
@@ -2812,6 +2888,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProgramCalendarSlot: {
+      payload: Prisma.$ProgramCalendarSlotPayload<ExtArgs>
+      fields: Prisma.ProgramCalendarSlotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramCalendarSlotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramCalendarSlotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramCalendarSlotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramCalendarSlotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramCalendarSlotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramCalendarSlotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramCalendarSlotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProgramCalendarSlotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>[]
+        }
+        delete: {
+          args: Prisma.ProgramCalendarSlotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>
+        }
+        update: {
+          args: Prisma.ProgramCalendarSlotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramCalendarSlotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramCalendarSlotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProgramCalendarSlotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProgramCalendarSlotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCalendarSlotPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramCalendarSlotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramCalendarSlot>
+        }
+        groupBy: {
+          args: Prisma.ProgramCalendarSlotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCalendarSlotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramCalendarSlotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCalendarSlotCountAggregateOutputType> | number
+        }
+      }
+    }
     ScheduledEmail: {
       payload: Prisma.$ScheduledEmailPayload<ExtArgs>
       fields: Prisma.ScheduledEmailFieldRefs
@@ -3544,6 +3694,17 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const UserPortalGrantScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  portal: 'portal',
+  createdAt: 'createdAt',
+  createdById: 'createdById'
+} as const
+
+export type UserPortalGrantScalarFieldEnum = (typeof UserPortalGrantScalarFieldEnum)[keyof typeof UserPortalGrantScalarFieldEnum]
+
+
 export const FeedbackScalarFieldEnum = {
   id: 'id',
   authorId: 'authorId',
@@ -4022,6 +4183,26 @@ export const HolidayScalarFieldEnum = {
 export type HolidayScalarFieldEnum = (typeof HolidayScalarFieldEnum)[keyof typeof HolidayScalarFieldEnum]
 
 
+export const ProgramCalendarSlotScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  batchId: 'batchId',
+  teacherUserId: 'teacherUserId',
+  subjectId: 'subjectId',
+  slotDate: 'slotDate',
+  slotType: 'slotType',
+  sessionCategory: 'sessionCategory',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  colorHex: 'colorHex',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramCalendarSlotScalarFieldEnum = (typeof ProgramCalendarSlotScalarFieldEnum)[keyof typeof ProgramCalendarSlotScalarFieldEnum]
+
+
 export const ScheduledEmailScalarFieldEnum = {
   id: 'id',
   assessmentId: 'assessmentId',
@@ -4129,6 +4310,15 @@ export const AnnouncementScalarFieldEnum = {
   academicYearId: 'academicYearId',
   recipientAll: 'recipientAll',
   sendEmail: 'sendEmail',
+  emailCopyToSender: 'emailCopyToSender',
+  allPrograms: 'allPrograms',
+  allBatches: 'allBatches',
+  programIds: 'programIds',
+  batchIds: 'batchIds',
+  allTeachers: 'allTeachers',
+  teacherIds: 'teacherIds',
+  sendToStudents: 'sendToStudents',
+  sendToTeachers: 'sendToTeachers',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -4421,6 +4611,34 @@ export type ListEnumHolidayTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$
 
 
 /**
+ * Reference to a field of type 'ProgramCalendarSlotType'
+ */
+export type EnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProgramCalendarSlotType'>
+    
+
+
+/**
+ * Reference to a field of type 'ProgramCalendarSlotType[]'
+ */
+export type ListEnumProgramCalendarSlotTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProgramCalendarSlotType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ProgramSessionCategory'
+ */
+export type EnumProgramSessionCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProgramSessionCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'ProgramSessionCategory[]'
+ */
+export type ListEnumProgramSessionCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProgramSessionCategory[]'>
+    
+
+
+/**
  * Reference to a field of type 'NotificationType'
  */
 export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
@@ -4557,6 +4775,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  userPortalGrant?: Prisma.UserPortalGrantOmit
   feedback?: Prisma.FeedbackOmit
   account?: Prisma.AccountOmit
   session?: Prisma.SessionOmit
@@ -4588,6 +4807,7 @@ export type GlobalOmitConfig = {
   teacherAttendance?: Prisma.TeacherAttendanceOmit
   attendanceRecord?: Prisma.AttendanceRecordOmit
   holiday?: Prisma.HolidayOmit
+  programCalendarSlot?: Prisma.ProgramCalendarSlotOmit
   scheduledEmail?: Prisma.ScheduledEmailOmit
   notification?: Prisma.NotificationOmit
   programApplication?: Prisma.ProgramApplicationOmit

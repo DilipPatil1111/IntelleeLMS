@@ -9,6 +9,12 @@ import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Pencil, Trash2, Download } from "lucide-react";
+import {
+  HOLIDAY_TYPE_FORM_OPTIONS,
+  holidayBadgeVariant,
+  holidayTypeDotClass,
+  holidayTypeLabel,
+} from "@/lib/holiday-types";
 
 interface Holiday {
   id: string;
@@ -70,7 +76,7 @@ export default function HolidaysPage() {
     <>
       <PageHeader
         title="Holidays"
-        description="Current and prior year. Link an academic year to trigger student emails when it matches the active year."
+        description="Public holidays, college closures, custom days off, summer/winter breaks, and exam preparation leave — one row per calendar date (repeat dates for multi-day breaks). Link an academic year to email current-year students when you add or edit rows."
         actions={
           <div className="flex flex-wrap gap-2">
             <Button
@@ -130,16 +136,12 @@ export default function HolidaysPage() {
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div
-                    className={`h-3 w-3 rounded-full ${h.type === "PUBLIC" ? "bg-red-500" : h.type === "COLLEGE" ? "bg-orange-500" : "bg-gray-400"}`}
-                  />
+                  <div className={`h-3 w-3 shrink-0 rounded-full ${holidayTypeDotClass(h.type)}`} />
                   <div>
                     <p className="text-sm font-medium text-gray-900">{h.name}</p>
                     <p className="text-xs text-gray-500">{new Date(h.date).toLocaleDateString()}</p>
                   </div>
-                  <Badge variant={h.type === "PUBLIC" ? "danger" : h.type === "COLLEGE" ? "warning" : "default"}>
-                    {h.type}
-                  </Badge>
+                  <Badge variant={holidayBadgeVariant(h.type)}>{holidayTypeLabel(h.type)}</Badge>
                 </div>
                 <div className="flex gap-1">
                   <button
@@ -188,12 +190,15 @@ export default function HolidaysPage() {
             label="Type"
             value={form.type}
             onChange={(e) => setForm({ ...form, type: e.target.value })}
-            options={[
-              { value: "PUBLIC", label: "Public Holiday" },
-              { value: "COLLEGE", label: "College Holiday" },
-              { value: "CUSTOM", label: "Custom" },
-            ]}
+            options={HOLIDAY_TYPE_FORM_OPTIONS.map((o) => ({
+              value: o.value,
+              label: o.label,
+            }))}
           />
+          <p className="text-xs text-gray-500">
+            Use the <strong>Name</strong> field for the specific title (e.g. &quot;Independence Day&quot;, &quot;Winter break — week 1&quot;). For
+            multi-day breaks, add one entry per date or export and bulk-import later.
+          </p>
           <Select
             label="Academic year (emails current-year students when this matches current year)"
             value={form.academicYearId}

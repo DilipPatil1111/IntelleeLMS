@@ -10,6 +10,7 @@ import Link from "next/link";
 import { CopyLinkButton } from "./copy-link-button";
 import { AssessmentActions } from "./assessment-actions";
 import { getServerAppUrl } from "@/lib/app-url";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 
 export default async function AssessmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -28,7 +29,7 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
 
   if (!assessment) notFound();
 
-  if (session.user.role === "TEACHER" && assessment.createdById !== session.user.id) {
+  if (isTeacherOwnershipRestricted(session) && assessment.createdById !== session.user.id) {
     notFound();
   }
 

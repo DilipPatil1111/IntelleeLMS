@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model UserPortalGrant
+ * * Extra portal access (Student / Teacher / Principal UI) beyond the user’s primary `User.role`. Managed in Principal → Settings.
+ */
+export type UserPortalGrant = Prisma.UserPortalGrantModel
+/**
  * Model Feedback
  * 
  */
@@ -201,6 +206,11 @@ export type AttendanceRecord = Prisma.AttendanceRecordModel
  * 
  */
 export type Holiday = Prisma.HolidayModel
+/**
+ * Model ProgramCalendarSlot
+ * * Principal-configured time blocks on the Full Calendar (per program/batch/day, per teacher).
+ */
+export type ProgramCalendarSlot = Prisma.ProgramCalendarSlotModel
 /**
  * Model ScheduledEmail
  * 

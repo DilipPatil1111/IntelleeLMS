@@ -53,6 +53,23 @@ enum HolidayType {
   PUBLIC
   COLLEGE
   CUSTOM
+  SUMMER_BREAK
+  WINTER_BREAK
+  EXAM_PREPARATION_LEAVE
+}
+
+/** Scheduled block on the program Full Calendar (teaching or lunch). */
+enum ProgramCalendarSlotType {
+  SESSION
+  LUNCH
+}
+
+/** Session style for teaching blocks (Excel: theory / practical / slack / project). Lunch ignores this. */
+enum ProgramSessionCategory {
+  THEORY
+  PRACTICAL
+  SLACK
+  PROJECT
 }
 
 enum NotificationType {
@@ -74,6 +91,12 @@ enum NotificationType {
   STUDENT_TRANSFERRED
   GRADUATION_CERTIFICATE_SENT
   FEEDBACK_REPLY
+  /** Student’s attendance % fell below configured threshold. */
+  LOW_ATTENDANCE_STUDENT
+  /** Staff alert: a student’s attendance is below threshold. */
+  LOW_ATTENDANCE_STAFF
+  /** Teacher requests calendar/hours correction for a batch date. */
+  CALENDAR_HOURS_UPDATE_REQUEST
 }
 
 /** Admission / enrollment lifecycle (principal may set Cancelled, Suspended, Expelled, Transferred). */
@@ -190,6 +213,24 @@ model User {
   feedbackAboutTeacher   Feedback[] @relation("FeedbackAboutTeacher")
   feedbackReplies        Feedback[] @relation("FeedbackRepliedBy")
   assessmentAssignments  AssessmentAssignedStudent[] @relation("AssessmentAssignedStudents")
+  programCalendarSlotsAsTeacher ProgramCalendarSlot[] @relation("ProgramCalendarSlotTeacher")
+  portalGrantsReceived UserPortalGrant[] @relation("PortalGrantSubject")
+  portalGrantsCreated  UserPortalGrant[] @relation("PortalGrantActor")
+}
+
+/** Extra portal access (Student / Teacher / Principal UI) beyond the user’s primary `User.role`. Managed in Principal → Settings. */
+model UserPortalGrant {
+  id          String   @id @default(cuid())
+  userId      String
+  portal      Role
+  createdAt   DateTime @default(now())
+  createdById String?
+
+  user      User @relation("PortalGrantSubject", fields: [userId], references: [id], onDelete: Cascade)
+  createdBy User? @relation("PortalGrantActor", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@unique([userId, portal])
+  @@index([userId])
 }
 
 model Feedback {
@@ -279,6 +320,7 @@ model Program {
   applications  ProgramApplication[]
   teacherPrograms TeacherProgram[]
   announcements Announcement[]
+  programCalendarSlots ProgramCalendarSlot[]
 }
 
 /** Single-row defaults for compliance thresholds (principal Settings). Programs may override per field. */
@@ -339,6 +381,7 @@ model Batch {
   attendanceSessions AttendanceSession[]
   announcements Announcement[]
   programApplications ProgramApplication[]
+  programCalendarSlots ProgramCalendarSlot[]
 }
 
 model Subject {
@@ -357,6 +400,7 @@ model Subject {
   teacherAssignments TeacherSubjectAssignment[]
   assessments Assessment[]
   attendanceSessions AttendanceSession[]
+  programCalendarSlots ProgramCalendarSlot[]
 }
 
 model Module {
@@ -755,6 +799,33 @@ model Holiday {
   academicYear   AcademicYear? @relation(fields: [academicYearId], references: [id])
 }
 
+/** Principal-configured time blocks on the Full Calendar (per program/batch/day, per teacher). */
+model ProgramCalendarSlot {
+  id            String                  @id @default(cuid())
+  programId     String
+  batchId       String
+  teacherUserId String
+  subjectId     String?
+  slotDate      DateTime                @db.Date
+  slotType        ProgramCalendarSlotType @default(SESSION)
+  sessionCategory ProgramSessionCategory?
+  startTime       String
+  endTime         String
+  colorHex        String                  @default("#6366f1")
+  sortOrder     Int                     @default(0)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  batch   Batch   @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  teacher User    @relation("ProgramCalendarSlotTeacher", fields: [teacherUserId], references: [id], onDelete: Cascade)
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+
+  @@index([batchId, slotDate])
+  @@index([programId, batchId])
+  @@index([teacherUserId])
+}
+
 // ─── Scheduling & Notifications ──────────────────────────────────────
 
 model ScheduledEmail {
@@ -860,7 +931,19 @@ model Announcement {
   batchId                String?
   academicYearId         String?
   recipientAll           Boolean  @default(true)
+  /** When true, student recipients are emailed (default on publish). */
   sendEmail              Boolean  @default(true)
+  /** When true, a copy was also sent to the creator (principal). */
+  emailCopyToSender      Boolean  @default(false)
+  /** Audience: all programs vs selected `programIds` (legacy `programId` still used for display on old rows). */
+  allPrograms            Boolean  @default(true)
+  allBatches             Boolean  @default(true)
+  programIds             String[] @default([])
+  batchIds               String[] @default([])
+  allTeachers            Boolean  @default(false)
+  teacherIds             String[] @default([])
+  sendToStudents         Boolean  @default(true)
+  sendToTeachers         Boolean  @default(false)
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -46,6 +46,8 @@ const EDIT_TYPE_OPTIONS = [
   { value: "PARAGRAPH", label: "Paragraph" },
 ];
 
+const PAGE_SIZE = 10;
+
 function defaultMcqOptions() {
   return [
     { optionText: "", isCorrect: false },
@@ -55,9 +57,13 @@ function defaultMcqOptions() {
 
 export default function QuestionBankPage() {
   const [questions, setQuestions] = useState<QuestionRow[]>([]);
+  const [listTotal, setListTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [subjectNames, setSubjectNames] = useState<string[]>([]);
   const [subjectFilter, setSubjectFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [search, setSearch] = useState("");
+  const [debouncedQ, setDebouncedQ] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<QuestionRow | null>(null);
   const [form, setForm] = useState({
@@ -68,38 +74,51 @@ export default function QuestionBankPage() {
     options: defaultMcqOptions(),
   });
 
-  useEffect(() => {
-    loadQuestions();
-  }, []);
+  const filterKey = useMemo(
+    () => `${debouncedQ}|${subjectFilter}|${typeFilter}`,
+    [debouncedQ, subjectFilter, typeFilter]
+  );
+  const prevFilterKeyRef = useRef(filterKey);
 
-  async function loadQuestions() {
-    const res = await fetch("/api/teacher/questions");
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedQ(search.trim()), 350);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const fetchQuestions = useCallback(async (p: number) => {
+    const params = new URLSearchParams();
+    if (debouncedQ) params.set("q", debouncedQ);
+    if (subjectFilter) params.set("subject", subjectFilter);
+    if (typeFilter) params.set("type", typeFilter);
+    params.set("page", String(p));
+    params.set("pageSize", String(PAGE_SIZE));
+    const res = await fetch(`/api/teacher/questions?${params.toString()}`);
     const data = await res.json();
     setQuestions(data.questions || []);
-  }
-
-  const subjectOptions = useMemo(() => {
-    const names = new Set<string>();
-    for (const q of questions) {
-      const n = q.assessment.subject?.name;
-      if (n) names.add(n);
+    setListTotal(typeof data.total === "number" ? data.total : 0);
+    if (Array.isArray(data.subjects)) {
+      setSubjectNames(data.subjects);
     }
-    return [{ value: "", label: "All subjects" }, ...[...names].sort().map((n) => ({ value: n, label: n }))];
-  }, [questions]);
+  }, [debouncedQ, subjectFilter, typeFilter]);
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return questions.filter((row) => {
-      const sub = row.assessment.subject?.name || "";
-      const matchSubject = !subjectFilter || sub === subjectFilter;
-      const matchType = !typeFilter || row.type === typeFilter;
-      const matchSearch =
-        !q ||
-        row.questionText.toLowerCase().includes(q) ||
-        row.assessment.title.toLowerCase().includes(q);
-      return matchSubject && matchType && matchSearch;
-    });
-  }, [questions, subjectFilter, typeFilter, search]);
+  useEffect(() => {
+    const filtersChanged = prevFilterKeyRef.current !== filterKey;
+    if (filtersChanged && page !== 1) {
+      prevFilterKeyRef.current = filterKey;
+      setPage(1);
+      return;
+    }
+    if (filtersChanged) {
+      prevFilterKeyRef.current = filterKey;
+    }
+    const pageToUse = filtersChanged ? 1 : page;
+    void fetchQuestions(pageToUse);
+  }, [filterKey, page, fetchQuestions]);
+
+  const subjectOptions = useMemo(
+    () => [{ value: "", label: "All subjects" }, ...subjectNames.map((n) => ({ value: n, label: n }))],
+    [subjectNames]
+  );
 
   function openEdit(q: QuestionRow) {
     setEditing(q);
@@ -135,13 +154,13 @@ export default function QuestionBankPage() {
     });
     setShowModal(false);
     setEditing(null);
-    loadQuestions();
+    await fetchQuestions(page);
   }
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this question? This cannot be undone.")) return;
     await fetch(`/api/teacher/questions/${id}`, { method: "DELETE" });
-    loadQuestions();
+    await fetchQuestions(page);
   }
 
   function setOption(i: number, patch: Partial<(typeof form.options)[0]>) {
@@ -151,6 +170,8 @@ export default function QuestionBankPage() {
     }));
   }
 
+  const totalPages = Math.max(1, Math.ceil(listTotal / PAGE_SIZE));
+
   return (
     <>
       <PageHeader
@@ -158,7 +179,7 @@ export default function QuestionBankPage() {
         description="Browse and edit questions across your assessments"
       />
 
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row">
         <Input
           label="Search"
           placeholder="Question or assessment title…"
@@ -180,77 +201,102 @@ export default function QuestionBankPage() {
         />
       </div>
 
-      {filtered.length === 0 ? (
+      {listTotal === 0 ? (
         <Card>
           <CardContent>
-            <p className="text-center text-gray-500 py-8">
-              {questions.length === 0
+            <p className="py-8 text-center text-gray-500">
+              {debouncedQ === "" && !subjectFilter && !typeFilter
                 ? "No questions created yet."
                 : "No questions match your filters."}
             </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-3">
-          {filtered.map((q) => (
-            <Card key={q.id}>
-              <CardContent>
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <Badge variant="info">{q.type}</Badge>
-                      <Badge>{q.marks} marks</Badge>
-                      <span className="text-xs text-gray-400">
-                        {q.assessment.subject?.name} — {q.assessment.title}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-900">{q.questionText}</p>
-                    {q.type === "MCQ" && q.options.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {[...q.options]
-                          .sort((a, b) => a.orderIndex - b.orderIndex)
-                          .map((o) => (
-                            <span
-                              key={o.id}
-                              className={`text-xs px-2 py-0.5 rounded ${
-                                o.isCorrect ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
-                              }`}
-                            >
-                              {o.optionText}
-                            </span>
-                          ))}
+        <>
+          <p className="mb-3 text-sm text-gray-500">
+            {listTotal} question{listTotal === 1 ? "" : "s"} match · {PAGE_SIZE} per page
+          </p>
+          <div className="space-y-3">
+            {questions.map((q) => (
+              <Card key={q.id}>
+                <CardContent>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-2 flex flex-wrap items-center gap-2">
+                        <Badge variant="info">{q.type}</Badge>
+                        <Badge>{q.marks} marks</Badge>
+                        <span className="text-xs text-gray-400">
+                          {q.assessment.subject?.name} — {q.assessment.title}
+                        </span>
                       </div>
-                    )}
+                      <p className="text-sm text-gray-900">{q.questionText}</p>
+                      {q.type === "MCQ" && q.options.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {[...q.options]
+                            .sort((a, b) => a.orderIndex - b.orderIndex)
+                            .map((o) => (
+                              <span
+                                key={o.id}
+                                className={`rounded px-2 py-0.5 text-xs ${
+                                  o.isCorrect ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                                }`}
+                              >
+                                {o.optionText}
+                              </span>
+                            ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex shrink-0 gap-1">
+                      <button
+                        type="button"
+                        onClick={() => openEdit(q)}
+                        className="p-1 text-gray-400 hover:text-indigo-600"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(q.id)}
+                        className="p-1 text-gray-400 hover:text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex gap-1 shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => openEdit(q)}
-                      className="p-1 text-gray-400 hover:text-indigo-600"
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(q.id)}
-                      className="p-1 text-gray-400 hover:text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-4">
+            <p className="text-sm text-gray-600">
+              Page {page} of {totalPages}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+              >
+                Previous
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={page >= totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        </>
       )}
 
-      <Modal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        title="Edit question"
-        className="max-w-2xl"
-      >
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Edit question" className="max-w-2xl">
         <div className="space-y-4">
           <Textarea
             label="Question"
@@ -298,17 +344,17 @@ export default function QuestionBankPage() {
                     }))
                   }
                 >
-                  <Plus className="h-3 w-3 mr-1" /> Add option
+                  <Plus className="mr-1 h-3 w-3" /> Add option
                 </Button>
               </div>
               {form.options.map((opt, i) => (
-                <div key={i} className="flex gap-2 items-start">
+                <div key={i} className="flex items-start gap-2">
                   <Input
                     value={opt.optionText}
                     onChange={(e) => setOption(i, { optionText: e.target.value })}
                     className="flex-1"
                   />
-                  <label className="flex items-center gap-1 text-xs text-gray-600 whitespace-nowrap pt-2">
+                  <label className="flex items-center gap-1 whitespace-nowrap pt-2 text-xs text-gray-600">
                     <input
                       type="checkbox"
                       checked={opt.isCorrect}

@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  UserPortalGrant: 'UserPortalGrant',
   Feedback: 'Feedback',
   Account: 'Account',
   Session: 'Session',
@@ -83,6 +84,7 @@ export const ModelName = {
   TeacherAttendance: 'TeacherAttendance',
   AttendanceRecord: 'AttendanceRecord',
   Holiday: 'Holiday',
+  ProgramCalendarSlot: 'ProgramCalendarSlot',
   ScheduledEmail: 'ScheduledEmail',
   Notification: 'Notification',
   ProgramApplication: 'ProgramApplication',
@@ -135,6 +137,17 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserPortalGrantScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  portal: 'portal',
+  createdAt: 'createdAt',
+  createdById: 'createdById'
+} as const
+
+export type UserPortalGrantScalarFieldEnum = (typeof UserPortalGrantScalarFieldEnum)[keyof typeof UserPortalGrantScalarFieldEnum]
 
 
 export const FeedbackScalarFieldEnum = {
@@ -615,6 +628,26 @@ export const HolidayScalarFieldEnum = {
 export type HolidayScalarFieldEnum = (typeof HolidayScalarFieldEnum)[keyof typeof HolidayScalarFieldEnum]
 
 
+export const ProgramCalendarSlotScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  batchId: 'batchId',
+  teacherUserId: 'teacherUserId',
+  subjectId: 'subjectId',
+  slotDate: 'slotDate',
+  slotType: 'slotType',
+  sessionCategory: 'sessionCategory',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  colorHex: 'colorHex',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramCalendarSlotScalarFieldEnum = (typeof ProgramCalendarSlotScalarFieldEnum)[keyof typeof ProgramCalendarSlotScalarFieldEnum]
+
+
 export const ScheduledEmailScalarFieldEnum = {
   id: 'id',
   assessmentId: 'assessmentId',
@@ -722,6 +755,15 @@ export const AnnouncementScalarFieldEnum = {
   academicYearId: 'academicYearId',
   recipientAll: 'recipientAll',
   sendEmail: 'sendEmail',
+  emailCopyToSender: 'emailCopyToSender',
+  allPrograms: 'allPrograms',
+  allBatches: 'allBatches',
+  programIds: 'programIds',
+  batchIds: 'batchIds',
+  allTeachers: 'allTeachers',
+  teacherIds: 'teacherIds',
+  sendToStudents: 'sendToStudents',
+  sendToTeachers: 'sendToTeachers',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

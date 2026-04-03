@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sendFeedbackReplyEmail } from "@/lib/feedback-email";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -8,8 +9,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const me = await db.user.findUnique({ where: { id: session.user.id } });
-  if (!me || me.role !== "PRINCIPAL") {
+  if (!hasPrincipalPortalAccess(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -64,8 +64,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const me = await db.user.findUnique({ where: { id: session.user.id } });
-  if (!me || me.role !== "PRINCIPAL") {
+  if (!hasPrincipalPortalAccess(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

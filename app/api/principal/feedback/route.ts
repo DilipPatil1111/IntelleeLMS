@@ -2,14 +2,14 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/app/generated/prisma/client";
 import type { FeedbackCategory, FeedbackAuthorRole } from "@/app/generated/prisma/enums";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const user = await db.user.findUnique({ where: { id: session.user.id } });
-  if (!user || user.role !== "PRINCIPAL") {
+  if (!hasPrincipalPortalAccess(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
