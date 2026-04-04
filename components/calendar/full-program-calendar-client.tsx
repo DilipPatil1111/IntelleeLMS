@@ -58,12 +58,20 @@ export function FullProgramCalendarClient({
   fixedBatchId,
   initialBatchId,
   initialDate,
+  studentProgramName,
+  studentBatchName,
+  studentBatchRange,
 }: {
   mode: Mode;
   fixedBatchId?: string | null;
   /** Pre-select batch (e.g. principal opened from notification). */
   initialBatchId?: string | null;
   initialDate?: string | null;
+  /** Labels when `mode="student"` (always show program/batch even if no slots in range). */
+  studentProgramName?: string | null;
+  studentBatchName?: string | null;
+  /** Optional full batch date span (program period) for default From/To. */
+  studentBatchRange?: { from: string; to: string } | null;
 }) {
   const [programs, setPrograms] = useState<ProgramOpt[]>([]);
   const [programId, setProgramId] = useState("");
@@ -209,6 +217,13 @@ export function FullProgramCalendarClient({
     }
   }, [initialDate]);
 
+  /** Student: default view to full batch/program period when provided. */
+  useEffect(() => {
+    if (mode !== "student" || !studentBatchRange?.from || !studentBatchRange?.to) return;
+    setFrom(studentBatchRange.from);
+    setTo(studentBatchRange.to);
+  }, [mode, studentBatchRange?.from, studentBatchRange?.to]);
+
   /** When a batch is selected, align From/To with that batch’s program duration (batch start → batch end). */
   useEffect(() => {
     if (mode !== "principal" || !batchId || programs.length === 0) return;
@@ -248,8 +263,12 @@ export function FullProgramCalendarClient({
       const pid = teacherBatches.find((b) => b.value === batchId)?.programId;
       return teacherPrograms.find((p) => p.value === pid)?.label?.trim() || "—";
     }
-    return studentGridNames?.programName?.trim() || "—";
-  }, [mode, programs, programId, teacherBatches, batchId, teacherPrograms, studentGridNames]);
+    return (
+      studentGridNames?.programName?.trim() ||
+      studentProgramName?.trim() ||
+      "—"
+    );
+  }, [mode, programs, programId, teacherBatches, batchId, teacherPrograms, studentGridNames, studentProgramName]);
 
   const batchNameForGrid = useMemo(() => {
     if (mode === "principal") {
@@ -262,8 +281,8 @@ export function FullProgramCalendarClient({
       if (i === -1) return tb.label.trim();
       return tb.label.slice(0, i).trim() || "—";
     }
-    return studentGridNames?.batchName?.trim() || "—";
-  }, [mode, batches, batchId, teacherBatches, studentGridNames]);
+    return studentGridNames?.batchName?.trim() || studentBatchName?.trim() || "—";
+  }, [mode, batches, batchId, teacherBatches, studentGridNames, studentBatchName]);
 
   const teacherNamesForGrid = useMemo(() => {
     const byId = new Map<string, string>();
@@ -280,6 +299,12 @@ export function FullProgramCalendarClient({
         .join(", ");
     }
     if (mode === "teacher") {
+      const n = session?.user?.name?.trim();
+      if (n) return n;
+      const e = session?.user?.email?.trim();
+      if (e) return e;
+    }
+    if (mode === "student") {
       const n = session?.user?.name?.trim();
       if (n) return n;
       const e = session?.user?.email?.trim();
@@ -502,8 +527,22 @@ export function FullProgramCalendarClient({
         )}
         {readOnly && (
           <>
-            <Input label="From" type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-40" readOnly={!!fixedBatchId} />
-            <Input label="To" type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-40" readOnly={!!fixedBatchId} />
+            <Input
+              label="From"
+              type="date"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              className="w-40"
+              readOnly={mode === "teacher" && !!fixedBatchId}
+            />
+            <Input
+              label="To"
+              type="date"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              className="w-40"
+              readOnly={mode === "teacher" && !!fixedBatchId}
+            />
           </>
         )}
         <Button variant="outline" onClick={() => void loadSlots()} disabled={loading || !batchId}>

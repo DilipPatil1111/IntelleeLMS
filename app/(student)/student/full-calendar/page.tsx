@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { formatYmd } from "@/lib/day-boundaries";
 import { redirect } from "next/navigation";
 import { FullProgramCalendarClient } from "@/components/calendar/full-program-calendar-client";
 import { PageHeader } from "@/components/layout/page-header";
@@ -11,7 +12,7 @@ export default async function StudentFullCalendarPage() {
 
   const profile = await db.studentProfile.findUnique({
     where: { userId: session.user.id },
-    select: { batchId: true },
+    include: { program: true, batch: true },
   });
 
   if (!profile?.batchId) {
@@ -27,5 +28,19 @@ export default async function StudentFullCalendarPage() {
     );
   }
 
-  return <FullProgramCalendarClient mode="student" fixedBatchId={profile.batchId} />;
+  const batch = profile.batch;
+  const studentBatchRange =
+    batch?.startDate && batch?.endDate
+      ? { from: formatYmd(new Date(batch.startDate)), to: formatYmd(new Date(batch.endDate)) }
+      : null;
+
+  return (
+    <FullProgramCalendarClient
+      mode="student"
+      fixedBatchId={profile.batchId}
+      studentProgramName={profile.program?.name ?? null}
+      studentBatchName={batch?.name ?? null}
+      studentBatchRange={studentBatchRange}
+    />
+  );
 }

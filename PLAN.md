@@ -97,7 +97,8 @@ This document tracks **features requested to date** and where they live in the s
 
 | Feature | Description | Status |
 |--------|---------------|--------|
-| Principal / Admin | **Create, edit, delete** announcements; sends to **current year all students** by email by default. | Implemented |
+| Principal / Admin | **Create, edit, delete** announcements; **student** emails always sent on publish when students are in scope; optional **email copy to Sender** (principal) does **not** disable student mail. | Implemented |
+| Audience (principal) | **Programs** / **batches**: **All** or **multi-select**; **students**: all matching filters or **pick individuals**; **teachers**: optional **all** or **selected**; no **academic year** dropdown (year scope inferred when “all programs & all batches” via current academic year in code). | Implemented |
 | Recipient selection | **Select / deselect** students (**default: all selected**) for targeted sends. | Implemented |
 | Teachers | **View** institution announcements; **create** announcements for **assigned program/course/batch** and send to **selected students** (select/deselect). | Implemented |
 | Principal parity | Same **select/deselect** behavior for principal broadcast (**default all**). | Implemented |
@@ -229,6 +230,7 @@ The following were part of ongoing LMS work and are reflected in the app routes:
 - Grid & calendar APIs under `app/api/*/program-calendar/`, `app/api/*/attendance/grid/`; batch date span for principal pickers from `GET /api/principal/academic-options` (`Batch.startDate` / `endDate`).
 - Models: `ProgramCalendarSlot` (`slotType` SESSION | LUNCH, optional `sessionCategory` for SESSION), existing `AttendanceSession` / `AttendanceRecord`.
 - UI: `components/calendar/full-program-calendar-client.tsx`, `components/calendar/program-calendar-grid.tsx`; helpers: `lib/program-calendar-grid.ts`, `lib/program-session-category.ts`, `lib/teacher-slot-color.ts`.
+- Principal Full Calendar: the extra **“Days in selected range”** day-by-day table was **removed** (grid + scheduled blocks remain).
 - Alerts: `lib/attendance-threshold.ts`, notifications + email.
 
 ### 14.7 Teacher attendance UX (Single session + Program sheet)
@@ -379,6 +381,52 @@ Labels use the same **sticky** left block and **emerald** text styling as **Teac
 
 ---
 
+### 14.10 Student portal — Full Calendar, program attendance sheet, and “My Attendance” banner
+
+**Status:** **Implemented**
+
+#### Full Calendar (student)
+
+- **From / To:** Students can **change the date range** and **Refresh** (not read-only when `mode="student"`). Teachers with a **fixed batch** from a deep-link may still have read-only dates where that applies.
+- **Default range:** When the batch has **`startDate` / `endDate`**, **From** and **To** default to that **program period** (same idea as principal batch pickers).
+- **Program grid (Excel-style) title:** Shows **Teacher name** (from scheduled slots, else signed-in user), **Program name**, **Batch name** — using **profile** + slot payload so labels are not “—” when there are no slots in range.
+- **View-only:** No add/edit blocks for students (unchanged).
+
+#### Program attendance sheet (student)
+
+- **Read-only** spreadsheet aligned with the principal/teacher **Program sheet**: same **`loadAttendanceGridData`** shape, filtered to **one row** (logged-in student).
+- **APIs:** `GET /api/student/attendance/grid-options` (batch + subjects for the student’s program); `GET /api/student/attendance/grid?batchId&subjectId`.
+- **UI:** `AttendanceProgramGridClient` with **`apiRole="student"`** (no save; cells not editable; **Reload** only). Embedded on **My Attendance** when the student has a batch; first subject **auto-selected** when possible.
+
+#### “My Attendance” — required % vs batch %
+
+- **Required attendance** comes from **Program** `minAttendancePercent` or **Institution Settings**, default **75%** if unset.
+- **Batch attendance %** from `computeStudentBatchAttendancePercent` (same threshold pipeline as alerts).
+- **If batch % ≥ required:** show **bold** success styling, **green** `CheckCircle2` icon, and **(meeting requirement)** in **bold green**.
+- **If batch % < required:** show **bold red** styling, **😞** sad emoji, and **(below requirement)** in **bold red**.
+
+**Related:** `app/(student)/student/full-calendar/page.tsx`, `components/calendar/full-program-calendar-client.tsx`, `app/(student)/student/attendance/page.tsx`, `components/attendance/student-attendance-grid-embed.tsx`, `components/attendance/attendance-program-grid-client.tsx`, `app/api/student/attendance/grid/route.ts`, `app/api/student/attendance/grid-options/route.ts`, `lib/attendance-threshold.ts`.
+
+---
+
+### 14.11 Principal — attendance overview & students list (UX requirements)
+
+**Status:** **Implemented**
+
+#### Overview & sessions (principal attendance)
+
+- Prefer label **Attendance** (not “**Marks**”) for counts of recorded **student attendance rows** (P/A/L/E).
+- Short on-page copy explains **P / A / L / E** and that **Excused** is an **approved** absence (tracked separately from unexcused **Absent**).
+- **Student-wise** table: column **Total attendance** after **L** = **Present + Late** (per student).
+
+#### All Students
+
+- **Student** filter is a **dropdown** (options = all students), default **All students**; **`GET /api/principal/students?studentId=`** narrows the table.
+
+**Related:** `app/(principal)/principal/attendance/page.tsx`, `components/attendance/principal-attendance-dashboard.tsx`, `app/api/principal/attendance/consolidated/route.ts`, `app/(principal)/principal/students/page.tsx`, `app/api/principal/students/route.ts`.
+
+---
+
 ## 15. Teacher portal — list pagination (server-driven)
 
 **Goal:** Large teacher-side lists load in fixed-size pages so the UI stays fast and navigable. **Paging is server-driven:** each list API accepts **`page`** (1-based) and **`pageSize`**, returns the slice plus **`total`**, and the UI shows **Previous / Next** plus a short summary (e.g. **N–M of total**, **page X of Y**).
@@ -401,4 +449,4 @@ Labels use the same **sticky** left block and **emerald** text styling as **Teac
 
 ---
 
-*Last updated: Section 3 — Principal teacher attendance (name search, total present hours); Section 15 unchanged in substance; §14.7–§14.9 unchanged in substance.*
+*Last updated: §8 announcements (principal multi-audience + sender copy); §14.10–§14.11 student calendar/sheet/banner + principal attendance & students UX; Full Calendar “Days in selected range” removed.*

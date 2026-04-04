@@ -58,11 +58,17 @@ export function AttendanceProgramGridClient({
   apiRole,
   embedded = false,
 }: {
-  apiRole: "teacher" | "principal";
+  apiRole: "teacher" | "principal" | "student";
   /** When true, no outer title (parent Attendance page provides it). */
   embedded?: boolean;
 }) {
-  const base = apiRole === "principal" ? "/api/principal/attendance/grid" : "/api/teacher/attendance/grid";
+  const readOnly = apiRole === "student";
+  const base =
+    apiRole === "principal"
+      ? "/api/principal/attendance/grid"
+      : apiRole === "teacher"
+        ? "/api/teacher/attendance/grid"
+        : "/api/student/attendance/grid";
   const [programs, setPrograms] = useState<
     { id: string; name: string; subjects: { id: string; name: string }[]; batches: { id: string; name: string }[] }[]
   >([]);
@@ -76,8 +82,20 @@ export function AttendanceProgramGridClient({
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState<{ date: string; studentId: string; letter: string }[]>([]);
+  const [studentSubjects, setStudentSubjects] = useState<Opt[]>([]);
 
   useEffect(() => {
+    if (apiRole === "student") {
+      void fetch("/api/student/attendance/grid-options", { cache: "no-store" })
+        .then((r) => r.json())
+        .then((d: { batchId?: string; subjects?: { id: string; name: string }[] }) => {
+          if (d.batchId) setBatchId(d.batchId);
+          const opts = (d.subjects || []).map((s) => ({ value: s.id, label: s.name }));
+          setStudentSubjects(opts);
+          setSubjectId((prev) => prev || opts[0]?.value || "");
+        });
+      return;
+    }
     const url = apiRole === "principal" ? "/api/principal/academic-options" : "/api/teacher/options";
     void fetch(url)
       .then((r) => r.json())
@@ -106,7 +124,7 @@ export function AttendanceProgramGridClient({
     setLoading(true);
     setLoadError(null);
     const qs = new URLSearchParams({ batchId, subjectId });
-    const res = await fetch(`${base}?${qs.toString()}`);
+    const res = await fetch(`${base}?${qs.toString()}`, { cache: "no-store" });
     const json = (await res.json().catch(() => null)) as Record<string, unknown> | null;
     const hasGridShape =
       json &&
@@ -145,6 +163,7 @@ export function AttendanceProgramGridClient({
   }, [data]);
 
   function cycleCell(sid: string, ymd: string) {
+    if (readOnly) return;
     const cur = data?.cells[sid]?.[ymd] ?? "";
     const order = ["", "1", "0", "L"];
     const i = order.indexOf(cur);
@@ -161,6 +180,7 @@ export function AttendanceProgramGridClient({
   }
 
   async function save() {
+    if (readOnly) return;
     if (!batchId || !subjectId || dirty.length === 0) return;
     setSaving(true);
     await fetch(base, {
@@ -173,7 +193,7 @@ export function AttendanceProgramGridClient({
     void loadGrid();
   }
 
-  function cellClass(sid: string, ymd: string): string {
+  function cellClass(sid: string, ymd: string, interactive: boolean): string {
     const v = data?.cells[sid]?.[ymd] ?? "";
     const d = new Date(ymd + "T12:00:00");
     const dow = d.getDay();
@@ -184,7 +204,8 @@ export function AttendanceProgramGridClient({
     else if (v === "0") bg = "bg-red-200 text-red-950";
     else if (v === "L") bg = "bg-amber-200 text-amber-950";
     else if (isWeekend || isHol) bg = "bg-red-100/90";
-    return `${bg} w-full min-h-[32px] cursor-pointer border border-gray-200 text-center text-xs font-bold`;
+    const cursor = interactive ? "cursor-pointer" : "cursor-default";
+    return `${bg} w-full min-h-[32px] ${cursor} border border-gray-200 text-center text-xs font-bold`;
   }
 
   const studentTotalHours = useMemo(() => {
@@ -238,12 +259,14 @@ export function AttendanceProgramGridClient({
         <div className="mb-4">
           <h2 className="text-lg font-semibold text-gray-900">Program attendance sheet</h2>
           <p className="text-sm text-gray-500">
-            Like the main spreadsheet: 1 = present, 0 = absent, L = late. Tap a cell to cycle. Weekends / holidays are tinted red; you can still mark sessions.
+            {readOnly
+              ? "Your attendance for this subject across the batch date range: 1 = present, 0 = absent, L = late. This sheet is view-only."
+              : "Like the main spreadsheet: 1 = present, 0 = absent, L = late. Tap a cell to cycle. Weekends / holidays are tinted red; you can still mark sessions."}
           </p>
         </div>
       )}
 
-      <div className="mb-4 grid gap-4 md:grid-cols-3">
+      <div className={`mb-4 grid gap-4 ${apiRole === "student" ? "md:grid-cols-1 max-w-md" : "md:grid-cols-3"}`}>
         {apiRole === "principal" && (
           <Select
             label="Program"
@@ -261,25 +284,31 @@ export function AttendanceProgramGridClient({
           label="Subject"
           value={subjectId}
           onChange={(e) => setSubjectId(e.target.value)}
-          options={apiRole === "principal" ? principalSubjects : teacherSubjects}
+          options={
+            apiRole === "principal" ? principalSubjects : apiRole === "teacher" ? teacherSubjects : studentSubjects
+          }
           placeholder="Subject"
         />
-        <Select
-          label="Batch"
-          value={batchId}
-          onChange={(e) => setBatchId(e.target.value)}
-          options={apiRole === "principal" ? principalBatches : teacherBatches}
-          placeholder="Batch"
-        />
+        {apiRole !== "student" && (
+          <Select
+            label="Batch"
+            value={batchId}
+            onChange={(e) => setBatchId(e.target.value)}
+            options={apiRole === "principal" ? principalBatches : teacherBatches}
+            placeholder="Batch"
+          />
+        )}
       </div>
 
       <div className="mb-4 flex flex-wrap gap-2">
         <Button variant="outline" onClick={() => void loadGrid()} disabled={loading}>
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Reload"}
         </Button>
-        <Button onClick={() => void save()} disabled={saving || dirty.length === 0}>
-          {saving ? "Saving…" : `Save ${dirty.length ? `(${dirty.length})` : ""}`}
-        </Button>
+        {!readOnly && (
+          <Button onClick={() => void save()} disabled={saving || dirty.length === 0}>
+            {saving ? "Saving…" : `Save ${dirty.length ? `(${dirty.length})` : ""}`}
+          </Button>
+        )}
       </div>
 
       {data && (
@@ -422,9 +451,13 @@ export function AttendanceProgramGridClient({
                       </td>
                       {data.dateKeys.map((ymd) => (
                         <td key={ymd} className="border border-gray-200 p-0">
-                          <button type="button" className={cellClass(s.id, ymd)} onClick={() => cycleCell(s.id, ymd)}>
-                            {data.cells[s.id]?.[ymd] ?? ""}
-                          </button>
+                          {readOnly ? (
+                            <div className={cellClass(s.id, ymd, false)}>{data.cells[s.id]?.[ymd] ?? ""}</div>
+                          ) : (
+                            <button type="button" className={cellClass(s.id, ymd, true)} onClick={() => cycleCell(s.id, ymd)}>
+                              {data.cells[s.id]?.[ymd] ?? ""}
+                            </button>
+                          )}
                         </td>
                       ))}
                     </tr>
@@ -514,7 +547,15 @@ export function AttendanceProgramGridClient({
         </Card>
       )}
 
-      {!loading && !data && subjectId && batchId && <p className="text-sm text-red-600">{loadError ?? "Could not load sheet."}</p>}
+      {!loading && !data && subjectId && batchId && (
+        <p className="text-sm text-red-600">{loadError ?? "Could not load sheet."}</p>
+      )}
+      {!loading && !data && apiRole === "student" && batchId && !subjectId && studentSubjects.length > 0 && (
+        <p className="text-sm text-gray-500">Select a subject to load your attendance sheet.</p>
+      )}
+      {!loading && apiRole === "student" && batchId && studentSubjects.length === 0 && (
+        <p className="text-sm text-gray-500">No subjects are set up for your program yet.</p>
+      )}
     </div>
   );
 }
