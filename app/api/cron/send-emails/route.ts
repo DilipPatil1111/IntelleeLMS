@@ -1,9 +1,19 @@
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { sendEmail } from "@/lib/email";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export const runtime = "nodejs";
+
+export async function GET(req: NextRequest) {
+  const secret = process.env.CRON_SECRET;
+  if (secret) {
+    const authHeader = req.headers.get("authorization");
+    if (authHeader !== `Bearer ${secret}`) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  }
+
   const now = new Date();
-
   const pendingEmails = await db.scheduledEmail.findMany({
     where: { isSent: false, scheduledAt: { lte: now } },
     take: 50,
@@ -12,24 +22,23 @@ export async function GET() {
   let sent = 0;
   for (const email of pendingEmails) {
     try {
-      const apiKey = process.env.RESEND_API_KEY;
-      if (apiKey) {
-        const { Resend } = await import("resend");
-        const resend = new Resend(apiKey);
-        await resend.emails.send({
-          from: "Intellee College <noreply@intellee.edu>",
-          to: email.recipientEmail,
-          subject: email.subject,
-          text: email.body || "",
-        });
-      }
-      await db.scheduledEmail.update({
-        where: { id: email.id },
-        data: { isSent: true, sentAt: new Date() },
+      const result = await sendEmail({
+        to: email.recipientEmail,
+        subject: email.subject,
+        text: email.body || "",
       });
-      sent++;
-    } catch {
-      // Will retry on next cron run
+
+      if (result.ok) {
+        await db.scheduledEmail.update({
+          where: { id: email.id },
+          data: { isSent: true, sentAt: new Date() },
+        });
+        sent++;
+      } else {
+        console.error("[cron/send-emails] Failed to send to", email.recipientEmail, result.error);
+      }
+    } catch (err) {
+      console.error("[cron/send-emails] Unexpected error for email", email.id, err);
     }
   }
 

@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { ONBOARDING_ALLOWED_EXT, ONBOARDING_MAX_BYTES, writePublicUpload } from "@/lib/file-upload";
+import { ONBOARDING_ALLOWED_EXT, ONBOARDING_MAX_BYTES, uploadToBlob } from "@/lib/file-upload";
 import { notifyPrincipalsIfOnboardingChecklistJustCompleted } from "@/lib/notify-principals-onboarding-complete";
 import { NextResponse } from "next/server";
 
@@ -42,13 +42,12 @@ export async function POST(req: Request) {
     !!existing.preAdmissionCompletedAt;
 
   const buf = Buffer.from(await file.arrayBuffer());
-  const subdir = `onboarding/${session.user.id}`;
-  const result = await writePublicUpload({
+  const result = await uploadToBlob({
     buffer: buf,
     originalName: file.name || "document.bin",
     allowedExt: ONBOARDING_ALLOWED_EXT,
     maxBytes: ONBOARDING_MAX_BYTES,
-    publicSubdir: subdir,
+    folder: `onboarding/${session.user.id}`,
   });
 
   if ("error" in result) {

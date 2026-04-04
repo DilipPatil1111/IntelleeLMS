@@ -1,12 +1,13 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatCard } from "@/components/ui/stat-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, GraduationCap, FileText, BookOpen, TrendingUp, Calendar } from "lucide-react";
 import Link from "next/link";
-import { PrincipalCharts } from "./principal-charts";
+import { PrincipalChartsClient } from "./principal-charts-client";
 
 export default async function PrincipalDashboard() {
   const session = await auth();
@@ -55,7 +56,16 @@ export default async function PrincipalDashboard() {
         <StatCard title="Graded" value={gradedAttempts.length} icon={<Calendar className="h-5 w-5" />} />
       </div>
 
-      <PrincipalCharts data={chartData} />
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="h-80 rounded-xl border border-gray-200 bg-gray-50 animate-pulse" />
+            <div className="h-80 rounded-xl border border-gray-200 bg-gray-50 animate-pulse" />
+          </div>
+        }
+      >
+        <PrincipalChartsClient data={chartData} />
+      </Suspense>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {[

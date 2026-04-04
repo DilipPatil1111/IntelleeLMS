@@ -1,10 +1,6 @@
 import { auth } from "@/lib/auth";
 import { hasPrincipalPortalAccess } from "@/lib/portal-access";
-import {
-  TEMPLATE_ALLOWED_EXT,
-  TEMPLATE_MAX_BYTES,
-  writePublicUpload,
-} from "@/lib/file-upload";
+import { TEMPLATE_ALLOWED_EXT, TEMPLATE_MAX_BYTES, uploadToBlob } from "@/lib/file-upload";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -38,12 +34,12 @@ export async function POST(req: Request) {
   }
 
   const buf = Buffer.from(await file.arrayBuffer());
-  const result = await writePublicUpload({
+  const result = await uploadToBlob({
     buffer: buf,
     originalName: file.name || "upload.bin",
     allowedExt: TEMPLATE_ALLOWED_EXT,
     maxBytes: TEMPLATE_MAX_BYTES,
-    publicSubdir: "templates",
+    folder: "templates",
   });
 
   if ("error" in result) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -44,11 +44,7 @@ export default function PrincipalBatchesPage() {
   const [editing, setEditing] = useState<Batch | null>(null);
   const [form, setForm] = useState(emptyForm);
 
-  useEffect(() => {
-    loadAll();
-  }, []);
-
-  async function loadAll() {
+  const loadAll = useCallback(async () => {
     const [bRes, pRes, yRes] = await Promise.all([
       fetch("/api/principal/batches"),
       fetch("/api/principal/programs"),
@@ -64,7 +60,12 @@ export default function PrincipalBatchesPage() {
     setYearOptions(
       (yData.years || []).map((y: { id: string; name: string }) => ({ value: y.id, label: y.name }))
     );
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadAll();
+  }, [loadAll]);
 
   async function handleSave() {
     const url = editing ? `/api/principal/batches/${editing.id}` : "/api/principal/batches";

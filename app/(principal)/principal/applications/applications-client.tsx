@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -88,6 +89,7 @@ export function ApplicationsClient() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
   }, [load]);
 
@@ -138,9 +140,12 @@ export function ApplicationsClient() {
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                   <div className="flex items-center gap-3">
                     {app.applicant.profilePicture ? (
-                      <img
+                      <Image
                         src={app.applicant.profilePicture}
                         alt=""
+                        width={40}
+                        height={40}
+                        unoptimized={app.applicant.profilePicture.startsWith("data:")}
                         className="h-10 w-10 rounded-full object-cover"
                       />
                     ) : (

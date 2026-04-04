@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProfilePictureUpload } from "./profile-picture-upload";
@@ -72,9 +73,12 @@ export default async function StudentProfilePage() {
         <CardContent>
           <div className="flex items-center gap-4 mb-8 pb-6 border-b border-gray-100">
             {user.profilePicture ? (
-              <img
+              <Image
                 src={user.profilePicture}
                 alt=""
+                width={64}
+                height={64}
+                unoptimized={user.profilePicture.startsWith("data:")}
                 className="h-16 w-16 rounded-full object-cover"
               />
             ) : (

@@ -50,7 +50,9 @@ export function TakeAssessmentClient({ assessmentId }: { assessmentId: string })
 
   useEffect(() => {
     let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
+     
     setError("");
 
     fetch(`/api/assessments/${assessmentId}/start`, { method: "POST" })
@@ -159,6 +161,7 @@ export function TakeAssessmentClient({ assessmentId }: { assessmentId: string })
                 <audio src={question.mediaUrl} controls className="w-full" />
               )}
               {question.mediaType === "image" && (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={question.mediaUrl} alt="Question resource" className="max-w-full rounded" />
               )}
               {(question.mediaType === "link" || question.mediaType === "document") && (

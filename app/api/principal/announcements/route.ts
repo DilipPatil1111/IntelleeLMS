@@ -54,7 +54,7 @@ export async function POST(req: Request) {
   }
 
   const allTeachers = body.allTeachers === true;
-  let teacherIds = Array.isArray(body.teacherIds)
+  const teacherIds = Array.isArray(body.teacherIds)
     ? (body.teacherIds as unknown[]).filter((x): x is string => typeof x === "string" && x.length > 0)
     : [];
 
@@ -206,7 +206,9 @@ export async function POST(req: Request) {
           link,
         },
       })
-      .catch(() => {});
+      .catch((err: unknown) => {
+        console.error("[announcements] Failed to create notification:", err);
+      });
   }
 
   let senderCopySent = false;

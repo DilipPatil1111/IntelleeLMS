@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -37,11 +37,7 @@ export default function HolidaysPage() {
   const [editing, setEditing] = useState<Holiday | null>(null);
   const [form, setForm] = useState({ name: "", date: "", type: "PUBLIC", academicYearId: "" });
 
-  useEffect(() => {
-    loadHolidays();
-  }, []);
-
-  async function loadHolidays() {
+  const loadHolidays = useCallback(async () => {
     const [hRes, yRes] = await Promise.all([
       fetch("/api/principal/holidays?years=2"),
       fetch("/api/principal/academic-years"),
@@ -51,7 +47,12 @@ export default function HolidaysPage() {
     setHolidays(data.holidays || []);
     setByYear(data.byYear || {});
     setYears((yData.years || []).map((y: { id: string; name: string }) => ({ value: y.id, label: y.name })));
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadHolidays();
+  }, [loadHolidays]);
 
   async function handleSave() {
     const url = editing ? `/api/principal/holidays/${editing.id}` : "/api/principal/holidays";

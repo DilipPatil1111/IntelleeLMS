@@ -173,6 +173,7 @@ function TeacherAttendanceInner() {
   useEffect(() => {
     if (!batchId || !subjectId) return;
     const ok = batchOptionsForSubject.some((b) => b.value === batchId);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!ok) setBatchId("");
   }, [batchOptionsForSubject, batchId, subjectId]);
 
@@ -193,10 +194,14 @@ function TeacherAttendanceInner() {
 
   useEffect(() => {
     if (subjectId && batchId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSessionsPage(1);
     } else {
+       
       setSessions([]);
+       
       setSessionsTotal(0);
+       
       setSessionsSummary(null);
     }
   }, [subjectId, batchId]);

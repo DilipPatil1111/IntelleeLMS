@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Select } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
 import { LayoutGrid, BarChart3 } from "lucide-react";
@@ -12,15 +11,9 @@ import { PrincipalAttendanceDashboard } from "@/components/attendance/principal-
 function PrincipalAttendanceInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [tab, setTab] = useState<"overview" | "sheet">("overview");
+  const tab = searchParams.get("tab") === "sheet" ? "sheet" : "overview";
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
   const [batches, setBatches] = useState<{ value: string; label: string; programId: string }[]>([]);
-
-  useEffect(() => {
-    const t = searchParams.get("tab");
-    if (t === "sheet") setTab("sheet");
-    else setTab("overview");
-  }, [searchParams]);
 
   useEffect(() => {
     fetch("/api/principal/programs")
@@ -45,7 +38,6 @@ function PrincipalAttendanceInner() {
   }, []);
 
   function goTab(id: "overview" | "sheet") {
-    setTab(id);
     router.replace(`/principal/attendance?tab=${id}`);
   }
 

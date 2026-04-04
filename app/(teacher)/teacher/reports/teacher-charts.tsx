@@ -24,14 +24,6 @@ interface ChartDataItem {
   subject: string;
 }
 
-const COLORS = [
-  "#4f46e5",
-  "#ef4444",
-  "#f59e0b",
-  "#10b981",
-  "#6366f1",
-  "#ec4899",
-];
 
 export function TeacherCharts({ data }: { data: ChartDataItem[] }) {
   const totalPassed = data.reduce((s, d) => s + d.passed, 0);

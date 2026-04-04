@@ -149,6 +149,7 @@ export function AttendanceProgramGridClient({
   }, [base, batchId, subjectId]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadGrid();
   }, [loadGrid]);
 

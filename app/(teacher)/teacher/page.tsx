@@ -7,7 +7,6 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FileText, Users, ClipboardList, TrendingUp } from "lucide-react";
-import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 import { TeacherDashboardAlerts } from "@/components/teacher/teacher-dashboard-alerts";
 

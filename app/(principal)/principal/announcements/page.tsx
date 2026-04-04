@@ -1,7 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -84,15 +85,19 @@ function audienceBadges(a: AnnouncementRow): ReactNode[] {
 }
 
 export default function PrincipalAnnouncementsPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [list, setList] = useState<AnnouncementRow[]>([]);
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
   const [batches, setBatches] = useState<{ value: string; label: string; programId?: string }[]>([]);
   const [students, setStudents] = useState<StudentOpt[]>([]);
   const [teachers, setTeachers] = useState<TeacherOpt[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({
-    title: "",
-    body: "",
+  const subjectParam = searchParams.get("subject");
+  const bodyParam = searchParams.get("body");
+  const [showModal, setShowModal] = useState(() => !!(subjectParam || bodyParam));
+  const [form, setForm] = useState(() => ({
+    title: subjectParam?.slice(0, 200) ?? "",
+    body: bodyParam ?? "",
     allPrograms: true,
     programIds: [] as string[],
     allBatches: true,
@@ -104,30 +109,9 @@ export default function PrincipalAnnouncementsPage() {
     allTeachers: false,
     selectedTeacherIds: [] as string[],
     emailCopyToSender: false,
-  });
+  }));
 
-  useEffect(() => {
-    load();
-    if (typeof window !== "undefined") {
-      const raw = sessionStorage.getItem("emailTemplateDraft");
-      if (raw) {
-        try {
-          const { subject, body } = JSON.parse(raw) as { subject?: string; body?: string };
-          setForm((f) => ({
-            ...f,
-            title: subject?.slice(0, 200) || f.title,
-            body: body || f.body,
-          }));
-          setShowModal(true);
-        } catch {
-          /* ignore */
-        }
-        sessionStorage.removeItem("emailTemplateDraft");
-      }
-    }
-  }, []);
-
-  async function load() {
+  const load = useCallback(async () => {
     const [a, p, b, s, t] = await Promise.all([
       fetch("/api/principal/announcements").then((r) => r.json()),
       fetch("/api/principal/programs").then((r) => r.json()),
@@ -170,7 +154,18 @@ export default function PrincipalAnnouncementsPage() {
         email: u.email,
       }))
     );
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void load();
+  }, [load]);
+
+  useEffect(() => {
+    if (subjectParam || bodyParam) {
+      router.replace("/principal/announcements");
+    }
+  }, [subjectParam, bodyParam, router]);
 
   const visibleBatches = useMemo(() => {
     if (form.allPrograms) return batches;

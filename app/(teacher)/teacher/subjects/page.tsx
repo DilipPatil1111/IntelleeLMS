@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
-import { Badge } from "@/components/ui/badge";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -41,11 +40,7 @@ export default function TeacherSubjectsPage() {
     credits: 3,
   });
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     const [subRes, optRes] = await Promise.all([
       fetch("/api/teacher/subjects"),
       fetch("/api/teacher/options"),
@@ -54,7 +49,12 @@ export default function TeacherSubjectsPage() {
     const optData = await optRes.json();
     setSubjects(subData.subjects || []);
     setPrograms(optData.programs || []);
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadData();
+  }, [loadData]);
 
   async function handleSave() {
     const url = editing

@@ -1,9 +1,10 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/page-header";
-import { TeacherCharts } from "./teacher-charts";
+import { TeacherChartsClient } from "./teacher-charts-client";
 
 export default async function TeacherReportsPage() {
   const session = await auth();
@@ -58,7 +59,16 @@ export default async function TeacherReportsPage() {
         </Link>
         .
       </p>
-      <TeacherCharts data={chartData} />
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="h-80 rounded-xl border border-gray-200 bg-gray-50 animate-pulse" />
+            <div className="h-80 rounded-xl border border-gray-200 bg-gray-50 animate-pulse" />
+          </div>
+        }
+      >
+        <TeacherChartsClient data={chartData} />
+      </Suspense>
     </>
   );
 }

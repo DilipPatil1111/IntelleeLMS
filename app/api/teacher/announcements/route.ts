@@ -124,7 +124,9 @@ export async function POST(req: Request) {
           link: "/student/notifications",
         },
       })
-      .catch(() => {});
+      .catch((err: unknown) => {
+        console.error("[teacher/announcements] Failed to create notification:", err);
+      });
   }
 
   return NextResponse.json({ announcement: ann, sent: targets.length });

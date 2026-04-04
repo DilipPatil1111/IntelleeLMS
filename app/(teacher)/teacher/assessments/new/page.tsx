@@ -111,10 +111,13 @@ function CreateAssessmentPageInner() {
 
   useEffect(() => {
     if (!form.batchId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBatchStudents([]);
+       
       setSelectedStudentIds([]);
       return;
     }
+     
     setLoadingBatchStudents(true);
     fetch(`/api/teacher/batches/${form.batchId}/students`)
       .then((r) => {
@@ -144,6 +147,7 @@ function CreateAssessmentPageInner() {
 
   useEffect(() => {
     if (!copyFrom) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTemplateLoading(false);
       return;
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -56,15 +56,16 @@ export default function PrincipalSharedDocumentsPage() {
   const [editing, setEditing] = useState<SharedDoc | null>(null);
   const [form, setForm] = useState(emptyForm);
 
-  useEffect(() => {
-    loadDocuments();
-  }, []);
-
-  async function loadDocuments() {
+  const loadDocuments = useCallback(async () => {
     const res = await fetch("/api/principal/shared-documents");
     const data = await res.json();
     setDocuments(data.documents || []);
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadDocuments();
+  }, [loadDocuments]);
 
   async function handleSave() {
     const url = editing

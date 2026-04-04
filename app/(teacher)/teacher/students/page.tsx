@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -56,6 +56,7 @@ export default function TeacherStudentsPage() {
     const filtersChanged = prevFilterKeyRef.current !== filterKey;
     if (filtersChanged && page !== 1) {
       prevFilterKeyRef.current = filterKey;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPage(1);
       return;
     }

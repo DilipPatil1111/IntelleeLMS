@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronRight, CheckCircle, Lock, Play, FileText, Music, Image, Link2, Film } from "lucide-react";
+import { ChevronDown, ChevronRight, CheckCircle, Lock, Play, FileText, Music, Image as ImageIcon, Link2, Film } from "lucide-react";
 
 interface ContentItem {
   id: string;
@@ -113,7 +113,7 @@ export default function StudentProgramPage() {
     switch (type) {
       case "VIDEO": return <Film className="h-4 w-4 text-purple-500" />;
       case "AUDIO": return <Music className="h-4 w-4 text-green-500" />;
-      case "IMAGE": return <Image className="h-4 w-4 text-blue-500" />;
+      case "IMAGE": return <ImageIcon className="h-4 w-4 text-blue-500" />;
       case "URL": return <Link2 className="h-4 w-4 text-cyan-500" />;
       default: return <FileText className="h-4 w-4 text-gray-500" />;
     }
@@ -252,6 +252,7 @@ export default function StudentProgramPage() {
               <audio src={viewingContent.mediaUrl} controls className="w-full" />
             )}
             {viewingContent.type === "IMAGE" && viewingContent.mediaUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
               <img src={viewingContent.mediaUrl} alt={viewingContent.title} className="max-w-full rounded" />
             )}
             {(viewingContent.type === "URL" || viewingContent.type === "DOCUMENT" || viewingContent.type === "PRESENTATION") && viewingContent.mediaUrl && (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -39,17 +39,18 @@ export default function StudentFeedbackPage() {
   const [saving, setSaving] = useState(false);
   const [banner, setBanner] = useState<string | null>(null);
 
-  async function load() {
+  const load = useCallback(async () => {
     const [fRes, tRes] = await Promise.all([fetch("/api/student/feedback"), fetch("/api/student/my-teachers")]);
     const fData = await fRes.json();
     const tData = await tRes.json();
     setRows(fData.feedback || []);
     setTeachers(tData.teachers || []);
-  }
+  }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
-  }, []);
+  }, [load]);
 
   async function submit() {
     setSaving(true);

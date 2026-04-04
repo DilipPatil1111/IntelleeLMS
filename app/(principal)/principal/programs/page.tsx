@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,13 +26,16 @@ export default function PrincipalProgramsPage() {
   const [editing, setEditing] = useState<Program | null>(null);
   const [form, setForm] = useState({ name: "", code: "", description: "", durationText: "" });
 
-  useEffect(() => { loadPrograms(); }, []);
-
-  async function loadPrograms() {
+  const loadPrograms = useCallback(async () => {
     const res = await fetch("/api/principal/programs");
     const data = await res.json();
     setPrograms(data.programs || []);
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadPrograms();
+  }, [loadPrograms]);
 
   async function handleSave() {
     const url = editing ? `/api/principal/programs/${editing.id}` : "/api/principal/programs";

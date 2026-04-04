@@ -163,7 +163,7 @@ export function FullProgramCalendarClient({
     setSlots(
       raw.map((s) => {
         const slotDate = formatYmd(new Date(s.slotDate as string | Date));
-        const { batch: _dropBatch, ...rest } = s as typeof s & { batch?: unknown };
+        const { batch: _batch, ...rest } = s as typeof s & { batch?: unknown };
         return {
           ...rest,
           slotDate,

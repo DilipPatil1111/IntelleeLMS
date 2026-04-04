@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar, CalendarRange,
@@ -139,7 +140,7 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
       <div className="border-t border-gray-800 p-4">
         <div className="flex items-center gap-3">
           {profilePicture ? (
-            <img src={profilePicture} alt="" className="h-8 w-8 shrink-0 rounded-full object-cover" />
+            <Image src={profilePicture} alt="" width={32} height={32} unoptimized={profilePicture.startsWith("data:")} className="h-8 w-8 shrink-0 rounded-full object-cover" />
           ) : (
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-sm font-medium">
               {userInitials}

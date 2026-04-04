@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -39,21 +39,22 @@ export default function PrincipalReportsPage() {
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
   const [programId, setProgramId] = useState("");
 
-  useEffect(() => {
-    fetch("/api/principal/programs").then((r) => r.json()).then((d) => {
-      setPrograms((d.programs || []).map((p: { id: string; name: string }) => ({ value: p.id, label: p.name })));
-    });
-    loadReports();
-  }, []);
-
-  function loadReports() {
+  const loadReports = useCallback(() => {
     const url = programId ? `/api/principal/reports?programId=${programId}` : "/api/principal/reports";
     fetch(url).then((r) => r.json()).then((d) => setData(d.data || []));
     const aq = programId ? `?programId=${programId}` : "";
     fetch(`/api/principal/analytics${aq}`).then((r) => r.json()).then((d) => setAnalytics(d));
-  }
+  }, [programId]);
 
-  useEffect(() => { loadReports(); }, [programId]);
+  useEffect(() => {
+    fetch("/api/principal/programs").then((r) => r.json()).then((d) => {
+      setPrograms((d.programs || []).map((p: { id: string; name: string }) => ({ value: p.id, label: p.name })));
+    });
+  }, []);
+
+  useEffect(() => {
+    loadReports();
+  }, [loadReports]);
 
   const statusPieData = analytics
     ? Object.entries(analytics.studentsByStatus).map(([name, value]) => ({ name, value }))

@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { StatCard } from "@/components/ui/stat-card";
-import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { DollarSign, CreditCard, AlertTriangle } from "lucide-react";
 

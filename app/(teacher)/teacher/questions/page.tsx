@@ -105,6 +105,7 @@ export default function QuestionBankPage() {
     const filtersChanged = prevFilterKeyRef.current !== filterKey;
     if (filtersChanged && page !== 1) {
       prevFilterKeyRef.current = filterKey;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPage(1);
       return;
     }
@@ -112,6 +113,7 @@ export default function QuestionBankPage() {
       prevFilterKeyRef.current = filterKey;
     }
     const pageToUse = filtersChanged ? 1 : page;
+     
     void fetchQuestions(pageToUse);
   }, [filterKey, page, fetchQuestions]);
 

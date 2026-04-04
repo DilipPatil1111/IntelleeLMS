@@ -26,6 +26,7 @@ export default function TeacherHolidaysViewPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     const params = new URLSearchParams({ years: "3", page: String(page), pageSize: String(PAGE_SIZE) });
     void fetch(`/api/teacher/holidays?${params.toString()}`)

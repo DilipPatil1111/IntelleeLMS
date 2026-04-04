@@ -70,6 +70,8 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   if (!requirePrincipalId(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { id } = await params;
-  await db.programCalendarSlot.delete({ where: { id } }).catch(() => null);
+  await db.programCalendarSlot.delete({ where: { id } }).catch((err: unknown) => {
+    console.error("[program-calendar] Delete error (possibly not found):", err);
+  });
   return NextResponse.json({ ok: true });
 }

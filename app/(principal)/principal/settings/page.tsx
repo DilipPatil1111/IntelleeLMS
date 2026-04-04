@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -38,11 +38,7 @@ export default function PrincipalSettingsPage() {
   const [uploading, setUploading] = useState<"certificate" | "transcript" | "studentContract" | null>(null);
   const [message, setMessage] = useState<{ tone: "success" | "error"; text: string } | null>(null);
 
-  useEffect(() => {
-    void load();
-  }, []);
-
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true);
     const res = await fetch("/api/principal/settings");
     const data = await res.json().catch(() => ({}));
@@ -53,7 +49,12 @@ export default function PrincipalSettingsPage() {
       setMessage({ tone: "error", text: (data as { error?: string }).error || "Could not load settings." });
     }
     setLoading(false);
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void load();
+  }, [load]);
 
   async function save(instOverride?: Institution, successMessage = "Settings saved.") {
     const inst = instOverride ?? institution;

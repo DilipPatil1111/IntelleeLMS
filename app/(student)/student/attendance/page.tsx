@@ -38,7 +38,7 @@ export default async function StudentAttendancePage() {
   const total = records.length;
   const present = records.filter((r) => r.status === "PRESENT").length;
   const late = records.filter((r) => r.status === "LATE").length;
-  const absent = records.filter((r) => r.status === "ABSENT").length;
+  const _absent = records.filter((r) => r.status === "ABSENT").length;
   const rate =
     total > 0 ? Math.round(((present + late) / total) * 100) : 0;
 

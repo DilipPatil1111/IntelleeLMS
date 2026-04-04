@@ -130,7 +130,9 @@ export function PrincipalAttendanceDashboard({
     const end = new Date(t.getFullYear(), t.getMonth() + 1, 0);
     const f = (d: Date) =>
       `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFrom(f(start));
+     
     setTo(f(end));
   }, []);
 
@@ -149,12 +151,15 @@ export function PrincipalAttendanceDashboard({
   }, [programId, batchId, from, to]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
   }, [load]);
 
   useEffect(() => {
     if (!addBatchId || !programId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTeacherOpts([]);
+       
       setSubjects([]);
       return;
     }
@@ -181,6 +186,7 @@ export function PrincipalAttendanceDashboard({
 
   useEffect(() => {
     if (!addBatchId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAddStudents([]);
       return;
     }

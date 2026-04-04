@@ -1,5 +1,3 @@
-import { readFile } from "fs/promises";
-import path from "path";
 import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
 import { getOrCreateInstitutionSettings } from "@/lib/institution-settings";
@@ -23,16 +21,21 @@ export async function sendGraduationCertificateEmail(studentUserId: string): Pro
 
   let attachment: { filename: string; content: Buffer } | undefined;
   if (settings.certificateTemplateUrl) {
-    const rel = settings.certificateTemplateUrl.startsWith("/")
-      ? settings.certificateTemplateUrl.slice(1)
-      : settings.certificateTemplateUrl;
-    const abs = path.join(process.cwd(), "public", rel);
     try {
-      const buf = await readFile(abs);
-      const fname = settings.certificateTemplateFileName || "graduation-certificate.pdf";
-      attachment = { filename: fname, content: buf };
+      const response = await fetch(settings.certificateTemplateUrl);
+      if (response.ok) {
+        const buf = Buffer.from(await response.arrayBuffer());
+        const fname = settings.certificateTemplateFileName || "graduation-certificate.pdf";
+        attachment = { filename: fname, content: buf };
+      } else {
+        console.error(
+          "[graduation] Certificate template fetch failed:",
+          settings.certificateTemplateUrl,
+          response.status
+        );
+      }
     } catch (e) {
-      console.error("[graduation] Certificate template file missing:", abs, e);
+      console.error("[graduation] Certificate template fetch error:", settings.certificateTemplateUrl, e);
     }
   }
 

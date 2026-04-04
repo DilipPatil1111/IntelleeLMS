@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -45,15 +45,16 @@ export default function PrincipalPoliciesPage() {
   const [editing, setEditing] = useState<Policy | null>(null);
   const [form, setForm] = useState(emptyForm);
 
-  useEffect(() => {
-    loadPolicies();
-  }, []);
-
-  async function loadPolicies() {
+  const loadPolicies = useCallback(async () => {
     const res = await fetch("/api/principal/policies");
     const data = await res.json();
     setPolicies(data.policies || []);
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadPolicies();
+  }, [loadPolicies]);
 
   async function handleSave() {
     const url = editing ? `/api/principal/policies/${editing.id}` : "/api/principal/policies";

@@ -117,7 +117,7 @@ export function ProgramCalendarGrid({ fromYmd, toYmd, slots, holidays }: Props) 
               const h = holMap.get(ymd);
               const weekend = isWeekendYmd(ymd);
               const tint = weekend ? "bg-amber-50/90" : h ? "bg-rose-50/80" : "bg-white";
-              const [_, __, dd] = ymd.split("-");
+              const [_y, _m, dd] = ymd.split("-");
               return (
                 <th key={`num-${ymd}`} className={`border-b border-r border-gray-200 px-1 py-1 tabular-nums text-gray-900 ${tint}`}>
                   <div className="flex flex-col items-center gap-0.5">
