@@ -200,3 +200,12 @@ export const FeedbackAuthorRole = {
 } as const
 
 export type FeedbackAuthorRole = (typeof FeedbackAuthorRole)[keyof typeof FeedbackAuthorRole]
+
+
+export const FolderScope = {
+  GENERIC: 'GENERIC',
+  YEAR_SPECIFIC: 'YEAR_SPECIFIC',
+  BATCH_SPECIFIC: 'BATCH_SPECIFIC'
+} as const
+
+export type FolderScope = (typeof FolderScope)[keyof typeof FolderScope]

@@ -193,7 +193,7 @@ export type ScheduledEmailGroupByOutputType = {
   _max: ScheduledEmailMaxAggregateOutputType | null
 }
 
-type GetScheduledEmailGroupByPayload<T extends ScheduledEmailGroupByArgs> = Prisma.PrismaPromise<
+export type GetScheduledEmailGroupByPayload<T extends ScheduledEmailGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ScheduledEmailGroupByOutputType, T['by']> &
       {

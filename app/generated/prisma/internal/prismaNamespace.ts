@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.5.0
- * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
+ * Prisma Client JS version: 7.6.0
+ * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.5.0",
-  engine: "280c870be64f457428992c43c1f6d557fab6e29e"
+  client: "7.6.0",
+  engine: "75cbdc1eb7150937890ad5465d861175c6624711"
 }
 
 /**
@@ -426,7 +426,10 @@ export const ModelName = {
   EmailTemplate: 'EmailTemplate',
   Announcement: 'Announcement',
   AnnouncementRecipient: 'AnnouncementRecipient',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  DocFolder: 'DocFolder',
+  DocFile: 'DocFile',
+  InspectionNote: 'InspectionNote'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -442,7 +445,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog"
+    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3628,6 +3631,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DocFolder: {
+      payload: Prisma.$DocFolderPayload<ExtArgs>
+      fields: Prisma.DocFolderFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocFolderFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocFolderFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>
+        }
+        findFirst: {
+          args: Prisma.DocFolderFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocFolderFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>
+        }
+        findMany: {
+          args: Prisma.DocFolderFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>[]
+        }
+        create: {
+          args: Prisma.DocFolderCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>
+        }
+        createMany: {
+          args: Prisma.DocFolderCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocFolderCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>[]
+        }
+        delete: {
+          args: Prisma.DocFolderDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>
+        }
+        update: {
+          args: Prisma.DocFolderUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocFolderDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocFolderUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocFolderUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>[]
+        }
+        upsert: {
+          args: Prisma.DocFolderUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFolderPayload>
+        }
+        aggregate: {
+          args: Prisma.DocFolderAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocFolder>
+        }
+        groupBy: {
+          args: Prisma.DocFolderGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocFolderGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocFolderCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocFolderCountAggregateOutputType> | number
+        }
+      }
+    }
+    DocFile: {
+      payload: Prisma.$DocFilePayload<ExtArgs>
+      fields: Prisma.DocFileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocFileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocFileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>
+        }
+        findFirst: {
+          args: Prisma.DocFileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocFileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>
+        }
+        findMany: {
+          args: Prisma.DocFileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>[]
+        }
+        create: {
+          args: Prisma.DocFileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>
+        }
+        createMany: {
+          args: Prisma.DocFileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocFileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>[]
+        }
+        delete: {
+          args: Prisma.DocFileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>
+        }
+        update: {
+          args: Prisma.DocFileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>
+        }
+        deleteMany: {
+          args: Prisma.DocFileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocFileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocFileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>[]
+        }
+        upsert: {
+          args: Prisma.DocFileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocFilePayload>
+        }
+        aggregate: {
+          args: Prisma.DocFileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocFile>
+        }
+        groupBy: {
+          args: Prisma.DocFileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocFileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocFileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocFileCountAggregateOutputType> | number
+        }
+      }
+    }
+    InspectionNote: {
+      payload: Prisma.$InspectionNotePayload<ExtArgs>
+      fields: Prisma.InspectionNoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InspectionNoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InspectionNoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>
+        }
+        findFirst: {
+          args: Prisma.InspectionNoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InspectionNoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>
+        }
+        findMany: {
+          args: Prisma.InspectionNoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>[]
+        }
+        create: {
+          args: Prisma.InspectionNoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>
+        }
+        createMany: {
+          args: Prisma.InspectionNoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InspectionNoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>[]
+        }
+        delete: {
+          args: Prisma.InspectionNoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>
+        }
+        update: {
+          args: Prisma.InspectionNoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>
+        }
+        deleteMany: {
+          args: Prisma.InspectionNoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InspectionNoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InspectionNoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>[]
+        }
+        upsert: {
+          args: Prisma.InspectionNoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InspectionNotePayload>
+        }
+        aggregate: {
+          args: Prisma.InspectionNoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInspectionNote>
+        }
+        groupBy: {
+          args: Prisma.InspectionNoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InspectionNoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InspectionNoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InspectionNoteCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4001,6 +4226,10 @@ export const FeePaymentScalarFieldEnum = {
   paymentMethod: 'paymentMethod',
   transactionRef: 'transactionRef',
   notes: 'notes',
+  receiptUrl: 'receiptUrl',
+  receiptFileName: 'receiptFileName',
+  confirmedAt: 'confirmedAt',
+  confirmedById: 'confirmedById',
   createdAt: 'createdAt'
 } as const
 
@@ -4349,6 +4578,50 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const DocFolderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  parentId: 'parentId',
+  scope: 'scope',
+  yearId: 'yearId',
+  programId: 'programId',
+  batchId: 'batchId',
+  isAutoPopulated: 'isAutoPopulated',
+  autoPopulateKey: 'autoPopulateKey',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocFolderScalarFieldEnum = (typeof DocFolderScalarFieldEnum)[keyof typeof DocFolderScalarFieldEnum]
+
+
+export const DocFileScalarFieldEnum = {
+  id: 'id',
+  folderId: 'folderId',
+  fileName: 'fileName',
+  fileUrl: 'fileUrl',
+  fileSize: 'fileSize',
+  contentType: 'contentType',
+  studentId: 'studentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocFileScalarFieldEnum = (typeof DocFileScalarFieldEnum)[keyof typeof DocFileScalarFieldEnum]
+
+
+export const InspectionNoteScalarFieldEnum = {
+  id: 'id',
+  folderId: 'folderId',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InspectionNoteScalarFieldEnum = (typeof InspectionNoteScalarFieldEnum)[keyof typeof InspectionNoteScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4679,6 +4952,20 @@ export type EnumPolicyTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
 export type ListEnumPolicyTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PolicyType[]'>
     
 
+
+/**
+ * Reference to a field of type 'FolderScope'
+ */
+export type EnumFolderScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FolderScope'>
+    
+
+
+/**
+ * Reference to a field of type 'FolderScope[]'
+ */
+export type ListEnumFolderScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FolderScope[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -4817,6 +5104,9 @@ export type GlobalOmitConfig = {
   announcement?: Prisma.AnnouncementOmit
   announcementRecipient?: Prisma.AnnouncementRecipientOmit
   auditLog?: Prisma.AuditLogOmit
+  docFolder?: Prisma.DocFolderOmit
+  docFile?: Prisma.DocFileOmit
+  inspectionNote?: Prisma.InspectionNoteOmit
 }
 
 /* Types for Logging */

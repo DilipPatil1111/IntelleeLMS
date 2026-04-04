@@ -333,7 +333,7 @@ export type AssessmentGroupByOutputType = {
   _max: AssessmentMaxAggregateOutputType | null
 }
 
-type GetAssessmentGroupByPayload<T extends AssessmentGroupByArgs> = Prisma.PrismaPromise<
+export type GetAssessmentGroupByPayload<T extends AssessmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AssessmentGroupByOutputType, T['by']> &
       {

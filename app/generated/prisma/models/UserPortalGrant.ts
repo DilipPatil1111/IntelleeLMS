@@ -158,7 +158,7 @@ export type UserPortalGrantGroupByOutputType = {
   _max: UserPortalGrantMaxAggregateOutputType | null
 }
 
-type GetUserPortalGrantGroupByPayload<T extends UserPortalGrantGroupByArgs> = Prisma.PrismaPromise<
+export type GetUserPortalGrantGroupByPayload<T extends UserPortalGrantGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<UserPortalGrantGroupByOutputType, T['by']> &
       {

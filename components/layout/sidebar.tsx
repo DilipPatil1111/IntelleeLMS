@@ -8,7 +8,7 @@ import {
   LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar, CalendarRange,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
-  Shield, FolderOpen, Megaphone, MessageSquare,
+  Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -31,6 +31,7 @@ const studentNav: NavItem[] = [
   { label: "Full Calendar", href: "/student/full-calendar", icon: CalendarRange },
   { label: "Holidays", href: "/student/holidays", icon: Calendar },
   { label: "Fees", href: "/student/fees", icon: DollarSign },
+  { label: "Pending Actions", href: "/student/pending-actions", icon: AlertCircle },
   { label: "Notifications", href: "/student/notifications", icon: Bell },
   { label: "Feedback", href: "/student/feedback", icon: MessageSquare },
 ];
@@ -71,6 +72,8 @@ const principalNav: NavItem[] = [
   { label: "Announcements", href: "/principal/announcements", icon: Megaphone },
   { label: "Policies", href: "/principal/policies", icon: Shield },
   { label: "Templates", href: "/principal/shared-documents", icon: FolderOpen },
+  { label: "Document Vault", href: "/principal/document-vault", icon: Archive },
+  { label: "Student Fees", href: "/principal/student-fees", icon: DollarSign },
   { label: "Settings", href: "/principal/settings", icon: Settings },
 ];
 

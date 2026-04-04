@@ -577,15 +577,19 @@ model FeeStructure {
 }
 
 model FeePayment {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   studentProfileId String
   feeStructureId   String
   amountPaid       Float
-  paymentDate      DateTime @default(now())
+  paymentDate      DateTime  @default(now())
   paymentMethod    String?
   transactionRef   String?
   notes            String?
-  createdAt        DateTime @default(now())
+  receiptUrl       String?
+  receiptFileName  String?
+  confirmedAt      DateTime?
+  confirmedById    String?
+  createdAt        DateTime  @default(now())
 
   studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id])
   feeStructure     FeeStructure   @relation(fields: [feeStructureId], references: [id])
@@ -978,4 +982,64 @@ model AuditLog {
   createdAt DateTime @default(now())
 
   user      User     @relation(fields: [userId], references: [id])
+}
+
+// ─── Document Vault ─────────────────────────────────────────────────
+
+enum FolderScope {
+  GENERIC
+  YEAR_SPECIFIC
+  BATCH_SPECIFIC
+}
+
+model DocFolder {
+  id              String      @id @default(cuid())
+  name            String
+  parentId        String?
+  scope           FolderScope @default(GENERIC)
+  yearId          String?
+  programId       String?
+  batchId         String?
+  isAutoPopulated Boolean     @default(false)
+  autoPopulateKey String?
+  sortOrder       Int         @default(0)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  parent   DocFolder?       @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children DocFolder[]      @relation("FolderTree")
+  files    DocFile[]
+  notes    InspectionNote[]
+
+  @@index([parentId])
+  @@index([yearId])
+  @@index([programId, batchId])
+}
+
+model DocFile {
+  id          String   @id @default(cuid())
+  folderId    String
+  fileName    String
+  fileUrl     String
+  fileSize    Int
+  contentType String
+  studentId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  folder DocFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@index([folderId])
+}
+
+model InspectionNote {
+  id        String   @id @default(cuid())
+  folderId  String
+  note      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  folder DocFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@index([folderId])
 }

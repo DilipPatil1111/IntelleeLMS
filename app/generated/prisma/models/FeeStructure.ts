@@ -213,7 +213,7 @@ export type FeeStructureGroupByOutputType = {
   _max: FeeStructureMaxAggregateOutputType | null
 }
 
-type GetFeeStructureGroupByPayload<T extends FeeStructureGroupByArgs> = Prisma.PrismaPromise<
+export type GetFeeStructureGroupByPayload<T extends FeeStructureGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<FeeStructureGroupByOutputType, T['by']> &
       {

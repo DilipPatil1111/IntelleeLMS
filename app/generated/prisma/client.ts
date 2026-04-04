@@ -256,3 +256,18 @@ export type AnnouncementRecipient = Prisma.AnnouncementRecipientModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model DocFolder
+ * 
+ */
+export type DocFolder = Prisma.DocFolderModel
+/**
+ * Model DocFile
+ * 
+ */
+export type DocFile = Prisma.DocFileModel
+/**
+ * Model InspectionNote
+ * 
+ */
+export type InspectionNote = Prisma.InspectionNoteModel

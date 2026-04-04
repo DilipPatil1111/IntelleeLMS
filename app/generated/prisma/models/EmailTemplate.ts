@@ -179,7 +179,7 @@ export type EmailTemplateGroupByOutputType = {
   _max: EmailTemplateMaxAggregateOutputType | null
 }
 
-type GetEmailTemplateGroupByPayload<T extends EmailTemplateGroupByArgs> = Prisma.PrismaPromise<
+export type GetEmailTemplateGroupByPayload<T extends EmailTemplateGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EmailTemplateGroupByOutputType, T['by']> &
       {

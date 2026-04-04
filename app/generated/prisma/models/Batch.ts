@@ -186,7 +186,7 @@ export type BatchGroupByOutputType = {
   _max: BatchMaxAggregateOutputType | null
 }
 
-type GetBatchGroupByPayload<T extends BatchGroupByArgs> = Prisma.PrismaPromise<
+export type GetBatchGroupByPayload<T extends BatchGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<BatchGroupByOutputType, T['by']> &
       {

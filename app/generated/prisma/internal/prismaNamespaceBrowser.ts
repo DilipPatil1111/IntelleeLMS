@@ -93,7 +93,10 @@ export const ModelName = {
   EmailTemplate: 'EmailTemplate',
   Announcement: 'Announcement',
   AnnouncementRecipient: 'AnnouncementRecipient',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  DocFolder: 'DocFolder',
+  DocFile: 'DocFile',
+  InspectionNote: 'InspectionNote'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -446,6 +449,10 @@ export const FeePaymentScalarFieldEnum = {
   paymentMethod: 'paymentMethod',
   transactionRef: 'transactionRef',
   notes: 'notes',
+  receiptUrl: 'receiptUrl',
+  receiptFileName: 'receiptFileName',
+  confirmedAt: 'confirmedAt',
+  confirmedById: 'confirmedById',
   createdAt: 'createdAt'
 } as const
 
@@ -792,6 +799,50 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const DocFolderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  parentId: 'parentId',
+  scope: 'scope',
+  yearId: 'yearId',
+  programId: 'programId',
+  batchId: 'batchId',
+  isAutoPopulated: 'isAutoPopulated',
+  autoPopulateKey: 'autoPopulateKey',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocFolderScalarFieldEnum = (typeof DocFolderScalarFieldEnum)[keyof typeof DocFolderScalarFieldEnum]
+
+
+export const DocFileScalarFieldEnum = {
+  id: 'id',
+  folderId: 'folderId',
+  fileName: 'fileName',
+  fileUrl: 'fileUrl',
+  fileSize: 'fileSize',
+  contentType: 'contentType',
+  studentId: 'studentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocFileScalarFieldEnum = (typeof DocFileScalarFieldEnum)[keyof typeof DocFileScalarFieldEnum]
+
+
+export const InspectionNoteScalarFieldEnum = {
+  id: 'id',
+  folderId: 'folderId',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InspectionNoteScalarFieldEnum = (typeof InspectionNoteScalarFieldEnum)[keyof typeof InspectionNoteScalarFieldEnum]
 
 
 export const SortOrder = {

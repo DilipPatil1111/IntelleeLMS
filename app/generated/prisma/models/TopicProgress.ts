@@ -213,7 +213,7 @@ export type TopicProgressGroupByOutputType = {
   _max: TopicProgressMaxAggregateOutputType | null
 }
 
-type GetTopicProgressGroupByPayload<T extends TopicProgressGroupByArgs> = Prisma.PrismaPromise<
+export type GetTopicProgressGroupByPayload<T extends TopicProgressGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<TopicProgressGroupByOutputType, T['by']> &
       {

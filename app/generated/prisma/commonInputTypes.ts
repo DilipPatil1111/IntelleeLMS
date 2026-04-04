@@ -545,6 +545,23 @@ export type EnumPolicyTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPolicyTypeFilter<$PrismaModel>
 }
 
+export type EnumFolderScopeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FolderScope | Prisma.EnumFolderScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.FolderScope[] | Prisma.ListEnumFolderScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FolderScope[] | Prisma.ListEnumFolderScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel> | $Enums.FolderScope
+}
+
+export type EnumFolderScopeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FolderScope | Prisma.EnumFolderScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.FolderScope[] | Prisma.ListEnumFolderScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FolderScope[] | Prisma.ListEnumFolderScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFolderScopeWithAggregatesFilter<$PrismaModel> | $Enums.FolderScope
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1065,6 +1082,23 @@ export type NestedEnumPolicyTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPolicyTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPolicyTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumFolderScopeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FolderScope | Prisma.EnumFolderScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.FolderScope[] | Prisma.ListEnumFolderScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FolderScope[] | Prisma.ListEnumFolderScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel> | $Enums.FolderScope
+}
+
+export type NestedEnumFolderScopeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FolderScope | Prisma.EnumFolderScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.FolderScope[] | Prisma.ListEnumFolderScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FolderScope[] | Prisma.ListEnumFolderScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFolderScopeWithAggregatesFilter<$PrismaModel> | $Enums.FolderScope
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel>
 }
 
 

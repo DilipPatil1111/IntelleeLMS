@@ -151,7 +151,7 @@ export type AnnouncementRecipientGroupByOutputType = {
   _max: AnnouncementRecipientMaxAggregateOutputType | null
 }
 
-type GetAnnouncementRecipientGroupByPayload<T extends AnnouncementRecipientGroupByArgs> = Prisma.PrismaPromise<
+export type GetAnnouncementRecipientGroupByPayload<T extends AnnouncementRecipientGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AnnouncementRecipientGroupByOutputType, T['by']> &
       {

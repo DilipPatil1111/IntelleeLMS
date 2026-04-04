@@ -158,7 +158,7 @@ export type TeacherSubjectAssignmentGroupByOutputType = {
   _max: TeacherSubjectAssignmentMaxAggregateOutputType | null
 }
 
-type GetTeacherSubjectAssignmentGroupByPayload<T extends TeacherSubjectAssignmentGroupByArgs> = Prisma.PrismaPromise<
+export type GetTeacherSubjectAssignmentGroupByPayload<T extends TeacherSubjectAssignmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<TeacherSubjectAssignmentGroupByOutputType, T['by']> &
       {

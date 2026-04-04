@@ -255,7 +255,7 @@ export type ProgramCalendarSlotGroupByOutputType = {
   _max: ProgramCalendarSlotMaxAggregateOutputType | null
 }
 
-type GetProgramCalendarSlotGroupByPayload<T extends ProgramCalendarSlotGroupByArgs> = Prisma.PrismaPromise<
+export type GetProgramCalendarSlotGroupByPayload<T extends ProgramCalendarSlotGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ProgramCalendarSlotGroupByOutputType, T['by']> &
       {
