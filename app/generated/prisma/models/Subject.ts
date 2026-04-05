@@ -28,10 +28,12 @@ export type AggregateSubject = {
 
 export type SubjectAvgAggregateOutputType = {
   credits: number | null
+  sortOrder: number | null
 }
 
 export type SubjectSumAggregateOutputType = {
   credits: number | null
+  sortOrder: number | null
 }
 
 export type SubjectMinAggregateOutputType = {
@@ -41,6 +43,7 @@ export type SubjectMinAggregateOutputType = {
   description: string | null
   programId: string | null
   credits: number | null
+  sortOrder: number | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -53,6 +56,7 @@ export type SubjectMaxAggregateOutputType = {
   description: string | null
   programId: string | null
   credits: number | null
+  sortOrder: number | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -65,6 +69,7 @@ export type SubjectCountAggregateOutputType = {
   description: number
   programId: number
   credits: number
+  sortOrder: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -74,10 +79,12 @@ export type SubjectCountAggregateOutputType = {
 
 export type SubjectAvgAggregateInputType = {
   credits?: true
+  sortOrder?: true
 }
 
 export type SubjectSumAggregateInputType = {
   credits?: true
+  sortOrder?: true
 }
 
 export type SubjectMinAggregateInputType = {
@@ -87,6 +94,7 @@ export type SubjectMinAggregateInputType = {
   description?: true
   programId?: true
   credits?: true
+  sortOrder?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -99,6 +107,7 @@ export type SubjectMaxAggregateInputType = {
   description?: true
   programId?: true
   credits?: true
+  sortOrder?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -111,6 +120,7 @@ export type SubjectCountAggregateInputType = {
   description?: true
   programId?: true
   credits?: true
+  sortOrder?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -210,6 +220,7 @@ export type SubjectGroupByOutputType = {
   description: string | null
   programId: string
   credits: number
+  sortOrder: number
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -220,7 +231,7 @@ export type SubjectGroupByOutputType = {
   _max: SubjectMaxAggregateOutputType | null
 }
 
-type GetSubjectGroupByPayload<T extends SubjectGroupByArgs> = Prisma.PrismaPromise<
+export type GetSubjectGroupByPayload<T extends SubjectGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<SubjectGroupByOutputType, T['by']> &
       {
@@ -245,6 +256,7 @@ export type SubjectWhereInput = {
   description?: Prisma.StringNullableFilter<"Subject"> | string | null
   programId?: Prisma.StringFilter<"Subject"> | string
   credits?: Prisma.IntFilter<"Subject"> | number
+  sortOrder?: Prisma.IntFilter<"Subject"> | number
   isActive?: Prisma.BoolFilter<"Subject"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
@@ -253,6 +265,8 @@ export type SubjectWhereInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentListRelationFilter
   assessments?: Prisma.AssessmentListRelationFilter
   attendanceSessions?: Prisma.AttendanceSessionListRelationFilter
+  programCalendarSlots?: Prisma.ProgramCalendarSlotListRelationFilter
+  programChapters?: Prisma.ProgramChapterListRelationFilter
 }
 
 export type SubjectOrderByWithRelationInput = {
@@ -262,6 +276,7 @@ export type SubjectOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -270,6 +285,8 @@ export type SubjectOrderByWithRelationInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentOrderByRelationAggregateInput
   assessments?: Prisma.AssessmentOrderByRelationAggregateInput
   attendanceSessions?: Prisma.AttendanceSessionOrderByRelationAggregateInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotOrderByRelationAggregateInput
+  programChapters?: Prisma.ProgramChapterOrderByRelationAggregateInput
 }
 
 export type SubjectWhereUniqueInput = Prisma.AtLeast<{
@@ -282,6 +299,7 @@ export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Subject"> | string | null
   programId?: Prisma.StringFilter<"Subject"> | string
   credits?: Prisma.IntFilter<"Subject"> | number
+  sortOrder?: Prisma.IntFilter<"Subject"> | number
   isActive?: Prisma.BoolFilter<"Subject"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
@@ -290,6 +308,8 @@ export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   teacherAssignments?: Prisma.TeacherSubjectAssignmentListRelationFilter
   assessments?: Prisma.AssessmentListRelationFilter
   attendanceSessions?: Prisma.AttendanceSessionListRelationFilter
+  programCalendarSlots?: Prisma.ProgramCalendarSlotListRelationFilter
+  programChapters?: Prisma.ProgramChapterListRelationFilter
 }, "id" | "code">
 
 export type SubjectOrderByWithAggregationInput = {
@@ -299,6 +319,7 @@ export type SubjectOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -319,6 +340,7 @@ export type SubjectScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Subject"> | string | null
   programId?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   credits?: Prisma.IntWithAggregatesFilter<"Subject"> | number
+  sortOrder?: Prisma.IntWithAggregatesFilter<"Subject"> | number
   isActive?: Prisma.BoolWithAggregatesFilter<"Subject"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Subject"> | Date | string
@@ -330,6 +352,7 @@ export type SubjectCreateInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -338,6 +361,8 @@ export type SubjectCreateInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateInput = {
@@ -347,6 +372,7 @@ export type SubjectUncheckedCreateInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -354,6 +380,8 @@ export type SubjectUncheckedCreateInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUpdateInput = {
@@ -362,6 +390,7 @@ export type SubjectUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -370,6 +399,8 @@ export type SubjectUpdateInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateInput = {
@@ -379,6 +410,7 @@ export type SubjectUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -386,6 +418,8 @@ export type SubjectUncheckedUpdateInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectCreateManyInput = {
@@ -395,6 +429,7 @@ export type SubjectCreateManyInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -406,6 +441,7 @@ export type SubjectUpdateManyMutationInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -418,6 +454,7 @@ export type SubjectUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -433,6 +470,11 @@ export type SubjectOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type SubjectScalarRelationFilter = {
+  is?: Prisma.SubjectWhereInput
+  isNot?: Prisma.SubjectWhereInput
+}
+
 export type SubjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -440,6 +482,7 @@ export type SubjectCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -447,6 +490,7 @@ export type SubjectCountOrderByAggregateInput = {
 
 export type SubjectAvgOrderByAggregateInput = {
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type SubjectMaxOrderByAggregateInput = {
@@ -456,6 +500,7 @@ export type SubjectMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -468,6 +513,7 @@ export type SubjectMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -475,11 +521,12 @@ export type SubjectMinOrderByAggregateInput = {
 
 export type SubjectSumOrderByAggregateInput = {
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
-export type SubjectScalarRelationFilter = {
-  is?: Prisma.SubjectWhereInput
-  isNot?: Prisma.SubjectWhereInput
+export type SubjectNullableScalarRelationFilter = {
+  is?: Prisma.SubjectWhereInput | null
+  isNot?: Prisma.SubjectWhereInput | null
 }
 
 export type SubjectCreateNestedManyWithoutProgramInput = {
@@ -522,6 +569,20 @@ export type SubjectUncheckedUpdateManyWithoutProgramNestedInput = {
   update?: Prisma.SubjectUpdateWithWhereUniqueWithoutProgramInput | Prisma.SubjectUpdateWithWhereUniqueWithoutProgramInput[]
   updateMany?: Prisma.SubjectUpdateManyWithWhereWithoutProgramInput | Prisma.SubjectUpdateManyWithWhereWithoutProgramInput[]
   deleteMany?: Prisma.SubjectScalarWhereInput | Prisma.SubjectScalarWhereInput[]
+}
+
+export type SubjectCreateNestedOneWithoutProgramChaptersInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutProgramChaptersInput, Prisma.SubjectUncheckedCreateWithoutProgramChaptersInput>
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutProgramChaptersInput
+  connect?: Prisma.SubjectWhereUniqueInput
+}
+
+export type SubjectUpdateOneRequiredWithoutProgramChaptersNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutProgramChaptersInput, Prisma.SubjectUncheckedCreateWithoutProgramChaptersInput>
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutProgramChaptersInput
+  upsert?: Prisma.SubjectUpsertWithoutProgramChaptersInput
+  connect?: Prisma.SubjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectUpdateToOneWithWhereWithoutProgramChaptersInput, Prisma.SubjectUpdateWithoutProgramChaptersInput>, Prisma.SubjectUncheckedUpdateWithoutProgramChaptersInput>
 }
 
 export type SubjectCreateNestedOneWithoutModulesInput = {
@@ -580,12 +641,29 @@ export type SubjectUpdateOneRequiredWithoutAttendanceSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectUpdateToOneWithWhereWithoutAttendanceSessionsInput, Prisma.SubjectUpdateWithoutAttendanceSessionsInput>, Prisma.SubjectUncheckedUpdateWithoutAttendanceSessionsInput>
 }
 
+export type SubjectCreateNestedOneWithoutProgramCalendarSlotsInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutProgramCalendarSlotsInput, Prisma.SubjectUncheckedCreateWithoutProgramCalendarSlotsInput>
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutProgramCalendarSlotsInput
+  connect?: Prisma.SubjectWhereUniqueInput
+}
+
+export type SubjectUpdateOneWithoutProgramCalendarSlotsNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutProgramCalendarSlotsInput, Prisma.SubjectUncheckedCreateWithoutProgramCalendarSlotsInput>
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutProgramCalendarSlotsInput
+  upsert?: Prisma.SubjectUpsertWithoutProgramCalendarSlotsInput
+  disconnect?: Prisma.SubjectWhereInput | boolean
+  delete?: Prisma.SubjectWhereInput | boolean
+  connect?: Prisma.SubjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectUpdateToOneWithWhereWithoutProgramCalendarSlotsInput, Prisma.SubjectUpdateWithoutProgramCalendarSlotsInput>, Prisma.SubjectUncheckedUpdateWithoutProgramCalendarSlotsInput>
+}
+
 export type SubjectCreateWithoutProgramInput = {
   id?: string
   name: string
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -593,6 +671,8 @@ export type SubjectCreateWithoutProgramInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateWithoutProgramInput = {
@@ -601,6 +681,7 @@ export type SubjectUncheckedCreateWithoutProgramInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -608,6 +689,8 @@ export type SubjectUncheckedCreateWithoutProgramInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectCreateOrConnectWithoutProgramInput = {
@@ -646,9 +729,98 @@ export type SubjectScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Subject"> | string | null
   programId?: Prisma.StringFilter<"Subject"> | string
   credits?: Prisma.IntFilter<"Subject"> | number
+  sortOrder?: Prisma.IntFilter<"Subject"> | number
   isActive?: Prisma.BoolFilter<"Subject"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
+}
+
+export type SubjectCreateWithoutProgramChaptersInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  credits?: number
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  program: Prisma.ProgramCreateNestedOneWithoutSubjectsInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutSubjectInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutSubjectInput
+  assessments?: Prisma.AssessmentCreateNestedManyWithoutSubjectInput
+  attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectUncheckedCreateWithoutProgramChaptersInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  programId: string
+  credits?: number
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutSubjectInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutSubjectInput
+  assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutSubjectInput
+  attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectCreateOrConnectWithoutProgramChaptersInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutProgramChaptersInput, Prisma.SubjectUncheckedCreateWithoutProgramChaptersInput>
+}
+
+export type SubjectUpsertWithoutProgramChaptersInput = {
+  update: Prisma.XOR<Prisma.SubjectUpdateWithoutProgramChaptersInput, Prisma.SubjectUncheckedUpdateWithoutProgramChaptersInput>
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutProgramChaptersInput, Prisma.SubjectUncheckedCreateWithoutProgramChaptersInput>
+  where?: Prisma.SubjectWhereInput
+}
+
+export type SubjectUpdateToOneWithWhereWithoutProgramChaptersInput = {
+  where?: Prisma.SubjectWhereInput
+  data: Prisma.XOR<Prisma.SubjectUpdateWithoutProgramChaptersInput, Prisma.SubjectUncheckedUpdateWithoutProgramChaptersInput>
+}
+
+export type SubjectUpdateWithoutProgramChaptersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  program?: Prisma.ProgramUpdateOneRequiredWithoutSubjectsNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutSubjectNestedInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutSubjectNestedInput
+  assessments?: Prisma.AssessmentUpdateManyWithoutSubjectNestedInput
+  attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutSubjectNestedInput
+}
+
+export type SubjectUncheckedUpdateWithoutProgramChaptersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  programId?: Prisma.StringFieldUpdateOperationsInput | string
+  credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutSubjectNestedInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
+  assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutSubjectNestedInput
+  attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectCreateWithoutModulesInput = {
@@ -657,6 +829,7 @@ export type SubjectCreateWithoutModulesInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -664,6 +837,8 @@ export type SubjectCreateWithoutModulesInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateWithoutModulesInput = {
@@ -673,12 +848,15 @@ export type SubjectUncheckedCreateWithoutModulesInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectCreateOrConnectWithoutModulesInput = {
@@ -703,6 +881,7 @@ export type SubjectUpdateWithoutModulesInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -710,6 +889,8 @@ export type SubjectUpdateWithoutModulesInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateWithoutModulesInput = {
@@ -719,12 +900,15 @@ export type SubjectUncheckedUpdateWithoutModulesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectCreateWithoutTeacherAssignmentsInput = {
@@ -733,6 +917,7 @@ export type SubjectCreateWithoutTeacherAssignmentsInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -740,6 +925,8 @@ export type SubjectCreateWithoutTeacherAssignmentsInput = {
   modules?: Prisma.ModuleCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateWithoutTeacherAssignmentsInput = {
@@ -749,12 +936,15 @@ export type SubjectUncheckedCreateWithoutTeacherAssignmentsInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectCreateOrConnectWithoutTeacherAssignmentsInput = {
@@ -779,6 +969,7 @@ export type SubjectUpdateWithoutTeacherAssignmentsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -786,6 +977,8 @@ export type SubjectUpdateWithoutTeacherAssignmentsInput = {
   modules?: Prisma.ModuleUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateWithoutTeacherAssignmentsInput = {
@@ -795,12 +988,15 @@ export type SubjectUncheckedUpdateWithoutTeacherAssignmentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   modules?: Prisma.ModuleUncheckedUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectCreateWithoutAssessmentsInput = {
@@ -809,6 +1005,7 @@ export type SubjectCreateWithoutAssessmentsInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -816,6 +1013,8 @@ export type SubjectCreateWithoutAssessmentsInput = {
   modules?: Prisma.ModuleCreateNestedManyWithoutSubjectInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateWithoutAssessmentsInput = {
@@ -825,12 +1024,15 @@ export type SubjectUncheckedCreateWithoutAssessmentsInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutSubjectInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutSubjectInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectCreateOrConnectWithoutAssessmentsInput = {
@@ -855,6 +1057,7 @@ export type SubjectUpdateWithoutAssessmentsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -862,6 +1065,8 @@ export type SubjectUpdateWithoutAssessmentsInput = {
   modules?: Prisma.ModuleUpdateManyWithoutSubjectNestedInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateWithoutAssessmentsInput = {
@@ -871,12 +1076,15 @@ export type SubjectUncheckedUpdateWithoutAssessmentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   modules?: Prisma.ModuleUncheckedUpdateManyWithoutSubjectNestedInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectCreateWithoutAttendanceSessionsInput = {
@@ -885,6 +1093,7 @@ export type SubjectCreateWithoutAttendanceSessionsInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -892,6 +1101,8 @@ export type SubjectCreateWithoutAttendanceSessionsInput = {
   modules?: Prisma.ModuleCreateNestedManyWithoutSubjectInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateWithoutAttendanceSessionsInput = {
@@ -901,12 +1112,15 @@ export type SubjectUncheckedCreateWithoutAttendanceSessionsInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutSubjectInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutSubjectInput
   assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutSubjectInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectCreateOrConnectWithoutAttendanceSessionsInput = {
@@ -931,6 +1145,7 @@ export type SubjectUpdateWithoutAttendanceSessionsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -938,6 +1153,8 @@ export type SubjectUpdateWithoutAttendanceSessionsInput = {
   modules?: Prisma.ModuleUpdateManyWithoutSubjectNestedInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateWithoutAttendanceSessionsInput = {
@@ -947,12 +1164,103 @@ export type SubjectUncheckedUpdateWithoutAttendanceSessionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   modules?: Prisma.ModuleUncheckedUpdateManyWithoutSubjectNestedInput
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUncheckedUpdateManyWithoutSubjectNestedInput
+}
+
+export type SubjectCreateWithoutProgramCalendarSlotsInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  credits?: number
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  program: Prisma.ProgramCreateNestedOneWithoutSubjectsInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutSubjectInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutSubjectInput
+  assessments?: Prisma.AssessmentCreateNestedManyWithoutSubjectInput
+  attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectUncheckedCreateWithoutProgramCalendarSlotsInput = {
+  id?: string
+  name: string
+  code: string
+  description?: string | null
+  programId: string
+  credits?: number
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutSubjectInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutSubjectInput
+  assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutSubjectInput
+  attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutSubjectInput
+  programChapters?: Prisma.ProgramChapterUncheckedCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectCreateOrConnectWithoutProgramCalendarSlotsInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutProgramCalendarSlotsInput, Prisma.SubjectUncheckedCreateWithoutProgramCalendarSlotsInput>
+}
+
+export type SubjectUpsertWithoutProgramCalendarSlotsInput = {
+  update: Prisma.XOR<Prisma.SubjectUpdateWithoutProgramCalendarSlotsInput, Prisma.SubjectUncheckedUpdateWithoutProgramCalendarSlotsInput>
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutProgramCalendarSlotsInput, Prisma.SubjectUncheckedCreateWithoutProgramCalendarSlotsInput>
+  where?: Prisma.SubjectWhereInput
+}
+
+export type SubjectUpdateToOneWithWhereWithoutProgramCalendarSlotsInput = {
+  where?: Prisma.SubjectWhereInput
+  data: Prisma.XOR<Prisma.SubjectUpdateWithoutProgramCalendarSlotsInput, Prisma.SubjectUncheckedUpdateWithoutProgramCalendarSlotsInput>
+}
+
+export type SubjectUpdateWithoutProgramCalendarSlotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  program?: Prisma.ProgramUpdateOneRequiredWithoutSubjectsNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutSubjectNestedInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutSubjectNestedInput
+  assessments?: Prisma.AssessmentUpdateManyWithoutSubjectNestedInput
+  attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUpdateManyWithoutSubjectNestedInput
+}
+
+export type SubjectUncheckedUpdateWithoutProgramCalendarSlotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  programId?: Prisma.StringFieldUpdateOperationsInput | string
+  credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutSubjectNestedInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
+  assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutSubjectNestedInput
+  attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectCreateManyProgramInput = {
@@ -961,6 +1269,7 @@ export type SubjectCreateManyProgramInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -972,6 +1281,7 @@ export type SubjectUpdateWithoutProgramInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -979,6 +1289,8 @@ export type SubjectUpdateWithoutProgramInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateWithoutProgramInput = {
@@ -987,6 +1299,7 @@ export type SubjectUncheckedUpdateWithoutProgramInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -994,6 +1307,8 @@ export type SubjectUncheckedUpdateWithoutProgramInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutSubjectNestedInput
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutSubjectNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutSubjectNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutSubjectNestedInput
+  programChapters?: Prisma.ProgramChapterUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateManyWithoutProgramInput = {
@@ -1002,6 +1317,7 @@ export type SubjectUncheckedUpdateManyWithoutProgramInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1017,6 +1333,8 @@ export type SubjectCountOutputType = {
   teacherAssignments: number
   assessments: number
   attendanceSessions: number
+  programCalendarSlots: number
+  programChapters: number
 }
 
 export type SubjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1024,6 +1342,8 @@ export type SubjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   teacherAssignments?: boolean | SubjectCountOutputTypeCountTeacherAssignmentsArgs
   assessments?: boolean | SubjectCountOutputTypeCountAssessmentsArgs
   attendanceSessions?: boolean | SubjectCountOutputTypeCountAttendanceSessionsArgs
+  programCalendarSlots?: boolean | SubjectCountOutputTypeCountProgramCalendarSlotsArgs
+  programChapters?: boolean | SubjectCountOutputTypeCountProgramChaptersArgs
 }
 
 /**
@@ -1064,6 +1384,20 @@ export type SubjectCountOutputTypeCountAttendanceSessionsArgs<ExtArgs extends ru
   where?: Prisma.AttendanceSessionWhereInput
 }
 
+/**
+ * SubjectCountOutputType without action
+ */
+export type SubjectCountOutputTypeCountProgramCalendarSlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramCalendarSlotWhereInput
+}
+
+/**
+ * SubjectCountOutputType without action
+ */
+export type SubjectCountOutputTypeCountProgramChaptersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramChapterWhereInput
+}
+
 
 export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1072,6 +1406,7 @@ export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   description?: boolean
   programId?: boolean
   credits?: boolean
+  sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1080,6 +1415,8 @@ export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   teacherAssignments?: boolean | Prisma.Subject$teacherAssignmentsArgs<ExtArgs>
   assessments?: boolean | Prisma.Subject$assessmentsArgs<ExtArgs>
   attendanceSessions?: boolean | Prisma.Subject$attendanceSessionsArgs<ExtArgs>
+  programCalendarSlots?: boolean | Prisma.Subject$programCalendarSlotsArgs<ExtArgs>
+  programChapters?: boolean | Prisma.Subject$programChaptersArgs<ExtArgs>
   _count?: boolean | Prisma.SubjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
 
@@ -1090,6 +1427,7 @@ export type SubjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   programId?: boolean
   credits?: boolean
+  sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1103,6 +1441,7 @@ export type SubjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   programId?: boolean
   credits?: boolean
+  sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1116,18 +1455,21 @@ export type SubjectSelectScalar = {
   description?: boolean
   programId?: boolean
   credits?: boolean
+  sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "programId" | "credits" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
+export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "programId" | "credits" | "sortOrder" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
 export type SubjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   program?: boolean | Prisma.ProgramDefaultArgs<ExtArgs>
   modules?: boolean | Prisma.Subject$modulesArgs<ExtArgs>
   teacherAssignments?: boolean | Prisma.Subject$teacherAssignmentsArgs<ExtArgs>
   assessments?: boolean | Prisma.Subject$assessmentsArgs<ExtArgs>
   attendanceSessions?: boolean | Prisma.Subject$attendanceSessionsArgs<ExtArgs>
+  programCalendarSlots?: boolean | Prisma.Subject$programCalendarSlotsArgs<ExtArgs>
+  programChapters?: boolean | Prisma.Subject$programChaptersArgs<ExtArgs>
   _count?: boolean | Prisma.SubjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SubjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1145,6 +1487,8 @@ export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     teacherAssignments: Prisma.$TeacherSubjectAssignmentPayload<ExtArgs>[]
     assessments: Prisma.$AssessmentPayload<ExtArgs>[]
     attendanceSessions: Prisma.$AttendanceSessionPayload<ExtArgs>[]
+    programCalendarSlots: Prisma.$ProgramCalendarSlotPayload<ExtArgs>[]
+    programChapters: Prisma.$ProgramChapterPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1153,6 +1497,7 @@ export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     description: string | null
     programId: string
     credits: number
+    sortOrder: number
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1555,6 +1900,8 @@ export interface Prisma__SubjectClient<T, Null = never, ExtArgs extends runtime.
   teacherAssignments<T extends Prisma.Subject$teacherAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$teacherAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherSubjectAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessments<T extends Prisma.Subject$assessmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$assessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceSessions<T extends Prisma.Subject$attendanceSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$attendanceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programCalendarSlots<T extends Prisma.Subject$programCalendarSlotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$programCalendarSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCalendarSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programChapters<T extends Prisma.Subject$programChaptersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$programChaptersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramChapterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1590,6 +1937,7 @@ export interface SubjectFieldRefs {
   readonly description: Prisma.FieldRef<"Subject", 'String'>
   readonly programId: Prisma.FieldRef<"Subject", 'String'>
   readonly credits: Prisma.FieldRef<"Subject", 'Int'>
+  readonly sortOrder: Prisma.FieldRef<"Subject", 'Int'>
   readonly isActive: Prisma.FieldRef<"Subject", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Subject", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Subject", 'DateTime'>
@@ -2087,6 +2435,54 @@ export type Subject$attendanceSessionsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.AttendanceSessionScalarFieldEnum | Prisma.AttendanceSessionScalarFieldEnum[]
+}
+
+/**
+ * Subject.programCalendarSlots
+ */
+export type Subject$programCalendarSlotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramCalendarSlot
+   */
+  select?: Prisma.ProgramCalendarSlotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramCalendarSlot
+   */
+  omit?: Prisma.ProgramCalendarSlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramCalendarSlotInclude<ExtArgs> | null
+  where?: Prisma.ProgramCalendarSlotWhereInput
+  orderBy?: Prisma.ProgramCalendarSlotOrderByWithRelationInput | Prisma.ProgramCalendarSlotOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramCalendarSlotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramCalendarSlotScalarFieldEnum | Prisma.ProgramCalendarSlotScalarFieldEnum[]
+}
+
+/**
+ * Subject.programChapters
+ */
+export type Subject$programChaptersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramChapter
+   */
+  select?: Prisma.ProgramChapterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramChapter
+   */
+  omit?: Prisma.ProgramChapterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramChapterInclude<ExtArgs> | null
+  where?: Prisma.ProgramChapterWhereInput
+  orderBy?: Prisma.ProgramChapterOrderByWithRelationInput | Prisma.ProgramChapterOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramChapterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramChapterScalarFieldEnum | Prisma.ProgramChapterScalarFieldEnum[]
 }
 
 /**

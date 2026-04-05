@@ -8,13 +8,27 @@ export async function GET() {
 
   const programs = await db.program.findMany({
     where: { isActive: true },
-    select: { id: true, name: true, code: true, description: true, durationYears: true },
+    select: {
+      id: true,
+      name: true,
+      code: true,
+      description: true,
+      durationYears: true,
+      programDomain: { select: { id: true, name: true, customerId: true } },
+      programCategory: { select: { id: true, name: true, customerId: true } },
+      programType: { select: { id: true, name: true, customerId: true } },
+    },
     orderBy: { name: "asc" },
   });
 
   const applications = await db.programApplication.findMany({
     where: { applicantId: session.user.id },
-    include: { program: { select: { name: true, code: true } } },
+    include: {
+      program: { select: { name: true, code: true } },
+      programDomain: { select: { id: true, name: true, customerId: true } },
+      programCategory: { select: { id: true, name: true, customerId: true } },
+      programType: { select: { id: true, name: true, customerId: true } },
+    },
     orderBy: { createdAt: "desc" },
   });
 
@@ -47,12 +61,24 @@ export async function POST(req: Request) {
     if (b) validBatchId = b.id;
   }
 
+  const programRow = await db.program.findUnique({
+    where: { id: programId },
+    select: {
+      programDomainId: true,
+      programCategoryId: true,
+      programTypeId: true,
+    },
+  });
+
   const application = await db.programApplication.create({
     data: {
       applicantId: session.user.id,
       programId,
       batchId: validBatchId,
       personalStatement: personalStatement || null,
+      programDomainId: programRow?.programDomainId ?? null,
+      programCategoryId: programRow?.programCategoryId ?? null,
+      programTypeId: programRow?.programTypeId ?? null,
     },
   });
 

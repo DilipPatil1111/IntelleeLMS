@@ -1,7 +1,5 @@
-import { readFile } from "fs/promises";
-import path from "path";
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { getOrCreateInstitutionSettings } from "@/lib/institution-settings";
 
 /**
@@ -23,23 +21,28 @@ export async function sendGraduationCertificateEmail(studentUserId: string): Pro
 
   let attachment: { filename: string; content: Buffer } | undefined;
   if (settings.certificateTemplateUrl) {
-    const rel = settings.certificateTemplateUrl.startsWith("/")
-      ? settings.certificateTemplateUrl.slice(1)
-      : settings.certificateTemplateUrl;
-    const abs = path.join(process.cwd(), "public", rel);
     try {
-      const buf = await readFile(abs);
-      const fname = settings.certificateTemplateFileName || "graduation-certificate.pdf";
-      attachment = { filename: fname, content: buf };
+      const response = await fetch(settings.certificateTemplateUrl);
+      if (response.ok) {
+        const buf = Buffer.from(await response.arrayBuffer());
+        const fname = settings.certificateTemplateFileName || "graduation-certificate.pdf";
+        attachment = { filename: fname, content: buf };
+      } else {
+        console.error(
+          "[graduation] Certificate template fetch failed:",
+          settings.certificateTemplateUrl,
+          response.status
+        );
+      }
     } catch (e) {
-      console.error("[graduation] Certificate template file missing:", abs, e);
+      console.error("[graduation] Certificate template fetch error:", settings.certificateTemplateUrl, e);
     }
   }
 
   const subject = `Congratulations — Graduation certificate — ${programName}`;
   const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Dear ${escapeHtml(firstName)},</p>
         <p>Congratulations on completing all academic and compliance requirements for <strong>${escapeHtml(programName)}</strong>.</p>
         <p><strong>Enrollment:</strong> ${escapeHtml(enrollmentNo)}</p>
@@ -55,12 +58,13 @@ export async function sendGraduationCertificateEmail(studentUserId: string): Pro
     attachment ? "Your certificate is attached.\n" : "Contact the office if you need a certificate copy.\n"
   }`;
 
-  const result = await sendEmail({
+  const result = await sendEmailWithSignature({
     to: profile.user.email,
     subject,
     html,
     text,
     attachments: attachment ? [attachment] : undefined,
+    senderUserId: null, // system-generated, use generic institutional signature
   });
 
   if (!result.ok) {

@@ -1,20 +1,21 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getServerAppUrl } from "@/lib/app-url";
-import { sendEmail, buildEnrollmentOnboardingEmail, buildApplicationRejectedEmail } from "@/lib/email";
+import { buildEnrollmentOnboardingEmail, buildApplicationRejectedEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { notifyStudentStatusChange } from "@/lib/student-status";
 import {
   syncProgramApplicationsWithProfileEnrolled,
   syncStudentProfileWithApplicationEnrolled,
 } from "@/lib/sync-enrollment-status";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const role = (session.user as unknown as Record<string, unknown>).role as string;
-  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json();
   const { action, batchId, reviewNotes } = body as { action: string; batchId?: string; reviewNotes?: string };
@@ -60,11 +61,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       reviewNotes: typeof reviewNotes === "string" ? reviewNotes : null,
       portalUrl,
     });
-    await sendEmail({
+    await sendEmailWithSignature({
       to: application.applicant.email,
       subject: rejectedPayload.subject,
       html: rejectedPayload.html,
       text: rejectedPayload.text,
+      senderUserId: session.user.id,
     });
 
     await db.notification.create({
@@ -137,11 +139,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       studentUrl,
       onboardingUrl,
     });
-    await sendEmail({
+    await sendEmailWithSignature({
       to: application.applicant.email,
       subject: enrollPayload.subject,
       html: enrollPayload.html,
       text: enrollPayload.text,
+      senderUserId: session.user.id,
     });
 
     const template = await db.emailTemplate.findUnique({ where: { name: "enrollment_confirmed" } });

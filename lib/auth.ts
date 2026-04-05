@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "./auth-config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   ...authConfig,
   providers: [
     Credentials({
@@ -31,6 +32,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!isValid) return null;
 
+        const grants = await db.userPortalGrant.findMany({
+          where: { userId: user.id },
+          select: { portal: true },
+        });
+
         return {
           id: user.id,
           email: user.email,
@@ -38,6 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           role: user.role,
           image: user.image,
           mustChangePassword: user.mustChangePassword,
+          grantedPortals: grants.map((g) => g.portal),
         };
       },
     }),

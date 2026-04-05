@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,8 +21,12 @@ interface Ann {
   batch: { name: string } | null;
 }
 
+const PAGE_SIZE = 10;
+
 export default function TeacherAnnouncementsPage() {
   const [list, setList] = useState<Ann[]>([]);
+  const [listTotal, setListTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
   const [batches, setBatches] = useState<{ value: string; label: string }[]>([]);
   const [students, setStudents] = useState<{ id: string; firstName: string; lastName: string; email: string }[]>([]);
@@ -36,20 +40,30 @@ export default function TeacherAnnouncementsPage() {
     selectedStudentIds: [] as string[],
   });
 
-  useEffect(() => {
-    load();
+  const fetchAnnouncements = useCallback(async (p: number) => {
+    const params = new URLSearchParams();
+    params.set("page", String(p));
+    params.set("pageSize", String(PAGE_SIZE));
+    const a = await fetch(`/api/teacher/announcements?${params.toString()}`).then((r) => r.json());
+    setList(a.announcements || []);
+    setListTotal(typeof a.total === "number" ? a.total : 0);
   }, []);
 
-  async function load() {
-    const [a, p, b] = await Promise.all([
-      fetch("/api/teacher/announcements").then((r) => r.json()),
-      fetch("/api/teacher/programs").then((r) => r.json()),
-      fetch("/api/teacher/options").then((r) => r.json()),
-    ]);
-    setList(a.announcements || []);
-    setPrograms(p.programs || []);
-    setBatches(b.batches || []);
-  }
+  useEffect(() => {
+    void (async () => {
+      const [p, b] = await Promise.all([
+        fetch("/api/teacher/programs").then((r) => r.json()),
+        fetch("/api/teacher/options").then((r) => r.json()),
+      ]);
+      setPrograms(p.programs || []);
+      setBatches(b.batches || []);
+    })();
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchAnnouncements(page);
+  }, [page, fetchAnnouncements]);
 
   useEffect(() => {
     if (!form.batchId) return;
@@ -82,7 +96,8 @@ export default function TeacherAnnouncementsPage() {
     });
     setShowModal(false);
     setForm({ title: "", body: "", programId: "", batchId: "", recipientAll: true, selectedStudentIds: [] });
-    load();
+    setPage(1);
+    await fetchAnnouncements(1);
   }
 
   function toggle(sid: string) {
@@ -119,6 +134,11 @@ export default function TeacherAnnouncementsPage() {
       />
 
       <div className="space-y-4">
+        {listTotal > 0 && (
+          <p className="text-sm text-gray-500">
+            {listTotal} announcement{listTotal === 1 ? "" : "s"} total · {PAGE_SIZE} per page
+          </p>
+        )}
         {list.map((a) => (
           <Card key={a.id}>
             <CardContent className="pt-6">
@@ -141,6 +161,33 @@ export default function TeacherAnnouncementsPage() {
             </CardContent>
           </Card>
         ))}
+        {listTotal > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-4">
+            <p className="text-sm text-gray-600">
+              Page {page} of {Math.max(1, Math.ceil(listTotal / PAGE_SIZE))}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+              >
+                Previous
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={page >= Math.max(1, Math.ceil(listTotal / PAGE_SIZE))}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create announcement" className="max-w-lg">

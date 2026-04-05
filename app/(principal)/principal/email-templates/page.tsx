@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,14 +24,19 @@ const defaultTemplates = [
 ];
 
 export default function EmailTemplatesPage() {
+  const router = useRouter();
   const [templates, setTemplates] = useState<Template[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", subject: "", body: "", description: "" });
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
+  const loadTemplates = useCallback(() => {
     fetch("/api/principal/email-templates").then((r) => r.json()).then((data) => setTemplates(data.templates || []));
   }, []);
+
+  useEffect(() => {
+    loadTemplates();
+  }, [loadTemplates]);
 
   function startEdit(t: Template | typeof defaultTemplates[0]) {
     setEditing(t.name);
@@ -44,8 +50,7 @@ export default function EmailTemplatesPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
-    const refreshed = await fetch("/api/principal/email-templates").then((r) => r.json());
-    setTemplates(refreshed.templates || []);
+    loadTemplates();
     setEditing(null);
     setSaving(false);
   }
@@ -73,13 +78,10 @@ export default function EmailTemplatesPage() {
                     variant="secondary"
                     size="sm"
                     onClick={() => {
-                      if (typeof window !== "undefined") {
-                        sessionStorage.setItem(
-                          "emailTemplateDraft",
-                          JSON.stringify({ subject: t.subject, body: t.body })
-                        );
-                      }
-                      window.location.href = "/principal/announcements";
+                      const params = new URLSearchParams();
+                      params.set("subject", t.subject);
+                      params.set("body", t.body);
+                      router.push(`/principal/announcements?${params.toString()}`);
                     }}
                   >
                     Apply to announcement

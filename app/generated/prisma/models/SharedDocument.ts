@@ -244,7 +244,7 @@ export type SharedDocumentGroupByOutputType = {
   _max: SharedDocumentMaxAggregateOutputType | null
 }
 
-type GetSharedDocumentGroupByPayload<T extends SharedDocumentGroupByArgs> = Prisma.PrismaPromise<
+export type GetSharedDocumentGroupByPayload<T extends SharedDocumentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<SharedDocumentGroupByOutputType, T['by']> &
       {

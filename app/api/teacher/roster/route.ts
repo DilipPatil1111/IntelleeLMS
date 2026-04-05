@@ -13,6 +13,9 @@ export async function GET(req: Request) {
   const q = searchParams.get("q")?.trim();
   const programId = searchParams.get("programId") || undefined;
   const batchId = searchParams.get("batchId") || undefined;
+  const page = Math.max(1, Number.parseInt(searchParams.get("page") || "1", 10) || 1);
+  let pageSize = Number.parseInt(searchParams.get("pageSize") || "15", 10) || 15;
+  pageSize = Math.min(Math.max(1, pageSize), 100);
 
   const batchIds = await getTeacherVisibleBatchIds(session.user.id);
 
@@ -23,7 +26,13 @@ export async function GET(req: Request) {
   });
 
   if (batchIds.length === 0) {
-    return NextResponse.json({ students: [], batches: batchesMeta });
+    return NextResponse.json({
+      students: [],
+      batches: batchesMeta,
+      total: 0,
+      page: 1,
+      pageSize,
+    });
   }
 
   let allowedBatchIds = batchIds;
@@ -35,7 +44,14 @@ export async function GET(req: Request) {
       select: { id: true },
     });
     allowedBatchIds = inProgram.map((b) => b.id);
-    if (allowedBatchIds.length === 0) return NextResponse.json({ students: [], batches: batchesMeta });
+    if (allowedBatchIds.length === 0)
+      return NextResponse.json({
+        students: [],
+        batches: batchesMeta,
+        total: 0,
+        page: 1,
+        pageSize,
+      });
   }
 
   const and: Prisma.UserWhereInput[] = [
@@ -54,15 +70,22 @@ export async function GET(req: Request) {
     });
   }
 
-  const students = await db.user.findMany({
-    where: { AND: and },
-    include: {
-      studentProfile: { include: { program: true, batch: true } },
-      attempts: { where: { status: "GRADED" }, select: { percentage: true } },
-      attendanceRecords: { select: { status: true } },
-    },
-    orderBy: { firstName: "asc" },
-  });
+  const whereFinal = { AND: and };
 
-  return NextResponse.json({ students, batches: batchesMeta });
+  const [total, students] = await Promise.all([
+    db.user.count({ where: whereFinal }),
+    db.user.findMany({
+      where: whereFinal,
+      include: {
+        studentProfile: { include: { program: true, batch: true } },
+        attempts: { where: { status: "GRADED" }, select: { percentage: true } },
+        attendanceRecords: { select: { status: true } },
+      },
+      orderBy: { firstName: "asc" },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+  ]);
+
+  return NextResponse.json({ students, batches: batchesMeta, total, page, pageSize });
 }

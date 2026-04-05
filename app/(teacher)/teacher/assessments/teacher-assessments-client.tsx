@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -26,8 +26,12 @@ interface AssessmentRow {
   _count: { questions: number; attempts: number };
 }
 
+const PAGE_SIZE = 5;
+
 export function TeacherAssessmentsClient() {
   const [assessments, setAssessments] = useState<AssessmentRow[]>([]);
+  const [listTotal, setListTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [programs, setPrograms] = useState<{ id: string; name: string }[]>([]);
   const [batches, setBatches] = useState<{ id: string; name: string; programId: string }[]>([]);
   const [searchInput, setSearchInput] = useState("");
@@ -36,6 +40,11 @@ export function TeacherAssessmentsClient() {
   const [batchId, setBatchId] = useState("");
   const [status, setStatus] = useState<AssessmentStatus | "">("");
   const [type, setType] = useState<AssessmentType | "">("");
+  const filterKey = useMemo(
+    () => `${debouncedQ}|${programId}|${batchId}|${status}|${type}`,
+    [debouncedQ, programId, batchId, status, type]
+  );
+  const prevFilterKeyRef = useRef(filterKey);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQ(searchInput.trim()), 350);
@@ -52,22 +61,40 @@ export function TeacherAssessmentsClient() {
     })();
   }, []);
 
-  const load = useCallback(async () => {
-    const params = new URLSearchParams();
-    if (debouncedQ) params.set("q", debouncedQ);
-    if (programId) params.set("programId", programId);
-    if (batchId) params.set("batchId", batchId);
-    if (status) params.set("status", status);
-    if (type) params.set("type", type);
-    const qs = params.toString();
-    const res = await fetch(`/api/teacher/assessments${qs ? `?${qs}` : ""}`);
-    const data = await res.json();
-    setAssessments(data.assessments || []);
-  }, [debouncedQ, programId, batchId, status, type]);
-
   useEffect(() => {
-    void load();
-  }, [load]);
+    const filtersChanged = prevFilterKeyRef.current !== filterKey;
+    if (filtersChanged && page !== 1) {
+      prevFilterKeyRef.current = filterKey;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPage(1);
+      return;
+    }
+    if (filtersChanged) {
+      prevFilterKeyRef.current = filterKey;
+    }
+    const pageToUse = filtersChanged ? 1 : page;
+
+    let cancelled = false;
+    void (async () => {
+      const params = new URLSearchParams();
+      if (debouncedQ) params.set("q", debouncedQ);
+      if (programId) params.set("programId", programId);
+      if (batchId) params.set("batchId", batchId);
+      if (status) params.set("status", status);
+      if (type) params.set("type", type);
+      params.set("page", String(pageToUse));
+      params.set("pageSize", String(PAGE_SIZE));
+      const res = await fetch(`/api/teacher/assessments?${params.toString()}`);
+      const data = await res.json();
+      if (cancelled) return;
+      setAssessments(data.assessments || []);
+      setListTotal(typeof data.total === "number" ? data.total : 0);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [filterKey, page, debouncedQ, programId, batchId, status, type]);
 
   const batchOptions = useMemo(() => {
     const list = programId ? batches.filter((b) => b.programId === programId) : batches;
@@ -151,7 +178,7 @@ export function TeacherAssessmentsClient() {
         </div>
       </div>
 
-      {assessments.length === 0 ? (
+      {listTotal === 0 ? (
         <Card>
           <CardContent>
             <div className="py-12 text-center">
@@ -164,6 +191,9 @@ export function TeacherAssessmentsClient() {
         </Card>
       ) : (
         <div className="space-y-4">
+          <p className="text-sm text-gray-500">
+            {listTotal} assessment{listTotal === 1 ? "" : "s"} total · {PAGE_SIZE} per page
+          </p>
           {assessments.map((a) => (
             <Card key={a.id}>
               <CardContent>
@@ -230,6 +260,31 @@ export function TeacherAssessmentsClient() {
               </CardContent>
             </Card>
           ))}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-4">
+            <p className="text-sm text-gray-600">
+              Page {page} of {Math.max(1, Math.ceil(listTotal / PAGE_SIZE))}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+              >
+                Previous
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={page >= Math.max(1, Math.ceil(listTotal / PAGE_SIZE))}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </>

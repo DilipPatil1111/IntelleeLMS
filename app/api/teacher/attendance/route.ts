@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
+import { evaluateLowAttendanceForStudents } from "@/lib/attendance-threshold";
 
 const TEACHER_STATUSES = ["PRESENT", "ABSENT", "LATE", "EXCUSED"] as const;
 
@@ -51,6 +52,9 @@ export async function POST(req: Request) {
       },
     });
   }
+
+  const studentIds = Object.keys(attendance as Record<string, string>);
+  await evaluateLowAttendanceForStudents(batchId, studentIds);
 
   return NextResponse.json({ id: attendanceSession.id, teacherAttendanceRecorded: statusOk });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Trash2, Pencil, ChevronDown, ChevronRight, Save, Film, FileText, Music, Image, Link2, GripVertical } from "lucide-react";
+import { Plus, Trash2, Pencil, ChevronDown, ChevronRight, Save, Film, FileText, Music, Image as ImageIcon, Link2, GripVertical } from "lucide-react";
 
 interface Content {
   id: string;
@@ -82,20 +82,25 @@ export default function ModuleDetailPage() {
   // Delete confirmation
   const [showDeleteModule, setShowDeleteModule] = useState(false);
 
-  useEffect(() => {
-    loadModule();
-  }, [params.id]);
-
-  async function loadModule() {
+  const loadModule = useCallback(async () => {
     const res = await fetch(`/api/teacher/modules/${params.id}`);
     const data = await res.json();
     setMod(data.module);
     setLoading(false);
-  }
+  }, [params.id]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadModule();
+  }, [loadModule]);
 
   function toggleTopic(id: string) {
     const next = new Set(expandedTopics);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
     setExpandedTopics(next);
   }
 
@@ -237,7 +242,7 @@ export default function ModuleDetailPage() {
     switch (type) {
       case "VIDEO": return <Film className="h-4 w-4 text-purple-500" />;
       case "AUDIO": return <Music className="h-4 w-4 text-green-500" />;
-      case "IMAGE": return <Image className="h-4 w-4 text-blue-500" />;
+      case "IMAGE": return <ImageIcon className="h-4 w-4 text-blue-500" />;
       case "DOCUMENT": case "PRESENTATION": return <FileText className="h-4 w-4 text-orange-500" />;
       case "URL": return <Link2 className="h-4 w-4 text-cyan-500" />;
       default: return <FileText className="h-4 w-4 text-gray-500" />;

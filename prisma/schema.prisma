@@ -53,6 +53,23 @@ enum HolidayType {
   PUBLIC
   COLLEGE
   CUSTOM
+  SUMMER_BREAK
+  WINTER_BREAK
+  EXAM_PREPARATION_LEAVE
+}
+
+/** Scheduled block on the program Full Calendar (teaching or lunch). */
+enum ProgramCalendarSlotType {
+  SESSION
+  LUNCH
+}
+
+/** Session style for teaching blocks (Excel: theory / practical / slack / project). Lunch ignores this. */
+enum ProgramSessionCategory {
+  THEORY
+  PRACTICAL
+  SLACK
+  PROJECT
 }
 
 enum NotificationType {
@@ -74,6 +91,12 @@ enum NotificationType {
   STUDENT_TRANSFERRED
   GRADUATION_CERTIFICATE_SENT
   FEEDBACK_REPLY
+  /** Student’s attendance % fell below configured threshold. */
+  LOW_ATTENDANCE_STUDENT
+  /** Staff alert: a student’s attendance is below threshold. */
+  LOW_ATTENDANCE_STAFF
+  /** Teacher requests calendar/hours correction for a batch date. */
+  CALENDAR_HOURS_UPDATE_REQUEST
 }
 
 /** Admission / enrollment lifecycle (principal may set Cancelled, Suspended, Expelled, Transferred). */
@@ -139,6 +162,19 @@ enum FeedbackAuthorRole {
   TEACHER
 }
 
+/** Lesson row under Program Chapter (syllabus / “Program Content”). */
+enum ProgramLessonKind {
+  TEXT
+  VIDEO
+  PDF
+  AUDIO
+  PRESENTATION
+  QUIZ
+  DOWNLOAD
+  SURVEY
+  MULTIMEDIA
+}
+
 // ─── Auth / Users ────────────────────────────────────────────────────
 
 model User {
@@ -161,6 +197,8 @@ model User {
   profilePicture String?
   mustChangePassword Boolean @default(false)
   isActive       Boolean   @default(true)
+  signatureImageUrl   String?
+  signatureTypedName  String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -190,6 +228,27 @@ model User {
   feedbackAboutTeacher   Feedback[] @relation("FeedbackAboutTeacher")
   feedbackReplies        Feedback[] @relation("FeedbackRepliedBy")
   assessmentAssignments  AssessmentAssignedStudent[] @relation("AssessmentAssignedStudents")
+  programCalendarSlotsAsTeacher ProgramCalendarSlot[] @relation("ProgramCalendarSlotTeacher")
+  portalGrantsReceived UserPortalGrant[] @relation("PortalGrantSubject")
+  portalGrantsCreated  UserPortalGrant[] @relation("PortalGrantActor")
+  programLessonCompletions ProgramLessonCompletion[]
+  programCertificatesReceived ProgramCertificateSend[] @relation("ProgramCertStudent")
+  programCertificatesSentBy   ProgramCertificateSend[] @relation("ProgramCertSentBy")
+}
+
+/** Extra portal access (Student / Teacher / Principal UI) beyond the user’s primary `User.role`. Managed in Principal → Settings. */
+model UserPortalGrant {
+  id          String   @id @default(cuid())
+  userId      String
+  portal      Role
+  createdAt   DateTime @default(now())
+  createdById String?
+
+  user      User @relation("PortalGrantSubject", fields: [userId], references: [id], onDelete: Cascade)
+  createdBy User? @relation("PortalGrantActor", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@unique([userId, portal])
+  @@index([userId])
 }
 
 model Feedback {
@@ -262,6 +321,9 @@ model Program {
   description String?
   durationYears Int    @default(1)
   durationText  String?
+  programDomainId   String?
+  programCategoryId String?
+  programTypeId     String?
   isActive    Boolean  @default(true)
   /** Overrides InstitutionSettings when set (minimum % attendance required). */
   minAttendancePercent    Float?
@@ -272,6 +334,10 @@ model Program {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  programDomain   ProgramDomain?   @relation(fields: [programDomainId], references: [id], onDelete: SetNull)
+  programCategory ProgramCategory? @relation(fields: [programCategoryId], references: [id], onDelete: SetNull)
+  programType     ProgramType?     @relation(fields: [programTypeId], references: [id], onDelete: SetNull)
+
   batches     Batch[]
   subjects    Subject[]
   students    StudentProfile[]
@@ -279,6 +345,159 @@ model Program {
   applications  ProgramApplication[]
   teacherPrograms TeacherProgram[]
   announcements Announcement[]
+  programCalendarSlots ProgramCalendarSlot[]
+  programSyllabus       ProgramSyllabus?
+  programCertificateSends ProgramCertificateSend[]
+
+  @@index([programDomainId])
+  @@index([programCategoryId])
+  @@index([programTypeId])
+}
+
+/** Extended syllabus metadata and publish flag for Program Content (§18). */
+model ProgramSyllabus {
+  id           String   @id @default(cuid())
+  programId    String   @unique
+  instructions String?  @db.Text
+  programHours String?
+  feesNote     String?
+  isPublished  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+}
+
+/** Chapter under a Subject (program syllabus tree). */
+model ProgramChapter {
+  id                String   @id @default(cuid())
+  subjectId         String
+  title             String
+  sortOrder         Int      @default(0)
+  isMandatory       Boolean  @default(false)
+  freePreviewLesson Boolean  @default(false)
+  isPrerequisite    Boolean  @default(false)
+  enableDiscussions Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  subject Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  lessons ProgramLesson[]
+
+  @@index([subjectId])
+}
+
+model ProgramLesson {
+  id           String          @id @default(cuid())
+  chapterId    String
+  kind         ProgramLessonKind
+  title        String
+  sortOrder    Int             @default(0)
+  content      Json?
+  assessmentId String?
+  isDraft      Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  chapter     ProgramChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  assessment  Assessment?    @relation("ProgramLessonAssessment", fields: [assessmentId], references: [id], onDelete: SetNull)
+  completions ProgramLessonCompletion[]
+
+  @@index([chapterId])
+  @@index([assessmentId])
+}
+
+model ProgramLessonCompletion {
+  id            String   @id @default(cuid())
+  studentUserId String
+  lessonId      String
+  completedAt   DateTime @default(now())
+
+  student User          @relation(fields: [studentUserId], references: [id], onDelete: Cascade)
+  lesson  ProgramLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([studentUserId, lessonId])
+  @@index([lessonId])
+}
+
+/** Program Content completion certificate emailed (separate from graduationCertificateSentAt). */
+model ProgramCertificateSend {
+  id            String   @id @default(cuid())
+  programId     String
+  studentUserId String
+  sentAt        DateTime @default(now())
+  sentByUserId  String
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  student User    @relation("ProgramCertStudent", fields: [studentUserId], references: [id], onDelete: Cascade)
+  sentBy  User    @relation("ProgramCertSentBy", fields: [sentByUserId], references: [id])
+
+  @@unique([programId, studentUserId])
+  @@index([programId])
+}
+
+/** Master institutional branding and contact (singleton row id = 1). */
+model InstitutionProfile {
+  id Int @id @default(1)
+
+  institutionNumber String?
+  legalName         String?
+  permanentAddress  String? @db.Text
+  mailingAddress    String? @db.Text
+  phone             String?
+  email             String?
+  website           String?
+  socialFacebookUrl  String?
+  socialLinkedInUrl  String?
+  socialTwitterUrl   String?
+  socialInstagramUrl String?
+  logoUrl           String?
+  brandColor        String?
+
+  updatedAt DateTime @updatedAt
+}
+
+/** e.g. Software, Healthcare — configurable by principal. */
+model ProgramDomain {
+  id         String   @id @default(cuid())
+  name       String
+  /** Optional external reference ID for integrations; unique when set. */
+  customerId String?  @unique
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  programs     Program[]
+  applications ProgramApplication[]
+}
+
+/** e.g. Vocational, Non-vocational. */
+model ProgramCategory {
+  id         String   @id @default(cuid())
+  name       String
+  customerId String?  @unique
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  programs     Program[]
+  applications ProgramApplication[]
+}
+
+/** e.g. Diploma, Post Graduate Diploma, Certificate, Short term. */
+model ProgramType {
+  id         String   @id @default(cuid())
+  name       String
+  customerId String?  @unique
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  programs     Program[]
+  applications ProgramApplication[]
 }
 
 /** Single-row defaults for compliance thresholds (principal Settings). Programs may override per field. */
@@ -339,6 +558,7 @@ model Batch {
   attendanceSessions AttendanceSession[]
   announcements Announcement[]
   programApplications ProgramApplication[]
+  programCalendarSlots ProgramCalendarSlot[]
 }
 
 model Subject {
@@ -348,6 +568,7 @@ model Subject {
   description String?
   programId   String
   credits     Int      @default(3)
+  sortOrder   Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -357,6 +578,8 @@ model Subject {
   teacherAssignments TeacherSubjectAssignment[]
   assessments Assessment[]
   attendanceSessions AttendanceSession[]
+  programCalendarSlots ProgramCalendarSlot[]
+  programChapters ProgramChapter[]
 }
 
 model Module {
@@ -448,6 +671,7 @@ model StudentProfile {
   program        Program?      @relation(fields: [programId], references: [id])
   batch          Batch?        @relation(fields: [batchId], references: [id])
   feePayments    FeePayment[]
+  submissionLogs StudentSubmissionLog[]
 }
 
 /** Post-enrollment checklist; created when a student is enrolled from an application. */
@@ -533,18 +757,48 @@ model FeeStructure {
 }
 
 model FeePayment {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   studentProfileId String
   feeStructureId   String
   amountPaid       Float
-  paymentDate      DateTime @default(now())
+  paymentDate      DateTime  @default(now())
   paymentMethod    String?
   transactionRef   String?
   notes            String?
-  createdAt        DateTime @default(now())
+  receiptUrl       String?
+  receiptFileName  String?
+  confirmedAt      DateTime?
+  confirmedById    String?
+  createdAt        DateTime  @default(now())
 
   studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id])
   feeStructure     FeeStructure   @relation(fields: [feeStructureId], references: [id])
+  submissionLogs   StudentSubmissionLog[]
+}
+
+/** Append-only history for student uploads (onboarding docs + fee receipts) for audit trail in Pending Actions / Fees. */
+model StudentSubmissionLog {
+  id               String                @id @default(cuid())
+  studentProfileId String
+  kind             StudentSubmissionKind
+  feePaymentId     String?
+  fileUrl          String
+  fileName         String
+  amountPaid       Float?
+  createdAt        DateTime              @default(now())
+
+  studentProfile StudentProfile @relation(fields: [studentProfileId], references: [id], onDelete: Cascade)
+  feePayment     FeePayment?    @relation(fields: [feePaymentId], references: [id], onDelete: SetNull)
+
+  @@index([studentProfileId, kind])
+  @@index([feePaymentId])
+}
+
+enum StudentSubmissionKind {
+  SIGNED_CONTRACT
+  GOVERNMENT_ID
+  ONBOARDING_FEE_PROOF
+  FEE_RECEIPT
 }
 
 // ─── Assessments ─────────────────────────────────────────────────────
@@ -588,6 +842,7 @@ model Assessment {
   scheduledEmails  ScheduledEmail[]
   /** When empty, any student in the batch may see the assessment (legacy). */
   assignedStudents AssessmentAssignedStudent[]
+  programLessons   ProgramLesson[] @relation("ProgramLessonAssessment")
 }
 
 model AssessmentAssignedStudent {
@@ -755,6 +1010,33 @@ model Holiday {
   academicYear   AcademicYear? @relation(fields: [academicYearId], references: [id])
 }
 
+/** Principal-configured time blocks on the Full Calendar (per program/batch/day, per teacher). */
+model ProgramCalendarSlot {
+  id            String                  @id @default(cuid())
+  programId     String
+  batchId       String
+  teacherUserId String
+  subjectId     String?
+  slotDate      DateTime                @db.Date
+  slotType        ProgramCalendarSlotType @default(SESSION)
+  sessionCategory ProgramSessionCategory?
+  startTime       String
+  endTime         String
+  colorHex        String                  @default("#6366f1")
+  sortOrder     Int                     @default(0)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  batch   Batch   @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  teacher User    @relation("ProgramCalendarSlotTeacher", fields: [teacherUserId], references: [id], onDelete: Cascade)
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+
+  @@index([batchId, slotDate])
+  @@index([programId, batchId])
+  @@index([teacherUserId])
+}
+
 // ─── Scheduling & Notifications ──────────────────────────────────────
 
 model ScheduledEmail {
@@ -792,6 +1074,10 @@ model ProgramApplication {
   applicantId    String
   programId      String
   batchId        String?
+  /** Snapshot from Program at submit time (domain / category / type). */
+  programDomainId   String?
+  programCategoryId String?
+  programTypeId     String?
   status         ApplicationStatus @default(PENDING)
   personalStatement String?
   documents      String?
@@ -801,9 +1087,16 @@ model ProgramApplication {
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 
-  applicant      User              @relation(fields: [applicantId], references: [id])
-  program        Program           @relation(fields: [programId], references: [id])
-  batch          Batch?            @relation(fields: [batchId], references: [id])
+  applicant       User              @relation(fields: [applicantId], references: [id])
+  program         Program           @relation(fields: [programId], references: [id])
+  batch           Batch?            @relation(fields: [batchId], references: [id])
+  programDomain   ProgramDomain?   @relation(fields: [programDomainId], references: [id], onDelete: SetNull)
+  programCategory ProgramCategory? @relation(fields: [programCategoryId], references: [id], onDelete: SetNull)
+  programType     ProgramType?     @relation(fields: [programTypeId], references: [id], onDelete: SetNull)
+
+  @@index([programDomainId])
+  @@index([programCategoryId])
+  @@index([programTypeId])
 }
 
 // ─── Policies & Templates ───────────────────────────────────────────
@@ -860,7 +1153,19 @@ model Announcement {
   batchId                String?
   academicYearId         String?
   recipientAll           Boolean  @default(true)
+  /** When true, student recipients are emailed (default on publish). */
   sendEmail              Boolean  @default(true)
+  /** When true, a copy was also sent to the creator (principal). */
+  emailCopyToSender      Boolean  @default(false)
+  /** Audience: all programs vs selected `programIds` (legacy `programId` still used for display on old rows). */
+  allPrograms            Boolean  @default(true)
+  allBatches             Boolean  @default(true)
+  programIds             String[] @default([])
+  batchIds               String[] @default([])
+  allTeachers            Boolean  @default(false)
+  teacherIds             String[] @default([])
+  sendToStudents         Boolean  @default(true)
+  sendToTeachers         Boolean  @default(false)
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
@@ -895,4 +1200,64 @@ model AuditLog {
   createdAt DateTime @default(now())
 
   user      User     @relation(fields: [userId], references: [id])
+}
+
+// ─── Document Vault ─────────────────────────────────────────────────
+
+enum FolderScope {
+  GENERIC
+  YEAR_SPECIFIC
+  BATCH_SPECIFIC
+}
+
+model DocFolder {
+  id              String      @id @default(cuid())
+  name            String
+  parentId        String?
+  scope           FolderScope @default(GENERIC)
+  yearId          String?
+  programId       String?
+  batchId         String?
+  isAutoPopulated Boolean     @default(false)
+  autoPopulateKey String?
+  sortOrder       Int         @default(0)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  parent   DocFolder?       @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children DocFolder[]      @relation("FolderTree")
+  files    DocFile[]
+  notes    InspectionNote[]
+
+  @@index([parentId])
+  @@index([yearId])
+  @@index([programId, batchId])
+}
+
+model DocFile {
+  id          String   @id @default(cuid())
+  folderId    String
+  fileName    String
+  fileUrl     String
+  fileSize    Int
+  contentType String
+  studentId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  folder DocFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@index([folderId])
+}
+
+model InspectionNote {
+  id        String   @id @default(cuid())
+  folderId  String
+  note      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  folder DocFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@index([folderId])
 }

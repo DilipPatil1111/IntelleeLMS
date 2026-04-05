@@ -43,6 +43,10 @@ export type FeePaymentMinAggregateOutputType = {
   paymentMethod: string | null
   transactionRef: string | null
   notes: string | null
+  receiptUrl: string | null
+  receiptFileName: string | null
+  confirmedAt: Date | null
+  confirmedById: string | null
   createdAt: Date | null
 }
 
@@ -55,6 +59,10 @@ export type FeePaymentMaxAggregateOutputType = {
   paymentMethod: string | null
   transactionRef: string | null
   notes: string | null
+  receiptUrl: string | null
+  receiptFileName: string | null
+  confirmedAt: Date | null
+  confirmedById: string | null
   createdAt: Date | null
 }
 
@@ -67,6 +75,10 @@ export type FeePaymentCountAggregateOutputType = {
   paymentMethod: number
   transactionRef: number
   notes: number
+  receiptUrl: number
+  receiptFileName: number
+  confirmedAt: number
+  confirmedById: number
   createdAt: number
   _all: number
 }
@@ -89,6 +101,10 @@ export type FeePaymentMinAggregateInputType = {
   paymentMethod?: true
   transactionRef?: true
   notes?: true
+  receiptUrl?: true
+  receiptFileName?: true
+  confirmedAt?: true
+  confirmedById?: true
   createdAt?: true
 }
 
@@ -101,6 +117,10 @@ export type FeePaymentMaxAggregateInputType = {
   paymentMethod?: true
   transactionRef?: true
   notes?: true
+  receiptUrl?: true
+  receiptFileName?: true
+  confirmedAt?: true
+  confirmedById?: true
   createdAt?: true
 }
 
@@ -113,6 +133,10 @@ export type FeePaymentCountAggregateInputType = {
   paymentMethod?: true
   transactionRef?: true
   notes?: true
+  receiptUrl?: true
+  receiptFileName?: true
+  confirmedAt?: true
+  confirmedById?: true
   createdAt?: true
   _all?: true
 }
@@ -212,6 +236,10 @@ export type FeePaymentGroupByOutputType = {
   paymentMethod: string | null
   transactionRef: string | null
   notes: string | null
+  receiptUrl: string | null
+  receiptFileName: string | null
+  confirmedAt: Date | null
+  confirmedById: string | null
   createdAt: Date
   _count: FeePaymentCountAggregateOutputType | null
   _avg: FeePaymentAvgAggregateOutputType | null
@@ -220,7 +248,7 @@ export type FeePaymentGroupByOutputType = {
   _max: FeePaymentMaxAggregateOutputType | null
 }
 
-type GetFeePaymentGroupByPayload<T extends FeePaymentGroupByArgs> = Prisma.PrismaPromise<
+export type GetFeePaymentGroupByPayload<T extends FeePaymentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<FeePaymentGroupByOutputType, T['by']> &
       {
@@ -247,9 +275,14 @@ export type FeePaymentWhereInput = {
   paymentMethod?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   transactionRef?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   notes?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  receiptUrl?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  receiptFileName?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"FeePayment"> | Date | string | null
+  confirmedById?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FeePayment"> | Date | string
   studentProfile?: Prisma.XOR<Prisma.StudentProfileScalarRelationFilter, Prisma.StudentProfileWhereInput>
   feeStructure?: Prisma.XOR<Prisma.FeeStructureScalarRelationFilter, Prisma.FeeStructureWhereInput>
+  submissionLogs?: Prisma.StudentSubmissionLogListRelationFilter
 }
 
 export type FeePaymentOrderByWithRelationInput = {
@@ -261,9 +294,14 @@ export type FeePaymentOrderByWithRelationInput = {
   paymentMethod?: Prisma.SortOrderInput | Prisma.SortOrder
   transactionRef?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  receiptUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  receiptFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   studentProfile?: Prisma.StudentProfileOrderByWithRelationInput
   feeStructure?: Prisma.FeeStructureOrderByWithRelationInput
+  submissionLogs?: Prisma.StudentSubmissionLogOrderByRelationAggregateInput
 }
 
 export type FeePaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -278,9 +316,14 @@ export type FeePaymentWhereUniqueInput = Prisma.AtLeast<{
   paymentMethod?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   transactionRef?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   notes?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  receiptUrl?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  receiptFileName?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"FeePayment"> | Date | string | null
+  confirmedById?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FeePayment"> | Date | string
   studentProfile?: Prisma.XOR<Prisma.StudentProfileScalarRelationFilter, Prisma.StudentProfileWhereInput>
   feeStructure?: Prisma.XOR<Prisma.FeeStructureScalarRelationFilter, Prisma.FeeStructureWhereInput>
+  submissionLogs?: Prisma.StudentSubmissionLogListRelationFilter
 }, "id">
 
 export type FeePaymentOrderByWithAggregationInput = {
@@ -292,6 +335,10 @@ export type FeePaymentOrderByWithAggregationInput = {
   paymentMethod?: Prisma.SortOrderInput | Prisma.SortOrder
   transactionRef?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  receiptUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  receiptFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.FeePaymentCountOrderByAggregateInput
   _avg?: Prisma.FeePaymentAvgOrderByAggregateInput
@@ -312,6 +359,10 @@ export type FeePaymentScalarWhereWithAggregatesInput = {
   paymentMethod?: Prisma.StringNullableWithAggregatesFilter<"FeePayment"> | string | null
   transactionRef?: Prisma.StringNullableWithAggregatesFilter<"FeePayment"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"FeePayment"> | string | null
+  receiptUrl?: Prisma.StringNullableWithAggregatesFilter<"FeePayment"> | string | null
+  receiptFileName?: Prisma.StringNullableWithAggregatesFilter<"FeePayment"> | string | null
+  confirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"FeePayment"> | Date | string | null
+  confirmedById?: Prisma.StringNullableWithAggregatesFilter<"FeePayment"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"FeePayment"> | Date | string
 }
 
@@ -322,9 +373,14 @@ export type FeePaymentCreateInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
   studentProfile: Prisma.StudentProfileCreateNestedOneWithoutFeePaymentsInput
   feeStructure: Prisma.FeeStructureCreateNestedOneWithoutPaymentsInput
+  submissionLogs?: Prisma.StudentSubmissionLogCreateNestedManyWithoutFeePaymentInput
 }
 
 export type FeePaymentUncheckedCreateInput = {
@@ -336,7 +392,12 @@ export type FeePaymentUncheckedCreateInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedCreateNestedManyWithoutFeePaymentInput
 }
 
 export type FeePaymentUpdateInput = {
@@ -346,9 +407,14 @@ export type FeePaymentUpdateInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentProfileUpdateOneRequiredWithoutFeePaymentsNestedInput
   feeStructure?: Prisma.FeeStructureUpdateOneRequiredWithoutPaymentsNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUpdateManyWithoutFeePaymentNestedInput
 }
 
 export type FeePaymentUncheckedUpdateInput = {
@@ -360,7 +426,12 @@ export type FeePaymentUncheckedUpdateInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedUpdateManyWithoutFeePaymentNestedInput
 }
 
 export type FeePaymentCreateManyInput = {
@@ -372,6 +443,10 @@ export type FeePaymentCreateManyInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
 }
 
@@ -382,6 +457,10 @@ export type FeePaymentUpdateManyMutationInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -394,6 +473,10 @@ export type FeePaymentUncheckedUpdateManyInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -416,6 +499,10 @@ export type FeePaymentCountOrderByAggregateInput = {
   paymentMethod?: Prisma.SortOrder
   transactionRef?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  receiptUrl?: Prisma.SortOrder
+  receiptFileName?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  confirmedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -432,6 +519,10 @@ export type FeePaymentMaxOrderByAggregateInput = {
   paymentMethod?: Prisma.SortOrder
   transactionRef?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  receiptUrl?: Prisma.SortOrder
+  receiptFileName?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  confirmedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -444,11 +535,20 @@ export type FeePaymentMinOrderByAggregateInput = {
   paymentMethod?: Prisma.SortOrder
   transactionRef?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  receiptUrl?: Prisma.SortOrder
+  receiptFileName?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  confirmedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type FeePaymentSumOrderByAggregateInput = {
   amountPaid?: Prisma.SortOrder
+}
+
+export type FeePaymentNullableScalarRelationFilter = {
+  is?: Prisma.FeePaymentWhereInput | null
+  isNot?: Prisma.FeePaymentWhereInput | null
 }
 
 export type FeePaymentCreateNestedManyWithoutStudentProfileInput = {
@@ -535,6 +635,22 @@ export type FeePaymentUncheckedUpdateManyWithoutFeeStructureNestedInput = {
   deleteMany?: Prisma.FeePaymentScalarWhereInput | Prisma.FeePaymentScalarWhereInput[]
 }
 
+export type FeePaymentCreateNestedOneWithoutSubmissionLogsInput = {
+  create?: Prisma.XOR<Prisma.FeePaymentCreateWithoutSubmissionLogsInput, Prisma.FeePaymentUncheckedCreateWithoutSubmissionLogsInput>
+  connectOrCreate?: Prisma.FeePaymentCreateOrConnectWithoutSubmissionLogsInput
+  connect?: Prisma.FeePaymentWhereUniqueInput
+}
+
+export type FeePaymentUpdateOneWithoutSubmissionLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.FeePaymentCreateWithoutSubmissionLogsInput, Prisma.FeePaymentUncheckedCreateWithoutSubmissionLogsInput>
+  connectOrCreate?: Prisma.FeePaymentCreateOrConnectWithoutSubmissionLogsInput
+  upsert?: Prisma.FeePaymentUpsertWithoutSubmissionLogsInput
+  disconnect?: Prisma.FeePaymentWhereInput | boolean
+  delete?: Prisma.FeePaymentWhereInput | boolean
+  connect?: Prisma.FeePaymentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FeePaymentUpdateToOneWithWhereWithoutSubmissionLogsInput, Prisma.FeePaymentUpdateWithoutSubmissionLogsInput>, Prisma.FeePaymentUncheckedUpdateWithoutSubmissionLogsInput>
+}
+
 export type FeePaymentCreateWithoutStudentProfileInput = {
   id?: string
   amountPaid: number
@@ -542,8 +658,13 @@ export type FeePaymentCreateWithoutStudentProfileInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
   feeStructure: Prisma.FeeStructureCreateNestedOneWithoutPaymentsInput
+  submissionLogs?: Prisma.StudentSubmissionLogCreateNestedManyWithoutFeePaymentInput
 }
 
 export type FeePaymentUncheckedCreateWithoutStudentProfileInput = {
@@ -554,7 +675,12 @@ export type FeePaymentUncheckedCreateWithoutStudentProfileInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedCreateNestedManyWithoutFeePaymentInput
 }
 
 export type FeePaymentCreateOrConnectWithoutStudentProfileInput = {
@@ -595,6 +721,10 @@ export type FeePaymentScalarWhereInput = {
   paymentMethod?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   transactionRef?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   notes?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  receiptUrl?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  receiptFileName?: Prisma.StringNullableFilter<"FeePayment"> | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"FeePayment"> | Date | string | null
+  confirmedById?: Prisma.StringNullableFilter<"FeePayment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FeePayment"> | Date | string
 }
 
@@ -605,8 +735,13 @@ export type FeePaymentCreateWithoutFeeStructureInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
   studentProfile: Prisma.StudentProfileCreateNestedOneWithoutFeePaymentsInput
+  submissionLogs?: Prisma.StudentSubmissionLogCreateNestedManyWithoutFeePaymentInput
 }
 
 export type FeePaymentUncheckedCreateWithoutFeeStructureInput = {
@@ -617,7 +752,12 @@ export type FeePaymentUncheckedCreateWithoutFeeStructureInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedCreateNestedManyWithoutFeePaymentInput
 }
 
 export type FeePaymentCreateOrConnectWithoutFeeStructureInput = {
@@ -646,6 +786,86 @@ export type FeePaymentUpdateManyWithWhereWithoutFeeStructureInput = {
   data: Prisma.XOR<Prisma.FeePaymentUpdateManyMutationInput, Prisma.FeePaymentUncheckedUpdateManyWithoutFeeStructureInput>
 }
 
+export type FeePaymentCreateWithoutSubmissionLogsInput = {
+  id?: string
+  amountPaid: number
+  paymentDate?: Date | string
+  paymentMethod?: string | null
+  transactionRef?: string | null
+  notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
+  createdAt?: Date | string
+  studentProfile: Prisma.StudentProfileCreateNestedOneWithoutFeePaymentsInput
+  feeStructure: Prisma.FeeStructureCreateNestedOneWithoutPaymentsInput
+}
+
+export type FeePaymentUncheckedCreateWithoutSubmissionLogsInput = {
+  id?: string
+  studentProfileId: string
+  feeStructureId: string
+  amountPaid: number
+  paymentDate?: Date | string
+  paymentMethod?: string | null
+  transactionRef?: string | null
+  notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
+  createdAt?: Date | string
+}
+
+export type FeePaymentCreateOrConnectWithoutSubmissionLogsInput = {
+  where: Prisma.FeePaymentWhereUniqueInput
+  create: Prisma.XOR<Prisma.FeePaymentCreateWithoutSubmissionLogsInput, Prisma.FeePaymentUncheckedCreateWithoutSubmissionLogsInput>
+}
+
+export type FeePaymentUpsertWithoutSubmissionLogsInput = {
+  update: Prisma.XOR<Prisma.FeePaymentUpdateWithoutSubmissionLogsInput, Prisma.FeePaymentUncheckedUpdateWithoutSubmissionLogsInput>
+  create: Prisma.XOR<Prisma.FeePaymentCreateWithoutSubmissionLogsInput, Prisma.FeePaymentUncheckedCreateWithoutSubmissionLogsInput>
+  where?: Prisma.FeePaymentWhereInput
+}
+
+export type FeePaymentUpdateToOneWithWhereWithoutSubmissionLogsInput = {
+  where?: Prisma.FeePaymentWhereInput
+  data: Prisma.XOR<Prisma.FeePaymentUpdateWithoutSubmissionLogsInput, Prisma.FeePaymentUncheckedUpdateWithoutSubmissionLogsInput>
+}
+
+export type FeePaymentUpdateWithoutSubmissionLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amountPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  studentProfile?: Prisma.StudentProfileUpdateOneRequiredWithoutFeePaymentsNestedInput
+  feeStructure?: Prisma.FeeStructureUpdateOneRequiredWithoutPaymentsNestedInput
+}
+
+export type FeePaymentUncheckedUpdateWithoutSubmissionLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  feeStructureId?: Prisma.StringFieldUpdateOperationsInput | string
+  amountPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type FeePaymentCreateManyStudentProfileInput = {
   id?: string
   feeStructureId: string
@@ -654,6 +874,10 @@ export type FeePaymentCreateManyStudentProfileInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
 }
 
@@ -664,8 +888,13 @@ export type FeePaymentUpdateWithoutStudentProfileInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feeStructure?: Prisma.FeeStructureUpdateOneRequiredWithoutPaymentsNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUpdateManyWithoutFeePaymentNestedInput
 }
 
 export type FeePaymentUncheckedUpdateWithoutStudentProfileInput = {
@@ -676,7 +905,12 @@ export type FeePaymentUncheckedUpdateWithoutStudentProfileInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedUpdateManyWithoutFeePaymentNestedInput
 }
 
 export type FeePaymentUncheckedUpdateManyWithoutStudentProfileInput = {
@@ -687,6 +921,10 @@ export type FeePaymentUncheckedUpdateManyWithoutStudentProfileInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -698,6 +936,10 @@ export type FeePaymentCreateManyFeeStructureInput = {
   paymentMethod?: string | null
   transactionRef?: string | null
   notes?: string | null
+  receiptUrl?: string | null
+  receiptFileName?: string | null
+  confirmedAt?: Date | string | null
+  confirmedById?: string | null
   createdAt?: Date | string
 }
 
@@ -708,8 +950,13 @@ export type FeePaymentUpdateWithoutFeeStructureInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   studentProfile?: Prisma.StudentProfileUpdateOneRequiredWithoutFeePaymentsNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUpdateManyWithoutFeePaymentNestedInput
 }
 
 export type FeePaymentUncheckedUpdateWithoutFeeStructureInput = {
@@ -720,7 +967,12 @@ export type FeePaymentUncheckedUpdateWithoutFeeStructureInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedUpdateManyWithoutFeePaymentNestedInput
 }
 
 export type FeePaymentUncheckedUpdateManyWithoutFeeStructureInput = {
@@ -731,9 +983,42 @@ export type FeePaymentUncheckedUpdateManyWithoutFeeStructureInput = {
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transactionRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type FeePaymentCountOutputType
+ */
+
+export type FeePaymentCountOutputType = {
+  submissionLogs: number
+}
+
+export type FeePaymentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  submissionLogs?: boolean | FeePaymentCountOutputTypeCountSubmissionLogsArgs
+}
+
+/**
+ * FeePaymentCountOutputType without action
+ */
+export type FeePaymentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FeePaymentCountOutputType
+   */
+  select?: Prisma.FeePaymentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * FeePaymentCountOutputType without action
+ */
+export type FeePaymentCountOutputTypeCountSubmissionLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentSubmissionLogWhereInput
+}
 
 
 export type FeePaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -745,9 +1030,15 @@ export type FeePaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   paymentMethod?: boolean
   transactionRef?: boolean
   notes?: boolean
+  receiptUrl?: boolean
+  receiptFileName?: boolean
+  confirmedAt?: boolean
+  confirmedById?: boolean
   createdAt?: boolean
   studentProfile?: boolean | Prisma.StudentProfileDefaultArgs<ExtArgs>
   feeStructure?: boolean | Prisma.FeeStructureDefaultArgs<ExtArgs>
+  submissionLogs?: boolean | Prisma.FeePayment$submissionLogsArgs<ExtArgs>
+  _count?: boolean | Prisma.FeePaymentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["feePayment"]>
 
 export type FeePaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -759,6 +1050,10 @@ export type FeePaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   paymentMethod?: boolean
   transactionRef?: boolean
   notes?: boolean
+  receiptUrl?: boolean
+  receiptFileName?: boolean
+  confirmedAt?: boolean
+  confirmedById?: boolean
   createdAt?: boolean
   studentProfile?: boolean | Prisma.StudentProfileDefaultArgs<ExtArgs>
   feeStructure?: boolean | Prisma.FeeStructureDefaultArgs<ExtArgs>
@@ -773,6 +1068,10 @@ export type FeePaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   paymentMethod?: boolean
   transactionRef?: boolean
   notes?: boolean
+  receiptUrl?: boolean
+  receiptFileName?: boolean
+  confirmedAt?: boolean
+  confirmedById?: boolean
   createdAt?: boolean
   studentProfile?: boolean | Prisma.StudentProfileDefaultArgs<ExtArgs>
   feeStructure?: boolean | Prisma.FeeStructureDefaultArgs<ExtArgs>
@@ -787,13 +1086,19 @@ export type FeePaymentSelectScalar = {
   paymentMethod?: boolean
   transactionRef?: boolean
   notes?: boolean
+  receiptUrl?: boolean
+  receiptFileName?: boolean
+  confirmedAt?: boolean
+  confirmedById?: boolean
   createdAt?: boolean
 }
 
-export type FeePaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentProfileId" | "feeStructureId" | "amountPaid" | "paymentDate" | "paymentMethod" | "transactionRef" | "notes" | "createdAt", ExtArgs["result"]["feePayment"]>
+export type FeePaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentProfileId" | "feeStructureId" | "amountPaid" | "paymentDate" | "paymentMethod" | "transactionRef" | "notes" | "receiptUrl" | "receiptFileName" | "confirmedAt" | "confirmedById" | "createdAt", ExtArgs["result"]["feePayment"]>
 export type FeePaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   studentProfile?: boolean | Prisma.StudentProfileDefaultArgs<ExtArgs>
   feeStructure?: boolean | Prisma.FeeStructureDefaultArgs<ExtArgs>
+  submissionLogs?: boolean | Prisma.FeePayment$submissionLogsArgs<ExtArgs>
+  _count?: boolean | Prisma.FeePaymentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FeePaymentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   studentProfile?: boolean | Prisma.StudentProfileDefaultArgs<ExtArgs>
@@ -809,6 +1114,7 @@ export type $FeePaymentPayload<ExtArgs extends runtime.Types.Extensions.Internal
   objects: {
     studentProfile: Prisma.$StudentProfilePayload<ExtArgs>
     feeStructure: Prisma.$FeeStructurePayload<ExtArgs>
+    submissionLogs: Prisma.$StudentSubmissionLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -819,6 +1125,10 @@ export type $FeePaymentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     paymentMethod: string | null
     transactionRef: string | null
     notes: string | null
+    receiptUrl: string | null
+    receiptFileName: string | null
+    confirmedAt: Date | null
+    confirmedById: string | null
     createdAt: Date
   }, ExtArgs["result"]["feePayment"]>
   composites: {}
@@ -1216,6 +1526,7 @@ export interface Prisma__FeePaymentClient<T, Null = never, ExtArgs extends runti
   readonly [Symbol.toStringTag]: "PrismaPromise"
   studentProfile<T extends Prisma.StudentProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentProfileClient<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   feeStructure<T extends Prisma.FeeStructureDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FeeStructureDefaultArgs<ExtArgs>>): Prisma.Prisma__FeeStructureClient<runtime.Types.Result.GetResult<Prisma.$FeeStructurePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  submissionLogs<T extends Prisma.FeePayment$submissionLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FeePayment$submissionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentSubmissionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1253,6 +1564,10 @@ export interface FeePaymentFieldRefs {
   readonly paymentMethod: Prisma.FieldRef<"FeePayment", 'String'>
   readonly transactionRef: Prisma.FieldRef<"FeePayment", 'String'>
   readonly notes: Prisma.FieldRef<"FeePayment", 'String'>
+  readonly receiptUrl: Prisma.FieldRef<"FeePayment", 'String'>
+  readonly receiptFileName: Prisma.FieldRef<"FeePayment", 'String'>
+  readonly confirmedAt: Prisma.FieldRef<"FeePayment", 'DateTime'>
+  readonly confirmedById: Prisma.FieldRef<"FeePayment", 'String'>
   readonly createdAt: Prisma.FieldRef<"FeePayment", 'DateTime'>
 }
     
@@ -1652,6 +1967,30 @@ export type FeePaymentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many FeePayments to delete.
    */
   limit?: number
+}
+
+/**
+ * FeePayment.submissionLogs
+ */
+export type FeePayment$submissionLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentSubmissionLog
+   */
+  select?: Prisma.StudentSubmissionLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentSubmissionLog
+   */
+  omit?: Prisma.StudentSubmissionLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentSubmissionLogInclude<ExtArgs> | null
+  where?: Prisma.StudentSubmissionLogWhereInput
+  orderBy?: Prisma.StudentSubmissionLogOrderByWithRelationInput | Prisma.StudentSubmissionLogOrderByWithRelationInput[]
+  cursor?: Prisma.StudentSubmissionLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentSubmissionLogScalarFieldEnum | Prisma.StudentSubmissionLogScalarFieldEnum[]
 }
 
 /**

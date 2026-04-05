@@ -70,10 +70,31 @@ export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof Attendance
 export const HolidayType = {
   PUBLIC: 'PUBLIC',
   COLLEGE: 'COLLEGE',
-  CUSTOM: 'CUSTOM'
+  CUSTOM: 'CUSTOM',
+  SUMMER_BREAK: 'SUMMER_BREAK',
+  WINTER_BREAK: 'WINTER_BREAK',
+  EXAM_PREPARATION_LEAVE: 'EXAM_PREPARATION_LEAVE'
 } as const
 
 export type HolidayType = (typeof HolidayType)[keyof typeof HolidayType]
+
+
+export const ProgramCalendarSlotType = {
+  SESSION: 'SESSION',
+  LUNCH: 'LUNCH'
+} as const
+
+export type ProgramCalendarSlotType = (typeof ProgramCalendarSlotType)[keyof typeof ProgramCalendarSlotType]
+
+
+export const ProgramSessionCategory = {
+  THEORY: 'THEORY',
+  PRACTICAL: 'PRACTICAL',
+  SLACK: 'SLACK',
+  PROJECT: 'PROJECT'
+} as const
+
+export type ProgramSessionCategory = (typeof ProgramSessionCategory)[keyof typeof ProgramSessionCategory]
 
 
 export const NotificationType = {
@@ -94,7 +115,10 @@ export const NotificationType = {
   STUDENT_EXPELLED: 'STUDENT_EXPELLED',
   STUDENT_TRANSFERRED: 'STUDENT_TRANSFERRED',
   GRADUATION_CERTIFICATE_SENT: 'GRADUATION_CERTIFICATE_SENT',
-  FEEDBACK_REPLY: 'FEEDBACK_REPLY'
+  FEEDBACK_REPLY: 'FEEDBACK_REPLY',
+  LOW_ATTENDANCE_STUDENT: 'LOW_ATTENDANCE_STUDENT',
+  LOW_ATTENDANCE_STAFF: 'LOW_ATTENDANCE_STAFF',
+  CALENDAR_HOURS_UPDATE_REQUEST: 'CALENDAR_HOURS_UPDATE_REQUEST'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -176,3 +200,37 @@ export const FeedbackAuthorRole = {
 } as const
 
 export type FeedbackAuthorRole = (typeof FeedbackAuthorRole)[keyof typeof FeedbackAuthorRole]
+
+
+export const ProgramLessonKind = {
+  TEXT: 'TEXT',
+  VIDEO: 'VIDEO',
+  PDF: 'PDF',
+  AUDIO: 'AUDIO',
+  PRESENTATION: 'PRESENTATION',
+  QUIZ: 'QUIZ',
+  DOWNLOAD: 'DOWNLOAD',
+  SURVEY: 'SURVEY',
+  MULTIMEDIA: 'MULTIMEDIA'
+} as const
+
+export type ProgramLessonKind = (typeof ProgramLessonKind)[keyof typeof ProgramLessonKind]
+
+
+export const StudentSubmissionKind = {
+  SIGNED_CONTRACT: 'SIGNED_CONTRACT',
+  GOVERNMENT_ID: 'GOVERNMENT_ID',
+  ONBOARDING_FEE_PROOF: 'ONBOARDING_FEE_PROOF',
+  FEE_RECEIPT: 'FEE_RECEIPT'
+} as const
+
+export type StudentSubmissionKind = (typeof StudentSubmissionKind)[keyof typeof StudentSubmissionKind]
+
+
+export const FolderScope = {
+  GENERIC: 'GENERIC',
+  YEAR_SPECIFIC: 'YEAR_SPECIFIC',
+  BATCH_SPECIFIC: 'BATCH_SPECIFIC'
+} as const
+
+export type FolderScope = (typeof FolderScope)[keyof typeof FolderScope]

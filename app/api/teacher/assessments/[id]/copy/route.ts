@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import { NextResponse } from "next/server";
 
@@ -25,7 +26,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
     if (!source) return NextResponse.json({ error: "Assessment not found" }, { status: 404 });
 
-    if (session.user.role === "TEACHER" && source.createdById !== session.user.id) {
+    if (isTeacherOwnershipRestricted(session) && source.createdById !== session.user.id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

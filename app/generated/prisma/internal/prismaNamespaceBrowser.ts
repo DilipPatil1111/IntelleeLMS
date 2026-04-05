@@ -52,11 +52,21 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  UserPortalGrant: 'UserPortalGrant',
   Feedback: 'Feedback',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Program: 'Program',
+  ProgramSyllabus: 'ProgramSyllabus',
+  ProgramChapter: 'ProgramChapter',
+  ProgramLesson: 'ProgramLesson',
+  ProgramLessonCompletion: 'ProgramLessonCompletion',
+  ProgramCertificateSend: 'ProgramCertificateSend',
+  InstitutionProfile: 'InstitutionProfile',
+  ProgramDomain: 'ProgramDomain',
+  ProgramCategory: 'ProgramCategory',
+  ProgramType: 'ProgramType',
   InstitutionSettings: 'InstitutionSettings',
   AcademicYear: 'AcademicYear',
   Batch: 'Batch',
@@ -72,6 +82,7 @@ export const ModelName = {
   TeacherSubjectAssignment: 'TeacherSubjectAssignment',
   FeeStructure: 'FeeStructure',
   FeePayment: 'FeePayment',
+  StudentSubmissionLog: 'StudentSubmissionLog',
   Assessment: 'Assessment',
   AssessmentAssignedStudent: 'AssessmentAssignedStudent',
   Question: 'Question',
@@ -83,6 +94,7 @@ export const ModelName = {
   TeacherAttendance: 'TeacherAttendance',
   AttendanceRecord: 'AttendanceRecord',
   Holiday: 'Holiday',
+  ProgramCalendarSlot: 'ProgramCalendarSlot',
   ScheduledEmail: 'ScheduledEmail',
   Notification: 'Notification',
   ProgramApplication: 'ProgramApplication',
@@ -91,7 +103,10 @@ export const ModelName = {
   EmailTemplate: 'EmailTemplate',
   Announcement: 'Announcement',
   AnnouncementRecipient: 'AnnouncementRecipient',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  DocFolder: 'DocFolder',
+  DocFile: 'DocFile',
+  InspectionNote: 'InspectionNote'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -130,11 +145,24 @@ export const UserScalarFieldEnum = {
   profilePicture: 'profilePicture',
   mustChangePassword: 'mustChangePassword',
   isActive: 'isActive',
+  signatureImageUrl: 'signatureImageUrl',
+  signatureTypedName: 'signatureTypedName',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserPortalGrantScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  portal: 'portal',
+  createdAt: 'createdAt',
+  createdById: 'createdById'
+} as const
+
+export type UserPortalGrantScalarFieldEnum = (typeof UserPortalGrantScalarFieldEnum)[keyof typeof UserPortalGrantScalarFieldEnum]
 
 
 export const FeedbackScalarFieldEnum = {
@@ -200,6 +228,9 @@ export const ProgramScalarFieldEnum = {
   description: 'description',
   durationYears: 'durationYears',
   durationText: 'durationText',
+  programDomainId: 'programDomainId',
+  programCategoryId: 'programCategoryId',
+  programTypeId: 'programTypeId',
   isActive: 'isActive',
   minAttendancePercent: 'minAttendancePercent',
   minAverageMarksPercent: 'minAverageMarksPercent',
@@ -209,6 +240,133 @@ export const ProgramScalarFieldEnum = {
 } as const
 
 export type ProgramScalarFieldEnum = (typeof ProgramScalarFieldEnum)[keyof typeof ProgramScalarFieldEnum]
+
+
+export const ProgramSyllabusScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  instructions: 'instructions',
+  programHours: 'programHours',
+  feesNote: 'feesNote',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramSyllabusScalarFieldEnum = (typeof ProgramSyllabusScalarFieldEnum)[keyof typeof ProgramSyllabusScalarFieldEnum]
+
+
+export const ProgramChapterScalarFieldEnum = {
+  id: 'id',
+  subjectId: 'subjectId',
+  title: 'title',
+  sortOrder: 'sortOrder',
+  isMandatory: 'isMandatory',
+  freePreviewLesson: 'freePreviewLesson',
+  isPrerequisite: 'isPrerequisite',
+  enableDiscussions: 'enableDiscussions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramChapterScalarFieldEnum = (typeof ProgramChapterScalarFieldEnum)[keyof typeof ProgramChapterScalarFieldEnum]
+
+
+export const ProgramLessonScalarFieldEnum = {
+  id: 'id',
+  chapterId: 'chapterId',
+  kind: 'kind',
+  title: 'title',
+  sortOrder: 'sortOrder',
+  content: 'content',
+  assessmentId: 'assessmentId',
+  isDraft: 'isDraft',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramLessonScalarFieldEnum = (typeof ProgramLessonScalarFieldEnum)[keyof typeof ProgramLessonScalarFieldEnum]
+
+
+export const ProgramLessonCompletionScalarFieldEnum = {
+  id: 'id',
+  studentUserId: 'studentUserId',
+  lessonId: 'lessonId',
+  completedAt: 'completedAt'
+} as const
+
+export type ProgramLessonCompletionScalarFieldEnum = (typeof ProgramLessonCompletionScalarFieldEnum)[keyof typeof ProgramLessonCompletionScalarFieldEnum]
+
+
+export const ProgramCertificateSendScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  studentUserId: 'studentUserId',
+  sentAt: 'sentAt',
+  sentByUserId: 'sentByUserId'
+} as const
+
+export type ProgramCertificateSendScalarFieldEnum = (typeof ProgramCertificateSendScalarFieldEnum)[keyof typeof ProgramCertificateSendScalarFieldEnum]
+
+
+export const InstitutionProfileScalarFieldEnum = {
+  id: 'id',
+  institutionNumber: 'institutionNumber',
+  legalName: 'legalName',
+  permanentAddress: 'permanentAddress',
+  mailingAddress: 'mailingAddress',
+  phone: 'phone',
+  email: 'email',
+  website: 'website',
+  socialFacebookUrl: 'socialFacebookUrl',
+  socialLinkedInUrl: 'socialLinkedInUrl',
+  socialTwitterUrl: 'socialTwitterUrl',
+  socialInstagramUrl: 'socialInstagramUrl',
+  logoUrl: 'logoUrl',
+  brandColor: 'brandColor',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InstitutionProfileScalarFieldEnum = (typeof InstitutionProfileScalarFieldEnum)[keyof typeof InstitutionProfileScalarFieldEnum]
+
+
+export const ProgramDomainScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramDomainScalarFieldEnum = (typeof ProgramDomainScalarFieldEnum)[keyof typeof ProgramDomainScalarFieldEnum]
+
+
+export const ProgramCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramCategoryScalarFieldEnum = (typeof ProgramCategoryScalarFieldEnum)[keyof typeof ProgramCategoryScalarFieldEnum]
+
+
+export const ProgramTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramTypeScalarFieldEnum = (typeof ProgramTypeScalarFieldEnum)[keyof typeof ProgramTypeScalarFieldEnum]
 
 
 export const InstitutionSettingsScalarFieldEnum = {
@@ -264,6 +422,7 @@ export const SubjectScalarFieldEnum = {
   description: 'description',
   programId: 'programId',
   credits: 'credits',
+  sortOrder: 'sortOrder',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -433,10 +592,28 @@ export const FeePaymentScalarFieldEnum = {
   paymentMethod: 'paymentMethod',
   transactionRef: 'transactionRef',
   notes: 'notes',
+  receiptUrl: 'receiptUrl',
+  receiptFileName: 'receiptFileName',
+  confirmedAt: 'confirmedAt',
+  confirmedById: 'confirmedById',
   createdAt: 'createdAt'
 } as const
 
 export type FeePaymentScalarFieldEnum = (typeof FeePaymentScalarFieldEnum)[keyof typeof FeePaymentScalarFieldEnum]
+
+
+export const StudentSubmissionLogScalarFieldEnum = {
+  id: 'id',
+  studentProfileId: 'studentProfileId',
+  kind: 'kind',
+  feePaymentId: 'feePaymentId',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  amountPaid: 'amountPaid',
+  createdAt: 'createdAt'
+} as const
+
+export type StudentSubmissionLogScalarFieldEnum = (typeof StudentSubmissionLogScalarFieldEnum)[keyof typeof StudentSubmissionLogScalarFieldEnum]
 
 
 export const AssessmentScalarFieldEnum = {
@@ -615,6 +792,26 @@ export const HolidayScalarFieldEnum = {
 export type HolidayScalarFieldEnum = (typeof HolidayScalarFieldEnum)[keyof typeof HolidayScalarFieldEnum]
 
 
+export const ProgramCalendarSlotScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  batchId: 'batchId',
+  teacherUserId: 'teacherUserId',
+  subjectId: 'subjectId',
+  slotDate: 'slotDate',
+  slotType: 'slotType',
+  sessionCategory: 'sessionCategory',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  colorHex: 'colorHex',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramCalendarSlotScalarFieldEnum = (typeof ProgramCalendarSlotScalarFieldEnum)[keyof typeof ProgramCalendarSlotScalarFieldEnum]
+
+
 export const ScheduledEmailScalarFieldEnum = {
   id: 'id',
   assessmentId: 'assessmentId',
@@ -650,6 +847,9 @@ export const ProgramApplicationScalarFieldEnum = {
   applicantId: 'applicantId',
   programId: 'programId',
   batchId: 'batchId',
+  programDomainId: 'programDomainId',
+  programCategoryId: 'programCategoryId',
+  programTypeId: 'programTypeId',
   status: 'status',
   personalStatement: 'personalStatement',
   documents: 'documents',
@@ -722,6 +922,15 @@ export const AnnouncementScalarFieldEnum = {
   academicYearId: 'academicYearId',
   recipientAll: 'recipientAll',
   sendEmail: 'sendEmail',
+  emailCopyToSender: 'emailCopyToSender',
+  allPrograms: 'allPrograms',
+  allBatches: 'allBatches',
+  programIds: 'programIds',
+  batchIds: 'batchIds',
+  allTeachers: 'allTeachers',
+  teacherIds: 'teacherIds',
+  sendToStudents: 'sendToStudents',
+  sendToTeachers: 'sendToTeachers',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -752,12 +961,64 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const DocFolderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  parentId: 'parentId',
+  scope: 'scope',
+  yearId: 'yearId',
+  programId: 'programId',
+  batchId: 'batchId',
+  isAutoPopulated: 'isAutoPopulated',
+  autoPopulateKey: 'autoPopulateKey',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocFolderScalarFieldEnum = (typeof DocFolderScalarFieldEnum)[keyof typeof DocFolderScalarFieldEnum]
+
+
+export const DocFileScalarFieldEnum = {
+  id: 'id',
+  folderId: 'folderId',
+  fileName: 'fileName',
+  fileUrl: 'fileUrl',
+  fileSize: 'fileSize',
+  contentType: 'contentType',
+  studentId: 'studentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocFileScalarFieldEnum = (typeof DocFileScalarFieldEnum)[keyof typeof DocFileScalarFieldEnum]
+
+
+export const InspectionNoteScalarFieldEnum = {
+  id: 'id',
+  folderId: 'folderId',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InspectionNoteScalarFieldEnum = (typeof InspectionNoteScalarFieldEnum)[keyof typeof InspectionNoteScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -774,4 +1035,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

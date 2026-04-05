@@ -44,6 +44,8 @@ export type UserMinAggregateOutputType = {
   profilePicture: string | null
   mustChangePassword: boolean | null
   isActive: boolean | null
+  signatureImageUrl: string | null
+  signatureTypedName: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -68,6 +70,8 @@ export type UserMaxAggregateOutputType = {
   profilePicture: string | null
   mustChangePassword: boolean | null
   isActive: boolean | null
+  signatureImageUrl: string | null
+  signatureTypedName: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -92,6 +96,8 @@ export type UserCountAggregateOutputType = {
   profilePicture: number
   mustChangePassword: number
   isActive: number
+  signatureImageUrl: number
+  signatureTypedName: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -118,6 +124,8 @@ export type UserMinAggregateInputType = {
   profilePicture?: true
   mustChangePassword?: true
   isActive?: true
+  signatureImageUrl?: true
+  signatureTypedName?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -142,6 +150,8 @@ export type UserMaxAggregateInputType = {
   profilePicture?: true
   mustChangePassword?: true
   isActive?: true
+  signatureImageUrl?: true
+  signatureTypedName?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -166,6 +176,8 @@ export type UserCountAggregateInputType = {
   profilePicture?: true
   mustChangePassword?: true
   isActive?: true
+  signatureImageUrl?: true
+  signatureTypedName?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -263,6 +275,8 @@ export type UserGroupByOutputType = {
   profilePicture: string | null
   mustChangePassword: boolean
   isActive: boolean
+  signatureImageUrl: string | null
+  signatureTypedName: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -270,7 +284,7 @@ export type UserGroupByOutputType = {
   _max: UserMaxAggregateOutputType | null
 }
 
-type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
+export type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<UserGroupByOutputType, T['by']> &
       {
@@ -308,6 +322,8 @@ export type UserWhereInput = {
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
   mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  signatureImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  signatureTypedName?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
@@ -335,6 +351,12 @@ export type UserWhereInput = {
   feedbackAboutTeacher?: Prisma.FeedbackListRelationFilter
   feedbackReplies?: Prisma.FeedbackListRelationFilter
   assessmentAssignments?: Prisma.AssessmentAssignedStudentListRelationFilter
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotListRelationFilter
+  portalGrantsReceived?: Prisma.UserPortalGrantListRelationFilter
+  portalGrantsCreated?: Prisma.UserPortalGrantListRelationFilter
+  programLessonCompletions?: Prisma.ProgramLessonCompletionListRelationFilter
+  programCertificatesReceived?: Prisma.ProgramCertificateSendListRelationFilter
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -357,6 +379,8 @@ export type UserOrderByWithRelationInput = {
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
@@ -384,6 +408,12 @@ export type UserOrderByWithRelationInput = {
   feedbackAboutTeacher?: Prisma.FeedbackOrderByRelationAggregateInput
   feedbackReplies?: Prisma.FeedbackOrderByRelationAggregateInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentOrderByRelationAggregateInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotOrderByRelationAggregateInput
+  portalGrantsReceived?: Prisma.UserPortalGrantOrderByRelationAggregateInput
+  portalGrantsCreated?: Prisma.UserPortalGrantOrderByRelationAggregateInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionOrderByRelationAggregateInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendOrderByRelationAggregateInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -409,6 +439,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
   mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  signatureImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  signatureTypedName?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
@@ -436,6 +468,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   feedbackAboutTeacher?: Prisma.FeedbackListRelationFilter
   feedbackReplies?: Prisma.FeedbackListRelationFilter
   assessmentAssignments?: Prisma.AssessmentAssignedStudentListRelationFilter
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotListRelationFilter
+  portalGrantsReceived?: Prisma.UserPortalGrantListRelationFilter
+  portalGrantsCreated?: Prisma.UserPortalGrantListRelationFilter
+  programLessonCompletions?: Prisma.ProgramLessonCompletionListRelationFilter
+  programCertificatesReceived?: Prisma.ProgramCertificateSendListRelationFilter
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -458,6 +496,8 @@ export type UserOrderByWithAggregationInput = {
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -488,6 +528,8 @@ export type UserScalarWhereWithAggregatesInput = {
   profilePicture?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   mustChangePassword?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  signatureImageUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  signatureTypedName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -512,6 +554,8 @@ export type UserCreateInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -539,6 +583,12 @@ export type UserCreateInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -561,6 +611,8 @@ export type UserUncheckedCreateInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -588,6 +640,12 @@ export type UserUncheckedCreateInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserUpdateInput = {
@@ -610,6 +668,8 @@ export type UserUpdateInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -637,6 +697,12 @@ export type UserUpdateInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -659,6 +725,8 @@ export type UserUncheckedUpdateInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -686,6 +754,12 @@ export type UserUncheckedUpdateInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -708,6 +782,8 @@ export type UserCreateManyInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -732,6 +808,8 @@ export type UserUpdateManyMutationInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -756,6 +834,8 @@ export type UserUncheckedUpdateManyInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -780,6 +860,8 @@ export type UserCountOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -804,6 +886,8 @@ export type UserMaxOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -828,6 +912,8 @@ export type UserMinOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -874,6 +960,36 @@ export type BoolFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutPortalGrantsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutPortalGrantsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPortalGrantsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutPortalGrantsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPortalGrantsReceivedInput, Prisma.UserUpdateWithoutPortalGrantsReceivedInput>, Prisma.UserUncheckedUpdateWithoutPortalGrantsReceivedInput>
+}
+
+export type UserUpdateOneWithoutPortalGrantsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutPortalGrantsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPortalGrantsCreatedInput, Prisma.UserUpdateWithoutPortalGrantsCreatedInput>, Prisma.UserUncheckedUpdateWithoutPortalGrantsCreatedInput>
 }
 
 export type UserCreateNestedOneWithoutFeedbackAuthoredInput = {
@@ -964,6 +1080,48 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutSessionsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserCreateNestedOneWithoutProgramLessonCompletionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramLessonCompletionsInput, Prisma.UserUncheckedCreateWithoutProgramLessonCompletionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramLessonCompletionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutProgramLessonCompletionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramLessonCompletionsInput, Prisma.UserUncheckedCreateWithoutProgramLessonCompletionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramLessonCompletionsInput
+  upsert?: Prisma.UserUpsertWithoutProgramLessonCompletionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProgramLessonCompletionsInput, Prisma.UserUpdateWithoutProgramLessonCompletionsInput>, Prisma.UserUncheckedUpdateWithoutProgramLessonCompletionsInput>
+}
+
+export type UserCreateNestedOneWithoutProgramCertificatesReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramCertificatesReceivedInput, Prisma.UserUncheckedCreateWithoutProgramCertificatesReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramCertificatesReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutProgramCertificatesSentByInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramCertificatesSentByInput, Prisma.UserUncheckedCreateWithoutProgramCertificatesSentByInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramCertificatesSentByInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutProgramCertificatesReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramCertificatesReceivedInput, Prisma.UserUncheckedCreateWithoutProgramCertificatesReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramCertificatesReceivedInput
+  upsert?: Prisma.UserUpsertWithoutProgramCertificatesReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProgramCertificatesReceivedInput, Prisma.UserUpdateWithoutProgramCertificatesReceivedInput>, Prisma.UserUncheckedUpdateWithoutProgramCertificatesReceivedInput>
+}
+
+export type UserUpdateOneRequiredWithoutProgramCertificatesSentByNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramCertificatesSentByInput, Prisma.UserUncheckedCreateWithoutProgramCertificatesSentByInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramCertificatesSentByInput
+  upsert?: Prisma.UserUpsertWithoutProgramCertificatesSentByInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProgramCertificatesSentByInput, Prisma.UserUpdateWithoutProgramCertificatesSentByInput>, Prisma.UserUncheckedUpdateWithoutProgramCertificatesSentByInput>
 }
 
 export type UserCreateNestedOneWithoutTopicProgressInput = {
@@ -1134,6 +1292,20 @@ export type UserUpdateOneRequiredWithoutAttendanceRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAttendanceRecordsInput, Prisma.UserUpdateWithoutAttendanceRecordsInput>, Prisma.UserUncheckedUpdateWithoutAttendanceRecordsInput>
 }
 
+export type UserCreateNestedOneWithoutProgramCalendarSlotsAsTeacherInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramCalendarSlotsAsTeacherInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutProgramCalendarSlotsAsTeacherNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramCalendarSlotsAsTeacherInput
+  upsert?: Prisma.UserUpsertWithoutProgramCalendarSlotsAsTeacherInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUpdateWithoutProgramCalendarSlotsAsTeacherInput>, Prisma.UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput>
+}
+
 export type UserCreateNestedOneWithoutNotificationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
@@ -1256,6 +1428,486 @@ export type UserUpdateOneRequiredWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type UserCreateWithoutPortalGrantsReceivedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+}
+
+export type UserUncheckedCreateWithoutPortalGrantsReceivedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+}
+
+export type UserCreateOrConnectWithoutPortalGrantsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
+}
+
+export type UserCreateWithoutPortalGrantsCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+}
+
+export type UserUncheckedCreateWithoutPortalGrantsCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+}
+
+export type UserCreateOrConnectWithoutPortalGrantsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsCreatedInput>
+}
+
+export type UserUpsertWithoutPortalGrantsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedUpdateWithoutPortalGrantsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPortalGrantsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedUpdateWithoutPortalGrantsReceivedInput>
+}
+
+export type UserUpdateWithoutPortalGrantsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPortalGrantsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+}
+
+export type UserUpsertWithoutPortalGrantsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedUpdateWithoutPortalGrantsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPortalGrantsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPortalGrantsCreatedInput, Prisma.UserUncheckedUpdateWithoutPortalGrantsCreatedInput>
+}
+
+export type UserUpdateWithoutPortalGrantsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPortalGrantsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+}
+
 export type UserCreateWithoutFeedbackAuthoredInput = {
   id?: string
   email: string
@@ -1276,6 +1928,8 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1302,6 +1956,12 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -1324,6 +1984,8 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1350,6 +2012,12 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -1377,6 +2045,8 @@ export type UserCreateWithoutFeedbackAboutStudentInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1403,6 +2073,12 @@ export type UserCreateWithoutFeedbackAboutStudentInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
@@ -1425,6 +2101,8 @@ export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1451,6 +2129,12 @@ export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAboutStudentInput = {
@@ -1478,6 +2162,8 @@ export type UserCreateWithoutFeedbackAboutTeacherInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1504,6 +2190,12 @@ export type UserCreateWithoutFeedbackAboutTeacherInput = {
   feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
@@ -1526,6 +2218,8 @@ export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1552,6 +2246,12 @@ export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAboutTeacherInput = {
@@ -1579,6 +2279,8 @@ export type UserCreateWithoutFeedbackRepliesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1605,6 +2307,12 @@ export type UserCreateWithoutFeedbackRepliesInput = {
   feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
@@ -1627,6 +2335,8 @@ export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1653,6 +2363,12 @@ export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackRepliesInput = {
@@ -1691,6 +2407,8 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -1717,6 +2435,12 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -1739,6 +2463,8 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1765,6 +2491,12 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackAboutStudentInput = {
@@ -1798,6 +2530,8 @@ export type UserUpdateWithoutFeedbackAboutStudentInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -1824,6 +2558,12 @@ export type UserUpdateWithoutFeedbackAboutStudentInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
@@ -1846,6 +2586,8 @@ export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1872,6 +2614,12 @@ export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackAboutTeacherInput = {
@@ -1905,6 +2653,8 @@ export type UserUpdateWithoutFeedbackAboutTeacherInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -1931,6 +2681,12 @@ export type UserUpdateWithoutFeedbackAboutTeacherInput = {
   feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
@@ -1953,6 +2709,8 @@ export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1979,6 +2737,12 @@ export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackRepliesInput = {
@@ -2012,6 +2776,8 @@ export type UserUpdateWithoutFeedbackRepliesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2038,6 +2804,12 @@ export type UserUpdateWithoutFeedbackRepliesInput = {
   feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
@@ -2060,6 +2832,8 @@ export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2086,6 +2860,12 @@ export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -2108,6 +2888,8 @@ export type UserCreateWithoutAccountsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -2134,6 +2916,12 @@ export type UserCreateWithoutAccountsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -2156,6 +2944,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2182,6 +2972,12 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -2220,6 +3016,8 @@ export type UserUpdateWithoutAccountsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2246,6 +3044,12 @@ export type UserUpdateWithoutAccountsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -2268,6 +3072,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2294,6 +3100,12 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -2316,6 +3128,8 @@ export type UserCreateWithoutSessionsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2342,6 +3156,12 @@ export type UserCreateWithoutSessionsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -2364,6 +3184,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2390,6 +3212,12 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -2428,6 +3256,8 @@ export type UserUpdateWithoutSessionsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2454,6 +3284,12 @@ export type UserUpdateWithoutSessionsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -2476,6 +3312,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2502,6 +3340,732 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+}
+
+export type UserCreateWithoutProgramLessonCompletionsInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+}
+
+export type UserUncheckedCreateWithoutProgramLessonCompletionsInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+}
+
+export type UserCreateOrConnectWithoutProgramLessonCompletionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramLessonCompletionsInput, Prisma.UserUncheckedCreateWithoutProgramLessonCompletionsInput>
+}
+
+export type UserUpsertWithoutProgramLessonCompletionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProgramLessonCompletionsInput, Prisma.UserUncheckedUpdateWithoutProgramLessonCompletionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramLessonCompletionsInput, Prisma.UserUncheckedCreateWithoutProgramLessonCompletionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProgramLessonCompletionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProgramLessonCompletionsInput, Prisma.UserUncheckedUpdateWithoutProgramLessonCompletionsInput>
+}
+
+export type UserUpdateWithoutProgramLessonCompletionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProgramLessonCompletionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+}
+
+export type UserCreateWithoutProgramCertificatesReceivedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+}
+
+export type UserUncheckedCreateWithoutProgramCertificatesReceivedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+}
+
+export type UserCreateOrConnectWithoutProgramCertificatesReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramCertificatesReceivedInput, Prisma.UserUncheckedCreateWithoutProgramCertificatesReceivedInput>
+}
+
+export type UserCreateWithoutProgramCertificatesSentByInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+}
+
+export type UserUncheckedCreateWithoutProgramCertificatesSentByInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type UserCreateOrConnectWithoutProgramCertificatesSentByInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramCertificatesSentByInput, Prisma.UserUncheckedCreateWithoutProgramCertificatesSentByInput>
+}
+
+export type UserUpsertWithoutProgramCertificatesReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProgramCertificatesReceivedInput, Prisma.UserUncheckedUpdateWithoutProgramCertificatesReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramCertificatesReceivedInput, Prisma.UserUncheckedCreateWithoutProgramCertificatesReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProgramCertificatesReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProgramCertificatesReceivedInput, Prisma.UserUncheckedUpdateWithoutProgramCertificatesReceivedInput>
+}
+
+export type UserUpdateWithoutProgramCertificatesReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProgramCertificatesReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+}
+
+export type UserUpsertWithoutProgramCertificatesSentByInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProgramCertificatesSentByInput, Prisma.UserUncheckedUpdateWithoutProgramCertificatesSentByInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramCertificatesSentByInput, Prisma.UserUncheckedCreateWithoutProgramCertificatesSentByInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProgramCertificatesSentByInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProgramCertificatesSentByInput, Prisma.UserUncheckedUpdateWithoutProgramCertificatesSentByInput>
+}
+
+export type UserUpdateWithoutProgramCertificatesSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProgramCertificatesSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type UserCreateWithoutTopicProgressInput = {
@@ -2524,6 +4088,8 @@ export type UserCreateWithoutTopicProgressInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2550,6 +4116,12 @@ export type UserCreateWithoutTopicProgressInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutTopicProgressInput = {
@@ -2572,6 +4144,8 @@ export type UserUncheckedCreateWithoutTopicProgressInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2598,6 +4172,12 @@ export type UserUncheckedCreateWithoutTopicProgressInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutTopicProgressInput = {
@@ -2636,6 +4216,8 @@ export type UserUpdateWithoutTopicProgressInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2662,6 +4244,12 @@ export type UserUpdateWithoutTopicProgressInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTopicProgressInput = {
@@ -2684,6 +4272,8 @@ export type UserUncheckedUpdateWithoutTopicProgressInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2710,6 +4300,12 @@ export type UserUncheckedUpdateWithoutTopicProgressInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutStudentProfileInput = {
@@ -2732,6 +4328,8 @@ export type UserCreateWithoutStudentProfileInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2758,6 +4356,12 @@ export type UserCreateWithoutStudentProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -2780,6 +4384,8 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2806,6 +4412,12 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -2844,6 +4456,8 @@ export type UserUpdateWithoutStudentProfileInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2870,6 +4484,12 @@ export type UserUpdateWithoutStudentProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -2892,6 +4512,8 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2918,6 +4540,12 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutStudentOnboardingInput = {
@@ -2940,6 +4568,8 @@ export type UserCreateWithoutStudentOnboardingInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2966,6 +4596,12 @@ export type UserCreateWithoutStudentOnboardingInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutStudentOnboardingInput = {
@@ -2988,6 +4624,8 @@ export type UserUncheckedCreateWithoutStudentOnboardingInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3014,6 +4652,12 @@ export type UserUncheckedCreateWithoutStudentOnboardingInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutStudentOnboardingInput = {
@@ -3052,6 +4696,8 @@ export type UserUpdateWithoutStudentOnboardingInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3078,6 +4724,12 @@ export type UserUpdateWithoutStudentOnboardingInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
@@ -3100,6 +4752,8 @@ export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3126,6 +4780,12 @@ export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutTeacherProfileInput = {
@@ -3148,6 +4808,8 @@ export type UserCreateWithoutTeacherProfileInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3174,6 +4836,12 @@ export type UserCreateWithoutTeacherProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutTeacherProfileInput = {
@@ -3196,6 +4864,8 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3222,6 +4892,12 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutTeacherProfileInput = {
@@ -3260,6 +4936,8 @@ export type UserUpdateWithoutTeacherProfileInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3286,6 +4964,12 @@ export type UserUpdateWithoutTeacherProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherProfileInput = {
@@ -3308,6 +4992,8 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3334,6 +5020,12 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutCreatedAssessmentsInput = {
@@ -3356,6 +5048,8 @@ export type UserCreateWithoutCreatedAssessmentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3382,6 +5076,12 @@ export type UserCreateWithoutCreatedAssessmentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -3404,6 +5104,8 @@ export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3430,6 +5132,12 @@ export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -3468,6 +5176,8 @@ export type UserUpdateWithoutCreatedAssessmentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3494,6 +5204,12 @@ export type UserUpdateWithoutCreatedAssessmentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -3516,6 +5232,8 @@ export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3542,6 +5260,12 @@ export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutAssessmentAssignmentsInput = {
@@ -3564,6 +5288,8 @@ export type UserCreateWithoutAssessmentAssignmentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3590,6 +5316,12 @@ export type UserCreateWithoutAssessmentAssignmentsInput = {
   feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
@@ -3612,6 +5344,8 @@ export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3638,6 +5372,12 @@ export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentAssignmentsInput = {
@@ -3676,6 +5416,8 @@ export type UserUpdateWithoutAssessmentAssignmentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3702,6 +5444,12 @@ export type UserUpdateWithoutAssessmentAssignmentsInput = {
   feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
@@ -3724,6 +5472,8 @@ export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3750,6 +5500,12 @@ export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
   feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutAttemptsInput = {
@@ -3772,6 +5528,8 @@ export type UserCreateWithoutAttemptsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3798,6 +5556,12 @@ export type UserCreateWithoutAttemptsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAttemptsInput = {
@@ -3820,6 +5584,8 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3846,6 +5612,12 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAttemptsInput = {
@@ -3884,6 +5656,8 @@ export type UserUpdateWithoutAttemptsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3910,6 +5684,12 @@ export type UserUpdateWithoutAttemptsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttemptsInput = {
@@ -3932,6 +5712,8 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3958,6 +5740,12 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutAnswersInput = {
@@ -3980,6 +5768,8 @@ export type UserCreateWithoutAnswersInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4006,6 +5796,12 @@ export type UserCreateWithoutAnswersInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAnswersInput = {
@@ -4028,6 +5824,8 @@ export type UserUncheckedCreateWithoutAnswersInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4054,6 +5852,12 @@ export type UserUncheckedCreateWithoutAnswersInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAnswersInput = {
@@ -4092,6 +5896,8 @@ export type UserUpdateWithoutAnswersInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4118,6 +5924,12 @@ export type UserUpdateWithoutAnswersInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnswersInput = {
@@ -4140,6 +5952,8 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4166,6 +5980,12 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutAssessmentSharesInput = {
@@ -4188,6 +6008,8 @@ export type UserCreateWithoutAssessmentSharesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4214,6 +6036,12 @@ export type UserCreateWithoutAssessmentSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentSharesInput = {
@@ -4236,6 +6064,8 @@ export type UserUncheckedCreateWithoutAssessmentSharesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4262,6 +6092,12 @@ export type UserUncheckedCreateWithoutAssessmentSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentSharesInput = {
@@ -4289,6 +6125,8 @@ export type UserCreateWithoutCreatedSharesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4315,6 +6153,12 @@ export type UserCreateWithoutCreatedSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSharesInput = {
@@ -4337,6 +6181,8 @@ export type UserUncheckedCreateWithoutCreatedSharesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4363,6 +6209,12 @@ export type UserUncheckedCreateWithoutCreatedSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSharesInput = {
@@ -4401,6 +6253,8 @@ export type UserUpdateWithoutAssessmentSharesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4427,6 +6281,12 @@ export type UserUpdateWithoutAssessmentSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
@@ -4449,6 +6309,8 @@ export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4475,6 +6337,12 @@ export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUpsertWithoutCreatedSharesInput = {
@@ -4508,6 +6376,8 @@ export type UserUpdateWithoutCreatedSharesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4534,6 +6404,12 @@ export type UserUpdateWithoutCreatedSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSharesInput = {
@@ -4556,6 +6432,8 @@ export type UserUncheckedUpdateWithoutCreatedSharesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4582,6 +6460,12 @@ export type UserUncheckedUpdateWithoutCreatedSharesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutTeacherAttendancesInput = {
@@ -4604,6 +6488,8 @@ export type UserCreateWithoutTeacherAttendancesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4630,6 +6516,12 @@ export type UserCreateWithoutTeacherAttendancesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
@@ -4652,6 +6544,8 @@ export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4678,6 +6572,12 @@ export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutTeacherAttendancesInput = {
@@ -4716,6 +6616,8 @@ export type UserUpdateWithoutTeacherAttendancesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4742,6 +6644,12 @@ export type UserUpdateWithoutTeacherAttendancesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
@@ -4764,6 +6672,8 @@ export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4790,6 +6700,12 @@ export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutAttendanceRecordsInput = {
@@ -4812,6 +6728,8 @@ export type UserCreateWithoutAttendanceRecordsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4838,6 +6756,12 @@ export type UserCreateWithoutAttendanceRecordsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -4860,6 +6784,8 @@ export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4886,6 +6812,12 @@ export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -4924,6 +6856,8 @@ export type UserUpdateWithoutAttendanceRecordsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4950,6 +6884,12 @@ export type UserUpdateWithoutAttendanceRecordsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -4972,6 +6912,8 @@ export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4998,6 +6940,252 @@ export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+}
+
+export type UserCreateWithoutProgramCalendarSlotsAsTeacherInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+}
+
+export type UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+}
+
+export type UserCreateOrConnectWithoutProgramCalendarSlotsAsTeacherInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput>
+}
+
+export type UserUpsertWithoutProgramCalendarSlotsAsTeacherInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProgramCalendarSlotsAsTeacherInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProgramCalendarSlotsAsTeacherInput, Prisma.UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput>
+}
+
+export type UserUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -5020,6 +7208,8 @@ export type UserCreateWithoutNotificationsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5046,6 +7236,12 @@ export type UserCreateWithoutNotificationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -5068,6 +7264,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5094,6 +7292,12 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -5132,6 +7336,8 @@ export type UserUpdateWithoutNotificationsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5158,6 +7364,12 @@ export type UserUpdateWithoutNotificationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -5180,6 +7392,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5206,6 +7420,12 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -5228,6 +7448,8 @@ export type UserCreateWithoutApplicationsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5254,6 +7476,12 @@ export type UserCreateWithoutApplicationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -5276,6 +7504,8 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5302,6 +7532,12 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -5340,6 +7576,8 @@ export type UserUpdateWithoutApplicationsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5366,6 +7604,12 @@ export type UserUpdateWithoutApplicationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -5388,6 +7632,8 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5414,6 +7660,12 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutCreatedDocumentsInput = {
@@ -5436,6 +7688,8 @@ export type UserCreateWithoutCreatedDocumentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5462,6 +7716,12 @@ export type UserCreateWithoutCreatedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
@@ -5484,6 +7744,8 @@ export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5510,6 +7772,12 @@ export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDocumentsInput = {
@@ -5537,6 +7805,8 @@ export type UserCreateWithoutSharedDocumentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5563,6 +7833,12 @@ export type UserCreateWithoutSharedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutSharedDocumentsInput = {
@@ -5585,6 +7861,8 @@ export type UserUncheckedCreateWithoutSharedDocumentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5611,6 +7889,12 @@ export type UserUncheckedCreateWithoutSharedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutSharedDocumentsInput = {
@@ -5649,6 +7933,8 @@ export type UserUpdateWithoutCreatedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5675,6 +7961,12 @@ export type UserUpdateWithoutCreatedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
@@ -5697,6 +7989,8 @@ export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5723,6 +8017,12 @@ export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutSharedDocumentsInput = {
@@ -5764,6 +8064,8 @@ export type UserScalarWhereInput = {
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
   mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  signatureImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  signatureTypedName?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -5788,6 +8090,8 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5814,6 +8118,12 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
@@ -5836,6 +8146,8 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5862,6 +8174,12 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementsCreatedInput = {
@@ -5900,6 +8218,8 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5926,6 +8246,12 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
@@ -5948,6 +8274,8 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5974,6 +8302,12 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutAnnouncementRecipientsInput = {
@@ -5996,6 +8330,8 @@ export type UserCreateWithoutAnnouncementRecipientsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -6022,6 +8358,12 @@ export type UserCreateWithoutAnnouncementRecipientsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
@@ -6044,6 +8386,8 @@ export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -6070,6 +8414,12 @@ export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementRecipientsInput = {
@@ -6108,6 +8458,8 @@ export type UserUpdateWithoutAnnouncementRecipientsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -6134,6 +8486,12 @@ export type UserUpdateWithoutAnnouncementRecipientsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
@@ -6156,6 +8514,8 @@ export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -6182,6 +8542,12 @@ export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -6204,6 +8570,8 @@ export type UserCreateWithoutAuditLogsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -6230,6 +8598,12 @@ export type UserCreateWithoutAuditLogsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -6252,6 +8626,8 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -6278,6 +8654,12 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
   feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -6316,6 +8698,8 @@ export type UserUpdateWithoutAuditLogsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -6342,6 +8726,12 @@ export type UserUpdateWithoutAuditLogsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -6364,6 +8754,8 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -6390,6 +8782,12 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUpdateWithoutSharedDocumentsInput = {
@@ -6412,6 +8810,8 @@ export type UserUpdateWithoutSharedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -6438,6 +8838,12 @@ export type UserUpdateWithoutSharedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
@@ -6460,6 +8866,8 @@ export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -6486,6 +8894,12 @@ export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
   feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
   feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
   assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutSharedDocumentsInput = {
@@ -6508,6 +8922,8 @@ export type UserUncheckedUpdateManyWithoutSharedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -6540,6 +8956,12 @@ export type UserCountOutputType = {
   feedbackAboutTeacher: number
   feedbackReplies: number
   assessmentAssignments: number
+  programCalendarSlotsAsTeacher: number
+  portalGrantsReceived: number
+  portalGrantsCreated: number
+  programLessonCompletions: number
+  programCertificatesReceived: number
+  programCertificatesSentBy: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6565,6 +8987,12 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   feedbackAboutTeacher?: boolean | UserCountOutputTypeCountFeedbackAboutTeacherArgs
   feedbackReplies?: boolean | UserCountOutputTypeCountFeedbackRepliesArgs
   assessmentAssignments?: boolean | UserCountOutputTypeCountAssessmentAssignmentsArgs
+  programCalendarSlotsAsTeacher?: boolean | UserCountOutputTypeCountProgramCalendarSlotsAsTeacherArgs
+  portalGrantsReceived?: boolean | UserCountOutputTypeCountPortalGrantsReceivedArgs
+  portalGrantsCreated?: boolean | UserCountOutputTypeCountPortalGrantsCreatedArgs
+  programLessonCompletions?: boolean | UserCountOutputTypeCountProgramLessonCompletionsArgs
+  programCertificatesReceived?: boolean | UserCountOutputTypeCountProgramCertificatesReceivedArgs
+  programCertificatesSentBy?: boolean | UserCountOutputTypeCountProgramCertificatesSentByArgs
 }
 
 /**
@@ -6731,6 +9159,48 @@ export type UserCountOutputTypeCountAssessmentAssignmentsArgs<ExtArgs extends ru
   where?: Prisma.AssessmentAssignedStudentWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProgramCalendarSlotsAsTeacherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramCalendarSlotWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPortalGrantsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserPortalGrantWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPortalGrantsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserPortalGrantWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProgramLessonCompletionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramLessonCompletionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProgramCertificatesReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramCertificateSendWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProgramCertificatesSentByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramCertificateSendWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6752,6 +9222,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   profilePicture?: boolean
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: boolean
+  signatureTypedName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -6779,6 +9251,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   feedbackAboutTeacher?: boolean | Prisma.User$feedbackAboutTeacherArgs<ExtArgs>
   feedbackReplies?: boolean | Prisma.User$feedbackRepliesArgs<ExtArgs>
   assessmentAssignments?: boolean | Prisma.User$assessmentAssignmentsArgs<ExtArgs>
+  programCalendarSlotsAsTeacher?: boolean | Prisma.User$programCalendarSlotsAsTeacherArgs<ExtArgs>
+  portalGrantsReceived?: boolean | Prisma.User$portalGrantsReceivedArgs<ExtArgs>
+  portalGrantsCreated?: boolean | Prisma.User$portalGrantsCreatedArgs<ExtArgs>
+  programLessonCompletions?: boolean | Prisma.User$programLessonCompletionsArgs<ExtArgs>
+  programCertificatesReceived?: boolean | Prisma.User$programCertificatesReceivedArgs<ExtArgs>
+  programCertificatesSentBy?: boolean | Prisma.User$programCertificatesSentByArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -6802,6 +9280,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   profilePicture?: boolean
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: boolean
+  signatureTypedName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -6826,6 +9306,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   profilePicture?: boolean
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: boolean
+  signatureTypedName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -6850,11 +9332,13 @@ export type UserSelectScalar = {
   profilePicture?: boolean
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: boolean
+  signatureTypedName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "emailVerified" | "hashedPassword" | "firstName" | "middleName" | "lastName" | "role" | "image" | "phone" | "address" | "city" | "state" | "country" | "postalCode" | "visaStatus" | "profilePicture" | "mustChangePassword" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "emailVerified" | "hashedPassword" | "firstName" | "middleName" | "lastName" | "role" | "image" | "phone" | "address" | "city" | "state" | "country" | "postalCode" | "visaStatus" | "profilePicture" | "mustChangePassword" | "isActive" | "signatureImageUrl" | "signatureTypedName" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -6881,6 +9365,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   feedbackAboutTeacher?: boolean | Prisma.User$feedbackAboutTeacherArgs<ExtArgs>
   feedbackReplies?: boolean | Prisma.User$feedbackRepliesArgs<ExtArgs>
   assessmentAssignments?: boolean | Prisma.User$assessmentAssignmentsArgs<ExtArgs>
+  programCalendarSlotsAsTeacher?: boolean | Prisma.User$programCalendarSlotsAsTeacherArgs<ExtArgs>
+  portalGrantsReceived?: boolean | Prisma.User$portalGrantsReceivedArgs<ExtArgs>
+  portalGrantsCreated?: boolean | Prisma.User$portalGrantsCreatedArgs<ExtArgs>
+  programLessonCompletions?: boolean | Prisma.User$programLessonCompletionsArgs<ExtArgs>
+  programCertificatesReceived?: boolean | Prisma.User$programCertificatesReceivedArgs<ExtArgs>
+  programCertificatesSentBy?: boolean | Prisma.User$programCertificatesSentByArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -6914,6 +9404,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     feedbackAboutTeacher: Prisma.$FeedbackPayload<ExtArgs>[]
     feedbackReplies: Prisma.$FeedbackPayload<ExtArgs>[]
     assessmentAssignments: Prisma.$AssessmentAssignedStudentPayload<ExtArgs>[]
+    programCalendarSlotsAsTeacher: Prisma.$ProgramCalendarSlotPayload<ExtArgs>[]
+    portalGrantsReceived: Prisma.$UserPortalGrantPayload<ExtArgs>[]
+    portalGrantsCreated: Prisma.$UserPortalGrantPayload<ExtArgs>[]
+    programLessonCompletions: Prisma.$ProgramLessonCompletionPayload<ExtArgs>[]
+    programCertificatesReceived: Prisma.$ProgramCertificateSendPayload<ExtArgs>[]
+    programCertificatesSentBy: Prisma.$ProgramCertificateSendPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -6935,6 +9431,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     profilePicture: string | null
     mustChangePassword: boolean
     isActive: boolean
+    signatureImageUrl: string | null
+    signatureTypedName: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -7356,6 +9854,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   feedbackAboutTeacher<T extends Prisma.User$feedbackAboutTeacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackAboutTeacherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   feedbackReplies<T extends Prisma.User$feedbackRepliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackRepliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessmentAssignments<T extends Prisma.User$assessmentAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assessmentAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentAssignedStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programCalendarSlotsAsTeacher<T extends Prisma.User$programCalendarSlotsAsTeacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programCalendarSlotsAsTeacherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCalendarSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  portalGrantsReceived<T extends Prisma.User$portalGrantsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$portalGrantsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPortalGrantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  portalGrantsCreated<T extends Prisma.User$portalGrantsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$portalGrantsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPortalGrantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programLessonCompletions<T extends Prisma.User$programLessonCompletionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programLessonCompletionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramLessonCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programCertificatesReceived<T extends Prisma.User$programCertificatesReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programCertificatesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCertificateSendPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programCertificatesSentBy<T extends Prisma.User$programCertificatesSentByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programCertificatesSentByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCertificateSendPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7404,6 +9908,8 @@ export interface UserFieldRefs {
   readonly profilePicture: Prisma.FieldRef<"User", 'String'>
   readonly mustChangePassword: Prisma.FieldRef<"User", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
+  readonly signatureImageUrl: Prisma.FieldRef<"User", 'String'>
+  readonly signatureTypedName: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -8381,6 +10887,150 @@ export type User$assessmentAssignmentsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.AssessmentAssignedStudentScalarFieldEnum | Prisma.AssessmentAssignedStudentScalarFieldEnum[]
+}
+
+/**
+ * User.programCalendarSlotsAsTeacher
+ */
+export type User$programCalendarSlotsAsTeacherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramCalendarSlot
+   */
+  select?: Prisma.ProgramCalendarSlotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramCalendarSlot
+   */
+  omit?: Prisma.ProgramCalendarSlotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramCalendarSlotInclude<ExtArgs> | null
+  where?: Prisma.ProgramCalendarSlotWhereInput
+  orderBy?: Prisma.ProgramCalendarSlotOrderByWithRelationInput | Prisma.ProgramCalendarSlotOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramCalendarSlotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramCalendarSlotScalarFieldEnum | Prisma.ProgramCalendarSlotScalarFieldEnum[]
+}
+
+/**
+ * User.portalGrantsReceived
+ */
+export type User$portalGrantsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPortalGrant
+   */
+  select?: Prisma.UserPortalGrantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPortalGrant
+   */
+  omit?: Prisma.UserPortalGrantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPortalGrantInclude<ExtArgs> | null
+  where?: Prisma.UserPortalGrantWhereInput
+  orderBy?: Prisma.UserPortalGrantOrderByWithRelationInput | Prisma.UserPortalGrantOrderByWithRelationInput[]
+  cursor?: Prisma.UserPortalGrantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserPortalGrantScalarFieldEnum | Prisma.UserPortalGrantScalarFieldEnum[]
+}
+
+/**
+ * User.portalGrantsCreated
+ */
+export type User$portalGrantsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPortalGrant
+   */
+  select?: Prisma.UserPortalGrantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPortalGrant
+   */
+  omit?: Prisma.UserPortalGrantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPortalGrantInclude<ExtArgs> | null
+  where?: Prisma.UserPortalGrantWhereInput
+  orderBy?: Prisma.UserPortalGrantOrderByWithRelationInput | Prisma.UserPortalGrantOrderByWithRelationInput[]
+  cursor?: Prisma.UserPortalGrantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserPortalGrantScalarFieldEnum | Prisma.UserPortalGrantScalarFieldEnum[]
+}
+
+/**
+ * User.programLessonCompletions
+ */
+export type User$programLessonCompletionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramLessonCompletion
+   */
+  select?: Prisma.ProgramLessonCompletionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramLessonCompletion
+   */
+  omit?: Prisma.ProgramLessonCompletionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramLessonCompletionInclude<ExtArgs> | null
+  where?: Prisma.ProgramLessonCompletionWhereInput
+  orderBy?: Prisma.ProgramLessonCompletionOrderByWithRelationInput | Prisma.ProgramLessonCompletionOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramLessonCompletionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramLessonCompletionScalarFieldEnum | Prisma.ProgramLessonCompletionScalarFieldEnum[]
+}
+
+/**
+ * User.programCertificatesReceived
+ */
+export type User$programCertificatesReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramCertificateSend
+   */
+  select?: Prisma.ProgramCertificateSendSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramCertificateSend
+   */
+  omit?: Prisma.ProgramCertificateSendOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramCertificateSendInclude<ExtArgs> | null
+  where?: Prisma.ProgramCertificateSendWhereInput
+  orderBy?: Prisma.ProgramCertificateSendOrderByWithRelationInput | Prisma.ProgramCertificateSendOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramCertificateSendWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramCertificateSendScalarFieldEnum | Prisma.ProgramCertificateSendScalarFieldEnum[]
+}
+
+/**
+ * User.programCertificatesSentBy
+ */
+export type User$programCertificatesSentByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramCertificateSend
+   */
+  select?: Prisma.ProgramCertificateSendSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramCertificateSend
+   */
+  omit?: Prisma.ProgramCertificateSendOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramCertificateSendInclude<ExtArgs> | null
+  where?: Prisma.ProgramCertificateSendWhereInput
+  orderBy?: Prisma.ProgramCertificateSendOrderByWithRelationInput | Prisma.ProgramCertificateSendOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramCertificateSendWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramCertificateSendScalarFieldEnum | Prisma.ProgramCertificateSendScalarFieldEnum[]
 }
 
 /**

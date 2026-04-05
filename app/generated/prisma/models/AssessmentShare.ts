@@ -172,7 +172,7 @@ export type AssessmentShareGroupByOutputType = {
   _max: AssessmentShareMaxAggregateOutputType | null
 }
 
-type GetAssessmentShareGroupByPayload<T extends AssessmentShareGroupByArgs> = Prisma.PrismaPromise<
+export type GetAssessmentShareGroupByPayload<T extends AssessmentShareGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AssessmentShareGroupByOutputType, T['by']> &
       {

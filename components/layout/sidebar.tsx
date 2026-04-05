@@ -2,12 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar, CalendarRange,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
-  Shield, FolderOpen, Megaphone, MessageSquare,
+  Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive, Building2, ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -24,39 +25,53 @@ const studentNav: NavItem[] = [
   { label: "Apply", href: "/student/apply", icon: FileCheck },
   { label: "Onboarding", href: "/student/onboarding", icon: ClipboardList },
   { label: "My Program", href: "/student/program", icon: BookMarked },
+  { label: "Program Content", href: "/student/program-content", icon: Layers },
   { label: "Assessments", href: "/student/assessments", icon: FileText },
   { label: "Results", href: "/student/results", icon: Award },
   { label: "Attendance", href: "/student/attendance", icon: Calendar },
+  { label: "Full Calendar", href: "/student/full-calendar", icon: CalendarRange },
+  { label: "Holidays", href: "/student/holidays", icon: Calendar },
   { label: "Fees", href: "/student/fees", icon: DollarSign },
+  { label: "Pending Actions", href: "/student/pending-actions", icon: AlertCircle },
   { label: "Notifications", href: "/student/notifications", icon: Bell },
   { label: "Feedback", href: "/student/feedback", icon: MessageSquare },
 ];
 
 const teacherNav: NavItem[] = [
   { label: "Dashboard", href: "/teacher", icon: LayoutDashboard },
+  { label: "My Profile", href: "/teacher/my-profile", icon: Users },
   { label: "Assessments", href: "/teacher/assessments", icon: FileText },
   { label: "Announcements", href: "/teacher/announcements", icon: Megaphone },
   { label: "Question Bank", href: "/teacher/questions", icon: ClipboardList },
   { label: "Grading", href: "/teacher/grading", icon: BookOpen },
   { label: "Attendance", href: "/teacher/attendance", icon: Calendar },
+  { label: "Full Calendar", href: "/teacher/full-calendar", icon: CalendarRange },
+  { label: "Holidays", href: "/teacher/holidays", icon: Calendar },
   { label: "Students", href: "/teacher/students", icon: GraduationCap },
   { label: "Feedback", href: "/teacher/feedback", icon: MessageSquare },
   { label: "Reports", href: "/teacher/reports", icon: BarChart3 },
   { label: "Subjects", href: "/teacher/subjects", icon: BookOpen },
   { label: "Course Content", href: "/teacher/modules", icon: BookMarked },
+  { label: "Program Content", href: "/teacher/program-content", icon: Layers },
+  { label: "Award Certificates", href: "/teacher/award-certificates", icon: Award },
   { label: "Settings", href: "/teacher/settings", icon: Settings },
 ];
 
 const principalNav: NavItem[] = [
   { label: "Dashboard", href: "/principal", icon: LayoutDashboard },
+  { label: "My Profile", href: "/principal/my-profile", icon: Users },
   { label: "Applications", href: "/principal/applications", icon: FileCheck },
   { label: "Feedback", href: "/principal/feedback", icon: MessageSquare },
   { label: "Onboarding review", href: "/principal/onboarding-review", icon: ClipboardList },
   { label: "All Assessments", href: "/principal/assessments", icon: FileText },
   { label: "Students", href: "/principal/students", icon: GraduationCap },
   { label: "Teachers", href: "/principal/teachers", icon: Users },
+  { label: "User Management", href: "/principal/users", icon: ShieldCheck },
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
-  { label: "Programs", href: "/principal/programs", icon: BookOpen },
+  { label: "Full Calendar", href: "/principal/full-calendar", icon: CalendarRange },
+  { label: "Program Content", href: "/principal/program-content", icon: Layers },
+  { label: "Award Certificates", href: "/principal/award-certificates", icon: Award },
+  { label: "Institution profile", href: "/principal/institution-profile", icon: Building2 },
   { label: "Academic years", href: "/principal/academic-years", icon: CalendarRange },
   { label: "Batches", href: "/principal/batches", icon: Layers },
   { label: "Reports", href: "/principal/reports", icon: BarChart3 },
@@ -65,6 +80,8 @@ const principalNav: NavItem[] = [
   { label: "Announcements", href: "/principal/announcements", icon: Megaphone },
   { label: "Policies", href: "/principal/policies", icon: Shield },
   { label: "Templates", href: "/principal/shared-documents", icon: FolderOpen },
+  { label: "Inspection Binder", href: "/principal/inspection-binder", icon: Archive },
+  { label: "Student Fees", href: "/principal/student-fees", icon: DollarSign },
   { label: "Settings", href: "/principal/settings", icon: Settings },
 ];
 
@@ -132,9 +149,13 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
       </nav>
 
       <div className="border-t border-gray-800 p-4">
-        <div className="flex items-center gap-3">
+        <Link
+          href={`/${role.toLowerCase() === "principal" ? "principal/my-profile" : role.toLowerCase() === "teacher" ? "teacher/my-profile" : "student/profile"}`}
+          className="flex items-center gap-3 rounded-lg px-2 py-1 hover:bg-gray-800 transition-colors"
+          title={collapsed ? "My Profile" : undefined}
+        >
           {profilePicture ? (
-            <img src={profilePicture} alt="" className="h-8 w-8 shrink-0 rounded-full object-cover" />
+            <Image src={profilePicture} alt="" width={32} height={32} unoptimized={profilePicture.startsWith("data:")} className="h-8 w-8 shrink-0 rounded-full object-cover" />
           ) : (
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-sm font-medium">
               {userInitials}
@@ -146,7 +167,7 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
               <p className="text-xs text-gray-400 capitalize">{role.toLowerCase()}</p>
             </div>
           )}
-        </div>
+        </Link>
         <form action="/api/auth/signout" method="POST" className="mt-3">
           <button
             type="submit"

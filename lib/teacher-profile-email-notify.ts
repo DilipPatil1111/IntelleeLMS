@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
-import { sendEmail, buildTeacherCoursesAssignedEmail, escapeHtml, escapeHtmlAttribute } from "@/lib/email";
+import { buildTeacherCoursesAssignedEmail, escapeHtml, escapeHtmlAttribute } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { getServerAppUrl } from "@/lib/app-url";
 
 type SnapshotRow = { subjectId: string; batchId: string };
@@ -70,7 +71,7 @@ export async function emailTeacherIfTeachingChanged(
       rows,
       loginUrl,
     });
-    await sendEmail({ to: user.email, subject: payload.subject, html: payload.html, text: payload.text });
+    await sendEmailWithSignature({ to: user.email, subject: payload.subject, html: payload.html, text: payload.text, senderUserId: null });
     return;
   }
 
@@ -80,14 +81,14 @@ export async function emailTeacherIfTeachingChanged(
     const href = escapeHtmlAttribute(loginUrl);
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(user.firstName)},</p>
         <p>Your principal has updated which <strong>programs</strong> are linked to your teacher profile.</p>
         <p style="font-size: 14px; color: #374151;"><strong>Programs now:</strong> ${programList.length ? programList.map((n) => escapeHtml(n)).join(", ") : "None"}</p>
         <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open teacher portal</a></p>
       </div>`;
     const text = `Hello ${user.firstName},\n\nYour linked programs were updated.\n\nPrograms: ${programList.join(", ") || "None"}\n\n${loginUrl}\n`;
-    await sendEmail({ to: user.email, subject: subj, html, text });
+    await sendEmailWithSignature({ to: user.email, subject: subj, html, text, senderUserId: null });
     return;
   }
 
@@ -103,7 +104,7 @@ export async function emailTeacherIfTeachingChanged(
     const href = escapeHtmlAttribute(loginUrl);
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(user.firstName)},</p>
         <p>Your principal has updated your <strong>subject and batch</strong> assignments. Your current list is below.</p>
         <ul style="line-height: 1.6;">${listHtml}</ul>
@@ -111,7 +112,7 @@ export async function emailTeacherIfTeachingChanged(
         <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open teacher portal</a></p>
       </div>`;
     const text = `Hello ${user.firstName},\n\nYour teaching assignments were updated.\n\nPrograms: ${programList.join(", ") || "None"}\n\n${listText}\n\n${loginUrl}\n`;
-    await sendEmail({ to: user.email, subject: subj, html, text });
+    await sendEmailWithSignature({ to: user.email, subject: subj, html, text, senderUserId: null });
     return;
   }
 
@@ -120,7 +121,7 @@ export async function emailTeacherIfTeachingChanged(
   const href2 = escapeHtmlAttribute(loginUrl);
   const html = `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #4f46e5;">Intellee College</h2>
+      {INSTITUTION_HEADER}
       <p>Hello ${escapeHtml(user.firstName)},</p>
       <p>Your principal has removed all <strong>subject and batch</strong> teaching assignments from your profile.</p>
       <p style="font-size: 14px; color: #374151;"><strong>Programs still linked:</strong> ${programList.length ? programList.map((n) => escapeHtml(n)).join(", ") : "None"}</p>
@@ -128,5 +129,5 @@ export async function emailTeacherIfTeachingChanged(
       <p><a href="${href2}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open teacher portal</a></p>
     </div>`;
   const text = `Hello ${user.firstName},\n\nAll subject/batch assignments were removed from your profile.\nPrograms: ${programList.join(", ") || "None"}\n\n${loginUrl}\n`;
-  await sendEmail({ to: user.email, subject: subj, html, text });
+  await sendEmailWithSignature({ to: user.email, subject: subj, html, text, senderUserId: null });
 }

@@ -23,6 +23,11 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
+ * Model UserPortalGrant
+ * * Extra portal access (Student / Teacher / Principal UI) beyond the user’s primary `User.role`. Managed in Principal → Settings.
+ */
+export type UserPortalGrant = Prisma.UserPortalGrantModel
+/**
  * Model Feedback
  * 
  */
@@ -47,6 +52,51 @@ export type VerificationToken = Prisma.VerificationTokenModel
  * 
  */
 export type Program = Prisma.ProgramModel
+/**
+ * Model ProgramSyllabus
+ * * Extended syllabus metadata and publish flag for Program Content (§18).
+ */
+export type ProgramSyllabus = Prisma.ProgramSyllabusModel
+/**
+ * Model ProgramChapter
+ * * Chapter under a Subject (program syllabus tree).
+ */
+export type ProgramChapter = Prisma.ProgramChapterModel
+/**
+ * Model ProgramLesson
+ * 
+ */
+export type ProgramLesson = Prisma.ProgramLessonModel
+/**
+ * Model ProgramLessonCompletion
+ * 
+ */
+export type ProgramLessonCompletion = Prisma.ProgramLessonCompletionModel
+/**
+ * Model ProgramCertificateSend
+ * * Program Content completion certificate emailed (separate from graduationCertificateSentAt).
+ */
+export type ProgramCertificateSend = Prisma.ProgramCertificateSendModel
+/**
+ * Model InstitutionProfile
+ * * Master institutional branding and contact (singleton row id = 1).
+ */
+export type InstitutionProfile = Prisma.InstitutionProfileModel
+/**
+ * Model ProgramDomain
+ * * e.g. Software, Healthcare — configurable by principal.
+ */
+export type ProgramDomain = Prisma.ProgramDomainModel
+/**
+ * Model ProgramCategory
+ * * e.g. Vocational, Non-vocational.
+ */
+export type ProgramCategory = Prisma.ProgramCategoryModel
+/**
+ * Model ProgramType
+ * * e.g. Diploma, Post Graduate Diploma, Certificate, Short term.
+ */
+export type ProgramType = Prisma.ProgramTypeModel
 /**
  * Model InstitutionSettings
  * * Single-row defaults for compliance thresholds (principal Settings). Programs may override per field.
@@ -123,6 +173,11 @@ export type FeeStructure = Prisma.FeeStructureModel
  */
 export type FeePayment = Prisma.FeePaymentModel
 /**
+ * Model StudentSubmissionLog
+ * * Append-only history for student uploads (onboarding docs + fee receipts) for audit trail in Pending Actions / Fees.
+ */
+export type StudentSubmissionLog = Prisma.StudentSubmissionLogModel
+/**
  * Model Assessment
  * 
  */
@@ -178,6 +233,11 @@ export type AttendanceRecord = Prisma.AttendanceRecordModel
  */
 export type Holiday = Prisma.HolidayModel
 /**
+ * Model ProgramCalendarSlot
+ * * Principal-configured time blocks on the Full Calendar (per program/batch/day, per teacher).
+ */
+export type ProgramCalendarSlot = Prisma.ProgramCalendarSlotModel
+/**
  * Model ScheduledEmail
  * 
  */
@@ -222,3 +282,18 @@ export type AnnouncementRecipient = Prisma.AnnouncementRecipientModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model DocFolder
+ * 
+ */
+export type DocFolder = Prisma.DocFolderModel
+/**
+ * Model DocFile
+ * 
+ */
+export type DocFile = Prisma.DocFileModel
+/**
+ * Model InspectionNote
+ * 
+ */
+export type InspectionNote = Prisma.InspectionNoteModel

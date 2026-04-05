@@ -1,8 +1,10 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import Link from "next/link";
 import { PageHeader } from "@/components/layout/page-header";
-import { TeacherCharts } from "./teacher-charts";
+import { TeacherChartsClient } from "./teacher-charts-client";
 
 export default async function TeacherReportsPage() {
   const session = await auth();
@@ -50,7 +52,23 @@ export default async function TeacherReportsPage() {
         title="Reports"
         description="View assessment performance analytics"
       />
-      <TeacherCharts data={chartData} />
+      <p className="mb-6 text-sm text-gray-600">
+        For attendance by program dates and batch, use the{" "}
+        <Link href="/teacher/attendance?view=grid" className="font-medium text-indigo-600 hover:underline">
+          attendance grid
+        </Link>
+        .
+      </p>
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="h-80 rounded-xl border border-gray-200 bg-gray-50 animate-pulse" />
+            <div className="h-80 rounded-xl border border-gray-200 bg-gray-50 animate-pulse" />
+          </div>
+        }
+      >
+        <TeacherChartsClient data={chartData} />
+      </Suspense>
     </>
   );
 }

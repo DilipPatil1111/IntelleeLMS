@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -37,7 +38,7 @@ export function ProfilePictureUpload({ currentPicture, initials, userName }: Pro
       <CardContent>
         <div className="flex items-center gap-6 py-2">
           {currentPicture ? (
-            <img src={currentPicture} alt={userName} className="h-20 w-20 rounded-full object-cover ring-2 ring-indigo-100" />
+            <Image src={currentPicture} alt={userName} width={80} height={80} unoptimized={currentPicture.startsWith("data:")} className="h-20 w-20 rounded-full object-cover ring-2 ring-indigo-100" />
           ) : (
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-100 text-indigo-600 text-2xl font-bold ring-2 ring-indigo-50">
               {initials}

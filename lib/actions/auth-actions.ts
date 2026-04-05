@@ -5,7 +5,8 @@ import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { sendEmail, buildRegistrationThankYouEmail, buildTeacherSelfRegistrationEmail } from "@/lib/email";
+import { buildRegistrationThankYouEmail, buildTeacherSelfRegistrationEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { getLoginPageUrl } from "@/lib/app-url";
 
 const registerSchema = z
@@ -124,11 +125,12 @@ export async function registerUser(formData: FormData) {
         programName: program.name,
         loginUrl,
       });
-      await sendEmail({
+      await sendEmailWithSignature({
         to: user.email,
         subject: payload.subject,
         html: payload.html,
         text: payload.text,
+        senderUserId: null,
       });
     });
 
@@ -174,11 +176,12 @@ export async function registerUser(formData: FormData) {
       loginUrl,
       programNames: programs.map((p) => p.name),
     });
-    await sendEmail({
+    await sendEmailWithSignature({
       to: email,
       subject: teacherWelcome.subject,
       html: teacherWelcome.html,
       text: teacherWelcome.text,
+      senderUserId: null,
     });
 
     return { success: true };

@@ -75,6 +75,7 @@ export function PrincipalAssessmentsClient() {
   }, [debouncedQ, programId, batchId, teacherId, status, type]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
   }, [load]);
 

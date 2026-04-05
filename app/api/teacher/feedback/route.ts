@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { FeedbackCategory } from "@/app/generated/prisma/enums";
+import { hasTeacherPortalAccess } from "@/lib/portal-access";
 import { getTeacherVisibleBatchIds } from "@/lib/teacher-visible-batches";
 import { NextResponse } from "next/server";
 
@@ -31,8 +32,7 @@ export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const user = await db.user.findUnique({ where: { id: session.user.id } });
-  if (!user || user.role !== "TEACHER") {
+  if (!hasTeacherPortalAccess(session)) {
     return NextResponse.json({ error: "Teachers only" }, { status: 403 });
   }
 

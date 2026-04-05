@@ -30,17 +30,30 @@ export async function GET(req: Request) {
   if (status) and.push({ status: status as "DRAFT" | "PUBLISHED" | "CLOSED" | "GRADED" });
   if (type) and.push({ type: type as "QUIZ" | "TEST" | "ASSIGNMENT" | "PROJECT" | "HOMEWORK" });
 
-  const assessments = await db.assessment.findMany({
-    where: { AND: and },
-    include: {
-      subject: true,
-      batch: { include: { program: true } },
-      _count: { select: { attempts: true, questions: true } },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const pageRaw = new URL(req.url).searchParams.get("page");
+  const pageSizeRaw = new URL(req.url).searchParams.get("pageSize");
+  const page = Math.max(1, Number.parseInt(pageRaw || "1", 10) || 1);
+  let pageSize = Number.parseInt(pageSizeRaw || "5", 10) || 5;
+  pageSize = Math.min(Math.max(1, pageSize), 50);
 
-  return NextResponse.json({ assessments });
+  const where: Prisma.AssessmentWhereInput = { AND: and };
+
+  const [total, assessments] = await Promise.all([
+    db.assessment.count({ where }),
+    db.assessment.findMany({
+      where,
+      include: {
+        subject: true,
+        batch: { include: { program: true } },
+        _count: { select: { attempts: true, questions: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+  ]);
+
+  return NextResponse.json({ assessments, total, page, pageSize });
 }
 
 export async function POST(req: Request) {

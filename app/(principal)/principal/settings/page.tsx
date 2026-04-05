@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PageHeader } from "@/components/layout/page-header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { PortalAccessSettings } from "@/components/settings/portal-access-settings";
+import { blobFileUrl } from "@/lib/blob-url";
+import { MyProfileClient } from "@/components/profile/my-profile-client";
 
 type Institution = {
   id: number;
@@ -37,11 +40,15 @@ export default function PrincipalSettingsPage() {
   const [uploading, setUploading] = useState<"certificate" | "transcript" | "studentContract" | null>(null);
   const [message, setMessage] = useState<{ tone: "success" | "error"; text: string } | null>(null);
 
-  useEffect(() => {
-    void load();
-  }, []);
+  // Email signature state
+  const [sigImageUrl, setSigImageUrl] = useState<string | null>(null);
+  const [sigTypedName, setSigTypedName] = useState("");
+  const [sigUploading, setSigUploading] = useState(false);
+  const [sigSaving, setSigSaving] = useState(false);
+  const [sigMessage, setSigMessage] = useState<{ tone: "success" | "error"; text: string } | null>(null);
+  const sigFileRef = useRef<HTMLInputElement>(null);
 
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true);
     const res = await fetch("/api/principal/settings");
     const data = await res.json().catch(() => ({}));
@@ -52,7 +59,21 @@ export default function PrincipalSettingsPage() {
       setMessage({ tone: "error", text: (data as { error?: string }).error || "Could not load settings." });
     }
     setLoading(false);
-  }
+  }, []);
+
+  const loadSignature = useCallback(async () => {
+    const res = await fetch("/api/principal/settings/signature");
+    if (!res.ok) return;
+    const data = await res.json().catch(() => ({})) as { signatureImageUrl?: string | null; signatureTypedName?: string | null };
+    setSigImageUrl(data.signatureImageUrl ?? null);
+    setSigTypedName(data.signatureTypedName ?? "");
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void load();
+    void loadSignature();
+  }, [load, loadSignature]);
 
   async function save(instOverride?: Institution, successMessage = "Settings saved.") {
     const inst = instOverride ?? institution;
@@ -157,6 +178,53 @@ export default function PrincipalSettingsPage() {
     await save(next, "File removed from settings.");
   }
 
+  async function uploadSignatureImage(file: File) {
+    setSigUploading(true);
+    setSigMessage(null);
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch("/api/principal/settings/signature/upload", { method: "POST", body: fd });
+    const data = await res.json().catch(() => ({})) as { url?: string; error?: string };
+    setSigUploading(false);
+    if (!res.ok || !data.url) {
+      setSigMessage({ tone: "error", text: data.error || "Upload failed." });
+      return;
+    }
+    setSigImageUrl(data.url);
+    setSigMessage({ tone: "success", text: "Signature image uploaded." });
+  }
+
+  async function saveSignatureText() {
+    setSigSaving(true);
+    setSigMessage(null);
+    const res = await fetch("/api/principal/settings/signature", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ signatureTypedName: sigTypedName }),
+    });
+    const data = await res.json().catch(() => ({})) as { ok?: boolean; error?: string };
+    setSigSaving(false);
+    setSigMessage(res.ok && data.ok ? { tone: "success", text: "Signature name saved." } : { tone: "error", text: data.error || "Save failed." });
+  }
+
+  async function removeSignatureImage() {
+    setSigSaving(true);
+    setSigMessage(null);
+    const res = await fetch("/api/principal/settings/signature", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ signatureImageUrl: null }),
+    });
+    const data = await res.json().catch(() => ({})) as { ok?: boolean; error?: string };
+    setSigSaving(false);
+    if (res.ok && data.ok) {
+      setSigImageUrl(null);
+      setSigMessage({ tone: "success", text: "Signature image removed." });
+    } else {
+      setSigMessage({ tone: "error", text: data.error || "Remove failed." });
+    }
+  }
+
   if (loading && !institution) {
     return (
       <>
@@ -193,6 +261,24 @@ export default function PrincipalSettingsPage() {
           {message.text}
         </div>
       )}
+
+      {/* ── My Profile ── inline at top of Settings ──────────── */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>My Profile</CardTitle>
+          <CardDescription>
+            View and update your name, contact details, profile photo, and password. This is your personal account as
+            principal or administrator.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <MyProfileClient embedded />
+        </CardContent>
+      </Card>
+
+      <div className="my-8 border-t border-gray-200" />
+
+      <PortalAccessSettings />
 
       <Card className="mb-6">
         <CardHeader>
@@ -481,6 +567,98 @@ export default function PrincipalSettingsPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* ── Email Signature ───────────────────────────────────────── */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Email Signature</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-sm text-gray-600">
+            Your signature is automatically appended to every email you send from the portal (announcements,
+            welcome emails, inspection reports, etc.). Upload an image of your handwritten signature
+            <strong> or </strong> type your name to use as a stylised cursive signature.
+          </p>
+
+          {sigMessage && (
+            <div className={`rounded-md px-4 py-2 text-sm ${sigMessage.tone === "success" ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
+              {sigMessage.text}
+            </div>
+          )}
+
+          {/* Signature image */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-gray-700">Signature image (png / jpg / svg recommended)</p>
+            {sigImageUrl ? (
+              <div className="flex items-center gap-4">
+                <img
+                  src={blobFileUrl(sigImageUrl, "signature", true)}
+                  alt="Your signature"
+                  className="max-h-16 max-w-48 rounded border border-gray-200 bg-white p-1"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => void removeSignatureImage()}
+                  isLoading={sigSaving}
+                >
+                  Remove
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500 italic">No signature image uploaded.</p>
+            )}
+            <div className="flex items-center gap-2">
+              <input
+                ref={sigFileRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void uploadSignatureImage(file);
+                  e.target.value = "";
+                }}
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                isLoading={sigUploading}
+                onClick={() => sigFileRef.current?.click()}
+              >
+                {sigImageUrl ? "Replace image" : "Upload signature image"}
+              </Button>
+            </div>
+          </div>
+
+          {/* Typed name signature */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-gray-700">
+              Typed name signature{" "}
+              <span className="font-normal text-gray-500">(used only when no image is uploaded)</span>
+            </p>
+            <div className="flex items-center gap-2">
+              <Input
+                placeholder="e.g. Dr. Jane Smith"
+                value={sigTypedName}
+                onChange={(e) => setSigTypedName(e.target.value)}
+                className="max-w-xs"
+              />
+              <Button size="sm" onClick={() => void saveSignatureText()} isLoading={sigSaving}>
+                Save name
+              </Button>
+            </div>
+            {sigTypedName.trim() && (
+              <p className="text-sm text-gray-500">
+                Preview:{" "}
+                <span style={{ fontFamily: "'Brush Script MT','Segoe Script','Comic Sans MS',cursive", fontSize: "1.3em" }}>
+                  {sigTypedName}
+                </span>
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>

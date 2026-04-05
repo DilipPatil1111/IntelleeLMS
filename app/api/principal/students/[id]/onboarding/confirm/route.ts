@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { notifyStudentStatusChange } from "@/lib/student-status";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -9,8 +10,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const role = (session.user as unknown as Record<string, unknown>).role as string;
-  if (role !== "PRINCIPAL") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { id: studentUserId } = await params;
 

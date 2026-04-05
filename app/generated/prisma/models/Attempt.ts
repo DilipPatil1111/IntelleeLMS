@@ -238,7 +238,7 @@ export type AttemptGroupByOutputType = {
   _max: AttemptMaxAggregateOutputType | null
 }
 
-type GetAttemptGroupByPayload<T extends AttemptGroupByArgs> = Prisma.PrismaPromise<
+export type GetAttemptGroupByPayload<T extends AttemptGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AttemptGroupByOutputType, T['by']> &
       {

@@ -333,7 +333,7 @@ export type AssessmentGroupByOutputType = {
   _max: AssessmentMaxAggregateOutputType | null
 }
 
-type GetAssessmentGroupByPayload<T extends AssessmentGroupByArgs> = Prisma.PrismaPromise<
+export type GetAssessmentGroupByPayload<T extends AssessmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AssessmentGroupByOutputType, T['by']> &
       {
@@ -386,6 +386,7 @@ export type AssessmentWhereInput = {
   shares?: Prisma.AssessmentShareListRelationFilter
   scheduledEmails?: Prisma.ScheduledEmailListRelationFilter
   assignedStudents?: Prisma.AssessmentAssignedStudentListRelationFilter
+  programLessons?: Prisma.ProgramLessonListRelationFilter
 }
 
 export type AssessmentOrderByWithRelationInput = {
@@ -423,6 +424,7 @@ export type AssessmentOrderByWithRelationInput = {
   shares?: Prisma.AssessmentShareOrderByRelationAggregateInput
   scheduledEmails?: Prisma.ScheduledEmailOrderByRelationAggregateInput
   assignedStudents?: Prisma.AssessmentAssignedStudentOrderByRelationAggregateInput
+  programLessons?: Prisma.ProgramLessonOrderByRelationAggregateInput
 }
 
 export type AssessmentWhereUniqueInput = Prisma.AtLeast<{
@@ -463,6 +465,7 @@ export type AssessmentWhereUniqueInput = Prisma.AtLeast<{
   shares?: Prisma.AssessmentShareListRelationFilter
   scheduledEmails?: Prisma.ScheduledEmailListRelationFilter
   assignedStudents?: Prisma.AssessmentAssignedStudentListRelationFilter
+  programLessons?: Prisma.ProgramLessonListRelationFilter
 }, "id" | "linkToken">
 
 export type AssessmentOrderByWithAggregationInput = {
@@ -557,6 +560,7 @@ export type AssessmentCreateInput = {
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateInput = {
@@ -589,6 +593,7 @@ export type AssessmentUncheckedCreateInput = {
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUpdateInput = {
@@ -621,6 +626,7 @@ export type AssessmentUpdateInput = {
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateInput = {
@@ -653,6 +659,7 @@ export type AssessmentUncheckedUpdateInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentCreateManyInput = {
@@ -739,6 +746,11 @@ export type AssessmentListRelationFilter = {
 
 export type AssessmentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type AssessmentNullableScalarRelationFilter = {
+  is?: Prisma.AssessmentWhereInput | null
+  isNot?: Prisma.AssessmentWhereInput | null
 }
 
 export type AssessmentCountOrderByAggregateInput = {
@@ -839,11 +851,6 @@ export type AssessmentScalarRelationFilter = {
   isNot?: Prisma.AssessmentWhereInput
 }
 
-export type AssessmentNullableScalarRelationFilter = {
-  is?: Prisma.AssessmentWhereInput | null
-  isNot?: Prisma.AssessmentWhereInput | null
-}
-
 export type AssessmentCreateNestedManyWithoutCreatorInput = {
   create?: Prisma.XOR<Prisma.AssessmentCreateWithoutCreatorInput, Prisma.AssessmentUncheckedCreateWithoutCreatorInput> | Prisma.AssessmentCreateWithoutCreatorInput[] | Prisma.AssessmentUncheckedCreateWithoutCreatorInput[]
   connectOrCreate?: Prisma.AssessmentCreateOrConnectWithoutCreatorInput | Prisma.AssessmentCreateOrConnectWithoutCreatorInput[]
@@ -884,6 +891,22 @@ export type AssessmentUncheckedUpdateManyWithoutCreatorNestedInput = {
   update?: Prisma.AssessmentUpdateWithWhereUniqueWithoutCreatorInput | Prisma.AssessmentUpdateWithWhereUniqueWithoutCreatorInput[]
   updateMany?: Prisma.AssessmentUpdateManyWithWhereWithoutCreatorInput | Prisma.AssessmentUpdateManyWithWhereWithoutCreatorInput[]
   deleteMany?: Prisma.AssessmentScalarWhereInput | Prisma.AssessmentScalarWhereInput[]
+}
+
+export type AssessmentCreateNestedOneWithoutProgramLessonsInput = {
+  create?: Prisma.XOR<Prisma.AssessmentCreateWithoutProgramLessonsInput, Prisma.AssessmentUncheckedCreateWithoutProgramLessonsInput>
+  connectOrCreate?: Prisma.AssessmentCreateOrConnectWithoutProgramLessonsInput
+  connect?: Prisma.AssessmentWhereUniqueInput
+}
+
+export type AssessmentUpdateOneWithoutProgramLessonsNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentCreateWithoutProgramLessonsInput, Prisma.AssessmentUncheckedCreateWithoutProgramLessonsInput>
+  connectOrCreate?: Prisma.AssessmentCreateOrConnectWithoutProgramLessonsInput
+  upsert?: Prisma.AssessmentUpsertWithoutProgramLessonsInput
+  disconnect?: Prisma.AssessmentWhereInput | boolean
+  delete?: Prisma.AssessmentWhereInput | boolean
+  connect?: Prisma.AssessmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentUpdateToOneWithWhereWithoutProgramLessonsInput, Prisma.AssessmentUpdateWithoutProgramLessonsInput>, Prisma.AssessmentUncheckedUpdateWithoutProgramLessonsInput>
 }
 
 export type AssessmentCreateNestedManyWithoutBatchInput = {
@@ -1163,6 +1186,7 @@ export type AssessmentCreateWithoutCreatorInput = {
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutCreatorInput = {
@@ -1194,6 +1218,7 @@ export type AssessmentUncheckedCreateWithoutCreatorInput = {
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutCreatorInput = {
@@ -1252,6 +1277,150 @@ export type AssessmentScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Assessment"> | Date | string
 }
 
+export type AssessmentCreateWithoutProgramLessonsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type: $Enums.AssessmentType
+  status?: $Enums.AssessmentStatus
+  moduleNameText?: string | null
+  topicNameText?: string | null
+  isMandatory?: boolean
+  totalMarks: number
+  passingMarks?: number | null
+  duration?: number | null
+  scheduledOpenAt?: Date | string | null
+  scheduledCloseAt?: Date | string | null
+  resultsReleaseAt?: Date | string | null
+  assessmentDate?: Date | string | null
+  linkToken?: string
+  instructions?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  subject: Prisma.SubjectCreateNestedOneWithoutAssessmentsInput
+  batch: Prisma.BatchCreateNestedOneWithoutAssessmentsInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAssessmentsInput
+  module?: Prisma.ModuleCreateNestedOneWithoutAssessmentsInput
+  topic?: Prisma.TopicCreateNestedOneWithoutAssessmentsInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutAssessmentInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutAssessmentInput
+  shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
+  scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
+  assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+}
+
+export type AssessmentUncheckedCreateWithoutProgramLessonsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  type: $Enums.AssessmentType
+  status?: $Enums.AssessmentStatus
+  subjectId: string
+  batchId: string
+  createdById: string
+  moduleId?: string | null
+  topicId?: string | null
+  moduleNameText?: string | null
+  topicNameText?: string | null
+  isMandatory?: boolean
+  totalMarks: number
+  passingMarks?: number | null
+  duration?: number | null
+  scheduledOpenAt?: Date | string | null
+  scheduledCloseAt?: Date | string | null
+  resultsReleaseAt?: Date | string | null
+  assessmentDate?: Date | string | null
+  linkToken?: string
+  instructions?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutAssessmentInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutAssessmentInput
+  shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
+  scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
+  assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+}
+
+export type AssessmentCreateOrConnectWithoutProgramLessonsInput = {
+  where: Prisma.AssessmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentCreateWithoutProgramLessonsInput, Prisma.AssessmentUncheckedCreateWithoutProgramLessonsInput>
+}
+
+export type AssessmentUpsertWithoutProgramLessonsInput = {
+  update: Prisma.XOR<Prisma.AssessmentUpdateWithoutProgramLessonsInput, Prisma.AssessmentUncheckedUpdateWithoutProgramLessonsInput>
+  create: Prisma.XOR<Prisma.AssessmentCreateWithoutProgramLessonsInput, Prisma.AssessmentUncheckedCreateWithoutProgramLessonsInput>
+  where?: Prisma.AssessmentWhereInput
+}
+
+export type AssessmentUpdateToOneWithWhereWithoutProgramLessonsInput = {
+  where?: Prisma.AssessmentWhereInput
+  data: Prisma.XOR<Prisma.AssessmentUpdateWithoutProgramLessonsInput, Prisma.AssessmentUncheckedUpdateWithoutProgramLessonsInput>
+}
+
+export type AssessmentUpdateWithoutProgramLessonsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scheduledOpenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledCloseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resultsReleaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  assessmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  linkToken?: Prisma.StringFieldUpdateOperationsInput | string
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.SubjectUpdateOneRequiredWithoutAssessmentsNestedInput
+  batch?: Prisma.BatchUpdateOneRequiredWithoutAssessmentsNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
+  module?: Prisma.ModuleUpdateOneWithoutAssessmentsNestedInput
+  topic?: Prisma.TopicUpdateOneWithoutAssessmentsNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutAssessmentNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutAssessmentNestedInput
+  shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
+  scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
+  assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+}
+
+export type AssessmentUncheckedUpdateWithoutProgramLessonsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  status?: Prisma.EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  batchId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  moduleNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  topicNameText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMandatory?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  passingMarks?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scheduledOpenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduledCloseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resultsReleaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  assessmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  linkToken?: Prisma.StringFieldUpdateOperationsInput | string
+  instructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutAssessmentNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutAssessmentNestedInput
+  shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
+  scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
+  assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+}
+
 export type AssessmentCreateWithoutBatchInput = {
   id?: string
   title: string
@@ -1281,6 +1450,7 @@ export type AssessmentCreateWithoutBatchInput = {
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutBatchInput = {
@@ -1312,6 +1482,7 @@ export type AssessmentUncheckedCreateWithoutBatchInput = {
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutBatchInput = {
@@ -1369,6 +1540,7 @@ export type AssessmentCreateWithoutSubjectInput = {
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutSubjectInput = {
@@ -1400,6 +1572,7 @@ export type AssessmentUncheckedCreateWithoutSubjectInput = {
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutSubjectInput = {
@@ -1457,6 +1630,7 @@ export type AssessmentCreateWithoutModuleInput = {
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutModuleInput = {
@@ -1488,6 +1662,7 @@ export type AssessmentUncheckedCreateWithoutModuleInput = {
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutModuleInput = {
@@ -1545,6 +1720,7 @@ export type AssessmentCreateWithoutTopicInput = {
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutTopicInput = {
@@ -1576,6 +1752,7 @@ export type AssessmentUncheckedCreateWithoutTopicInput = {
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutTopicInput = {
@@ -1633,6 +1810,7 @@ export type AssessmentCreateWithoutAssignedStudentsInput = {
   attempts?: Prisma.AttemptCreateNestedManyWithoutAssessmentInput
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutAssignedStudentsInput = {
@@ -1664,6 +1842,7 @@ export type AssessmentUncheckedCreateWithoutAssignedStudentsInput = {
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutAssessmentInput
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutAssignedStudentsInput = {
@@ -1711,6 +1890,7 @@ export type AssessmentUpdateWithoutAssignedStudentsInput = {
   attempts?: Prisma.AttemptUpdateManyWithoutAssessmentNestedInput
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutAssignedStudentsInput = {
@@ -1742,6 +1922,7 @@ export type AssessmentUncheckedUpdateWithoutAssignedStudentsInput = {
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutAssessmentNestedInput
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentCreateWithoutQuestionsInput = {
@@ -1773,6 +1954,7 @@ export type AssessmentCreateWithoutQuestionsInput = {
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutQuestionsInput = {
@@ -1804,6 +1986,7 @@ export type AssessmentUncheckedCreateWithoutQuestionsInput = {
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutQuestionsInput = {
@@ -1851,6 +2034,7 @@ export type AssessmentUpdateWithoutQuestionsInput = {
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutQuestionsInput = {
@@ -1882,6 +2066,7 @@ export type AssessmentUncheckedUpdateWithoutQuestionsInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentCreateWithoutAttemptsInput = {
@@ -1913,6 +2098,7 @@ export type AssessmentCreateWithoutAttemptsInput = {
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutAttemptsInput = {
@@ -1944,6 +2130,7 @@ export type AssessmentUncheckedCreateWithoutAttemptsInput = {
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutAttemptsInput = {
@@ -1991,6 +2178,7 @@ export type AssessmentUpdateWithoutAttemptsInput = {
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutAttemptsInput = {
@@ -2022,6 +2210,7 @@ export type AssessmentUncheckedUpdateWithoutAttemptsInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentCreateWithoutSharesInput = {
@@ -2053,6 +2242,7 @@ export type AssessmentCreateWithoutSharesInput = {
   attempts?: Prisma.AttemptCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutSharesInput = {
@@ -2084,6 +2274,7 @@ export type AssessmentUncheckedCreateWithoutSharesInput = {
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutAssessmentInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutSharesInput = {
@@ -2131,6 +2322,7 @@ export type AssessmentUpdateWithoutSharesInput = {
   attempts?: Prisma.AttemptUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutSharesInput = {
@@ -2162,6 +2354,7 @@ export type AssessmentUncheckedUpdateWithoutSharesInput = {
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentCreateWithoutScheduledEmailsInput = {
@@ -2193,6 +2386,7 @@ export type AssessmentCreateWithoutScheduledEmailsInput = {
   attempts?: Prisma.AttemptCreateNestedManyWithoutAssessmentInput
   shares?: Prisma.AssessmentShareCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentUncheckedCreateWithoutScheduledEmailsInput = {
@@ -2224,6 +2418,7 @@ export type AssessmentUncheckedCreateWithoutScheduledEmailsInput = {
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutAssessmentInput
   shares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutAssessmentInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutAssessmentInput
+  programLessons?: Prisma.ProgramLessonUncheckedCreateNestedManyWithoutAssessmentInput
 }
 
 export type AssessmentCreateOrConnectWithoutScheduledEmailsInput = {
@@ -2271,6 +2466,7 @@ export type AssessmentUpdateWithoutScheduledEmailsInput = {
   attempts?: Prisma.AttemptUpdateManyWithoutAssessmentNestedInput
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutScheduledEmailsInput = {
@@ -2302,6 +2498,7 @@ export type AssessmentUncheckedUpdateWithoutScheduledEmailsInput = {
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutAssessmentNestedInput
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentCreateManyCreatorInput = {
@@ -2359,6 +2556,7 @@ export type AssessmentUpdateWithoutCreatorInput = {
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutCreatorInput = {
@@ -2390,6 +2588,7 @@ export type AssessmentUncheckedUpdateWithoutCreatorInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateManyWithoutCreatorInput = {
@@ -2473,6 +2672,7 @@ export type AssessmentUpdateWithoutBatchInput = {
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutBatchInput = {
@@ -2504,6 +2704,7 @@ export type AssessmentUncheckedUpdateWithoutBatchInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateManyWithoutBatchInput = {
@@ -2587,6 +2788,7 @@ export type AssessmentUpdateWithoutSubjectInput = {
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutSubjectInput = {
@@ -2618,6 +2820,7 @@ export type AssessmentUncheckedUpdateWithoutSubjectInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateManyWithoutSubjectInput = {
@@ -2701,6 +2904,7 @@ export type AssessmentUpdateWithoutModuleInput = {
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutModuleInput = {
@@ -2732,6 +2936,7 @@ export type AssessmentUncheckedUpdateWithoutModuleInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateManyWithoutModuleInput = {
@@ -2815,6 +3020,7 @@ export type AssessmentUpdateWithoutTopicInput = {
   shares?: Prisma.AssessmentShareUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateWithoutTopicInput = {
@@ -2846,6 +3052,7 @@ export type AssessmentUncheckedUpdateWithoutTopicInput = {
   shares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutAssessmentNestedInput
   scheduledEmails?: Prisma.ScheduledEmailUncheckedUpdateManyWithoutAssessmentNestedInput
   assignedStudents?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutAssessmentNestedInput
+  programLessons?: Prisma.ProgramLessonUncheckedUpdateManyWithoutAssessmentNestedInput
 }
 
 export type AssessmentUncheckedUpdateManyWithoutTopicInput = {
@@ -2885,6 +3092,7 @@ export type AssessmentCountOutputType = {
   shares: number
   scheduledEmails: number
   assignedStudents: number
+  programLessons: number
 }
 
 export type AssessmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2893,6 +3101,7 @@ export type AssessmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extens
   shares?: boolean | AssessmentCountOutputTypeCountSharesArgs
   scheduledEmails?: boolean | AssessmentCountOutputTypeCountScheduledEmailsArgs
   assignedStudents?: boolean | AssessmentCountOutputTypeCountAssignedStudentsArgs
+  programLessons?: boolean | AssessmentCountOutputTypeCountProgramLessonsArgs
 }
 
 /**
@@ -2940,6 +3149,13 @@ export type AssessmentCountOutputTypeCountAssignedStudentsArgs<ExtArgs extends r
   where?: Prisma.AssessmentAssignedStudentWhereInput
 }
 
+/**
+ * AssessmentCountOutputType without action
+ */
+export type AssessmentCountOutputTypeCountProgramLessonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramLessonWhereInput
+}
+
 
 export type AssessmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2976,6 +3192,7 @@ export type AssessmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   shares?: boolean | Prisma.Assessment$sharesArgs<ExtArgs>
   scheduledEmails?: boolean | Prisma.Assessment$scheduledEmailsArgs<ExtArgs>
   assignedStudents?: boolean | Prisma.Assessment$assignedStudentsArgs<ExtArgs>
+  programLessons?: boolean | Prisma.Assessment$programLessonsArgs<ExtArgs>
   _count?: boolean | Prisma.AssessmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assessment"]>
 
@@ -3082,6 +3299,7 @@ export type AssessmentInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   shares?: boolean | Prisma.Assessment$sharesArgs<ExtArgs>
   scheduledEmails?: boolean | Prisma.Assessment$scheduledEmailsArgs<ExtArgs>
   assignedStudents?: boolean | Prisma.Assessment$assignedStudentsArgs<ExtArgs>
+  programLessons?: boolean | Prisma.Assessment$programLessonsArgs<ExtArgs>
   _count?: boolean | Prisma.AssessmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AssessmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3115,6 +3333,7 @@ export type $AssessmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
      * * When empty, any student in the batch may see the assessment (legacy).
      */
     assignedStudents: Prisma.$AssessmentAssignedStudentPayload<ExtArgs>[]
+    programLessons: Prisma.$ProgramLessonPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3551,6 +3770,7 @@ export interface Prisma__AssessmentClient<T, Null = never, ExtArgs extends runti
   shares<T extends Prisma.Assessment$sharesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assessment$sharesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   scheduledEmails<T extends Prisma.Assessment$scheduledEmailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assessment$scheduledEmailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduledEmailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedStudents<T extends Prisma.Assessment$assignedStudentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assessment$assignedStudentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentAssignedStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programLessons<T extends Prisma.Assessment$programLessonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assessment$programLessonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramLessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4160,6 +4380,30 @@ export type Assessment$assignedStudentsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.AssessmentAssignedStudentScalarFieldEnum | Prisma.AssessmentAssignedStudentScalarFieldEnum[]
+}
+
+/**
+ * Assessment.programLessons
+ */
+export type Assessment$programLessonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramLesson
+   */
+  select?: Prisma.ProgramLessonSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramLesson
+   */
+  omit?: Prisma.ProgramLessonOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramLessonInclude<ExtArgs> | null
+  where?: Prisma.ProgramLessonWhereInput
+  orderBy?: Prisma.ProgramLessonOrderByWithRelationInput | Prisma.ProgramLessonOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramLessonWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramLessonScalarFieldEnum | Prisma.ProgramLessonScalarFieldEnum[]
 }
 
 /**

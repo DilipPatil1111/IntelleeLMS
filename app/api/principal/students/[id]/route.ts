@@ -10,6 +10,7 @@ import { sendGraduationCertificateEmail } from "@/lib/graduation-certificate";
 import { sendStudentProgramBatchChangeEmail } from "@/lib/student-status-email";
 import { syncProgramApplicationsWithProfileEnrolled } from "@/lib/sync-enrollment-status";
 import type { SuspensionReason } from "@/app/generated/prisma/enums";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -17,8 +18,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const role = (session.user as unknown as Record<string, unknown>).role as string;
-  if (role !== "PRINCIPAL") {
+  if (!hasPrincipalPortalAccess(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -138,11 +138,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const principal = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
-  });
-  if (principal?.role !== "PRINCIPAL") {
+  if (!hasPrincipalPortalAccess(session)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

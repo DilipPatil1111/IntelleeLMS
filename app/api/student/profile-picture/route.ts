@@ -1,6 +1,9 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { uploadProfilePictureToBlob } from "@/lib/file-upload";
 import { NextResponse } from "next/server";
+
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -12,23 +15,25 @@ export async function POST(req: Request) {
 
     if (!file) return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
 
-    const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) return NextResponse.json({ error: "File too large. Max 5MB." }, { status: 400 });
-
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-    if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json({ error: "Invalid file type. Use JPEG, PNG, WebP, or GIF." }, { status: 400 });
-    }
-
     const buffer = Buffer.from(await file.arrayBuffer());
-    const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+    const result = await uploadProfilePictureToBlob({
+      buffer,
+      mimeType: file.type,
+      fileName: file.name,
+      userId: session.user.id,
+    });
+
+    if ("error" in result) {
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
 
     await db.user.update({
       where: { id: session.user.id },
-      data: { profilePicture: base64 },
+      data: { profilePicture: result.url },
     });
 
-    return NextResponse.json({ profilePicture: base64 });
+    return NextResponse.json({ profilePicture: result.url });
   } catch {
     return NextResponse.json({ error: "Failed to upload" }, { status: 500 });
   }

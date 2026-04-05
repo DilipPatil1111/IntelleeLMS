@@ -172,7 +172,7 @@ export type AcademicYearGroupByOutputType = {
   _max: AcademicYearMaxAggregateOutputType | null
 }
 
-type GetAcademicYearGroupByPayload<T extends AcademicYearGroupByArgs> = Prisma.PrismaPromise<
+export type GetAcademicYearGroupByPayload<T extends AcademicYearGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AcademicYearGroupByOutputType, T['by']> &
       {

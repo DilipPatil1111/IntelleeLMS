@@ -10,6 +10,7 @@ import { FileText, ClipboardList, Calendar, Award } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 import { StudentJourneyProgress } from "@/components/student/student-journey-progress";
+import { countIncompleteProgramContentItems } from "@/lib/program-content";
 import type { StudentStatus } from "@/app/generated/prisma/enums";
 
 export default async function StudentDashboard() {
@@ -54,6 +55,12 @@ export default async function StudentDashboard() {
     user.id,
     user.studentProfile?.batchId ?? null
   );
+
+  let programContentIncomplete = 0;
+  if (user.studentProfile?.programId) {
+    const pc = await countIncompleteProgramContentItems(user.id, user.studentProfile.programId);
+    programContentIncomplete = pc.incomplete;
+  }
 
   const journeyStatus = (user.studentProfile?.status ?? "APPLIED") as StudentStatus;
 
@@ -121,6 +128,25 @@ export default async function StudentDashboard() {
             <p className="text-red-500 text-xs mt-1">Please complete your pending quizzes, tests, or assignments.</p>
           </div>
           <a href="/student/assessments" className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700">View Assessments</a>
+        </div>
+      )}
+
+      {programContentIncomplete > 0 && (
+        <div className="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-amber-900 font-semibold text-sm">
+              Program content: {programContentIncomplete} lesson{programContentIncomplete > 1 ? "s" : ""} remaining
+            </p>
+            <p className="text-amber-800/90 text-xs mt-0.5">
+              Complete chapters and lessons under Program Content (including any mandatory quizzes in Assessments).
+            </p>
+          </div>
+          <Link
+            href="/student/program-content"
+            className="inline-flex shrink-0 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700"
+          >
+            Open Program Content
+          </Link>
         </div>
       )}
 

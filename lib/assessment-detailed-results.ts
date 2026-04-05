@@ -226,9 +226,13 @@ export async function getAssessmentResultsReportData(
   };
 }
 
+type ResultsSession = {
+  user: { role: string; grantedPortals?: ("STUDENT" | "TEACHER" | "PRINCIPAL")[] };
+};
+
 export async function canViewAssessmentResults(
   userId: string,
-  role: string,
+  session: ResultsSession,
   assessmentId: string
 ): Promise<boolean> {
   const a = await db.assessment.findUnique({
@@ -236,8 +240,10 @@ export async function canViewAssessmentResults(
     select: { createdById: true },
   });
   if (!a) return false;
-  if (role === "PRINCIPAL") return true;
-  if (role === "TEACHER" && a.createdById === userId) return true;
+  const role = session.user.role;
+  const granted = session.user.grantedPortals ?? [];
+  if (role === "PRINCIPAL" || granted.includes("PRINCIPAL")) return true;
+  if ((role === "TEACHER" || granted.includes("TEACHER")) && a.createdById === userId) return true;
   return false;
 }
 

@@ -1,4 +1,5 @@
-import { sendEmail, escapeHtml, escapeHtmlAttribute } from "@/lib/email";
+import { escapeHtml, escapeHtmlAttribute } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { getServerAppUrl } from "@/lib/app-url";
 import type { StudentStatus } from "@/app/generated/prisma/enums";
 
@@ -77,7 +78,7 @@ export async function sendStudentStatusChangeEmail(params: {
   const html = `
       <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #111827;">
         <div style="border-bottom: 3px solid #4f46e5; padding-bottom: 12px; margin-bottom: 20px;">
-          <h1 style="margin: 0; font-size: 20px; color: #4f46e5;">Intellee College</h1>
+          {INSTITUTION_HEADER}
           <p style="margin: 8px 0 0; font-size: 13px; color: #6b7280;">Enrollment update</p>
         </div>
         <p style="font-size: 16px;">Hello ${escapeHtml(firstName)},</p>
@@ -93,7 +94,7 @@ export async function sendStudentStatusChangeEmail(params: {
       </div>
     `;
   const text = `Hello ${firstName},\n\n${title}\n\nStatus: ${statusLabel(previousStatus)} → ${statusLabel(nextStatus)}\n${programName ? `Program: ${programName}\n` : ""}${batchName ? `Batch: ${batchName}\n` : ""}${enrollmentNo ? `Enrollment #: ${enrollmentNo}\n` : ""}\n${message}\n\nDashboard: ${dash}\nNotifications: ${notif}\n`;
-  await sendEmail({ to, subject: subj, html, text });
+  await sendEmailWithSignature({ to, subject: subj, html, text, senderUserId: null });
 }
 
 /** When principal changes program/batch without changing admission status (e.g. reallocation). */
@@ -109,7 +110,7 @@ export async function sendStudentProgramBatchChangeEmail(params: {
   const subj = "Your program or batch was updated — Intellee College";
   const html = `
       <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #111827;">
-        <h1 style="font-size: 20px; color: #4f46e5;">Intellee College</h1>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(firstName)},</p>
         <p>Your principal has updated your <strong>program or batch</strong> assignment in the system.</p>
         ${programName ? `<p><strong>Program:</strong> ${escapeHtml(programName)}</p>` : ""}
@@ -118,5 +119,5 @@ export async function sendStudentProgramBatchChangeEmail(params: {
         <p style="margin-top: 20px;"><a href="${escapeHtmlAttribute(dash)}" style="background: #4f46e5; color: #fff; padding: 12px 22px; border-radius: 8px; text-decoration: none; display: inline-block;">Open dashboard</a></p>
       </div>`;
   const text = `Hello ${firstName},\n\nYour program or batch was updated.\n${programName ? `Program: ${programName}\n` : ""}${batchName ? `Batch: ${batchName}\n` : ""}${enrollmentNo ? `Enrollment #: ${enrollmentNo}\n` : ""}\n${dash}\n`;
-  await sendEmail({ to, subject: subj, html, text });
+  await sendEmailWithSignature({ to, subject: subj, html, text, senderUserId: null });
 }

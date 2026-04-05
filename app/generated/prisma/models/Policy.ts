@@ -193,7 +193,7 @@ export type PolicyGroupByOutputType = {
   _max: PolicyMaxAggregateOutputType | null
 }
 
-type GetPolicyGroupByPayload<T extends PolicyGroupByArgs> = Prisma.PrismaPromise<
+export type GetPolicyGroupByPayload<T extends PolicyGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PolicyGroupByOutputType, T['by']> &
       {

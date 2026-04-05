@@ -34,6 +34,17 @@ interface SendEmailParams {
   text?: string;
   /** Resend accepts Buffer or base64 string per attachment. */
   attachments?: { filename: string; content: Buffer }[];
+  /**
+   * Pre-built HTML signature block (from lib/email-signature.ts).
+   * When provided it is appended after the main HTML body.
+   * Pass `null` explicitly to suppress the signature for a specific email.
+   */
+  signatureHtml?: string | null;
+  /**
+   * Pre-built institution header HTML (logo + name, from lib/email-signature.ts buildEmailHeader()).
+   * Replaces the `{INSTITUTION_HEADER}` placeholder in the HTML body.
+   */
+  headerHtml?: string | null;
 }
 
 export type SendEmailResult =
@@ -41,7 +52,7 @@ export type SendEmailResult =
   | { ok: true; mock: false; id?: string }
   | { ok: false; error: string };
 
-export async function sendEmail({ to, subject, html, text, attachments }: SendEmailParams): Promise<SendEmailResult> {
+export async function sendEmail({ to, subject, html, text, attachments, signatureHtml, headerHtml }: SendEmailParams): Promise<SendEmailResult> {
   const client = getResendClient();
   if (!client) {
     console.warn(
@@ -50,7 +61,13 @@ export async function sendEmail({ to, subject, html, text, attachments }: SendEm
     return { ok: true, mock: true };
   }
 
-  const htmlBody = html ?? (text ? `<p>${text.replace(/</g, "&lt;")}</p>` : "<p></p>");
+  const baseHtml = html ?? (text ? `<p>${text.replace(/</g, "&lt;")}</p>` : "<p></p>");
+  // Replace institution header placeholder, then append signature
+  const FALLBACK_HEADER = `<h2 style="color: #4f46e5;">Intellee College</h2>`;
+  const withHeader = headerHtml !== undefined
+    ? baseHtml.replace(/\{INSTITUTION_HEADER\}/g, headerHtml ?? FALLBACK_HEADER)
+    : baseHtml.replace(/\{INSTITUTION_HEADER\}/g, FALLBACK_HEADER);
+  const htmlBody = signatureHtml ? `${withHeader}${signatureHtml}` : withHeader;
   const textBody = text ?? (html ? html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "");
 
   try {
@@ -87,7 +104,7 @@ export function buildAssessmentInviteEmail(assessmentTitle: string, link: string
     subject: `New Assessment: ${assessmentTitle}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>You have been assigned a new assessment:</p>
         <h3>${assessmentTitle}</h3>
         <p><a href="${link}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Take Assessment</a></p>
@@ -128,7 +145,7 @@ export function buildStudentWelcomeEmail(params: {
     subject: "Your Intellee College account is ready",
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(firstName)},</p>
         <p>An administrator created your student account. Use the credentials below to sign in at the login page. You will be asked to set and confirm a new password before using the student dashboard.</p>
         <div style="background: #f3f4f6; border-radius: 8px; padding: 16px; margin: 16px 0;">
@@ -157,7 +174,7 @@ export function buildRegistrationThankYouEmail(params: {
     subject: `Thank you for applying — ${programName}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(firstName)},</p>
         <p>Thank you for applying to <strong>${escapeHtml(programName)}</strong>. We have received your application.</p>
         <p>Our admissions team will review it. You can sign in anytime to check your status under <strong>Apply</strong> in your student portal.</p>
@@ -184,7 +201,7 @@ export function buildEnrollmentOnboardingEmail(params: {
     subject: `Enrollment confirmed — ${programName}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Dear ${escapeHtml(firstName)},</p>
         <p>Congratulations! Your enrollment in <strong>${escapeHtml(programName)}</strong> is confirmed.</p>
         <p><strong>Enrollment number:</strong> ${escapeHtml(enrollmentNo)}</p>
@@ -229,7 +246,7 @@ export function buildPrincipalTeacherInviteEmail(params: {
     subject: "Your Intellee teacher account is ready",
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(firstName)},</p>
         <p>An administrator has created your <strong>teacher</strong> account. Below are your sign-in details and any program / batch / subject assignments.</p>
         ${listHtml}
@@ -260,7 +277,7 @@ export function buildApplicationRejectedEmail(params: {
     subject: `Update on your application — ${programName}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(firstName)},</p>
         <p>Thank you for your interest in <strong>${escapeHtml(programName)}</strong>. After review, we are unable to offer admission for this intake.</p>
         ${note ? `<p style="color: #374151;"><strong>Note from admissions:</strong> ${escapeHtml(note)}</p>` : ""}
@@ -289,7 +306,7 @@ export function buildTeacherSelfRegistrationEmail(params: {
     subject: "Welcome to Intellee College — teacher account created",
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(firstName)},</p>
         <p>Your <strong>teacher</strong> account has been created successfully. You can sign in with the email and password you used to register.</p>
         <p><strong>Programs you selected:</strong></p>
@@ -320,7 +337,7 @@ export function buildTeacherCoursesAssignedEmail(params: {
     subject: "You have been assigned to teach — Intellee College",
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(firstName)},</p>
         <p><strong>Congratulations!</strong> Your principal has assigned you to the following program and class work:</p>
         <ul style="line-height: 1.6;">${listHtml}</ul>
@@ -339,7 +356,7 @@ export function buildResultsEmail(studentName: string, assessmentTitle: string, 
     subject: `Results: ${assessmentTitle}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Dear ${studentName},</p>
         <p>Your results for <strong>${assessmentTitle}</strong> are now available:</p>
         <div style="background: ${passed ? "#f0fdf4" : "#fef2f2"}; border: 1px solid ${passed ? "#86efac" : "#fca5a5"}; border-radius: 8px; padding: 16px; margin: 16px 0;">

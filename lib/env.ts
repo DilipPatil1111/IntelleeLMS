@@ -8,6 +8,14 @@ const envSchema = z.object({
   RESEND_FROM_EMAIL: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
   NEXT_PUBLIC_APP_URL: z.string().optional(),
+  /** Vercel Blob — required in production for file uploads */
+  BLOB_READ_WRITE_TOKEN: z.string().optional(),
+  /** Match your Vercel Blob store: use `private` if the store was created as private (default upload access). */
+  BLOB_ACCESS: z.enum(["public", "private"]).optional(),
+  /** Public-facing copy of BLOB_ACCESS — safe to use in client components. Must match BLOB_ACCESS. */
+  NEXT_PUBLIC_BLOB_ACCESS: z.enum(["public", "private"]).optional(),
+  /** Cron secret — required to secure the /api/cron/send-emails endpoint */
+  CRON_SECRET: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);

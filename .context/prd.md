@@ -74,7 +74,9 @@ Communications & engagement
 Platform & compliance
 ├── Auth (credentials), password change, optional must-change-password
 ├── Audit log
-└── Cron/scheduled email sending (operational)
+├── Cron/scheduled email sending (secured with CRON_SECRET bearer token)
+├── Portal grants (PortalAccess model: assign cross-role portal access to any user)
+└── File uploads via Vercel Blob Storage (no local disk writes)
 ```
 
 ---
@@ -94,7 +96,9 @@ User (Role: STUDENT | TEACHER | PRINCIPAL)
 ├── topicProgress, attendanceRecords, …
 └── createdAssessments, announcementsCreated, …
 
-InstitutionSettings (singleton row: defaults & template URLs)
+InstitutionSettings (singleton row: defaults & template URLs — stored in Vercel Blob)
+
+PortalAccess (grants a user access to an additional portal by role string)
 
 Program
 ├── Batch[] (per AcademicYear)
@@ -127,7 +131,7 @@ Other: Holiday, Policy, SharedDocument, EmailTemplate, Announcement + Announceme
 
 | Area | Capabilities |
 |------|----------------|
-| **Identity & access** | Email/password login; JWT sessions; role-restricted routes; profile fields; optional forced password change |
+| **Identity & access** | Email/password login; JWT sessions; role-restricted routes; portal grants (cross-role access via `PortalAccess`); profile fields; optional forced password change |
 | **Academics** | Programs with compliance thresholds; academic years; batches; subjects/modules/topics; rich topic content; teacher scope by program and batch |
 | **Admissions** | Applications with review workflow; linkage to program and optional batch |
 | **Students** | Enrollment numbers; status lifecycle and notes; onboarding artifacts; fee payment records |
@@ -148,4 +152,4 @@ Other: Holiday, Policy, SharedDocument, EmailTemplate, Announcement + Announceme
 
 ---
 
-*Last aligned with repository structure and `prisma/schema.prisma` as of document creation.*
+*Last aligned with repository structure and `prisma/schema.prisma`. Updated after full codebase audit (Apr 2026): Vercel Blob storage migration, portal grants, ESLint cleanup, loading/error boundaries, cron security.*

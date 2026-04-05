@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
+import { blobFileUrl } from "@/lib/blob-url";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Select } from "@/components/ui/select";
 
@@ -45,15 +46,16 @@ export default function PrincipalPoliciesPage() {
   const [editing, setEditing] = useState<Policy | null>(null);
   const [form, setForm] = useState(emptyForm);
 
-  useEffect(() => {
-    loadPolicies();
-  }, []);
-
-  async function loadPolicies() {
+  const loadPolicies = useCallback(async () => {
     const res = await fetch("/api/principal/policies");
     const data = await res.json();
     setPolicies(data.policies || []);
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadPolicies();
+  }, [loadPolicies]);
 
   async function handleSave() {
     const url = editing ? `/api/principal/policies/${editing.id}` : "/api/principal/policies";
@@ -116,7 +118,7 @@ export default function PrincipalPoliciesPage() {
                   </div>
                   {p.fileUrl && (
                     <a
-                      href={p.fileUrl}
+                      href={blobFileUrl(p.fileUrl, undefined, true)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-indigo-600 hover:underline mt-2 inline-block truncate max-w-full"

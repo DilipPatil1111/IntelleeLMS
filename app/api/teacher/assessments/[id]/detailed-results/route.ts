@@ -1,18 +1,16 @@
-import { auth } from "@/lib/auth";
 import { canViewAssessmentResults, getAssessmentResultsReportData } from "@/lib/assessment-detailed-results";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const role = (session.user as unknown as Record<string, unknown>).role as string;
-  if (role !== "TEACHER") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const { id: assessmentId } = await params;
-  const allowed = await canViewAssessmentResults(session.user.id, role, assessmentId);
+  const allowed = await canViewAssessmentResults(session.user.id, session, assessmentId);
   if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const data = await getAssessmentResultsReportData(assessmentId);

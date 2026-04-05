@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -38,21 +39,22 @@ export default function PrincipalReportsPage() {
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
   const [programId, setProgramId] = useState("");
 
-  useEffect(() => {
-    fetch("/api/principal/programs").then((r) => r.json()).then((d) => {
-      setPrograms((d.programs || []).map((p: { id: string; name: string }) => ({ value: p.id, label: p.name })));
-    });
-    loadReports();
-  }, []);
-
-  function loadReports() {
+  const loadReports = useCallback(() => {
     const url = programId ? `/api/principal/reports?programId=${programId}` : "/api/principal/reports";
     fetch(url).then((r) => r.json()).then((d) => setData(d.data || []));
     const aq = programId ? `?programId=${programId}` : "";
     fetch(`/api/principal/analytics${aq}`).then((r) => r.json()).then((d) => setAnalytics(d));
-  }
+  }, [programId]);
 
-  useEffect(() => { loadReports(); }, [programId]);
+  useEffect(() => {
+    fetch("/api/principal/programs").then((r) => r.json()).then((d) => {
+      setPrograms((d.programs || []).map((p: { id: string; name: string }) => ({ value: p.id, label: p.name })));
+    });
+  }, []);
+
+  useEffect(() => {
+    loadReports();
+  }, [loadReports]);
 
   const statusPieData = analytics
     ? Object.entries(analytics.studentsByStatus).map(([name, value]) => ({ name, value }))
@@ -69,6 +71,18 @@ export default function PrincipalReportsPage() {
           </a>
         }
       />
+
+      <Card className="mb-6 border-indigo-100 bg-indigo-50/40">
+        <CardContent className="py-4">
+          <p className="font-medium text-gray-900">Attendance</p>
+          <p className="text-sm text-gray-600 mb-2">
+            Student-wise batch attendance grid (P/A/L), date columns, and totals — open the grid to filter by program, subject, and batch.
+          </p>
+          <Link href="/principal/attendance?tab=sheet" className="text-indigo-600 font-medium hover:underline">
+            Open attendance grid →
+          </Link>
+        </CardContent>
+      </Card>
 
       <div className="mb-6 max-w-xs">
         <Select label="Filter by Program" value={programId} onChange={(e) => setProgramId(e.target.value)} options={programs} placeholder="All Programs" />
