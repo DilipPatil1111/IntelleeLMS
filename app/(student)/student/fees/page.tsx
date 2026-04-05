@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { StatCard } from "@/components/ui/stat-card";
 import { formatDate } from "@/lib/utils";
 import { DollarSign, CreditCard, AlertTriangle } from "lucide-react";
+import { FeeReceiptsClient } from "./fee-receipts-client";
 
 export default async function StudentFeesPage() {
   const session = await auth();
@@ -132,6 +133,8 @@ export default async function StudentFeesPage() {
           )}
         </CardContent>
       </Card>
+
+      <FeeReceiptsClient />
     </>
   );
 }

@@ -1,6 +1,26 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { StudentSubmissionKind } from "@/app/generated/prisma/client";
 import { NextResponse } from "next/server";
+
+type AutoItem = {
+  studentName: string;
+  fileName: string;
+  fileUrl: string | null;
+  contentType: string;
+  fileSize: number;
+  status: "uploaded" | "pending";
+  amount?: number;
+  uploadedAt?: string | null;
+  /** User id — for principal replace/delete on binder sources */
+  studentUserId?: string;
+  binderKind?: "signed_contract" | "photo_id" | "fee_proof" | "fee_payment";
+  feePaymentId?: string | null;
+  /** Principal may replace/remove this row (latest in its chain) */
+  canManage?: boolean;
+};
+
+type StudentGroup = { studentName: string; items: AutoItem[] };
 
 export async function GET(
   _req: Request,
@@ -18,29 +38,34 @@ export async function GET(
   }
 
   if (!folder.autoPopulateKey) {
-    return NextResponse.json({ files: [] });
+    return NextResponse.json({ autoFiles: [], byStudent: [] });
   }
 
   switch (folder.autoPopulateKey) {
-    case "signed_contracts":
-      return NextResponse.json({
-        files: await getSignedContracts(folder.batchId),
-      });
+    case "signed_contracts": {
+      const byStudent = await getSignedContractsGrouped(folder.batchId);
+      const autoFiles = flattenGroups(byStudent);
+      return NextResponse.json({ autoFiles, byStudent });
+    }
 
-    case "photo_ids":
-      return NextResponse.json({
-        files: await getPhotoIds(folder.batchId),
-      });
+    case "photo_ids": {
+      const byStudent = await getPhotoIdsGrouped(folder.batchId);
+      const autoFiles = flattenGroups(byStudent);
+      return NextResponse.json({ autoFiles, byStudent });
+    }
 
-    case "payment_receipts":
-      return NextResponse.json({
-        files: await getPaymentReceipts(folder.batchId),
-      });
+    case "payment_receipts": {
+      const byStudent = await getPaymentReceiptsGrouped(folder.batchId);
+      return NextResponse.json({ autoFiles: flattenGroups(byStudent), byStudent });
+    }
 
-    case "pre_admission":
+    case "pre_admission": {
+      const files = await getPreAdmissionResults(folder.batchId);
       return NextResponse.json({
-        files: await getPreAdmissionResults(folder.batchId),
+        autoFiles: files,
+        byStudent: [],
       });
+    }
 
     case "attendance":
       return NextResponse.json({
@@ -56,8 +81,54 @@ export async function GET(
       });
 
     default:
-      return NextResponse.json({ files: [] });
+      return NextResponse.json({ autoFiles: [], byStudent: [] });
   }
+}
+
+function guessContentType(fileName: string): string {
+  const lower = fileName.toLowerCase();
+  if (lower.endsWith(".pdf")) return "application/pdf";
+  if (lower.endsWith(".png")) return "image/png";
+  if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+  return "application/octet-stream";
+}
+
+function flattenGroups(byStudent: StudentGroup[]): AutoItem[] {
+  return byStudent.flatMap((g) => g.items);
+}
+
+/** Merge chronological submission logs with current onboarding/payment file (deduped). */
+function mergeSubmissionTrail(
+  logs: { fileUrl: string; fileName: string; createdAt: Date }[],
+  current: { url: string | null; fileName: string | null; at: Date | null },
+): Array<{
+  fileUrl: string;
+  fileName: string;
+  uploadedAt: Date;
+  canManage: boolean;
+}> {
+  const rows = logs.map((l) => ({
+    fileUrl: l.fileUrl,
+    fileName: l.fileName,
+    uploadedAt: l.createdAt,
+    canManage: false,
+  }));
+  if (current.url) {
+    const last = rows[rows.length - 1];
+    if (!last || last.fileUrl !== current.url) {
+      rows.push({
+        fileUrl: current.url,
+        fileName: current.fileName ?? "file",
+        uploadedAt: current.at ?? new Date(),
+        canManage: false,
+      });
+    }
+  }
+  if (rows.length) {
+    const last = rows[rows.length - 1];
+    rows[rows.length - 1] = { ...last, canManage: true };
+  }
+  return rows;
 }
 
 async function getStudentsInBatch(batchId: string | null) {
@@ -70,87 +141,192 @@ async function getStudentsInBatch(batchId: string | null) {
   });
 }
 
-async function getSignedContracts(batchId: string | null) {
+async function getSignedContractsGrouped(
+  batchId: string | null,
+): Promise<StudentGroup[]> {
   const students = await getStudentsInBatch(batchId);
-  const results = [];
+  const results: StudentGroup[] = [];
 
   for (const student of students) {
     const studentName =
       `${student.user.firstName ?? ""} ${student.user.lastName ?? ""}`.trim();
-    const onboarding = await db.studentOnboarding.findUnique({
-      where: { userId: student.user.id },
+    const uid = student.user.id;
+
+    const logs = await db.studentSubmissionLog.findMany({
+      where: {
+        studentProfileId: student.id,
+        kind: StudentSubmissionKind.SIGNED_CONTRACT,
+      },
+      orderBy: { createdAt: "asc" },
     });
 
-    if (onboarding?.signedContractUploadUrl) {
-      results.push({
-        studentName,
-        fileUrl: onboarding.signedContractUploadUrl,
-        fileName:
-          onboarding.signedContractFileName ??
-          `${studentName} - Signed Contract`,
-        uploadedAt: onboarding.contractAcknowledgedAt,
-      });
-    } else {
-      results.push({ studentName, pending: true });
-    }
+    const onboarding = await db.studentOnboarding.findUnique({
+      where: { userId: uid },
+    });
+
+    const trail = mergeSubmissionTrail(
+      logs.map((l) => ({
+        fileUrl: l.fileUrl,
+        fileName: l.fileName,
+        createdAt: l.createdAt,
+      })),
+      {
+        url: onboarding?.signedContractUploadUrl ?? null,
+        fileName: onboarding?.signedContractFileName ?? null,
+        at: onboarding?.contractAcknowledgedAt ?? null,
+      },
+    );
+
+    const items: AutoItem[] =
+      trail.length === 0
+        ? [
+            {
+              studentName,
+              studentUserId: uid,
+              binderKind: "signed_contract",
+              fileName: "Pending",
+              fileUrl: null,
+              contentType: "application/octet-stream",
+              fileSize: 0,
+              status: "pending",
+            },
+          ]
+        : trail.map((t) => ({
+            studentName,
+            studentUserId: uid,
+            binderKind: "signed_contract" as const,
+            fileName: t.fileName,
+            fileUrl: t.fileUrl,
+            contentType: guessContentType(t.fileName),
+            fileSize: 0,
+            status: "uploaded" as const,
+            uploadedAt: t.uploadedAt.toISOString(),
+            canManage: t.canManage,
+          }));
+
+    results.push({ studentName, items });
   }
 
   return results;
 }
 
-async function getPhotoIds(batchId: string | null) {
+async function getPhotoIdsGrouped(batchId: string | null): Promise<StudentGroup[]> {
   const students = await getStudentsInBatch(batchId);
-  const results = [];
+  const results: StudentGroup[] = [];
 
   for (const student of students) {
     const studentName =
       `${student.user.firstName ?? ""} ${student.user.lastName ?? ""}`.trim();
-    const onboarding = await db.studentOnboarding.findUnique({
-      where: { userId: student.user.id },
+    const uid = student.user.id;
+
+    const logs = await db.studentSubmissionLog.findMany({
+      where: {
+        studentProfileId: student.id,
+        kind: StudentSubmissionKind.GOVERNMENT_ID,
+      },
+      orderBy: { createdAt: "asc" },
     });
 
-    if (onboarding?.governmentIdUploadUrl) {
-      results.push({
-        studentName,
-        fileUrl: onboarding.governmentIdUploadUrl,
-        fileName:
-          onboarding.governmentIdFileName ??
-          `${studentName} - Government ID`,
-        uploadedAt: onboarding.governmentIdsUploadedAt,
-      });
-    } else {
-      results.push({ studentName, pending: true });
-    }
+    const onboarding = await db.studentOnboarding.findUnique({
+      where: { userId: uid },
+    });
+
+    const trail = mergeSubmissionTrail(
+      logs.map((l) => ({
+        fileUrl: l.fileUrl,
+        fileName: l.fileName,
+        createdAt: l.createdAt,
+      })),
+      {
+        url: onboarding?.governmentIdUploadUrl ?? null,
+        fileName: onboarding?.governmentIdFileName ?? null,
+        at: onboarding?.governmentIdsUploadedAt ?? null,
+      },
+    );
+
+    const items: AutoItem[] =
+      trail.length === 0
+        ? [
+            {
+              studentName,
+              studentUserId: uid,
+              binderKind: "photo_id",
+              fileName: "Pending",
+              fileUrl: null,
+              contentType: "application/octet-stream",
+              fileSize: 0,
+              status: "pending",
+            },
+          ]
+        : trail.map((t) => ({
+            studentName,
+            studentUserId: uid,
+            binderKind: "photo_id" as const,
+            fileName: t.fileName,
+            fileUrl: t.fileUrl,
+            contentType: guessContentType(t.fileName),
+            fileSize: 0,
+            status: "uploaded" as const,
+            uploadedAt: t.uploadedAt.toISOString(),
+            canManage: t.canManage,
+          }));
+
+    results.push({ studentName, items });
   }
 
   return results;
 }
 
-async function getPaymentReceipts(batchId: string | null) {
+async function getPaymentReceiptsGrouped(
+  batchId: string | null,
+): Promise<StudentGroup[]> {
   const students = await getStudentsInBatch(batchId);
-  const results = [];
+  const results: StudentGroup[] = [];
 
   for (const student of students) {
     const studentName =
       `${student.user.firstName ?? ""} ${student.user.lastName ?? ""}`.trim();
+    const uid = student.user.id;
 
-    const receipts: Array<{
-      fileUrl: string;
-      fileName: string;
-      amount?: number;
-      uploadedAt: Date | null;
-    }> = [];
+    const items: AutoItem[] = [];
 
     const onboarding = await db.studentOnboarding.findUnique({
-      where: { userId: student.user.id },
+      where: { userId: uid },
     });
 
-    if (onboarding?.feeProofUploadUrl) {
-      receipts.push({
-        fileUrl: onboarding.feeProofUploadUrl,
-        fileName:
-          onboarding.feeProofFileName ?? `${studentName} - Fee Proof`,
-        uploadedAt: onboarding.feeProofUploadedAt,
+    const feeProofLogs = await db.studentSubmissionLog.findMany({
+      where: {
+        studentProfileId: student.id,
+        kind: StudentSubmissionKind.ONBOARDING_FEE_PROOF,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    const feeProofTrail = mergeSubmissionTrail(
+      feeProofLogs.map((l) => ({
+        fileUrl: l.fileUrl,
+        fileName: l.fileName,
+        createdAt: l.createdAt,
+      })),
+      {
+        url: onboarding?.feeProofUploadUrl ?? null,
+        fileName: onboarding?.feeProofFileName ?? null,
+        at: onboarding?.feeProofUploadedAt ?? null,
+      },
+    );
+
+    for (const t of feeProofTrail) {
+      items.push({
+        studentName,
+        studentUserId: uid,
+        binderKind: "fee_proof",
+        fileName: t.fileName,
+        fileUrl: t.fileUrl,
+        contentType: guessContentType(t.fileName),
+        fileSize: 0,
+        status: "uploaded",
+        uploadedAt: t.uploadedAt.toISOString(),
+        canManage: t.canManage,
       });
     }
 
@@ -163,23 +339,62 @@ async function getPaymentReceipts(batchId: string | null) {
     });
 
     for (const payment of feePayments) {
-      if (payment.receiptUrl) {
-        receipts.push({
-          fileUrl: payment.receiptUrl,
-          fileName:
-            payment.receiptFileName ??
-            `${studentName} - Payment Receipt`,
+      if (!payment.receiptUrl) continue;
+
+      const payLogs = await db.studentSubmissionLog.findMany({
+        where: {
+          studentProfileId: student.id,
+          kind: StudentSubmissionKind.FEE_RECEIPT,
+          feePaymentId: payment.id,
+        },
+        orderBy: { createdAt: "asc" },
+      });
+
+      const payTrail = mergeSubmissionTrail(
+        payLogs.map((l) => ({
+          fileUrl: l.fileUrl,
+          fileName: l.fileName,
+          createdAt: l.createdAt,
+        })),
+        {
+          url: payment.receiptUrl,
+          fileName: payment.receiptFileName,
+          at: payment.paymentDate,
+        },
+      );
+
+      for (const t of payTrail) {
+        items.push({
+          studentName,
+          studentUserId: uid,
+          binderKind: "fee_payment",
+          feePaymentId: payment.id,
+          fileName: t.fileName,
+          fileUrl: t.fileUrl,
+          contentType: guessContentType(t.fileName),
+          fileSize: 0,
+          status: "uploaded",
           amount: payment.amountPaid,
-          uploadedAt: payment.createdAt,
+          uploadedAt: t.uploadedAt.toISOString(),
+          canManage: t.canManage,
         });
       }
     }
 
-    results.push({
-      studentName,
-      receipts,
-      pending: receipts.length === 0,
-    });
+    if (items.length === 0) {
+      items.push({
+        studentName,
+        studentUserId: uid,
+        binderKind: "fee_proof",
+        fileName: "Pending",
+        fileUrl: null,
+        contentType: "application/octet-stream",
+        fileSize: 0,
+        status: "pending",
+      });
+    }
+
+    results.push({ studentName, items });
   }
 
   return results;
@@ -187,7 +402,7 @@ async function getPaymentReceipts(batchId: string | null) {
 
 async function getPreAdmissionResults(batchId: string | null) {
   const students = await getStudentsInBatch(batchId);
-  const results = [];
+  const results: AutoItem[] = [];
 
   for (const student of students) {
     const studentName =
@@ -213,20 +428,33 @@ async function getPreAdmissionResults(batchId: string | null) {
       if (attempt) {
         results.push({
           studentName,
-          assessmentTitle: attempt.assessment.title,
-          score: attempt.totalScore ?? 0,
-          percentage: attempt.percentage ?? 0,
-          completedAt: onboarding.preAdmissionCompletedAt,
+          fileName: `${attempt.assessment.title} — ${attempt.percentage ?? 0}%`,
+          fileUrl: null,
+          contentType: "text/plain",
+          fileSize: 0,
+          status: "uploaded",
+          uploadedAt: onboarding.preAdmissionCompletedAt.toISOString(),
         });
       } else {
         results.push({
           studentName,
-          completedAt: onboarding.preAdmissionCompletedAt,
-          pending: false,
+          fileName: "Pre-admission completed",
+          fileUrl: null,
+          contentType: "text/plain",
+          fileSize: 0,
+          status: "uploaded",
+          uploadedAt: onboarding.preAdmissionCompletedAt.toISOString(),
         });
       }
     } else {
-      results.push({ studentName, pending: true });
+      results.push({
+        studentName,
+        fileName: "Pending",
+        fileUrl: null,
+        contentType: "application/octet-stream",
+        fileSize: 0,
+        status: "pending",
+      });
     }
   }
 

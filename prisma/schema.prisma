@@ -492,6 +492,7 @@ model StudentProfile {
   program        Program?      @relation(fields: [programId], references: [id])
   batch          Batch?        @relation(fields: [batchId], references: [id])
   feePayments    FeePayment[]
+  submissionLogs StudentSubmissionLog[]
 }
 
 /** Post-enrollment checklist; created when a student is enrolled from an application. */
@@ -593,6 +594,32 @@ model FeePayment {
 
   studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id])
   feeStructure     FeeStructure   @relation(fields: [feeStructureId], references: [id])
+  submissionLogs   StudentSubmissionLog[]
+}
+
+/** Append-only history for student uploads (onboarding docs + fee receipts) for audit trail in Pending Actions / Fees. */
+model StudentSubmissionLog {
+  id               String                @id @default(cuid())
+  studentProfileId String
+  kind             StudentSubmissionKind
+  feePaymentId     String?
+  fileUrl          String
+  fileName         String
+  amountPaid       Float?
+  createdAt        DateTime              @default(now())
+
+  studentProfile StudentProfile @relation(fields: [studentProfileId], references: [id], onDelete: Cascade)
+  feePayment     FeePayment?    @relation(fields: [feePaymentId], references: [id], onDelete: SetNull)
+
+  @@index([studentProfileId, kind])
+  @@index([feePaymentId])
+}
+
+enum StudentSubmissionKind {
+  SIGNED_CONTRACT
+  GOVERNMENT_ID
+  ONBOARDING_FEE_PROOF
+  FEE_RECEIPT
 }
 
 // ─── Assessments ─────────────────────────────────────────────────────

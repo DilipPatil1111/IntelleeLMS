@@ -242,6 +242,7 @@ export type StudentProfileWhereInput = {
   program?: Prisma.XOR<Prisma.ProgramNullableScalarRelationFilter, Prisma.ProgramWhereInput> | null
   batch?: Prisma.XOR<Prisma.BatchNullableScalarRelationFilter, Prisma.BatchWhereInput> | null
   feePayments?: Prisma.FeePaymentListRelationFilter
+  submissionLogs?: Prisma.StudentSubmissionLogListRelationFilter
 }
 
 export type StudentProfileOrderByWithRelationInput = {
@@ -261,6 +262,7 @@ export type StudentProfileOrderByWithRelationInput = {
   program?: Prisma.ProgramOrderByWithRelationInput
   batch?: Prisma.BatchOrderByWithRelationInput
   feePayments?: Prisma.FeePaymentOrderByRelationAggregateInput
+  submissionLogs?: Prisma.StudentSubmissionLogOrderByRelationAggregateInput
 }
 
 export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -283,6 +285,7 @@ export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
   program?: Prisma.XOR<Prisma.ProgramNullableScalarRelationFilter, Prisma.ProgramWhereInput> | null
   batch?: Prisma.XOR<Prisma.BatchNullableScalarRelationFilter, Prisma.BatchWhereInput> | null
   feePayments?: Prisma.FeePaymentListRelationFilter
+  submissionLogs?: Prisma.StudentSubmissionLogListRelationFilter
 }, "id" | "userId" | "enrollmentNo">
 
 export type StudentProfileOrderByWithAggregationInput = {
@@ -335,6 +338,7 @@ export type StudentProfileCreateInput = {
   program?: Prisma.ProgramCreateNestedOneWithoutStudentsInput
   batch?: Prisma.BatchCreateNestedOneWithoutStudentsInput
   feePayments?: Prisma.FeePaymentCreateNestedManyWithoutStudentProfileInput
+  submissionLogs?: Prisma.StudentSubmissionLogCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateInput = {
@@ -351,6 +355,7 @@ export type StudentProfileUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUpdateInput = {
@@ -367,6 +372,7 @@ export type StudentProfileUpdateInput = {
   program?: Prisma.ProgramUpdateOneWithoutStudentsNestedInput
   batch?: Prisma.BatchUpdateOneWithoutStudentsNestedInput
   feePayments?: Prisma.FeePaymentUpdateManyWithoutStudentProfileNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateInput = {
@@ -383,6 +389,7 @@ export type StudentProfileUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileCreateManyInput = {
@@ -630,6 +637,20 @@ export type StudentProfileUpdateOneRequiredWithoutFeePaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentProfileUpdateToOneWithWhereWithoutFeePaymentsInput, Prisma.StudentProfileUpdateWithoutFeePaymentsInput>, Prisma.StudentProfileUncheckedUpdateWithoutFeePaymentsInput>
 }
 
+export type StudentProfileCreateNestedOneWithoutSubmissionLogsInput = {
+  create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutSubmissionLogsInput, Prisma.StudentProfileUncheckedCreateWithoutSubmissionLogsInput>
+  connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutSubmissionLogsInput
+  connect?: Prisma.StudentProfileWhereUniqueInput
+}
+
+export type StudentProfileUpdateOneRequiredWithoutSubmissionLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutSubmissionLogsInput, Prisma.StudentProfileUncheckedCreateWithoutSubmissionLogsInput>
+  connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutSubmissionLogsInput
+  upsert?: Prisma.StudentProfileUpsertWithoutSubmissionLogsInput
+  connect?: Prisma.StudentProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentProfileUpdateToOneWithWhereWithoutSubmissionLogsInput, Prisma.StudentProfileUpdateWithoutSubmissionLogsInput>, Prisma.StudentProfileUncheckedUpdateWithoutSubmissionLogsInput>
+}
+
 export type StudentProfileCreateWithoutUserInput = {
   id?: string
   enrollmentNo: string
@@ -643,6 +664,7 @@ export type StudentProfileCreateWithoutUserInput = {
   program?: Prisma.ProgramCreateNestedOneWithoutStudentsInput
   batch?: Prisma.BatchCreateNestedOneWithoutStudentsInput
   feePayments?: Prisma.FeePaymentCreateNestedManyWithoutStudentProfileInput
+  submissionLogs?: Prisma.StudentSubmissionLogCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutUserInput = {
@@ -658,6 +680,7 @@ export type StudentProfileUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutUserInput = {
@@ -689,6 +712,7 @@ export type StudentProfileUpdateWithoutUserInput = {
   program?: Prisma.ProgramUpdateOneWithoutStudentsNestedInput
   batch?: Prisma.BatchUpdateOneWithoutStudentsNestedInput
   feePayments?: Prisma.FeePaymentUpdateManyWithoutStudentProfileNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutUserInput = {
@@ -704,6 +728,7 @@ export type StudentProfileUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileCreateWithoutProgramInput = {
@@ -719,6 +744,7 @@ export type StudentProfileCreateWithoutProgramInput = {
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
   batch?: Prisma.BatchCreateNestedOneWithoutStudentsInput
   feePayments?: Prisma.FeePaymentCreateNestedManyWithoutStudentProfileInput
+  submissionLogs?: Prisma.StudentSubmissionLogCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutProgramInput = {
@@ -734,6 +760,7 @@ export type StudentProfileUncheckedCreateWithoutProgramInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutProgramInput = {
@@ -793,6 +820,7 @@ export type StudentProfileCreateWithoutBatchInput = {
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
   program?: Prisma.ProgramCreateNestedOneWithoutStudentsInput
   feePayments?: Prisma.FeePaymentCreateNestedManyWithoutStudentProfileInput
+  submissionLogs?: Prisma.StudentSubmissionLogCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutBatchInput = {
@@ -808,6 +836,7 @@ export type StudentProfileUncheckedCreateWithoutBatchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutBatchInput = {
@@ -849,6 +878,7 @@ export type StudentProfileCreateWithoutFeePaymentsInput = {
   user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
   program?: Prisma.ProgramCreateNestedOneWithoutStudentsInput
   batch?: Prisma.BatchCreateNestedOneWithoutStudentsInput
+  submissionLogs?: Prisma.StudentSubmissionLogCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutFeePaymentsInput = {
@@ -864,6 +894,7 @@ export type StudentProfileUncheckedCreateWithoutFeePaymentsInput = {
   graduationCertificateSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutFeePaymentsInput = {
@@ -895,6 +926,7 @@ export type StudentProfileUpdateWithoutFeePaymentsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
   program?: Prisma.ProgramUpdateOneWithoutStudentsNestedInput
   batch?: Prisma.BatchUpdateOneWithoutStudentsNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutFeePaymentsInput = {
@@ -910,6 +942,87 @@ export type StudentProfileUncheckedUpdateWithoutFeePaymentsInput = {
   graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedUpdateManyWithoutStudentProfileNestedInput
+}
+
+export type StudentProfileCreateWithoutSubmissionLogsInput = {
+  id?: string
+  enrollmentNo: string
+  status?: $Enums.StudentStatus
+  enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
+  program?: Prisma.ProgramCreateNestedOneWithoutStudentsInput
+  batch?: Prisma.BatchCreateNestedOneWithoutStudentsInput
+  feePayments?: Prisma.FeePaymentCreateNestedManyWithoutStudentProfileInput
+}
+
+export type StudentProfileUncheckedCreateWithoutSubmissionLogsInput = {
+  id?: string
+  userId: string
+  enrollmentNo: string
+  programId?: string | null
+  batchId?: string | null
+  status?: $Enums.StudentStatus
+  enrollmentDate?: Date | string | null
+  suspensionReason?: $Enums.SuspensionReason | null
+  statusNote?: string | null
+  graduationCertificateSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  feePayments?: Prisma.FeePaymentUncheckedCreateNestedManyWithoutStudentProfileInput
+}
+
+export type StudentProfileCreateOrConnectWithoutSubmissionLogsInput = {
+  where: Prisma.StudentProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentProfileCreateWithoutSubmissionLogsInput, Prisma.StudentProfileUncheckedCreateWithoutSubmissionLogsInput>
+}
+
+export type StudentProfileUpsertWithoutSubmissionLogsInput = {
+  update: Prisma.XOR<Prisma.StudentProfileUpdateWithoutSubmissionLogsInput, Prisma.StudentProfileUncheckedUpdateWithoutSubmissionLogsInput>
+  create: Prisma.XOR<Prisma.StudentProfileCreateWithoutSubmissionLogsInput, Prisma.StudentProfileUncheckedCreateWithoutSubmissionLogsInput>
+  where?: Prisma.StudentProfileWhereInput
+}
+
+export type StudentProfileUpdateToOneWithWhereWithoutSubmissionLogsInput = {
+  where?: Prisma.StudentProfileWhereInput
+  data: Prisma.XOR<Prisma.StudentProfileUpdateWithoutSubmissionLogsInput, Prisma.StudentProfileUncheckedUpdateWithoutSubmissionLogsInput>
+}
+
+export type StudentProfileUpdateWithoutSubmissionLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  enrollmentNo?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+  enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
+  program?: Prisma.ProgramUpdateOneWithoutStudentsNestedInput
+  batch?: Prisma.BatchUpdateOneWithoutStudentsNestedInput
+  feePayments?: Prisma.FeePaymentUpdateManyWithoutStudentProfileNestedInput
+}
+
+export type StudentProfileUncheckedUpdateWithoutSubmissionLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  enrollmentNo?: Prisma.StringFieldUpdateOperationsInput | string
+  programId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus
+  enrollmentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspensionReason?: Prisma.NullableEnumSuspensionReasonFieldUpdateOperationsInput | $Enums.SuspensionReason | null
+  statusNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  graduationCertificateSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileCreateManyProgramInput = {
@@ -939,6 +1052,7 @@ export type StudentProfileUpdateWithoutProgramInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
   batch?: Prisma.BatchUpdateOneWithoutStudentsNestedInput
   feePayments?: Prisma.FeePaymentUpdateManyWithoutStudentProfileNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutProgramInput = {
@@ -954,6 +1068,7 @@ export type StudentProfileUncheckedUpdateWithoutProgramInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateManyWithoutProgramInput = {
@@ -997,6 +1112,7 @@ export type StudentProfileUpdateWithoutBatchInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
   program?: Prisma.ProgramUpdateOneWithoutStudentsNestedInput
   feePayments?: Prisma.FeePaymentUpdateManyWithoutStudentProfileNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutBatchInput = {
@@ -1012,6 +1128,7 @@ export type StudentProfileUncheckedUpdateWithoutBatchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feePayments?: Prisma.FeePaymentUncheckedUpdateManyWithoutStudentProfileNestedInput
+  submissionLogs?: Prisma.StudentSubmissionLogUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateManyWithoutBatchInput = {
@@ -1035,10 +1152,12 @@ export type StudentProfileUncheckedUpdateManyWithoutBatchInput = {
 
 export type StudentProfileCountOutputType = {
   feePayments: number
+  submissionLogs: number
 }
 
 export type StudentProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   feePayments?: boolean | StudentProfileCountOutputTypeCountFeePaymentsArgs
+  submissionLogs?: boolean | StudentProfileCountOutputTypeCountSubmissionLogsArgs
 }
 
 /**
@@ -1056,6 +1175,13 @@ export type StudentProfileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Typ
  */
 export type StudentProfileCountOutputTypeCountFeePaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.FeePaymentWhereInput
+}
+
+/**
+ * StudentProfileCountOutputType without action
+ */
+export type StudentProfileCountOutputTypeCountSubmissionLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentSubmissionLogWhereInput
 }
 
 
@@ -1076,6 +1202,7 @@ export type StudentProfileSelect<ExtArgs extends runtime.Types.Extensions.Intern
   program?: boolean | Prisma.StudentProfile$programArgs<ExtArgs>
   batch?: boolean | Prisma.StudentProfile$batchArgs<ExtArgs>
   feePayments?: boolean | Prisma.StudentProfile$feePaymentsArgs<ExtArgs>
+  submissionLogs?: boolean | Prisma.StudentProfile$submissionLogsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["studentProfile"]>
 
@@ -1136,6 +1263,7 @@ export type StudentProfileInclude<ExtArgs extends runtime.Types.Extensions.Inter
   program?: boolean | Prisma.StudentProfile$programArgs<ExtArgs>
   batch?: boolean | Prisma.StudentProfile$batchArgs<ExtArgs>
   feePayments?: boolean | Prisma.StudentProfile$feePaymentsArgs<ExtArgs>
+  submissionLogs?: boolean | Prisma.StudentProfile$submissionLogsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1156,6 +1284,7 @@ export type $StudentProfilePayload<ExtArgs extends runtime.Types.Extensions.Inte
     program: Prisma.$ProgramPayload<ExtArgs> | null
     batch: Prisma.$BatchPayload<ExtArgs> | null
     feePayments: Prisma.$FeePaymentPayload<ExtArgs>[]
+    submissionLogs: Prisma.$StudentSubmissionLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1574,6 +1703,7 @@ export interface Prisma__StudentProfileClient<T, Null = never, ExtArgs extends r
   program<T extends Prisma.StudentProfile$programArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$programArgs<ExtArgs>>): Prisma.Prisma__ProgramClient<runtime.Types.Result.GetResult<Prisma.$ProgramPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   batch<T extends Prisma.StudentProfile$batchArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$batchArgs<ExtArgs>>): Prisma.Prisma__BatchClient<runtime.Types.Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   feePayments<T extends Prisma.StudentProfile$feePaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$feePaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeePaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  submissionLogs<T extends Prisma.StudentProfile$submissionLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$submissionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentSubmissionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2075,6 +2205,30 @@ export type StudentProfile$feePaymentsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.FeePaymentScalarFieldEnum | Prisma.FeePaymentScalarFieldEnum[]
+}
+
+/**
+ * StudentProfile.submissionLogs
+ */
+export type StudentProfile$submissionLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentSubmissionLog
+   */
+  select?: Prisma.StudentSubmissionLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentSubmissionLog
+   */
+  omit?: Prisma.StudentSubmissionLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentSubmissionLogInclude<ExtArgs> | null
+  where?: Prisma.StudentSubmissionLogWhereInput
+  orderBy?: Prisma.StudentSubmissionLogOrderByWithRelationInput | Prisma.StudentSubmissionLogOrderByWithRelationInput[]
+  cursor?: Prisma.StudentSubmissionLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentSubmissionLogScalarFieldEnum | Prisma.StudentSubmissionLogScalarFieldEnum[]
 }
 
 /**

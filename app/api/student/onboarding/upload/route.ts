@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { ONBOARDING_ALLOWED_EXT, ONBOARDING_MAX_BYTES, uploadToBlob } from "@/lib/file-upload";
 import { notifyPrincipalsIfOnboardingChecklistJustCompleted } from "@/lib/notify-principals-onboarding-complete";
+import { StudentSubmissionKind } from "@/app/generated/prisma/client";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -78,6 +79,27 @@ export async function POST(req: Request) {
     where: { userId: session.user.id },
     data,
   });
+
+  const profile = await db.studentProfile.findUnique({
+    where: { userId: session.user.id },
+    select: { id: true },
+  });
+  if (profile) {
+    const kind =
+      step === "contract"
+        ? StudentSubmissionKind.SIGNED_CONTRACT
+        : step === "ids"
+          ? StudentSubmissionKind.GOVERNMENT_ID
+          : StudentSubmissionKind.ONBOARDING_FEE_PROOF;
+    await db.studentSubmissionLog.create({
+      data: {
+        studentProfileId: profile.id,
+        kind,
+        fileUrl: result.url,
+        fileName: result.storedFileName,
+      },
+    });
+  }
 
   const updated = await db.studentOnboarding.findUnique({ where: { userId: session.user.id } });
 

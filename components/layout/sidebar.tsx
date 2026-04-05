@@ -72,7 +72,7 @@ const principalNav: NavItem[] = [
   { label: "Announcements", href: "/principal/announcements", icon: Megaphone },
   { label: "Policies", href: "/principal/policies", icon: Shield },
   { label: "Templates", href: "/principal/shared-documents", icon: FolderOpen },
-  { label: "Document Vault", href: "/principal/document-vault", icon: Archive },
+  { label: "Inspection Binder", href: "/principal/inspection-binder", icon: Archive },
   { label: "Student Fees", href: "/principal/student-fees", icon: DollarSign },
   { label: "Settings", href: "/principal/settings", icon: Settings },
 ];

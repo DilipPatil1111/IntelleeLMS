@@ -1,6 +1,6 @@
-import { put } from "@vercel/blob";
 import { randomUUID } from "crypto";
 import path from "path";
+import { blobPut } from "@/lib/vercel-blob";
 
 /** Student onboarding: PDF + common image types. */
 export const ONBOARDING_ALLOWED_EXT = new Set([
@@ -62,7 +62,7 @@ export async function uploadToBlob(params: {
   const safeName = `${Date.now()}-${randomUUID().slice(0, 8)}${ext}`;
   const pathname = `${folder}/${safeName}`;
 
-  const blob = await put(pathname, buffer, {
+  const blob = await blobPut(pathname, buffer, {
     access: "public",
     contentType: getMimeType(ext),
   });
@@ -92,7 +92,7 @@ export async function uploadProfilePictureToBlob(params: {
   const ext = mimeType.split("/")[1] ?? "jpg";
   const pathname = `profile-pictures/${userId}-${Date.now()}.${ext}`;
 
-  const blob = await put(pathname, buffer, {
+  const blob = await blobPut(pathname, buffer, {
     access: "public",
     contentType: mimeType,
   });

@@ -128,6 +128,11 @@ export type FeeStructure = Prisma.FeeStructureModel
  */
 export type FeePayment = Prisma.FeePaymentModel
 /**
+ * Model StudentSubmissionLog
+ * * Append-only history for student uploads (onboarding docs + fee receipts) for audit trail in Pending Actions / Fees.
+ */
+export type StudentSubmissionLog = Prisma.StudentSubmissionLogModel
+/**
  * Model Assessment
  * 
  */

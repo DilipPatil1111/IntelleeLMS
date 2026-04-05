@@ -358,6 +358,23 @@ export type EnumSuspensionReasonNullableWithAggregatesFilter<$PrismaModel = neve
   _max?: Prisma.NestedEnumSuspensionReasonNullableFilter<$PrismaModel>
 }
 
+export type EnumStudentSubmissionKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.StudentSubmissionKind | Prisma.EnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.StudentSubmissionKind[] | Prisma.ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StudentSubmissionKind[] | Prisma.ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStudentSubmissionKindFilter<$PrismaModel> | $Enums.StudentSubmissionKind
+}
+
+export type EnumStudentSubmissionKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StudentSubmissionKind | Prisma.EnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.StudentSubmissionKind[] | Prisma.ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StudentSubmissionKind[] | Prisma.ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStudentSubmissionKindWithAggregatesFilter<$PrismaModel> | $Enums.StudentSubmissionKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStudentSubmissionKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStudentSubmissionKindFilter<$PrismaModel>
+}
+
 export type EnumAssessmentTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.AssessmentType | Prisma.EnumAssessmentTypeFieldRefInput<$PrismaModel>
   in?: $Enums.AssessmentType[] | Prisma.ListEnumAssessmentTypeFieldRefInput<$PrismaModel>
@@ -895,6 +912,23 @@ export type NestedEnumSuspensionReasonNullableWithAggregatesFilter<$PrismaModel 
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSuspensionReasonNullableFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSuspensionReasonNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumStudentSubmissionKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.StudentSubmissionKind | Prisma.EnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.StudentSubmissionKind[] | Prisma.ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StudentSubmissionKind[] | Prisma.ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStudentSubmissionKindFilter<$PrismaModel> | $Enums.StudentSubmissionKind
+}
+
+export type NestedEnumStudentSubmissionKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StudentSubmissionKind | Prisma.EnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.StudentSubmissionKind[] | Prisma.ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StudentSubmissionKind[] | Prisma.ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStudentSubmissionKindWithAggregatesFilter<$PrismaModel> | $Enums.StudentSubmissionKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStudentSubmissionKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStudentSubmissionKindFilter<$PrismaModel>
 }
 
 export type NestedEnumAssessmentTypeFilter<$PrismaModel = never> = {

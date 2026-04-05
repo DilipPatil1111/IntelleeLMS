@@ -1,8 +1,8 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { put } from "@vercel/blob";
 import { randomUUID } from "crypto";
+import { blobPut } from "@/lib/vercel-blob";
 
 export async function GET(
   _req: Request,
@@ -42,37 +42,43 @@ export async function POST(
     return NextResponse.json({ error: "Folder not found" }, { status: 404 });
   }
 
-  const formData = await req.formData();
-  const entries = formData.getAll("files");
+  try {
+    const formData = await req.formData();
+    const entries = formData.getAll("files");
 
-  if (entries.length === 0) {
-    return NextResponse.json({ error: "No files provided" }, { status: 400 });
+    if (entries.length === 0) {
+      return NextResponse.json({ error: "No files provided" }, { status: 400 });
+    }
+
+    const created = [];
+
+    for (const entry of entries) {
+      if (!(entry instanceof File)) continue;
+
+      const ext = entry.name.includes(".")
+        ? entry.name.substring(entry.name.lastIndexOf("."))
+        : "";
+      const blobPath = `document-vault/${id}/${randomUUID()}${ext}`;
+
+      const blob = await blobPut(blobPath, entry, { access: "public" });
+
+      const docFile = await db.docFile.create({
+        data: {
+          folderId: id,
+          fileName: entry.name,
+          fileUrl: blob.url,
+          fileSize: entry.size,
+          contentType: entry.type || "application/octet-stream",
+        },
+      });
+
+      created.push(docFile);
+    }
+
+    return NextResponse.json({ files: created });
+  } catch (e) {
+    console.error("[document-vault/folders files POST]", e);
+    const message = e instanceof Error ? e.message : "Upload failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  const created = [];
-
-  for (const entry of entries) {
-    if (!(entry instanceof File)) continue;
-
-    const ext = entry.name.includes(".")
-      ? entry.name.substring(entry.name.lastIndexOf("."))
-      : "";
-    const blobPath = `document-vault/${id}/${randomUUID()}${ext}`;
-
-    const blob = await put(blobPath, entry, { access: "public" });
-
-    const docFile = await db.docFile.create({
-      data: {
-        folderId: id,
-        fileName: entry.name,
-        fileUrl: blob.url,
-        fileSize: entry.size,
-        contentType: entry.type || "application/octet-stream",
-      },
-    });
-
-    created.push(docFile);
-  }
-
-  return NextResponse.json({ files: created });
 }

@@ -406,6 +406,7 @@ export const ModelName = {
   TeacherSubjectAssignment: 'TeacherSubjectAssignment',
   FeeStructure: 'FeeStructure',
   FeePayment: 'FeePayment',
+  StudentSubmissionLog: 'StudentSubmissionLog',
   Assessment: 'Assessment',
   AssessmentAssignedStudent: 'AssessmentAssignedStudent',
   Question: 'Question',
@@ -445,7 +446,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote"
+    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2074,6 +2075,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.FeePaymentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.FeePaymentCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudentSubmissionLog: {
+      payload: Prisma.$StudentSubmissionLogPayload<ExtArgs>
+      fields: Prisma.StudentSubmissionLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentSubmissionLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentSubmissionLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>
+        }
+        findFirst: {
+          args: Prisma.StudentSubmissionLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentSubmissionLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>
+        }
+        findMany: {
+          args: Prisma.StudentSubmissionLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>[]
+        }
+        create: {
+          args: Prisma.StudentSubmissionLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>
+        }
+        createMany: {
+          args: Prisma.StudentSubmissionLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentSubmissionLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>[]
+        }
+        delete: {
+          args: Prisma.StudentSubmissionLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>
+        }
+        update: {
+          args: Prisma.StudentSubmissionLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentSubmissionLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentSubmissionLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentSubmissionLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentSubmissionLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentSubmissionLogPayload>
+        }
+        aggregate: {
+          args: Prisma.StudentSubmissionLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentSubmissionLog>
+        }
+        groupBy: {
+          args: Prisma.StudentSubmissionLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentSubmissionLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentSubmissionLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentSubmissionLogCountAggregateOutputType> | number
         }
       }
     }
@@ -4236,6 +4311,20 @@ export const FeePaymentScalarFieldEnum = {
 export type FeePaymentScalarFieldEnum = (typeof FeePaymentScalarFieldEnum)[keyof typeof FeePaymentScalarFieldEnum]
 
 
+export const StudentSubmissionLogScalarFieldEnum = {
+  id: 'id',
+  studentProfileId: 'studentProfileId',
+  kind: 'kind',
+  feePaymentId: 'feePaymentId',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  amountPaid: 'amountPaid',
+  createdAt: 'createdAt'
+} as const
+
+export type StudentSubmissionLogScalarFieldEnum = (typeof StudentSubmissionLogScalarFieldEnum)[keyof typeof StudentSubmissionLogScalarFieldEnum]
+
+
 export const AssessmentScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -4800,6 +4889,20 @@ export type ListEnumSuspensionReasonFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'StudentSubmissionKind'
+ */
+export type EnumStudentSubmissionKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentSubmissionKind'>
+    
+
+
+/**
+ * Reference to a field of type 'StudentSubmissionKind[]'
+ */
+export type ListEnumStudentSubmissionKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentSubmissionKind[]'>
+    
+
+
+/**
  * Reference to a field of type 'AssessmentType'
  */
 export type EnumAssessmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentType'>
@@ -5083,6 +5186,7 @@ export type GlobalOmitConfig = {
   teacherSubjectAssignment?: Prisma.TeacherSubjectAssignmentOmit
   feeStructure?: Prisma.FeeStructureOmit
   feePayment?: Prisma.FeePaymentOmit
+  studentSubmissionLog?: Prisma.StudentSubmissionLogOmit
   assessment?: Prisma.AssessmentOmit
   assessmentAssignedStudent?: Prisma.AssessmentAssignedStudentOmit
   question?: Prisma.QuestionOmit

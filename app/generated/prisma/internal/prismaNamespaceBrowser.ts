@@ -73,6 +73,7 @@ export const ModelName = {
   TeacherSubjectAssignment: 'TeacherSubjectAssignment',
   FeeStructure: 'FeeStructure',
   FeePayment: 'FeePayment',
+  StudentSubmissionLog: 'StudentSubmissionLog',
   Assessment: 'Assessment',
   AssessmentAssignedStudent: 'AssessmentAssignedStudent',
   Question: 'Question',
@@ -457,6 +458,20 @@ export const FeePaymentScalarFieldEnum = {
 } as const
 
 export type FeePaymentScalarFieldEnum = (typeof FeePaymentScalarFieldEnum)[keyof typeof FeePaymentScalarFieldEnum]
+
+
+export const StudentSubmissionLogScalarFieldEnum = {
+  id: 'id',
+  studentProfileId: 'studentProfileId',
+  kind: 'kind',
+  feePaymentId: 'feePaymentId',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
+  amountPaid: 'amountPaid',
+  createdAt: 'createdAt'
+} as const
+
+export type StudentSubmissionLogScalarFieldEnum = (typeof StudentSubmissionLogScalarFieldEnum)[keyof typeof StudentSubmissionLogScalarFieldEnum]
 
 
 export const AssessmentScalarFieldEnum = {

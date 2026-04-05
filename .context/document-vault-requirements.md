@@ -1,7 +1,13 @@
-# Document Vault & Student Pending Actions — Feature Requirements
+# Inspection Binder & Student Pending Actions — Feature Requirements
 
-**Status:** APPROVED — ready to build  
+**Status:** APPROVED — in active development  
 **Date:** April 4, 2026  
+**Product name:** **Inspection Binder** (formerly “Document Vault”). Principal route: `/principal/inspection-binder` (legacy `/principal/document-vault` redirects). APIs remain under `/api/principal/document-vault/*` for stability.
+
+**Revision note v5:** **Vercel Blob** uploads use `lib/vercel-blob.ts` (`blobPut` / `blobDel`) so `BLOB_READ_WRITE_TOKEN` is passed when set (required for local/non-Vercel runtimes). **Review Complete** appears only when the principal is viewing **folder 11 — Students Photo IDs** (`autoPopulateKey === photo_ids`), not on other folders or **12 — Others**. The review modal **pre-selects all principals**; teachers are toggled per checkbox; **other emails** are a single comma-separated field (no separate “Add” control) merged into recipients on send. The user must run **“Add consolidated notes & preview”** (`POST .../review-draft`) to load editable consolidated text before **Send** (which posts `customTextBody` to `review-complete`). Auto-populated binder rows show **submission history** (chronological); the **latest** row per chain is **replace/delete**-able by the principal via `PUT/DELETE /api/principal/students/[id]/binder-document` (segment is the student **user** id, same as other principal student routes) (contract / ids / fee / fee_receipt). Manual `DocFile` rows remain fully rename/replace/delete capable.
+
+**Revision note v4:** Default principal view is **All years / All programs / All batches**, listing every seeded binder group with **current academic year first**. Manual files support **View, Download, Update (replace)**. Auto folders show **student name → documents** with view/download. **Review Complete** (replacing per-folder “send email”) creates a **Consolidated Inspection Notes** folder under **12 — Others**, writes a **.txt** summary, and emails principals/teachers/extra addresses with attachment. Students: **submission history** (newest first) and **Update** on onboarding documents and fee receipts; same receipt UX on **My Fees**.
+
 **Revision note v3:** Folder creation now triggered by year + program + batch selection (not year alone). GENERIC/YEAR folders are shared across batches; BATCH SPECIFIC folders are unique per program+batch. Content populates progressively with available data at creation, then auto-updates as processes complete. Payment confirmation email with receipt attachments. Full backward compatibility guarantees.
 
 ---
@@ -11,7 +17,7 @@
 Two interconnected features:
 
 1. **Student Pending Actions** — A new student menu showing all incomplete obligations (assessments, documents, fees) with the ability to complete them inline.
-2. **Document Vault** — A principal/administrator hierarchical folder system for organizing compliance documents by year, program, and batch. The full folder skeleton (all 12 folders + sub-folders) is created when the principal selects a year + program + batch combination. Content populates progressively — empty folders are created first, then filled automatically as student data becomes available (from onboarding, pending actions, payments) or manually by the principal. Includes file viewing, inspection notes, and consolidated inspection email.
+2. **Inspection Binder** — Same hierarchical system as above: compliance documents by year, program, and batch; skeleton on first (year, program, batch); progressive auto-fill; manual uploads; inspection notes; **Review Complete** consolidates notes into a `.txt` under **12 — Others** and emails the package (no separate per-note email).
 
 ---
 
@@ -24,7 +30,7 @@ All changes MUST preserve existing functionality:
 | **Student onboarding flow** | The 4-step onboarding process (`/student/onboarding`) continues to work exactly as today. Pending Actions is an **additional** path to complete the same steps — both write to the same `StudentOnboarding` fields via the same APIs. |
 | **Student fees page** | `/student/fees` remains unchanged. Pending Actions links to it and supplements it with receipt upload capability. |
 | **Student assessments page** | `/student/assessments` remains unchanged. Pending Actions is a filtered view of the same data (pending only). |
-| **Principal onboarding review** | `/principal/onboarding-review` continues to work. The vault reads the same `StudentOnboarding` data but does not modify it. |
+| **Principal onboarding review** | `/principal/onboarding-review` continues to work. The Inspection Binder may update student onboarding documents and fee receipts only through the dedicated principal APIs (same underlying fields as student uploads). |
 | **Principal student list** | `/principal/students` remains unchanged. Fee indicators are additive (new badge), not replacing existing columns. |
 | **Existing upload APIs** | `POST /api/student/onboarding/upload` is reused by Pending Actions, not replaced. No signature changes. |
 | **Existing file-upload.ts** | The `uploadToBlob` function is reused for vault uploads. A new `uploadToBlob` call with relaxed extension/size checks is added for vault-specific uploads — the existing function signature is not modified. |
@@ -122,9 +128,9 @@ When a student has pending fees (`totalFees - totalPaid > 0`):
 
 ---
 
-# PART B: Document Vault (Principal/Administrator)
+# PART B: Inspection Binder (Principal/Administrator)
 
-**Route:** `/principal/document-vault`  
+**Route:** `/principal/inspection-binder` (redirect from `/principal/document-vault`)  
 **Role:** PRINCIPAL
 
 ## B1. Folder creation trigger — Year + Program + Batch selection

@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { del } from "@vercel/blob";
+import { blobDel } from "@/lib/vercel-blob";
 
 export async function PUT(
   req: Request,
@@ -16,13 +16,6 @@ export async function PUT(
   const file = await db.docFile.findUnique({ where: { id } });
   if (!file) {
     return NextResponse.json({ error: "File not found" }, { status: 404 });
-  }
-
-  if (file.studentId) {
-    return NextResponse.json(
-      { error: "Cannot rename auto-populated files" },
-      { status: 403 },
-    );
   }
 
   const body = await req.json();
@@ -55,14 +48,7 @@ export async function DELETE(
     return NextResponse.json({ error: "File not found" }, { status: 404 });
   }
 
-  if (file.studentId) {
-    return NextResponse.json(
-      { error: "Cannot delete auto-populated files" },
-      { status: 403 },
-    );
-  }
-
-  await del(file.fileUrl);
+  await blobDel(file.fileUrl);
   await db.docFile.delete({ where: { id } });
 
   return NextResponse.json({ ok: true });

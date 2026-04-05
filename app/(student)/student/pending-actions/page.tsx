@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, FileText, DollarSign, CheckCircle2, Clock, Upload, ExternalLink, Eye } from "lucide-react";
+import { AlertTriangle, FileText, DollarSign, CheckCircle2, Clock, Upload, ExternalLink, Eye, Pencil } from "lucide-react";
 import Link from "next/link";
 
 interface PendingAssessment {
@@ -16,6 +16,12 @@ interface PendingAssessment {
   status: "NOT_STARTED" | "IN_PROGRESS";
 }
 
+interface TrailVersion {
+  fileUrl: string;
+  fileName: string;
+  uploadedAt: string;
+}
+
 interface DocumentItem {
   key: string;
   label: string;
@@ -24,6 +30,7 @@ interface DocumentItem {
   uploadedAt: string | null;
   fileName: string | null;
   fileUrl: string | null;
+  trail?: TrailVersion[];
 }
 
 interface Receipt {
@@ -33,6 +40,7 @@ interface Receipt {
   amountPaid: number;
   paymentDate: string;
   confirmed: boolean;
+  trail?: TrailVersion[];
 }
 
 interface PendingData {
@@ -56,6 +64,7 @@ export default function PendingActionsPage() {
   const [showReceiptForm, setShowReceiptForm] = useState(false);
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const receiptInputRef = useRef<HTMLInputElement | null>(null);
+  const receiptReplaceRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const load = useCallback(async () => {
     try {
@@ -84,6 +93,22 @@ export default function PendingActionsPage() {
       else console.error("Upload failed:", await res.text());
     } finally {
       setUploading(null);
+    }
+  }
+
+  async function handleReceiptReplace(paymentId: string, file: File) {
+    setReceiptUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch(`/api/student/pending-actions/receipt/${paymentId}`, {
+        method: "PUT",
+        body: fd,
+      });
+      if (res.ok) await load();
+      else console.error("Replace receipt failed:", await res.text());
+    } finally {
+      setReceiptUploading(false);
     }
   }
 
@@ -235,21 +260,59 @@ export default function PendingActionsPage() {
                   </div>
                 ))}
                 {documents.filter((d) => d.completed).map((d) => (
-                  <div key={d.key} className="flex items-center justify-between py-3">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-green-500" />
-                      <div>
-                        <p className="font-medium text-gray-700">{d.label}</p>
-                        <p className="text-xs text-gray-400">
-                          {d.fileName && <>{d.fileName} &middot; </>}
-                          Uploaded {d.uploadedAt ? new Date(d.uploadedAt).toLocaleDateString() : ""}
-                        </p>
+                  <div key={d.key} className="py-3 space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-medium text-gray-700">{d.label}</p>
+                          <p className="text-xs text-gray-400">Current version</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <input
+                          type="file"
+                          className="hidden"
+                          ref={(el) => { fileInputRefs.current[`update-${d.step}`] = el; }}
+                          onChange={(e) => {
+                            const f = e.target.files?.[0];
+                            e.target.value = "";
+                            if (f) handleDocUpload(d.step, f);
+                          }}
+                        />
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => fileInputRefs.current[`update-${d.step}`]?.click()}
+                          disabled={uploading === d.step}
+                        >
+                          <Pencil className="h-3.5 w-3.5 mr-1" />
+                          {uploading === d.step ? "Updating..." : "Update"}
+                        </Button>
                       </div>
                     </div>
-                    {d.fileUrl && (
-                      <a href={d.fileUrl} target="_blank" rel="noopener noreferrer">
-                        <Button size="sm" variant="ghost"><Eye className="h-3.5 w-3.5 mr-1" /> View</Button>
-                      </a>
+                    {d.trail && d.trail.length > 0 && (
+                      <div className="ml-6 rounded-lg border border-gray-100 bg-gray-50/80 p-3 space-y-2">
+                        <p className="text-xs font-medium text-gray-500">Submission history (newest first)</p>
+                        <ul className="space-y-2">
+                          {d.trail.map((t, idx) => (
+                            <li key={idx} className="flex items-center justify-between gap-2 text-sm">
+                              <span className="text-gray-700 truncate">{t.fileName}</span>
+                              <span className="text-xs text-gray-400 shrink-0">
+                                {new Date(t.uploadedAt).toLocaleString()}
+                              </span>
+                              <a
+                                href={t.fileUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-indigo-600 hover:underline shrink-0 text-xs"
+                              >
+                                View
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                 ))}
@@ -346,20 +409,67 @@ export default function PendingActionsPage() {
 
                 {fees.receipts.length > 0 && (
                   <div>
-                    <p className="text-sm font-medium text-gray-700 mb-2">Previous receipts</p>
-                    <div className="divide-y rounded-lg border border-gray-200">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Payment receipts</p>
+                    <div className="space-y-3">
                       {fees.receipts.map((r) => (
-                        <div key={r.id} className="flex items-center justify-between px-3 py-2">
-                          <div>
-                            <p className="text-sm font-medium text-gray-900">{r.fileName}</p>
-                            <p className="text-xs text-gray-500">
-                              {fmt(r.amountPaid)} &middot; {new Date(r.paymentDate).toLocaleDateString()}
-                              {r.confirmed && <span className="ml-1 text-green-600">&middot; Confirmed</span>}
-                            </p>
+                        <div key={r.id} className="rounded-lg border border-gray-200 overflow-hidden">
+                          <div className="flex items-center justify-between px-3 py-2 bg-gray-50">
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">{r.fileName}</p>
+                              <p className="text-xs text-gray-500">
+                                {fmt(r.amountPaid)} &middot; {new Date(r.paymentDate).toLocaleDateString()}
+                                {r.confirmed && <span className="ml-1 text-green-600">&middot; Confirmed</span>}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <input
+                                type="file"
+                                className="hidden"
+                                ref={(el) => { receiptReplaceRefs.current[r.id] = el; }}
+                                onChange={(e) => {
+                                  const f = e.target.files?.[0];
+                                  e.target.value = "";
+                                  if (f) void handleReceiptReplace(r.id, f);
+                                }}
+                              />
+                              <a href={r.fileUrl} target="_blank" rel="noopener noreferrer">
+                                <Button size="sm" variant="ghost"><Eye className="h-3.5 w-3.5 mr-1" /> View</Button>
+                              </a>
+                              <a
+                                href={r.fileUrl}
+                                download={r.fileName}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-indigo-600 px-2 py-1.5 hover:bg-indigo-50 rounded"
+                              >
+                                Download
+                              </a>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => receiptReplaceRefs.current[r.id]?.click()}
+                                disabled={receiptUploading}
+                              >
+                                <Pencil className="h-3.5 w-3.5 mr-1" />
+                                Update
+                              </Button>
+                            </div>
                           </div>
-                          <a href={r.fileUrl} target="_blank" rel="noopener noreferrer">
-                            <Button size="sm" variant="ghost"><Eye className="h-3.5 w-3.5 mr-1" /> View</Button>
-                          </a>
+                          {r.trail && r.trail.length > 1 && (
+                            <div className="px-3 py-2 text-xs border-t border-gray-100">
+                              <p className="font-medium text-gray-500 mb-1">Version history (newest first)</p>
+                              <ul className="space-y-1">
+                                {r.trail.map((t, i) => (
+                                  <li key={i} className="flex justify-between gap-2 text-gray-600">
+                                    <span className="truncate">{t.fileName}</span>
+                                    <a href={t.fileUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-600 shrink-0">
+                                      View
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>

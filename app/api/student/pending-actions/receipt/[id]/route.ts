@@ -6,31 +6,42 @@ import { blobPut } from "@/lib/vercel-blob";
 import { randomUUID } from "crypto";
 import path from "path";
 
-export async function POST(req: NextRequest) {
+/** Replace the receipt file on an existing fee payment (student-owned). Appends to submission trail. */
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id: feePaymentId } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const profile = await db.studentProfile.findUnique({
-    where: { userId: session.user.id },
-    include: { program: { include: { feeStructures: true } } },
+  const payment = await db.feePayment.findFirst({
+    where: {
+      id: feePaymentId,
+      studentProfile: { userId: session.user.id },
+    },
   });
 
-  if (!profile) {
-    return NextResponse.json({ error: "Student profile not found" }, { status: 404 });
-  }
-
-  if (!profile.program?.feeStructures.length) {
-    return NextResponse.json({ error: "No fee structure found for your program" }, { status: 400 });
+  if (!payment) {
+    return NextResponse.json({ error: "Payment not found" }, { status: 404 });
   }
 
   const formData = await req.formData();
   const file = formData.get("file") as File | null;
-  const amountStr = formData.get("amount") as string | null;
-
   if (!file) return NextResponse.json({ error: "No file provided" }, { status: 400 });
 
-  const amount = amountStr ? parseFloat(amountStr) : 0;
-  if (amount <= 0) return NextResponse.json({ error: "Amount must be greater than 0" }, { status: 400 });
+  if (payment.receiptUrl) {
+    await db.studentSubmissionLog.create({
+      data: {
+        studentProfileId: payment.studentProfileId,
+        kind: StudentSubmissionKind.FEE_RECEIPT,
+        feePaymentId: payment.id,
+        fileUrl: payment.receiptUrl,
+        fileName: payment.receiptFileName ?? "receipt",
+        amountPaid: payment.amountPaid,
+      },
+    });
+  }
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const ext = path.extname(file.name).toLowerCase() || ".bin";
@@ -42,14 +53,9 @@ export async function POST(req: NextRequest) {
     contentType: file.type || "application/octet-stream",
   });
 
-  const feeStructure = profile.program.feeStructures[0];
-
-  const payment = await db.feePayment.create({
+  const updated = await db.feePayment.update({
+    where: { id: feePaymentId },
     data: {
-      studentProfileId: profile.id,
-      feeStructureId: feeStructure.id,
-      amountPaid: amount,
-      paymentMethod: "Receipt Upload",
       receiptUrl: blob.url,
       receiptFileName: file.name,
     },
@@ -57,22 +63,21 @@ export async function POST(req: NextRequest) {
 
   await db.studentSubmissionLog.create({
     data: {
-      studentProfileId: profile.id,
+      studentProfileId: payment.studentProfileId,
       kind: StudentSubmissionKind.FEE_RECEIPT,
       feePaymentId: payment.id,
       fileUrl: blob.url,
       fileName: file.name,
-      amountPaid: amount,
+      amountPaid: payment.amountPaid,
     },
   });
 
   return NextResponse.json({
     ok: true,
     payment: {
-      id: payment.id,
-      amountPaid: payment.amountPaid,
-      receiptUrl: payment.receiptUrl,
-      receiptFileName: payment.receiptFileName,
+      id: updated.id,
+      receiptUrl: updated.receiptUrl,
+      receiptFileName: updated.receiptFileName,
     },
   });
 }

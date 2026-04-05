@@ -1,5 +1,45 @@
 import { db } from "@/lib/db";
-import { FolderScope } from "@/app/generated/prisma/client";
+import { FolderScope, Prisma } from "@/app/generated/prisma/client";
+
+const folderListSelect = {
+  id: true,
+  name: true,
+  parentId: true,
+  scope: true,
+  yearId: true,
+  programId: true,
+  batchId: true,
+  isAutoPopulated: true,
+  autoPopulateKey: true,
+  sortOrder: true,
+  createdAt: true,
+  updatedAt: true,
+} as const;
+
+export async function listFoldersForContext(
+  yearId: string,
+  programId: string | null,
+  batchId: string | null,
+) {
+  const orConditions: Prisma.DocFolderWhereInput[] = [
+    { yearId, scope: FolderScope.GENERIC },
+    { yearId, scope: FolderScope.YEAR_SPECIFIC },
+  ];
+
+  if (programId && batchId) {
+    orConditions.push({
+      programId,
+      batchId,
+      scope: FolderScope.BATCH_SPECIFIC,
+    });
+  }
+
+  return db.docFolder.findMany({
+    where: { OR: orConditions },
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    select: folderListSelect,
+  });
+}
 
 interface SeedParams {
   yearId: string;

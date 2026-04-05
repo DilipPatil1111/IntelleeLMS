@@ -202,6 +202,16 @@ export const FeedbackAuthorRole = {
 export type FeedbackAuthorRole = (typeof FeedbackAuthorRole)[keyof typeof FeedbackAuthorRole]
 
 
+export const StudentSubmissionKind = {
+  SIGNED_CONTRACT: 'SIGNED_CONTRACT',
+  GOVERNMENT_ID: 'GOVERNMENT_ID',
+  ONBOARDING_FEE_PROOF: 'ONBOARDING_FEE_PROOF',
+  FEE_RECEIPT: 'FEE_RECEIPT'
+} as const
+
+export type StudentSubmissionKind = (typeof StudentSubmissionKind)[keyof typeof StudentSubmissionKind]
+
+
 export const FolderScope = {
   GENERIC: 'GENERIC',
   YEAR_SPECIFIC: 'YEAR_SPECIFIC',
