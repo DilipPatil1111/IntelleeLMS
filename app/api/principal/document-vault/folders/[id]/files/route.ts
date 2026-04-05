@@ -60,7 +60,7 @@ export async function POST(
         : "";
       const blobPath = `document-vault/${id}/${randomUUID()}${ext}`;
 
-      const blob = await blobPut(blobPath, entry, {});
+      const blob = await blobPut(blobPath, entry);
 
       const docFile = await db.docFile.create({
         data: {

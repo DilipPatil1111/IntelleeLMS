@@ -53,6 +53,31 @@ export type VerificationToken = Prisma.VerificationTokenModel
  */
 export type Program = Prisma.ProgramModel
 /**
+ * Model ProgramSyllabus
+ * * Extended syllabus metadata and publish flag for Program Content (§18).
+ */
+export type ProgramSyllabus = Prisma.ProgramSyllabusModel
+/**
+ * Model ProgramChapter
+ * * Chapter under a Subject (program syllabus tree).
+ */
+export type ProgramChapter = Prisma.ProgramChapterModel
+/**
+ * Model ProgramLesson
+ * 
+ */
+export type ProgramLesson = Prisma.ProgramLessonModel
+/**
+ * Model ProgramLessonCompletion
+ * 
+ */
+export type ProgramLessonCompletion = Prisma.ProgramLessonCompletionModel
+/**
+ * Model ProgramCertificateSend
+ * * Program Content completion certificate emailed (separate from graduationCertificateSentAt).
+ */
+export type ProgramCertificateSend = Prisma.ProgramCertificateSendModel
+/**
  * Model InstitutionProfile
  * * Master institutional branding and contact (singleton row id = 1).
  */

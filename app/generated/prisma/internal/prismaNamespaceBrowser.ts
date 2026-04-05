@@ -58,6 +58,11 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Program: 'Program',
+  ProgramSyllabus: 'ProgramSyllabus',
+  ProgramChapter: 'ProgramChapter',
+  ProgramLesson: 'ProgramLesson',
+  ProgramLessonCompletion: 'ProgramLessonCompletion',
+  ProgramCertificateSend: 'ProgramCertificateSend',
   InstitutionProfile: 'InstitutionProfile',
   ProgramDomain: 'ProgramDomain',
   ProgramCategory: 'ProgramCategory',
@@ -235,6 +240,73 @@ export const ProgramScalarFieldEnum = {
 } as const
 
 export type ProgramScalarFieldEnum = (typeof ProgramScalarFieldEnum)[keyof typeof ProgramScalarFieldEnum]
+
+
+export const ProgramSyllabusScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  instructions: 'instructions',
+  programHours: 'programHours',
+  feesNote: 'feesNote',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramSyllabusScalarFieldEnum = (typeof ProgramSyllabusScalarFieldEnum)[keyof typeof ProgramSyllabusScalarFieldEnum]
+
+
+export const ProgramChapterScalarFieldEnum = {
+  id: 'id',
+  subjectId: 'subjectId',
+  title: 'title',
+  sortOrder: 'sortOrder',
+  isMandatory: 'isMandatory',
+  freePreviewLesson: 'freePreviewLesson',
+  isPrerequisite: 'isPrerequisite',
+  enableDiscussions: 'enableDiscussions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramChapterScalarFieldEnum = (typeof ProgramChapterScalarFieldEnum)[keyof typeof ProgramChapterScalarFieldEnum]
+
+
+export const ProgramLessonScalarFieldEnum = {
+  id: 'id',
+  chapterId: 'chapterId',
+  kind: 'kind',
+  title: 'title',
+  sortOrder: 'sortOrder',
+  content: 'content',
+  assessmentId: 'assessmentId',
+  isDraft: 'isDraft',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramLessonScalarFieldEnum = (typeof ProgramLessonScalarFieldEnum)[keyof typeof ProgramLessonScalarFieldEnum]
+
+
+export const ProgramLessonCompletionScalarFieldEnum = {
+  id: 'id',
+  studentUserId: 'studentUserId',
+  lessonId: 'lessonId',
+  completedAt: 'completedAt'
+} as const
+
+export type ProgramLessonCompletionScalarFieldEnum = (typeof ProgramLessonCompletionScalarFieldEnum)[keyof typeof ProgramLessonCompletionScalarFieldEnum]
+
+
+export const ProgramCertificateSendScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  studentUserId: 'studentUserId',
+  sentAt: 'sentAt',
+  sentByUserId: 'sentByUserId'
+} as const
+
+export type ProgramCertificateSendScalarFieldEnum = (typeof ProgramCertificateSendScalarFieldEnum)[keyof typeof ProgramCertificateSendScalarFieldEnum]
 
 
 export const InstitutionProfileScalarFieldEnum = {
@@ -940,6 +1012,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -954,4 +1034,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

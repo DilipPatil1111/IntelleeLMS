@@ -12,7 +12,7 @@ import {
   plainTextToEmailHtml,
   type NoteWithPath,
 } from "@/lib/inspection-binder-notes";
-import { blobPut } from "@/lib/vercel-blob";
+import { blobPut, defaultBlobAccess } from "@/lib/vercel-blob";
 import { getOrCreateInspectionReviewNotesFolder } from "@/lib/document-vault";
 
 async function resolveBatchContext(folderId: string) {
@@ -231,6 +231,7 @@ export async function POST(
 
   try {
     const blob = await blobPut(`inspection-binder/consolidated/${randomUUID()}.txt`, buf, {
+      access: defaultBlobAccess(),
       contentType: "text/plain",
     });
 

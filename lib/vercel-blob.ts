@@ -12,11 +12,13 @@ export function defaultBlobAccess(): "public" | "private" {
   return env.BLOB_ACCESS === "private" ? "private" : "public";
 }
 
+type BlobPutOptions = NonNullable<Parameters<typeof put>[2]>;
+
 /** Passes `BLOB_READ_WRITE_TOKEN` when set (required for Vercel Blob outside Vercel runtime). */
 export async function blobPut(
   pathname: string,
   body: Parameters<typeof put>[1],
-  options?: Parameters<typeof put>[2],
+  options?: Omit<BlobPutOptions, "access"> & { access?: BlobPutOptions["access"] },
 ) {
   const token = env.BLOB_READ_WRITE_TOKEN;
   const { access: optAccess, ...rest } = options ?? {};

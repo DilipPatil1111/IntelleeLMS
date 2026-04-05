@@ -162,6 +162,19 @@ enum FeedbackAuthorRole {
   TEACHER
 }
 
+/** Lesson row under Program Chapter (syllabus / “Program Content”). */
+enum ProgramLessonKind {
+  TEXT
+  VIDEO
+  PDF
+  AUDIO
+  PRESENTATION
+  QUIZ
+  DOWNLOAD
+  SURVEY
+  MULTIMEDIA
+}
+
 // ─── Auth / Users ────────────────────────────────────────────────────
 
 model User {
@@ -218,6 +231,9 @@ model User {
   programCalendarSlotsAsTeacher ProgramCalendarSlot[] @relation("ProgramCalendarSlotTeacher")
   portalGrantsReceived UserPortalGrant[] @relation("PortalGrantSubject")
   portalGrantsCreated  UserPortalGrant[] @relation("PortalGrantActor")
+  programLessonCompletions ProgramLessonCompletion[]
+  programCertificatesReceived ProgramCertificateSend[] @relation("ProgramCertStudent")
+  programCertificatesSentBy   ProgramCertificateSend[] @relation("ProgramCertSentBy")
 }
 
 /** Extra portal access (Student / Teacher / Principal UI) beyond the user’s primary `User.role`. Managed in Principal → Settings. */
@@ -330,10 +346,94 @@ model Program {
   teacherPrograms TeacherProgram[]
   announcements Announcement[]
   programCalendarSlots ProgramCalendarSlot[]
+  programSyllabus       ProgramSyllabus?
+  programCertificateSends ProgramCertificateSend[]
 
   @@index([programDomainId])
   @@index([programCategoryId])
   @@index([programTypeId])
+}
+
+/** Extended syllabus metadata and publish flag for Program Content (§18). */
+model ProgramSyllabus {
+  id           String   @id @default(cuid())
+  programId    String   @unique
+  instructions String?  @db.Text
+  programHours String?
+  feesNote     String?
+  isPublished  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+}
+
+/** Chapter under a Subject (program syllabus tree). */
+model ProgramChapter {
+  id                String   @id @default(cuid())
+  subjectId         String
+  title             String
+  sortOrder         Int      @default(0)
+  isMandatory       Boolean  @default(false)
+  freePreviewLesson Boolean  @default(false)
+  isPrerequisite    Boolean  @default(false)
+  enableDiscussions Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  subject Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  lessons ProgramLesson[]
+
+  @@index([subjectId])
+}
+
+model ProgramLesson {
+  id           String          @id @default(cuid())
+  chapterId    String
+  kind         ProgramLessonKind
+  title        String
+  sortOrder    Int             @default(0)
+  content      Json?
+  assessmentId String?
+  isDraft      Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  chapter     ProgramChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  assessment  Assessment?    @relation("ProgramLessonAssessment", fields: [assessmentId], references: [id], onDelete: SetNull)
+  completions ProgramLessonCompletion[]
+
+  @@index([chapterId])
+  @@index([assessmentId])
+}
+
+model ProgramLessonCompletion {
+  id            String   @id @default(cuid())
+  studentUserId String
+  lessonId      String
+  completedAt   DateTime @default(now())
+
+  student User          @relation(fields: [studentUserId], references: [id], onDelete: Cascade)
+  lesson  ProgramLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([studentUserId, lessonId])
+  @@index([lessonId])
+}
+
+/** Program Content completion certificate emailed (separate from graduationCertificateSentAt). */
+model ProgramCertificateSend {
+  id            String   @id @default(cuid())
+  programId     String
+  studentUserId String
+  sentAt        DateTime @default(now())
+  sentByUserId  String
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  student User    @relation("ProgramCertStudent", fields: [studentUserId], references: [id], onDelete: Cascade)
+  sentBy  User    @relation("ProgramCertSentBy", fields: [sentByUserId], references: [id])
+
+  @@unique([programId, studentUserId])
+  @@index([programId])
 }
 
 /** Master institutional branding and contact (singleton row id = 1). */
@@ -478,6 +578,7 @@ model Subject {
   assessments Assessment[]
   attendanceSessions AttendanceSession[]
   programCalendarSlots ProgramCalendarSlot[]
+  programChapters ProgramChapter[]
 }
 
 model Module {
@@ -740,6 +841,7 @@ model Assessment {
   scheduledEmails  ScheduledEmail[]
   /** When empty, any student in the batch may see the assessment (legacy). */
   assignedStudents AssessmentAssignedStudent[]
+  programLessons   ProgramLesson[] @relation("ProgramLessonAssessment")
 }
 
 model AssessmentAssignedStudent {

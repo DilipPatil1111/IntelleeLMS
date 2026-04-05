@@ -202,6 +202,21 @@ export const FeedbackAuthorRole = {
 export type FeedbackAuthorRole = (typeof FeedbackAuthorRole)[keyof typeof FeedbackAuthorRole]
 
 
+export const ProgramLessonKind = {
+  TEXT: 'TEXT',
+  VIDEO: 'VIDEO',
+  PDF: 'PDF',
+  AUDIO: 'AUDIO',
+  PRESENTATION: 'PRESENTATION',
+  QUIZ: 'QUIZ',
+  DOWNLOAD: 'DOWNLOAD',
+  SURVEY: 'SURVEY',
+  MULTIMEDIA: 'MULTIMEDIA'
+} as const
+
+export type ProgramLessonKind = (typeof ProgramLessonKind)[keyof typeof ProgramLessonKind]
+
+
 export const StudentSubmissionKind = {
   SIGNED_CONTRACT: 'SIGNED_CONTRACT',
   GOVERNMENT_ID: 'GOVERNMENT_ID',

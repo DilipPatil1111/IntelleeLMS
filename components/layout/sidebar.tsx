@@ -25,6 +25,7 @@ const studentNav: NavItem[] = [
   { label: "Apply", href: "/student/apply", icon: FileCheck },
   { label: "Onboarding", href: "/student/onboarding", icon: ClipboardList },
   { label: "My Program", href: "/student/program", icon: BookMarked },
+  { label: "Program Content", href: "/student/program-content", icon: Layers },
   { label: "Assessments", href: "/student/assessments", icon: FileText },
   { label: "Results", href: "/student/results", icon: Award },
   { label: "Attendance", href: "/student/attendance", icon: Calendar },
@@ -51,6 +52,8 @@ const teacherNav: NavItem[] = [
   { label: "Reports", href: "/teacher/reports", icon: BarChart3 },
   { label: "Subjects", href: "/teacher/subjects", icon: BookOpen },
   { label: "Course Content", href: "/teacher/modules", icon: BookMarked },
+  { label: "Program Content", href: "/teacher/program-content", icon: Layers },
+  { label: "Award Certificates", href: "/teacher/award-certificates", icon: Award },
   { label: "Settings", href: "/teacher/settings", icon: Settings },
 ];
 
@@ -67,6 +70,8 @@ const principalNav: NavItem[] = [
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
   { label: "Full Calendar", href: "/principal/full-calendar", icon: CalendarRange },
   { label: "Programs", href: "/principal/programs", icon: BookOpen },
+  { label: "Program Content", href: "/principal/program-content", icon: Layers },
+  { label: "Award Certificates", href: "/principal/award-certificates", icon: Award },
   { label: "Program taxonomy", href: "/principal/program-taxonomy", icon: Layers },
   { label: "Institution profile", href: "/principal/institution-profile", icon: Building2 },
   { label: "Academic years", href: "/principal/academic-years", icon: CalendarRange },

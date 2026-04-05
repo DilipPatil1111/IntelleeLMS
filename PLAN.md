@@ -452,7 +452,7 @@ Labels use the same **sticky** left block and **emerald** text styling as **Teac
 
 ---
 
-*Last updated: §8 announcements (principal multi-audience + sender copy); §14.10–§14.11 student calendar/sheet/banner + principal attendance & students UX; Full Calendar “Days in selected range” removed.*
+*Last updated: §18 Program Content **MVP implemented** (syllabus, APIs, Award Certificates, student view); §8 announcements (principal multi-audience + sender copy); §14.10–§14.11 student calendar/sheet/banner + principal attendance & students UX; Full Calendar “Days in selected range” removed.*
 
 
 ---
@@ -496,3 +496,21 @@ All users can change their password from My Profile (current password required; 
 
 ### Shared implementation
 `components/profile/my-profile-client.tsx` — single client component used by all three role pages.
+
+---
+
+## §18. Program Content (syllabus, lessons, student view, alerts, certificate)
+
+**Status:** **Implemented (MVP)** — full spec: `.context/program-content-requirements.md`
+
+**Goal:** Principal/Teacher **authoring** of a **Program → Subject → Chapter → Lesson** tree (Text, Video, PDF, Presentation, Audio, Quiz, Download, Survey, Multimedia), with **Save as Draft**, **chapter settings** (free preview, prerequisite, discussions, apply-to-all), **Preview**, and **Delete Chapter**. **Students** see **Program Content** under **Program** as **view-only**; quizzes tie into existing **Assessments**; **dashboard alerts** for pending/mandatory assessments, surveys, and **mandatory** chapters; **program completion** leads to **Award Certificates** menu: list of **eligible** students, **select all / deselect / individual**, **Preview** per student, **send email** with certificate **PDF** + **congratulations** body; template from **Upload Certificate Template** (Principal settings); student messaging (**Eligible for award** → **Graduated** after send).
+
+**Shipped in this codebase**
+
+- **DB:** `ProgramSyllabus`, `ProgramChapter`, `ProgramLesson` (+ `ProgramLessonKind`), `ProgramLessonCompletion`, `ProgramCertificateSend` — migration `20260405202935_program_content_syllabus`.
+- **Routes:** Principal & Teacher `/program-content` (editor); Student `/student/program-content` (read-only tree, mark non-quiz lessons complete); **Award Certificates** `/principal/award-certificates` & `/teacher/award-certificates` (preview PDF, bulk email).
+- **APIs:** `/api/principal/program-content/*`, `/api/teacher/program-content/*`, `/api/student/program-content`, `/api/student/program-content/status`, `/api/student/program-content/lessons/[lessonId]/complete`, `/api/*/award-certificates*`.
+- **Helpers:** `lib/program-content.ts`, `lib/program-content-certificate-email.ts`.
+- **Student dashboard:** Banner when published syllabus has incomplete lessons (`countIncompleteProgramContentItems`).
+
+**Follow-ups (not in MVP):** Rich text / file upload UI per lesson type, drag-and-drop reorder, survey builder schema, PDF merge with student name on template, mandatory-chapter-specific copy in alerts.
