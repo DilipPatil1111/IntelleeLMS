@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -75,7 +75,7 @@ export async function POST(
 
   const confirmedAmount = body.amount ?? payment.amountPaid;
 
-  await sendEmail({
+  await sendEmailWithSignature({
     to: user.email,
     subject: `Payment Received — ${user.firstName} ${user.lastName}`,
     html: `
@@ -92,6 +92,7 @@ export async function POST(
       </div>
     `,
     attachments: attachments.length > 0 ? attachments : undefined,
+    senderUserId: session.user.id,
   });
 
   return NextResponse.json({ ok: true });

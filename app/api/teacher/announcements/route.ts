@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { resolveStudentEmails } from "@/lib/mail-audience";
 import { NextResponse } from "next/server";
 
@@ -108,11 +108,12 @@ export async function POST(req: Request) {
   }
 
   for (const t of targets) {
-    await sendEmail({
+    await sendEmailWithSignature({
       to: t.email,
       subject: `Announcement: ${title}`,
       html: `<p><strong>${title}</strong></p><p>${String(textBody).replace(/\n/g, "<br/>")}</p>`,
       text: `${title}\n\n${textBody}`,
+      senderUserId: session.user.id,
     });
     await db.notification
       .create({

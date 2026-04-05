@@ -49,7 +49,6 @@ export async function PUT(
   const pathname = `fee-receipts/${session.user.id}/${safeName}`;
 
   const blob = await blobPut(pathname, buffer, {
-    access: "public",
     contentType: file.type || "application/octet-stream",
   });
 

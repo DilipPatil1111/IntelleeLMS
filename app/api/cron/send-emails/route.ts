@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -22,10 +22,11 @@ export async function GET(req: NextRequest) {
   let sent = 0;
   for (const email of pendingEmails) {
     try {
-      const result = await sendEmail({
+      const result = await sendEmailWithSignature({
         to: email.recipientEmail,
         subject: email.subject,
         text: email.body || "",
+        senderUserId: null,
       });
 
       if (result.ok) {

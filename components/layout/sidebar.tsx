@@ -8,7 +8,7 @@ import {
   LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar, CalendarRange,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
-  Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive,
+  Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive, Building2,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -64,6 +64,8 @@ const principalNav: NavItem[] = [
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
   { label: "Full Calendar", href: "/principal/full-calendar", icon: CalendarRange },
   { label: "Programs", href: "/principal/programs", icon: BookOpen },
+  { label: "Program taxonomy", href: "/principal/program-taxonomy", icon: Layers },
+  { label: "Institution profile", href: "/principal/institution-profile", icon: Building2 },
   { label: "Academic years", href: "/principal/academic-years", icon: CalendarRange },
   { label: "Batches", href: "/principal/batches", icon: Layers },
   { label: "Reports", href: "/principal/reports", icon: BarChart3 },

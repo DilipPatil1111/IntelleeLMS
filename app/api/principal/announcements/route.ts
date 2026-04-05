@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { resolveStudentEmails } from "@/lib/mail-audience";
 import { NextResponse } from "next/server";
 
@@ -185,11 +185,12 @@ export async function POST(req: Request) {
   let emailsSent = 0;
   for (const t of targets) {
     try {
-      await sendEmail({
+      await sendEmailWithSignature({
         to: t.email,
         subject: `Announcement: ${title}`,
         html,
         text: textPlain,
+        senderUserId: session.user.id,
       });
       emailsSent += 1;
     } catch {
@@ -219,11 +220,12 @@ export async function POST(req: Request) {
     });
     if (creator?.email?.trim()) {
       try {
-        await sendEmail({
+        await sendEmailWithSignature({
           to: creator.email.trim(),
           subject: `[Copy] Announcement: ${title}`,
           html: `<p style="color:#64748b;font-size:14px;">This is a copy of the announcement email sent to recipients.</p>${html}`,
           text: `[Copy sent to you as publisher]\n\n${textPlain}`,
+          senderUserId: session.user.id,
         });
         senderCopySent = true;
       } catch {

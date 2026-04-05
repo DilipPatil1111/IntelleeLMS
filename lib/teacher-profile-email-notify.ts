@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
-import { sendEmail, buildTeacherCoursesAssignedEmail, escapeHtml, escapeHtmlAttribute } from "@/lib/email";
+import { buildTeacherCoursesAssignedEmail, escapeHtml, escapeHtmlAttribute } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { getServerAppUrl } from "@/lib/app-url";
 
 type SnapshotRow = { subjectId: string; batchId: string };
@@ -70,7 +71,7 @@ export async function emailTeacherIfTeachingChanged(
       rows,
       loginUrl,
     });
-    await sendEmail({ to: user.email, subject: payload.subject, html: payload.html, text: payload.text });
+    await sendEmailWithSignature({ to: user.email, subject: payload.subject, html: payload.html, text: payload.text, senderUserId: null });
     return;
   }
 
@@ -87,7 +88,7 @@ export async function emailTeacherIfTeachingChanged(
         <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open teacher portal</a></p>
       </div>`;
     const text = `Hello ${user.firstName},\n\nYour linked programs were updated.\n\nPrograms: ${programList.join(", ") || "None"}\n\n${loginUrl}\n`;
-    await sendEmail({ to: user.email, subject: subj, html, text });
+    await sendEmailWithSignature({ to: user.email, subject: subj, html, text, senderUserId: null });
     return;
   }
 
@@ -111,7 +112,7 @@ export async function emailTeacherIfTeachingChanged(
         <p><a href="${href}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open teacher portal</a></p>
       </div>`;
     const text = `Hello ${user.firstName},\n\nYour teaching assignments were updated.\n\nPrograms: ${programList.join(", ") || "None"}\n\n${listText}\n\n${loginUrl}\n`;
-    await sendEmail({ to: user.email, subject: subj, html, text });
+    await sendEmailWithSignature({ to: user.email, subject: subj, html, text, senderUserId: null });
     return;
   }
 
@@ -128,5 +129,5 @@ export async function emailTeacherIfTeachingChanged(
       <p><a href="${href2}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Open teacher portal</a></p>
     </div>`;
   const text = `Hello ${user.firstName},\n\nAll subject/batch assignments were removed from your profile.\nPrograms: ${programList.join(", ") || "None"}\n\n${loginUrl}\n`;
-  await sendEmail({ to: user.email, subject: subj, html, text });
+  await sendEmailWithSignature({ to: user.email, subject: subj, html, text, senderUserId: null });
 }

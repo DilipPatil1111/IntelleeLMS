@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Eye, Pencil } from "lucide-react";
+import { blobFileUrl } from "@/lib/blob-url";
 
 interface TrailVersion {
   fileUrl: string;
@@ -92,13 +93,13 @@ export function FeeReceiptsClient() {
                     if (f) void replaceReceipt(r.id, f);
                   }}
                 />
-                <a href={r.fileUrl} target="_blank" rel="noopener noreferrer">
+                <a href={blobFileUrl(r.fileUrl, r.fileName, true)} target="_blank" rel="noopener noreferrer">
                   <Button size="sm" variant="ghost">
                     <Eye className="h-3.5 w-3.5 mr-1" /> View
                   </Button>
                 </a>
                 <a
-                  href={r.fileUrl}
+                  href={blobFileUrl(r.fileUrl, r.fileName)}
                   download={r.fileName}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -125,7 +126,7 @@ export function FeeReceiptsClient() {
                     <li key={i} className="flex justify-between gap-2 text-gray-600">
                       <span className="truncate">{t.fileName}</span>
                       <a
-                        href={t.fileUrl}
+                        href={blobFileUrl(t.fileUrl, t.fileName, true)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-indigo-600 shrink-0"

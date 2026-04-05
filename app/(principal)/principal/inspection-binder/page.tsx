@@ -9,6 +9,7 @@ import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { blobFileUrl } from "@/lib/blob-url";
 import { FileViewer } from "@/components/document-vault/file-viewer";
 import {
   ChevronRight,
@@ -843,9 +844,14 @@ export default function InspectionBinderPage() {
     if (!selectedFolderId) return;
     setReviewBuilding(true);
     try {
+      const ctx = getBinderContext();
       const res = await fetch(
         `/api/principal/document-vault/folders/${selectedFolderId}/review-draft`,
-        { method: "POST" },
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(ctx ?? {}),
+        },
       );
       const out = await readJsonOrError<{ textBody?: string }>(res);
       if (!out.ok) {
@@ -1299,7 +1305,7 @@ export default function InspectionBinderPage() {
                               View
                             </Button>
                             <a
-                              href={af.fileUrl}
+                              href={blobFileUrl(af.fileUrl, af.fileName)}
                               download={af.fileName}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -1411,7 +1417,7 @@ export default function InspectionBinderPage() {
                             View
                           </Button>
                           <a
-                            href={af.fileUrl}
+                            href={blobFileUrl(af.fileUrl, af.fileName)}
                             download={af.fileName}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -1536,7 +1542,7 @@ export default function InspectionBinderPage() {
                         View
                       </Button>
                       <a
-                        href={file.fileUrl}
+                        href={blobFileUrl(file.fileUrl, file.fileName)}
                         download={file.fileName}
                         target="_blank"
                         rel="noopener noreferrer"

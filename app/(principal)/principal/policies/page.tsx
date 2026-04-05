@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
+import { blobFileUrl } from "@/lib/blob-url";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Select } from "@/components/ui/select";
 
@@ -117,7 +118,7 @@ export default function PrincipalPoliciesPage() {
                   </div>
                   {p.fileUrl && (
                     <a
-                      href={p.fileUrl}
+                      href={blobFileUrl(p.fileUrl, undefined, true)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-indigo-600 hover:underline mt-2 inline-block truncate max-w-full"

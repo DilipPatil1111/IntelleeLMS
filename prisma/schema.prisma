@@ -184,6 +184,8 @@ model User {
   profilePicture String?
   mustChangePassword Boolean @default(false)
   isActive       Boolean   @default(true)
+  signatureImageUrl   String?
+  signatureTypedName  String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -303,6 +305,9 @@ model Program {
   description String?
   durationYears Int    @default(1)
   durationText  String?
+  programDomainId   String?
+  programCategoryId String?
+  programTypeId     String?
   isActive    Boolean  @default(true)
   /** Overrides InstitutionSettings when set (minimum % attendance required). */
   minAttendancePercent    Float?
@@ -313,6 +318,10 @@ model Program {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  programDomain   ProgramDomain?   @relation(fields: [programDomainId], references: [id], onDelete: SetNull)
+  programCategory ProgramCategory? @relation(fields: [programCategoryId], references: [id], onDelete: SetNull)
+  programType     ProgramType?     @relation(fields: [programTypeId], references: [id], onDelete: SetNull)
+
   batches     Batch[]
   subjects    Subject[]
   students    StudentProfile[]
@@ -321,6 +330,74 @@ model Program {
   teacherPrograms TeacherProgram[]
   announcements Announcement[]
   programCalendarSlots ProgramCalendarSlot[]
+
+  @@index([programDomainId])
+  @@index([programCategoryId])
+  @@index([programTypeId])
+}
+
+/** Master institutional branding and contact (singleton row id = 1). */
+model InstitutionProfile {
+  id Int @id @default(1)
+
+  institutionNumber String?
+  legalName         String?
+  permanentAddress  String? @db.Text
+  mailingAddress    String? @db.Text
+  phone             String?
+  email             String?
+  website           String?
+  socialFacebookUrl  String?
+  socialLinkedInUrl  String?
+  socialTwitterUrl   String?
+  socialInstagramUrl String?
+  logoUrl           String?
+  brandColor        String?
+
+  updatedAt DateTime @updatedAt
+}
+
+/** e.g. Software, Healthcare — configurable by principal. */
+model ProgramDomain {
+  id         String   @id @default(cuid())
+  name       String
+  /** Optional external reference ID for integrations; unique when set. */
+  customerId String?  @unique
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  programs     Program[]
+  applications ProgramApplication[]
+}
+
+/** e.g. Vocational, Non-vocational. */
+model ProgramCategory {
+  id         String   @id @default(cuid())
+  name       String
+  customerId String?  @unique
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  programs     Program[]
+  applications ProgramApplication[]
+}
+
+/** e.g. Diploma, Post Graduate Diploma, Certificate, Short term. */
+model ProgramType {
+  id         String   @id @default(cuid())
+  name       String
+  customerId String?  @unique
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  programs     Program[]
+  applications ProgramApplication[]
 }
 
 /** Single-row defaults for compliance thresholds (principal Settings). Programs may override per field. */
@@ -894,6 +971,10 @@ model ProgramApplication {
   applicantId    String
   programId      String
   batchId        String?
+  /** Snapshot from Program at submit time (domain / category / type). */
+  programDomainId   String?
+  programCategoryId String?
+  programTypeId     String?
   status         ApplicationStatus @default(PENDING)
   personalStatement String?
   documents      String?
@@ -903,9 +984,16 @@ model ProgramApplication {
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 
-  applicant      User              @relation(fields: [applicantId], references: [id])
-  program        Program           @relation(fields: [programId], references: [id])
-  batch          Batch?            @relation(fields: [batchId], references: [id])
+  applicant       User              @relation(fields: [applicantId], references: [id])
+  program         Program           @relation(fields: [programId], references: [id])
+  batch           Batch?            @relation(fields: [batchId], references: [id])
+  programDomain   ProgramDomain?   @relation(fields: [programDomainId], references: [id], onDelete: SetNull)
+  programCategory ProgramCategory? @relation(fields: [programCategoryId], references: [id], onDelete: SetNull)
+  programType     ProgramType?     @relation(fields: [programTypeId], references: [id], onDelete: SetNull)
+
+  @@index([programDomainId])
+  @@index([programCategoryId])
+  @@index([programTypeId])
 }
 
 // ─── Policies & Templates ───────────────────────────────────────────

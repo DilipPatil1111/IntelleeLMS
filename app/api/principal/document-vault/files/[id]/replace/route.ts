@@ -35,7 +35,7 @@ export async function POST(
     ? file.name.substring(file.name.lastIndexOf("."))
     : "";
   const blobPath = `document-vault/${existing.folderId}/${randomUUID()}${ext}`;
-  const blob = await blobPut(blobPath, file, { access: "public" });
+  const blob = await blobPut(blobPath, file, {});
 
   const updated = await db.docFile.update({
     where: { id },

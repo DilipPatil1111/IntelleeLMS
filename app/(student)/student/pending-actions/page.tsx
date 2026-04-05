@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, FileText, DollarSign, CheckCircle2, Clock, Upload, ExternalLink, Eye, Pencil } from "lucide-react";
 import Link from "next/link";
+import { blobFileUrl } from "@/lib/blob-url";
 
 interface PendingAssessment {
   id: string;
@@ -302,7 +303,7 @@ export default function PendingActionsPage() {
                                 {new Date(t.uploadedAt).toLocaleString()}
                               </span>
                               <a
-                                href={t.fileUrl}
+                                href={blobFileUrl(t.fileUrl, t.fileName, true)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-indigo-600 hover:underline shrink-0 text-xs"
@@ -432,11 +433,11 @@ export default function PendingActionsPage() {
                                   if (f) void handleReceiptReplace(r.id, f);
                                 }}
                               />
-                              <a href={r.fileUrl} target="_blank" rel="noopener noreferrer">
+                              <a href={blobFileUrl(r.fileUrl, r.fileName, true)} target="_blank" rel="noopener noreferrer">
                                 <Button size="sm" variant="ghost"><Eye className="h-3.5 w-3.5 mr-1" /> View</Button>
                               </a>
                               <a
-                                href={r.fileUrl}
+                                href={blobFileUrl(r.fileUrl, r.fileName)}
                                 download={r.fileName}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -462,7 +463,7 @@ export default function PendingActionsPage() {
                                 {r.trail.map((t, i) => (
                                   <li key={i} className="flex justify-between gap-2 text-gray-600">
                                     <span className="truncate">{t.fileName}</span>
-                                    <a href={t.fileUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-600 shrink-0">
+                                    <a href={blobFileUrl(t.fileUrl, t.fileName, true)} target="_blank" rel="noopener noreferrer" className="text-indigo-600 shrink-0">
                                       View
                                     </a>
                                   </li>

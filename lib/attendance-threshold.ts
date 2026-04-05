@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 
 const COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -89,10 +89,11 @@ export async function evaluateLowAttendanceForStudents(batchId: string, studentI
       },
     });
 
-    await sendEmail({
+    await sendEmailWithSignature({
       to: student.email,
       subject: `${college} — Attendance below required level`,
       text: `Dear ${student.firstName},\n\n${msg}\n\n— ${college}`,
+      senderUserId: null,
     });
 
     const staffMessage = `Student ${student.firstName} ${student.lastName} has attendance ${pct}% (threshold ${threshold}%) in batch ${batch.name}.`;

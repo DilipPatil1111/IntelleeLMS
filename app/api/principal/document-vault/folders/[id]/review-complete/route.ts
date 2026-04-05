@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { FolderScope } from "@/app/generated/prisma/client";
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { env } from "@/lib/env";
 import {
   buildInspectionDraftText,
@@ -13,6 +13,7 @@ import {
   type NoteWithPath,
 } from "@/lib/inspection-binder-notes";
 import { blobPut } from "@/lib/vercel-blob";
+import { getOrCreateInspectionReviewNotesFolder } from "@/lib/document-vault";
 
 async function resolveBatchContext(folderId: string) {
   let cur = await db.docFolder.findUnique({ where: { id: folderId } });
@@ -24,6 +25,32 @@ async function resolveBatchContext(folderId: string) {
     cur = await db.docFolder.findUnique({ where: { id: cur.parentId } });
   }
   return null;
+}
+
+/** Collect notes from every folder visible in a batch binder */
+async function collectAllBatchNotes(
+  yearId: string,
+  programId: string,
+  batchId: string,
+): Promise<NoteWithPath[]> {
+  const topLevel = await db.docFolder.findMany({
+    where: {
+      parentId: null,
+      OR: [
+        { yearId, scope: "GENERIC" },
+        { yearId, scope: "YEAR_SPECIFIC" },
+        { yearId, programId, batchId, scope: "BATCH_SPECIFIC" },
+      ],
+    },
+    select: { id: true },
+  });
+
+  const result: NoteWithPath[] = [];
+  for (const f of topLevel) {
+    const notes = await collectInspectionNotesRecursively(f.id, "");
+    result.push(...notes);
+  }
+  return result;
 }
 
 export async function POST(
@@ -71,16 +98,8 @@ export async function POST(
     return NextResponse.json({ error: "Folder not found" }, { status: 404 });
   }
 
-  const allNotes = await collectInspectionNotesRecursively(rootFolderId, "");
-
-  if (allNotes.length === 0 && !(customTextBody && customTextBody.trim())) {
-    return NextResponse.json(
-      { error: "No inspection notes found in this folder or its descendants" },
-      { status: 400 },
-    );
-  }
-
-  let ctxFolder = await resolveBatchContext(rootFolderId);
+  // Resolve batch context
+  const ctxFolder = await resolveBatchContext(rootFolderId);
   let yearId = ctxFolder?.yearId ?? null;
   let programId = ctxFolder?.programId ?? null;
   let batchId = ctxFolder?.batchId ?? null;
@@ -106,26 +125,23 @@ export async function POST(
     return NextResponse.json(
       {
         error:
-          "Could not determine program batch for this binder. Click the folder in a batch section of the tree, or set Year, Program, and Batch in the header (not “All”).",
+          "Could not determine program batch for this binder. Click the folder in a batch section of the tree, or set Year, Program, and Batch in the header.",
       },
       { status: 400 },
     );
   }
 
-  const others = await db.docFolder.findFirst({
-    where: {
-      batchId,
-      programId,
-      yearId,
-      parentId: null,
-      name: "12 - Others",
-    },
-  });
+  // Collect notes from ALL folders in the batch (not just the triggering folder),
+  // unless a custom body was already supplied by the user.
+  let allNotes: NoteWithPath[] = [];
+  if (!(customTextBody && customTextBody.trim())) {
+    allNotes = await collectAllBatchNotes(yearId, programId, batchId);
+  }
 
-  if (!others) {
+  if (allNotes.length === 0 && !(customTextBody && customTextBody.trim())) {
     return NextResponse.json(
-      { error: 'Could not find the "12 - Others" folder for this batch.' },
-      { status: 404 },
+      { error: "No inspection notes found across any folder in this binder" },
+      { status: 400 },
     );
   }
 
@@ -161,11 +177,12 @@ export async function POST(
   // when BLOB_READ_WRITE_TOKEN was unset, blocking email entirely.
   const emailErrors: string[] = [];
   for (const recipient of recipients) {
-    const result = await sendEmail({
+    const result = await sendEmailWithSignature({
       to: recipient,
       subject,
       html: htmlBody,
       attachments: [{ filename: txtFileName, content: buf }],
+      senderUserId: session.user.id,
     });
     if (!result.ok) {
       emailErrors.push(`${recipient}: ${result.error}`);
@@ -192,16 +209,18 @@ export async function POST(
       vaultSaved: false,
       docFileName: txtFileName,
       message:
-        "Email sent. The consolidated .txt was not saved under 12 — Others because BLOB_READ_WRITE_TOKEN is not set. Add it to your environment (Vercel Blob) to persist the file in the binder.",
+        "Email sent. The consolidated .txt was not saved to the Inspection Review Notes folder because BLOB_READ_WRITE_TOKEN is not set. Add it to your environment (Vercel Blob) to persist the file in the binder.",
     });
   }
 
-  const subfolderName = `Consolidated Inspection Notes — ${dateStr}`;
+  const reviewNotesFolderId = await getOrCreateInspectionReviewNotesFolder(yearId, programId, batchId);
+
+  const subfolderName = `Consolidated Inspection Notes \u2014 ${dateStr}`;
 
   const sub = await db.docFolder.create({
     data: {
       name: subfolderName,
-      parentId: others.id,
+      parentId: reviewNotesFolderId,
       scope: FolderScope.BATCH_SPECIFIC,
       yearId,
       programId,
@@ -211,14 +230,9 @@ export async function POST(
   });
 
   try {
-    const blob = await blobPut(
-      `inspection-binder/consolidated/${randomUUID()}.txt`,
-      buf,
-      {
-        access: "public",
-        contentType: "text/plain",
-      },
-    );
+    const blob = await blobPut(`inspection-binder/consolidated/${randomUUID()}.txt`, buf, {
+      contentType: "text/plain",
+    });
 
     await db.docFile.create({
       data: {
@@ -248,7 +262,7 @@ export async function POST(
       vaultSaved: false,
       docFileName: txtFileName,
       message:
-        "Email sent, but saving the consolidated file to the binder failed (check BLOB_READ_WRITE_TOKEN and Blob storage).",
+        "Email sent, but saving the consolidated file to the Inspection Review Notes folder failed (check BLOB_READ_WRITE_TOKEN and Blob storage).",
     });
   }
 }

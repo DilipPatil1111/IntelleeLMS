@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Prisma } from "@/app/generated/prisma/client";
-import { sendEmail, buildPrincipalTeacherInviteEmail } from "@/lib/email";
+import { buildPrincipalTeacherInviteEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { generateTemporaryPassword } from "@/lib/password";
 import { getLoginPageUrl } from "@/lib/app-url";
 import { NextResponse } from "next/server";
@@ -205,11 +206,12 @@ export async function POST(req: Request) {
     assignmentLines,
   });
 
-  const emailResult = await sendEmail({
+  const emailResult = await sendEmailWithSignature({
     to: user.email,
     subject: emailPayload.subject,
     html: emailPayload.html,
     text: emailPayload.text,
+    senderUserId: session.user.id,
   });
 
   const welcomeEmailStatus = !emailResult.ok ? "failed" : emailResult.mock ? "mock" : "sent";

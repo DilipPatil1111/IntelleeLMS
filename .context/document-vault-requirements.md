@@ -4,6 +4,8 @@
 **Date:** April 4, 2026  
 **Product name:** **Inspection Binder** (formerly “Document Vault”). Principal route: `/principal/inspection-binder` (legacy `/principal/document-vault` redirects). APIs remain under `/api/principal/document-vault/*` for stability.
 
+**Revision note v6:** **Inspection Review Notes folder** — The **Review Complete** workflow now saves the consolidated notes into a dedicated top-level **"Inspection Review Notes"** folder (`autoPopulateKey === inspection_review_notes`, `sortOrder: 13`), NOT under **"12 — Others"**. This folder is created automatically as part of the default skeleton when a batch is first opened (same as folder 11). For existing batches that were seeded before this change, the folder is back-filled on first `review-complete` call via `getOrCreateInspectionReviewNotesFolder()` in `lib/document-vault.ts`. A dated subfolder (e.g., `Consolidated Inspection Notes — 2026-04-05`) is created inside this folder per review run.
+
 **Revision note v5:** **Vercel Blob** uploads use `lib/vercel-blob.ts` (`blobPut` / `blobDel`) so `BLOB_READ_WRITE_TOKEN` is passed when set (required for local/non-Vercel runtimes). **Review Complete** appears only when the principal is viewing **folder 11 — Students Photo IDs** (`autoPopulateKey === photo_ids`), not on other folders or **12 — Others**. The review modal **pre-selects all principals**; teachers are toggled per checkbox; **other emails** are a single comma-separated field (no separate “Add” control) merged into recipients on send. The user must run **“Add consolidated notes & preview”** (`POST .../review-draft`) to load editable consolidated text before **Send** (which posts `customTextBody` to `review-complete`). Auto-populated binder rows show **submission history** (chronological); the **latest** row per chain is **replace/delete**-able by the principal via `PUT/DELETE /api/principal/students/[id]/binder-document` (segment is the student **user** id, same as other principal student routes) (contract / ids / fee / fee_receipt). Manual `DocFile` rows remain fully rename/replace/delete capable.
 
 **Revision note v4:** Default principal view is **All years / All programs / All batches**, listing every seeded binder group with **current academic year first**. Manual files support **View, Download, Update (replace)**. Auto folders show **student name → documents** with view/download. **Review Complete** (replacing per-folder “send email”) creates a **Consolidated Inspection Notes** folder under **12 — Others**, writes a **.txt** summary, and emails principals/teachers/extra addresses with attachment. Students: **submission history** (newest first) and **Update** on onboarding documents and fee receipts; same receipt UX on **My Fees**.
@@ -17,7 +19,7 @@
 Two interconnected features:
 
 1. **Student Pending Actions** — A new student menu showing all incomplete obligations (assessments, documents, fees) with the ability to complete them inline.
-2. **Inspection Binder** — Same hierarchical system as above: compliance documents by year, program, and batch; skeleton on first (year, program, batch); progressive auto-fill; manual uploads; inspection notes; **Review Complete** consolidates notes into a `.txt` under **12 — Others** and emails the package (no separate per-note email).
+2. **Inspection Binder** — Same hierarchical system as above: compliance documents by year, program, and batch; skeleton on first (year, program, batch); progressive auto-fill; manual uploads; inspection notes; **Review Complete** consolidates notes into a `.txt` under **Inspection Review Notes** (a dedicated top-level folder, not "12 — Others") and emails the package (no separate per-note email).
 
 ---
 
@@ -162,13 +164,15 @@ Step 3: Select Batch   → [Fall - Aug 25 ▼]     (NOW: skeleton created)
     ├── Pre-admission Test Results
     ├── Student Attendance
     └── Student Transcripts
+Inspection Review Notes                                              [BATCH SPECIFIC]
+    └── (Consolidated Inspection Notes — YYYY-MM-DD subfolders created on each Review Complete run)
 ```
 
 **Key principles:**
-- All 12 folders + sub-folders under "12 - Others" are created in one go when year + program + batch are all selected.
+- All 13 folders + sub-folders (including "Inspection Review Notes") are created in one go when year + program + batch are all selected.
 - GENERIC folders (01, 03, 04, 05, 06, 08) are **shared across all batches** for that year. If they were already created for a different program+batch selection under the same year, they are reused (not duplicated).
 - YEAR SPECIFIC folders (07, 09, 09-Lease, 10) are **shared across all batches within that year**. Created once per year, reused across program+batch selections.
-- BATCH SPECIFIC folders (02, 11, 12 and sub-folders) are **unique per program + batch combination**. Selecting a different batch creates a new set of batch-specific folders.
+- BATCH SPECIFIC folders (02, 11, 12 and sub-folders, **Inspection Review Notes**) are **unique per program + batch combination**. Selecting a different batch creates a new set of batch-specific folders.
 - Folder names for batch-specific folders auto-include the program code and batch name (e.g., "02 - Signed Student Documents - DSWE (Fall - Aug 25 Batch)").
 - The creation is **idempotent** — selecting the same year + program + batch again does not duplicate folders.
 
@@ -310,18 +314,24 @@ When "View" is clicked, a floating overlay window opens:
 
 ### Consolidated inspection email
 
-- A "Send Inspection Email" button is available at any folder level
-- When clicked, the system:
-  1. Collects all inspection notes from the selected folder **and all its descendants** recursively
-  2. Groups them by folder path (e.g., "01 - Final Student Admission Contracts & Policies > subfolder name")
-  3. Presents a **draft email preview** the user can review and edit before sending
+- The **Review Complete** button appears only below **Folder 11 — Students Photo IDs** (`autoPopulateKey === photo_ids`), not on other folders or "12 — Others"
+- When clicked, the modal:
+  1. Pre-selects all principals' emails as recipients
+  2. Allows toggling teachers per checkbox
+  3. Provides a single comma-separated **Other emails** field (no separate Add control)
+  4. Requires running **"Add consolidated notes & preview"** (calls `POST .../review-draft`) before Send is enabled — this loads all notes from all folders into an editable preview
+  5. The user can edit the consolidated text in the preview textarea before sending
+  6. **Send** posts `customTextBody` to `POST .../review-complete` which:
+     a. Emails all recipients with the notes as attachment
+     b. Saves the consolidated `.txt` as a dated subfolder inside **"Inspection Review Notes"** folder (NOT "12 — Others")
+- **Inspection Review Notes folder** details:
+  - `autoPopulateKey: inspection_review_notes`, `sortOrder: 13` — top-level batch-specific folder
+  - Created automatically as part of the default folder skeleton (alongside folder 11)
+  - For existing batches (pre-seeded), it is created on demand via `getOrCreateInspectionReviewNotesFolder()` in `lib/document-vault.ts`
+  - If the user renames this folder, a new run of Review Complete will create a fresh "Inspection Review Notes" folder
 - **Subject line:** `Inspection observations for the year <YEAR>` — where `<YEAR>` is the name of the selected academic year (e.g., "2025-26")
-- **Recipients:** Multi-select picker:
-  - Principal/Administrator email (pre-selected by default)
-  - Teachers (searchable dropdown populated from teacher list)
 - **Send:** Uses existing `sendEmail()` from `lib/email.ts` — no changes to the email helper
 - Notes are **not** deleted after sending — they remain for ongoing reference
-- A "Send" button is displayed after the draft preview
 
 ---
 

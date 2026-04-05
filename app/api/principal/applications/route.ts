@@ -62,6 +62,9 @@ export async function GET(req: Request) {
         },
       },
       batch: { select: { id: true, name: true } },
+      programDomain: { select: { id: true, name: true, customerId: true } },
+      programCategory: { select: { id: true, name: true, customerId: true } },
+      programType: { select: { id: true, name: true, customerId: true } },
     },
     orderBy: { createdAt: "desc" },
   });

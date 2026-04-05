@@ -391,6 +391,10 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Program: 'Program',
+  InstitutionProfile: 'InstitutionProfile',
+  ProgramDomain: 'ProgramDomain',
+  ProgramCategory: 'ProgramCategory',
+  ProgramType: 'ProgramType',
   InstitutionSettings: 'InstitutionSettings',
   AcademicYear: 'AcademicYear',
   Batch: 'Batch',
@@ -446,7 +450,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote"
+    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -965,6 +969,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProgramCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProgramCountAggregateOutputType> | number
+        }
+      }
+    }
+    InstitutionProfile: {
+      payload: Prisma.$InstitutionProfilePayload<ExtArgs>
+      fields: Prisma.InstitutionProfileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InstitutionProfileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InstitutionProfileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>
+        }
+        findFirst: {
+          args: Prisma.InstitutionProfileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InstitutionProfileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>
+        }
+        findMany: {
+          args: Prisma.InstitutionProfileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>[]
+        }
+        create: {
+          args: Prisma.InstitutionProfileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>
+        }
+        createMany: {
+          args: Prisma.InstitutionProfileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InstitutionProfileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>[]
+        }
+        delete: {
+          args: Prisma.InstitutionProfileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>
+        }
+        update: {
+          args: Prisma.InstitutionProfileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>
+        }
+        deleteMany: {
+          args: Prisma.InstitutionProfileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InstitutionProfileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InstitutionProfileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>[]
+        }
+        upsert: {
+          args: Prisma.InstitutionProfileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstitutionProfilePayload>
+        }
+        aggregate: {
+          args: Prisma.InstitutionProfileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInstitutionProfile>
+        }
+        groupBy: {
+          args: Prisma.InstitutionProfileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InstitutionProfileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InstitutionProfileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InstitutionProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProgramDomain: {
+      payload: Prisma.$ProgramDomainPayload<ExtArgs>
+      fields: Prisma.ProgramDomainFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramDomainFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramDomainFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramDomainFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramDomainFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramDomainFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramDomainCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramDomainCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProgramDomainCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>[]
+        }
+        delete: {
+          args: Prisma.ProgramDomainDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>
+        }
+        update: {
+          args: Prisma.ProgramDomainUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramDomainDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramDomainUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProgramDomainUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProgramDomainUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramDomainPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramDomainAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramDomain>
+        }
+        groupBy: {
+          args: Prisma.ProgramDomainGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramDomainGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramDomainCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramDomainCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProgramCategory: {
+      payload: Prisma.$ProgramCategoryPayload<ExtArgs>
+      fields: Prisma.ProgramCategoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramCategoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramCategoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramCategoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramCategoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramCategoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramCategoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramCategoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProgramCategoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>[]
+        }
+        delete: {
+          args: Prisma.ProgramCategoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>
+        }
+        update: {
+          args: Prisma.ProgramCategoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramCategoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramCategoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProgramCategoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProgramCategoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramCategoryPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramCategoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramCategory>
+        }
+        groupBy: {
+          args: Prisma.ProgramCategoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCategoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramCategoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramCategoryCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProgramType: {
+      payload: Prisma.$ProgramTypePayload<ExtArgs>
+      fields: Prisma.ProgramTypeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramTypeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramTypeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramTypeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramTypeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>
+        }
+        findMany: {
+          args: Prisma.ProgramTypeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>[]
+        }
+        create: {
+          args: Prisma.ProgramTypeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>
+        }
+        createMany: {
+          args: Prisma.ProgramTypeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProgramTypeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>[]
+        }
+        delete: {
+          args: Prisma.ProgramTypeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>
+        }
+        update: {
+          args: Prisma.ProgramTypeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramTypeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramTypeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProgramTypeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>[]
+        }
+        upsert: {
+          args: Prisma.ProgramTypeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramTypePayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramTypeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramType>
+        }
+        groupBy: {
+          args: Prisma.ProgramTypeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramTypeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramTypeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramTypeCountAggregateOutputType> | number
         }
       }
     }
@@ -4068,6 +4368,9 @@ export const ProgramScalarFieldEnum = {
   description: 'description',
   durationYears: 'durationYears',
   durationText: 'durationText',
+  programDomainId: 'programDomainId',
+  programCategoryId: 'programCategoryId',
+  programTypeId: 'programTypeId',
   isActive: 'isActive',
   minAttendancePercent: 'minAttendancePercent',
   minAverageMarksPercent: 'minAverageMarksPercent',
@@ -4077,6 +4380,66 @@ export const ProgramScalarFieldEnum = {
 } as const
 
 export type ProgramScalarFieldEnum = (typeof ProgramScalarFieldEnum)[keyof typeof ProgramScalarFieldEnum]
+
+
+export const InstitutionProfileScalarFieldEnum = {
+  id: 'id',
+  institutionNumber: 'institutionNumber',
+  legalName: 'legalName',
+  permanentAddress: 'permanentAddress',
+  mailingAddress: 'mailingAddress',
+  phone: 'phone',
+  email: 'email',
+  website: 'website',
+  socialFacebookUrl: 'socialFacebookUrl',
+  socialLinkedInUrl: 'socialLinkedInUrl',
+  socialTwitterUrl: 'socialTwitterUrl',
+  socialInstagramUrl: 'socialInstagramUrl',
+  logoUrl: 'logoUrl',
+  brandColor: 'brandColor',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InstitutionProfileScalarFieldEnum = (typeof InstitutionProfileScalarFieldEnum)[keyof typeof InstitutionProfileScalarFieldEnum]
+
+
+export const ProgramDomainScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramDomainScalarFieldEnum = (typeof ProgramDomainScalarFieldEnum)[keyof typeof ProgramDomainScalarFieldEnum]
+
+
+export const ProgramCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramCategoryScalarFieldEnum = (typeof ProgramCategoryScalarFieldEnum)[keyof typeof ProgramCategoryScalarFieldEnum]
+
+
+export const ProgramTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramTypeScalarFieldEnum = (typeof ProgramTypeScalarFieldEnum)[keyof typeof ProgramTypeScalarFieldEnum]
 
 
 export const InstitutionSettingsScalarFieldEnum = {
@@ -4556,6 +4919,9 @@ export const ProgramApplicationScalarFieldEnum = {
   applicantId: 'applicantId',
   programId: 'programId',
   batchId: 'batchId',
+  programDomainId: 'programDomainId',
+  programCategoryId: 'programCategoryId',
+  programTypeId: 'programTypeId',
   status: 'status',
   personalStatement: 'personalStatement',
   documents: 'documents',
@@ -5171,6 +5537,10 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   verificationToken?: Prisma.VerificationTokenOmit
   program?: Prisma.ProgramOmit
+  institutionProfile?: Prisma.InstitutionProfileOmit
+  programDomain?: Prisma.ProgramDomainOmit
+  programCategory?: Prisma.ProgramCategoryOmit
+  programType?: Prisma.ProgramTypeOmit
   institutionSettings?: Prisma.InstitutionSettingsOmit
   academicYear?: Prisma.AcademicYearOmit
   batch?: Prisma.BatchOmit

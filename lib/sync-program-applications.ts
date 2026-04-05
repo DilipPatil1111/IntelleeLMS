@@ -52,6 +52,15 @@ export async function syncMissingProgramApplicationsFromProfiles(): Promise<{ cr
     });
     if (existing) continue;
 
+    const program = await db.program.findUnique({
+      where: { id: p.programId },
+      select: {
+        programDomainId: true,
+        programCategoryId: true,
+        programTypeId: true,
+      },
+    });
+
     await db.programApplication.create({
       data: {
         applicantId: p.userId,
@@ -59,6 +68,9 @@ export async function syncMissingProgramApplicationsFromProfiles(): Promise<{ cr
         batchId: p.batchId,
         status: mapStudentStatusToApplicationStatus(p.status),
         personalStatement: null,
+        programDomainId: program?.programDomainId ?? null,
+        programCategoryId: program?.programCategoryId ?? null,
+        programTypeId: program?.programTypeId ?? null,
       },
     });
     created += 1;

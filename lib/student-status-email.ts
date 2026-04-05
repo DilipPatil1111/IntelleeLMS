@@ -1,4 +1,5 @@
-import { sendEmail, escapeHtml, escapeHtmlAttribute } from "@/lib/email";
+import { escapeHtml, escapeHtmlAttribute } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { getServerAppUrl } from "@/lib/app-url";
 import type { StudentStatus } from "@/app/generated/prisma/enums";
 
@@ -93,7 +94,7 @@ export async function sendStudentStatusChangeEmail(params: {
       </div>
     `;
   const text = `Hello ${firstName},\n\n${title}\n\nStatus: ${statusLabel(previousStatus)} → ${statusLabel(nextStatus)}\n${programName ? `Program: ${programName}\n` : ""}${batchName ? `Batch: ${batchName}\n` : ""}${enrollmentNo ? `Enrollment #: ${enrollmentNo}\n` : ""}\n${message}\n\nDashboard: ${dash}\nNotifications: ${notif}\n`;
-  await sendEmail({ to, subject: subj, html, text });
+  await sendEmailWithSignature({ to, subject: subj, html, text, senderUserId: null });
 }
 
 /** When principal changes program/batch without changing admission status (e.g. reallocation). */
@@ -118,5 +119,5 @@ export async function sendStudentProgramBatchChangeEmail(params: {
         <p style="margin-top: 20px;"><a href="${escapeHtmlAttribute(dash)}" style="background: #4f46e5; color: #fff; padding: 12px 22px; border-radius: 8px; text-decoration: none; display: inline-block;">Open dashboard</a></p>
       </div>`;
   const text = `Hello ${firstName},\n\nYour program or batch was updated.\n${programName ? `Program: ${programName}\n` : ""}${batchName ? `Batch: ${batchName}\n` : ""}${enrollmentNo ? `Enrollment #: ${enrollmentNo}\n` : ""}\n${dash}\n`;
-  await sendEmail({ to, subject: subj, html, text });
+  await sendEmailWithSignature({ to, subject: subj, html, text, senderUserId: null });
 }

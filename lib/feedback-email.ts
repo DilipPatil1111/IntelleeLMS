@@ -1,4 +1,5 @@
-import { sendEmail, escapeHtml } from "@/lib/email";
+import { escapeHtml } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { getServerAppUrl } from "@/lib/app-url";
 
 export async function sendFeedbackReplyEmail(params: {
@@ -22,5 +23,5 @@ export async function sendFeedbackReplyEmail(params: {
       </div>
     `;
   const text = `Hello ${recipientFirstName},\n\nAdministration response:\n\n${reply}\n\nFeedback: ${feedbackUrl}\n`;
-  await sendEmail({ to, subject: subj, html, text });
+  await sendEmailWithSignature({ to, subject: subj, html, text, senderUserId: null });
 }

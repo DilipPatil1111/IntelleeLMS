@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { blobFileUrl } from "@/lib/blob-url";
 import {
   Maximize2,
   Minimize2,
@@ -98,6 +99,10 @@ export function FileViewer({
   const category = getFileCategory(contentType, fileName);
   const badge = getTypeBadge(category);
   const BadgeIcon = badge.icon;
+
+  // Resolve proxy URL for private blob stores
+  const viewUrl = blobFileUrl(fileUrl, fileName, true);
+  const downloadUrl = blobFileUrl(fileUrl, fileName, false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -232,7 +237,7 @@ export function FileViewer({
 
           <div className="flex items-center gap-1">
             <a
-              href={fileUrl}
+              href={downloadUrl}
               download={fileName}
               className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600"
               title="Download"
@@ -267,9 +272,10 @@ export function FileViewer({
         {/* Content */}
         <div className="flex-1 overflow-auto">
           <FileContent
-            fileUrl={fileUrl}
+            fileUrl={viewUrl}
             fileName={fileName}
             category={category}
+            downloadUrl={downloadUrl}
           />
         </div>
       </div>
@@ -281,10 +287,12 @@ function FileContent({
   fileUrl,
   fileName,
   category,
+  downloadUrl,
 }: {
   fileUrl: string;
   fileName: string;
   category: "pdf" | "image" | "office" | "other";
+  downloadUrl: string;
 }) {
   switch (category) {
     case "pdf":
@@ -322,7 +330,7 @@ function FileContent({
             Preview not available for this file type.
           </p>
           <a
-            href={fileUrl}
+            href={downloadUrl}
             download={fileName}
             className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
           >

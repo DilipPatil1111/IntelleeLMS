@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
   const pathname = `fee-receipts/${session.user.id}/${safeName}`;
 
   const blob = await blobPut(pathname, buffer, {
-    access: "public",
     contentType: file.type || "application/octet-stream",
   });
 

@@ -58,6 +58,10 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Program: 'Program',
+  InstitutionProfile: 'InstitutionProfile',
+  ProgramDomain: 'ProgramDomain',
+  ProgramCategory: 'ProgramCategory',
+  ProgramType: 'ProgramType',
   InstitutionSettings: 'InstitutionSettings',
   AcademicYear: 'AcademicYear',
   Batch: 'Batch',
@@ -217,6 +221,9 @@ export const ProgramScalarFieldEnum = {
   description: 'description',
   durationYears: 'durationYears',
   durationText: 'durationText',
+  programDomainId: 'programDomainId',
+  programCategoryId: 'programCategoryId',
+  programTypeId: 'programTypeId',
   isActive: 'isActive',
   minAttendancePercent: 'minAttendancePercent',
   minAverageMarksPercent: 'minAverageMarksPercent',
@@ -226,6 +233,66 @@ export const ProgramScalarFieldEnum = {
 } as const
 
 export type ProgramScalarFieldEnum = (typeof ProgramScalarFieldEnum)[keyof typeof ProgramScalarFieldEnum]
+
+
+export const InstitutionProfileScalarFieldEnum = {
+  id: 'id',
+  institutionNumber: 'institutionNumber',
+  legalName: 'legalName',
+  permanentAddress: 'permanentAddress',
+  mailingAddress: 'mailingAddress',
+  phone: 'phone',
+  email: 'email',
+  website: 'website',
+  socialFacebookUrl: 'socialFacebookUrl',
+  socialLinkedInUrl: 'socialLinkedInUrl',
+  socialTwitterUrl: 'socialTwitterUrl',
+  socialInstagramUrl: 'socialInstagramUrl',
+  logoUrl: 'logoUrl',
+  brandColor: 'brandColor',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InstitutionProfileScalarFieldEnum = (typeof InstitutionProfileScalarFieldEnum)[keyof typeof InstitutionProfileScalarFieldEnum]
+
+
+export const ProgramDomainScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramDomainScalarFieldEnum = (typeof ProgramDomainScalarFieldEnum)[keyof typeof ProgramDomainScalarFieldEnum]
+
+
+export const ProgramCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramCategoryScalarFieldEnum = (typeof ProgramCategoryScalarFieldEnum)[keyof typeof ProgramCategoryScalarFieldEnum]
+
+
+export const ProgramTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  customerId: 'customerId',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramTypeScalarFieldEnum = (typeof ProgramTypeScalarFieldEnum)[keyof typeof ProgramTypeScalarFieldEnum]
 
 
 export const InstitutionSettingsScalarFieldEnum = {
@@ -705,6 +772,9 @@ export const ProgramApplicationScalarFieldEnum = {
   applicantId: 'applicantId',
   programId: 'programId',
   batchId: 'batchId',
+  programDomainId: 'programDomainId',
+  programCategoryId: 'programCategoryId',
+  programTypeId: 'programTypeId',
   status: 'status',
   personalStatement: 'personalStatement',
   documents: 'documents',

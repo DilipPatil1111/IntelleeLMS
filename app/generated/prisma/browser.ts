@@ -53,6 +53,26 @@ export type VerificationToken = Prisma.VerificationTokenModel
  */
 export type Program = Prisma.ProgramModel
 /**
+ * Model InstitutionProfile
+ * * Master institutional branding and contact (singleton row id = 1).
+ */
+export type InstitutionProfile = Prisma.InstitutionProfileModel
+/**
+ * Model ProgramDomain
+ * * e.g. Software, Healthcare — configurable by principal.
+ */
+export type ProgramDomain = Prisma.ProgramDomainModel
+/**
+ * Model ProgramCategory
+ * * e.g. Vocational, Non-vocational.
+ */
+export type ProgramCategory = Prisma.ProgramCategoryModel
+/**
+ * Model ProgramType
+ * * e.g. Diploma, Post Graduate Diploma, Certificate, Short term.
+ */
+export type ProgramType = Prisma.ProgramTypeModel
+/**
  * Model InstitutionSettings
  * * Single-row defaults for compliance thresholds (principal Settings). Programs may override per field.
  */

@@ -34,6 +34,12 @@ interface SendEmailParams {
   text?: string;
   /** Resend accepts Buffer or base64 string per attachment. */
   attachments?: { filename: string; content: Buffer }[];
+  /**
+   * Pre-built HTML signature block (from lib/email-signature.ts).
+   * When provided it is appended after the main HTML body.
+   * Pass `null` explicitly to suppress the signature for a specific email.
+   */
+  signatureHtml?: string | null;
 }
 
 export type SendEmailResult =
@@ -41,7 +47,7 @@ export type SendEmailResult =
   | { ok: true; mock: false; id?: string }
   | { ok: false; error: string };
 
-export async function sendEmail({ to, subject, html, text, attachments }: SendEmailParams): Promise<SendEmailResult> {
+export async function sendEmail({ to, subject, html, text, attachments, signatureHtml }: SendEmailParams): Promise<SendEmailResult> {
   const client = getResendClient();
   if (!client) {
     console.warn(
@@ -50,7 +56,9 @@ export async function sendEmail({ to, subject, html, text, attachments }: SendEm
     return { ok: true, mock: true };
   }
 
-  const htmlBody = html ?? (text ? `<p>${text.replace(/</g, "&lt;")}</p>` : "<p></p>");
+  const baseHtml = html ?? (text ? `<p>${text.replace(/</g, "&lt;")}</p>` : "<p></p>");
+  // Append signature if provided (signatureHtml === undefined means not yet decided, truthy means append it)
+  const htmlBody = signatureHtml ? `${baseHtml}${signatureHtml}` : baseHtml;
   const textBody = text ?? (html ? html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "");
 
   try {

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { getOrCreateInstitutionSettings } from "@/lib/institution-settings";
 
 /**
@@ -58,12 +58,13 @@ export async function sendGraduationCertificateEmail(studentUserId: string): Pro
     attachment ? "Your certificate is attached.\n" : "Contact the office if you need a certificate copy.\n"
   }`;
 
-  const result = await sendEmail({
+  const result = await sendEmailWithSignature({
     to: profile.user.email,
     subject,
     html,
     text,
     attachments: attachment ? [attachment] : undefined,
+    senderUserId: null, // system-generated, use generic institutional signature
   });
 
   if (!result.ok) {

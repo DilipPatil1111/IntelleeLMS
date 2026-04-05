@@ -63,7 +63,6 @@ export async function uploadToBlob(params: {
   const pathname = `${folder}/${safeName}`;
 
   const blob = await blobPut(pathname, buffer, {
-    access: "public",
     contentType: getMimeType(ext),
   });
 
@@ -93,7 +92,6 @@ export async function uploadProfilePictureToBlob(params: {
   const pathname = `profile-pictures/${userId}-${Date.now()}.${ext}`;
 
   const blob = await blobPut(pathname, buffer, {
-    access: "public",
     contentType: mimeType,
   });
 

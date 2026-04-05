@@ -193,4 +193,68 @@ export async function seedVaultFolders(params: SeedParams): Promise<void> {
       });
     }
   }
+
+  // Inspection Review Notes folder (top-level, batch-specific)
+  // Created as part of the default skeleton so it always exists at the same level as folder 11.
+  // The Review Complete workflow saves consolidated notes here (or in a subfolder dated run).
+  const existingReviewNotes = await db.docFolder.findFirst({
+    where: {
+      programId,
+      batchId,
+      scope: FolderScope.BATCH_SPECIFIC,
+      autoPopulateKey: "inspection_review_notes",
+      parentId: null,
+    },
+  });
+  if (!existingReviewNotes) {
+    await db.docFolder.create({
+      data: {
+        name: "Inspection Review Notes",
+        parentId: null,
+        scope: FolderScope.BATCH_SPECIFIC,
+        yearId,
+        programId,
+        batchId,
+        autoPopulateKey: "inspection_review_notes",
+        sortOrder: 13,
+      },
+    });
+  }
+}
+
+/**
+ * Finds or creates the "Inspection Review Notes" folder for a given batch.
+ * Back-fills the folder for batches seeded before this folder was added to
+ * the default skeleton.
+ */
+export async function getOrCreateInspectionReviewNotesFolder(
+  yearId: string,
+  programId: string,
+  batchId: string,
+): Promise<string> {
+  const existing = await db.docFolder.findFirst({
+    where: {
+      programId,
+      batchId,
+      scope: FolderScope.BATCH_SPECIFIC,
+      autoPopulateKey: "inspection_review_notes",
+      parentId: null,
+    },
+    select: { id: true },
+  });
+  if (existing) return existing.id;
+
+  const created = await db.docFolder.create({
+    data: {
+      name: "Inspection Review Notes",
+      parentId: null,
+      scope: FolderScope.BATCH_SPECIFIC,
+      yearId,
+      programId,
+      batchId,
+      autoPopulateKey: "inspection_review_notes",
+      sortOrder: 13,
+    },
+  });
+  return created.id;
 }

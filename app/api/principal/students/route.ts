@@ -2,7 +2,8 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/app/generated/prisma/client";
 import type { StudentStatus } from "@/app/generated/prisma/enums";
-import { sendEmail, buildStudentWelcomeEmail } from "@/lib/email";
+import { buildStudentWelcomeEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { generateTemporaryPassword } from "@/lib/password";
 import { getLoginPageUrl, getServerAppUrl } from "@/lib/app-url";
 import { principalStudentSearchAndClauses } from "@/lib/principal-student-search";
@@ -123,12 +124,23 @@ export async function POST(req: Request) {
     });
 
     if (body.programId) {
+      const snap = await tx.program.findUnique({
+        where: { id: body.programId },
+        select: {
+          programDomainId: true,
+          programCategoryId: true,
+          programTypeId: true,
+        },
+      });
       await tx.programApplication.create({
         data: {
           applicantId: u.id,
           programId: body.programId,
           batchId: body.batchId || null,
           status: mapStudentStatusToApplicationStatus(spStatus),
+          programDomainId: snap?.programDomainId ?? null,
+          programCategoryId: snap?.programCategoryId ?? null,
+          programTypeId: snap?.programTypeId ?? null,
         },
       });
     }
@@ -146,11 +158,12 @@ export async function POST(req: Request) {
     loginUrl,
     onboardingUrl,
   });
-  const emailResult = await sendEmail({
+  const emailResult = await sendEmailWithSignature({
     to: user.email,
     subject: emailPayload.subject,
     html: emailPayload.html,
     text: emailPayload.text,
+    senderUserId: session.user.id,
   });
 
   const welcomeEmailStatus = !emailResult.ok ? "failed" : emailResult.mock ? "mock" : "sent";

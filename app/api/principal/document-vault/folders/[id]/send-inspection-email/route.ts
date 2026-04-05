@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { sendEmail, escapeHtml } from "@/lib/email";
+import { escapeHtml } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 
 interface NoteWithPath {
   folderPath: string;
@@ -122,7 +123,7 @@ export async function POST(
   const subject = `Inspection observations for the year ${yearName}`;
 
   for (const recipient of recipients) {
-    await sendEmail({ to: recipient, subject, html: htmlBody });
+    await sendEmailWithSignature({ to: recipient, subject, html: htmlBody, senderUserId: session.user.id });
   }
 
   return NextResponse.json({ ok: true });

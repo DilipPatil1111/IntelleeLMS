@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { sendEmail } from "@/lib/email";
+import { sendEmailWithSignature } from "@/lib/email-signature";
 import { isHolidayType } from "@/lib/holiday-types";
 import { resolveStudentEmails } from "@/lib/mail-audience";
 import { hasPrincipalPortalAccess } from "@/lib/portal-access";
@@ -59,11 +59,12 @@ export async function POST(req: Request) {
   if (current && holiday.academicYearId === current.id) {
     const emails = await resolveStudentEmails({ academicYearId: current.id });
     for (const to of emails) {
-      await sendEmail({
+      await sendEmailWithSignature({
         to,
         subject: `Holiday update: ${holiday.name}`,
         html: `<p>Intellee College has added a holiday: <strong>${holiday.name}</strong> on ${new Date(holiday.date).toLocaleDateString()}.</p>`,
         text: `Holiday: ${holiday.name} on ${new Date(holiday.date).toLocaleDateString()}`,
+        senderUserId: session.user.id,
       });
     }
   }

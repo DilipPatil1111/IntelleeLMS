@@ -37,6 +37,9 @@ interface ApplicationRow {
     batches: { id: string; name: string }[];
   };
   batch: { id: string; name: string } | null;
+  programDomain: { id: string; name: string; customerId: string | null } | null;
+  programCategory: { id: string; name: string; customerId: string | null } | null;
+  programType: { id: string; name: string; customerId: string | null } | null;
 }
 
 function isPlacementPreRecorded(app: ApplicationRow): boolean {
@@ -164,6 +167,13 @@ export function ApplicationsClient() {
                   <div className="flex items-center gap-3">
                     <div className="text-right">
                       <p className="text-sm font-medium">{app.program.name}</p>
+                      {(app.programDomain || app.programCategory || app.programType) && (
+                        <p className="text-[11px] text-gray-500">
+                          {[app.programDomain?.name && `Domain: ${app.programDomain.name}`, app.programCategory?.name && `Category: ${app.programCategory.name}`, app.programType?.name && `Type: ${app.programType.name}`]
+                            .filter(Boolean)
+                            .join(" · ")}
+                        </p>
+                      )}
                       {app.batch && <p className="text-xs text-gray-500">Batch: {app.batch.name}</p>}
                       <p className="text-xs text-gray-400">{new Date(app.createdAt).toLocaleDateString()}</p>
                     </div>

@@ -62,8 +62,11 @@ This document tracks **features requested to date** and where they live in the s
 | Feature | Description | Status |
 |--------|---------------|--------|
 | Duration input | Replace numeric **spinner** with **free-text** field so users type duration in **months or years** (stored as `durationText` / equivalent). | Implemented |
+| Program taxonomy | **Domains**, **categories**, and **types** are managed on **Program taxonomy**; each row has optional **Customer ID** (unique per list when set). Programs link via optional FKs. | Implemented |
+| Application snapshot | On student **apply** submit (and principal-created student + application), **ProgramApplication** stores copies of domain/category/type from the program at that time. | Implemented |
+| Institution profile | Singleton **Institution profile** (number, name, addresses, contact, website, social URLs, logo, brand color). `GET/PUT /api/principal/institution-profile`, logo `POST .../logo`. | Implemented |
 
-**Related:** `app/api/principal/programs`, `app/(principal)/principal/programs/page.tsx`, Prisma `Program.durationText`
+**Related:** `app/api/principal/programs`, `app/api/principal/program-domains|program-categories|program-types`, `app/api/principal/institution-profile`, `app/(principal)/principal/programs/page.tsx`, `program-taxonomy/page.tsx`, `institution-profile/page.tsx`, Prisma `ProgramDomain`, `ProgramCategory`, `ProgramType`, `InstitutionProfile`, `Program` / `ProgramApplication` taxonomy FKs — see `.context/program-taxonomy-institution-profile.md`.
 
 ---
 

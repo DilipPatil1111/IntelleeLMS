@@ -8,6 +8,7 @@ import { Select } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
+import { blobFileUrl } from "@/lib/blob-url";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 
@@ -135,7 +136,7 @@ export default function PrincipalSharedDocumentsPage() {
                   </p>
                   {d.fileUrl && (
                     <a
-                      href={d.fileUrl}
+                      href={blobFileUrl(d.fileUrl, d.fileName || undefined, true)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-indigo-600 hover:underline mt-1 inline-block truncate max-w-full"
