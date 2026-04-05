@@ -44,6 +44,8 @@ export type UserMinAggregateOutputType = {
   profilePicture: string | null
   mustChangePassword: boolean | null
   isActive: boolean | null
+  signatureImageUrl: string | null
+  signatureTypedName: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -68,6 +70,8 @@ export type UserMaxAggregateOutputType = {
   profilePicture: string | null
   mustChangePassword: boolean | null
   isActive: boolean | null
+  signatureImageUrl: string | null
+  signatureTypedName: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -92,6 +96,8 @@ export type UserCountAggregateOutputType = {
   profilePicture: number
   mustChangePassword: number
   isActive: number
+  signatureImageUrl: number
+  signatureTypedName: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -118,6 +124,8 @@ export type UserMinAggregateInputType = {
   profilePicture?: true
   mustChangePassword?: true
   isActive?: true
+  signatureImageUrl?: true
+  signatureTypedName?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -142,6 +150,8 @@ export type UserMaxAggregateInputType = {
   profilePicture?: true
   mustChangePassword?: true
   isActive?: true
+  signatureImageUrl?: true
+  signatureTypedName?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -166,6 +176,8 @@ export type UserCountAggregateInputType = {
   profilePicture?: true
   mustChangePassword?: true
   isActive?: true
+  signatureImageUrl?: true
+  signatureTypedName?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -263,6 +275,8 @@ export type UserGroupByOutputType = {
   profilePicture: string | null
   mustChangePassword: boolean
   isActive: boolean
+  signatureImageUrl: string | null
+  signatureTypedName: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -308,6 +322,8 @@ export type UserWhereInput = {
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
   mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  signatureImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  signatureTypedName?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
@@ -360,6 +376,8 @@ export type UserOrderByWithRelationInput = {
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
@@ -415,6 +433,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
   mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  signatureImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  signatureTypedName?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
@@ -467,6 +487,8 @@ export type UserOrderByWithAggregationInput = {
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -497,6 +519,8 @@ export type UserScalarWhereWithAggregatesInput = {
   profilePicture?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   mustChangePassword?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  signatureImageUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  signatureTypedName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -521,6 +545,8 @@ export type UserCreateInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -573,6 +599,8 @@ export type UserUncheckedCreateInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -625,6 +653,8 @@ export type UserUpdateInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -677,6 +707,8 @@ export type UserUncheckedUpdateInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -729,6 +761,8 @@ export type UserCreateManyInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -753,6 +787,8 @@ export type UserUpdateManyMutationInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -777,6 +813,8 @@ export type UserUncheckedUpdateManyInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -801,6 +839,8 @@ export type UserCountOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -825,6 +865,8 @@ export type UserMaxOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -849,6 +891,8 @@ export type UserMinOrderByAggregateInput = {
   profilePicture?: Prisma.SortOrder
   mustChangePassword?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  signatureTypedName?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1341,6 +1385,8 @@ export type UserCreateWithoutPortalGrantsReceivedInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1392,6 +1438,8 @@ export type UserUncheckedCreateWithoutPortalGrantsReceivedInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1448,6 +1496,8 @@ export type UserCreateWithoutPortalGrantsCreatedInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1499,6 +1549,8 @@ export type UserUncheckedCreateWithoutPortalGrantsCreatedInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1566,6 +1618,8 @@ export type UserUpdateWithoutPortalGrantsReceivedInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -1617,6 +1671,8 @@ export type UserUncheckedUpdateWithoutPortalGrantsReceivedInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1679,6 +1735,8 @@ export type UserUpdateWithoutPortalGrantsCreatedInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -1730,6 +1788,8 @@ export type UserUncheckedUpdateWithoutPortalGrantsCreatedInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1781,6 +1841,8 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1832,6 +1894,8 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1888,6 +1952,8 @@ export type UserCreateWithoutFeedbackAboutStudentInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1939,6 +2005,8 @@ export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1995,6 +2063,8 @@ export type UserCreateWithoutFeedbackAboutTeacherInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2046,6 +2116,8 @@ export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2102,6 +2174,8 @@ export type UserCreateWithoutFeedbackRepliesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2153,6 +2227,8 @@ export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2220,6 +2296,8 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2271,6 +2349,8 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2333,6 +2413,8 @@ export type UserUpdateWithoutFeedbackAboutStudentInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2384,6 +2466,8 @@ export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2446,6 +2530,8 @@ export type UserUpdateWithoutFeedbackAboutTeacherInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2497,6 +2583,8 @@ export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2559,6 +2647,8 @@ export type UserUpdateWithoutFeedbackRepliesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2610,6 +2700,8 @@ export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2661,6 +2753,8 @@ export type UserCreateWithoutAccountsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -2712,6 +2806,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2779,6 +2875,8 @@ export type UserUpdateWithoutAccountsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2830,6 +2928,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2881,6 +2981,8 @@ export type UserCreateWithoutSessionsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2932,6 +3034,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2999,6 +3103,8 @@ export type UserUpdateWithoutSessionsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3050,6 +3156,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3101,6 +3209,8 @@ export type UserCreateWithoutTopicProgressInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3152,6 +3262,8 @@ export type UserUncheckedCreateWithoutTopicProgressInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3219,6 +3331,8 @@ export type UserUpdateWithoutTopicProgressInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3270,6 +3384,8 @@ export type UserUncheckedUpdateWithoutTopicProgressInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3321,6 +3437,8 @@ export type UserCreateWithoutStudentProfileInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3372,6 +3490,8 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3439,6 +3559,8 @@ export type UserUpdateWithoutStudentProfileInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3490,6 +3612,8 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3541,6 +3665,8 @@ export type UserCreateWithoutStudentOnboardingInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3592,6 +3718,8 @@ export type UserUncheckedCreateWithoutStudentOnboardingInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3659,6 +3787,8 @@ export type UserUpdateWithoutStudentOnboardingInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3710,6 +3840,8 @@ export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3761,6 +3893,8 @@ export type UserCreateWithoutTeacherProfileInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3812,6 +3946,8 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3879,6 +4015,8 @@ export type UserUpdateWithoutTeacherProfileInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3930,6 +4068,8 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3981,6 +4121,8 @@ export type UserCreateWithoutCreatedAssessmentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4032,6 +4174,8 @@ export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4099,6 +4243,8 @@ export type UserUpdateWithoutCreatedAssessmentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4150,6 +4296,8 @@ export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4201,6 +4349,8 @@ export type UserCreateWithoutAssessmentAssignmentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4252,6 +4402,8 @@ export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4319,6 +4471,8 @@ export type UserUpdateWithoutAssessmentAssignmentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4370,6 +4524,8 @@ export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4421,6 +4577,8 @@ export type UserCreateWithoutAttemptsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4472,6 +4630,8 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4539,6 +4699,8 @@ export type UserUpdateWithoutAttemptsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4590,6 +4752,8 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4641,6 +4805,8 @@ export type UserCreateWithoutAnswersInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4692,6 +4858,8 @@ export type UserUncheckedCreateWithoutAnswersInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4759,6 +4927,8 @@ export type UserUpdateWithoutAnswersInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -4810,6 +4980,8 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -4861,6 +5033,8 @@ export type UserCreateWithoutAssessmentSharesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -4912,6 +5086,8 @@ export type UserUncheckedCreateWithoutAssessmentSharesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -4968,6 +5144,8 @@ export type UserCreateWithoutCreatedSharesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5019,6 +5197,8 @@ export type UserUncheckedCreateWithoutCreatedSharesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5086,6 +5266,8 @@ export type UserUpdateWithoutAssessmentSharesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5137,6 +5319,8 @@ export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5199,6 +5383,8 @@ export type UserUpdateWithoutCreatedSharesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5250,6 +5436,8 @@ export type UserUncheckedUpdateWithoutCreatedSharesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5301,6 +5489,8 @@ export type UserCreateWithoutTeacherAttendancesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5352,6 +5542,8 @@ export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5419,6 +5611,8 @@ export type UserUpdateWithoutTeacherAttendancesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5470,6 +5664,8 @@ export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5521,6 +5717,8 @@ export type UserCreateWithoutAttendanceRecordsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5572,6 +5770,8 @@ export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5639,6 +5839,8 @@ export type UserUpdateWithoutAttendanceRecordsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5690,6 +5892,8 @@ export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5741,6 +5945,8 @@ export type UserCreateWithoutProgramCalendarSlotsAsTeacherInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -5792,6 +5998,8 @@ export type UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -5859,6 +6067,8 @@ export type UserUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -5910,6 +6120,8 @@ export type UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -5961,6 +6173,8 @@ export type UserCreateWithoutNotificationsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -6012,6 +6226,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -6079,6 +6295,8 @@ export type UserUpdateWithoutNotificationsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -6130,6 +6348,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -6181,6 +6401,8 @@ export type UserCreateWithoutApplicationsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -6232,6 +6454,8 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -6299,6 +6523,8 @@ export type UserUpdateWithoutApplicationsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -6350,6 +6576,8 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -6401,6 +6629,8 @@ export type UserCreateWithoutCreatedDocumentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -6452,6 +6682,8 @@ export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -6508,6 +6740,8 @@ export type UserCreateWithoutSharedDocumentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -6559,6 +6793,8 @@ export type UserUncheckedCreateWithoutSharedDocumentsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -6626,6 +6862,8 @@ export type UserUpdateWithoutCreatedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -6677,6 +6915,8 @@ export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -6747,6 +6987,8 @@ export type UserScalarWhereInput = {
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
   mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  signatureImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  signatureTypedName?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -6771,6 +7013,8 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -6822,6 +7066,8 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -6889,6 +7135,8 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -6940,6 +7188,8 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -6991,6 +7241,8 @@ export type UserCreateWithoutAnnouncementRecipientsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -7042,6 +7294,8 @@ export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -7109,6 +7363,8 @@ export type UserUpdateWithoutAnnouncementRecipientsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -7160,6 +7416,8 @@ export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -7211,6 +7469,8 @@ export type UserCreateWithoutAuditLogsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -7262,6 +7522,8 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   profilePicture?: string | null
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -7329,6 +7591,8 @@ export type UserUpdateWithoutAuditLogsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -7380,6 +7644,8 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -7431,6 +7697,8 @@ export type UserUpdateWithoutSharedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -7482,6 +7750,8 @@ export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -7533,6 +7803,8 @@ export type UserUncheckedUpdateManyWithoutSharedDocumentsInput = {
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -7804,6 +8076,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   profilePicture?: boolean
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: boolean
+  signatureTypedName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -7857,6 +8131,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   profilePicture?: boolean
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: boolean
+  signatureTypedName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -7881,6 +8157,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   profilePicture?: boolean
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: boolean
+  signatureTypedName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -7905,11 +8183,13 @@ export type UserSelectScalar = {
   profilePicture?: boolean
   mustChangePassword?: boolean
   isActive?: boolean
+  signatureImageUrl?: boolean
+  signatureTypedName?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "emailVerified" | "hashedPassword" | "firstName" | "middleName" | "lastName" | "role" | "image" | "phone" | "address" | "city" | "state" | "country" | "postalCode" | "visaStatus" | "profilePicture" | "mustChangePassword" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "emailVerified" | "hashedPassword" | "firstName" | "middleName" | "lastName" | "role" | "image" | "phone" | "address" | "city" | "state" | "country" | "postalCode" | "visaStatus" | "profilePicture" | "mustChangePassword" | "isActive" | "signatureImageUrl" | "signatureTypedName" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -7996,6 +8276,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     profilePicture: string | null
     mustChangePassword: boolean
     isActive: boolean
+    signatureImageUrl: string | null
+    signatureTypedName: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -8468,6 +8750,8 @@ export interface UserFieldRefs {
   readonly profilePicture: Prisma.FieldRef<"User", 'String'>
   readonly mustChangePassword: Prisma.FieldRef<"User", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
+  readonly signatureImageUrl: Prisma.FieldRef<"User", 'String'>
+  readonly signatureTypedName: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

@@ -453,3 +453,46 @@ Labels use the same **sticky** left block and **emerald** text styling as **Teac
 ---
 
 *Last updated: §8 announcements (principal multi-audience + sender copy); §14.10–§14.11 student calendar/sheet/banner + principal attendance & students UX; Full Calendar “Days in selected range” removed.*
+
+
+---
+
+## §17. My Profile — all roles
+
+**Goal:** Every authenticated user (Principal, Teacher, Student) has a dedicated **My Profile** page in their portal where they can view and edit their personal information, upload/remove a profile photo, and change their password.
+
+### Routes
+
+| Role | URL |
+|------|-----|
+| Principal | `/principal/my-profile` |
+| Teacher | `/teacher/my-profile` |
+| Student | `/student/profile` (existing, now editable) |
+
+### Sidebar access
+- **Principal**: "My Profile" link near the top of the nav. Sidebar avatar is clickable.
+- **Teacher**: "My Profile" link near the top of the nav. Sidebar avatar is clickable.
+- **Student**: Existing "My Profile" sidebar link; avatar is clickable.
+
+### Editable fields (all roles)
+- First Name *(required)*, Middle Name, Last Name *(required)*
+- Phone, Address, City, State, Country, Postal Code, Visa/Immigration Status
+- Profile Photo (JPG/PNG/WebP, max 5 MB) — upload and remove
+
+### Read-only contextual info
+- **Students**: Enrollment No., Admission Status, Program, Batch, Academic Year
+- **Teachers**: Specialization, Qualification, Experience, Assigned Programs
+- **Principal**: no role-specific section (use Institution Profile for institution details)
+
+### Change Password
+All users can change their password from My Profile (current password required; minimum 8 characters).
+
+### APIs
+- `GET /api/user/profile` — returns profile + role-specific details
+- `PUT /api/user/profile` — updates editable personal fields
+- `POST /api/user/profile-picture` — uploads profile photo (all roles)
+- `DELETE /api/user/profile-picture` — removes profile photo (all roles)
+- `POST /api/user/change-password` — changes password
+
+### Shared implementation
+`components/profile/my-profile-client.tsx` — single client component used by all three role pages.

@@ -81,7 +81,7 @@ export async function emailTeacherIfTeachingChanged(
     const href = escapeHtmlAttribute(loginUrl);
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(user.firstName)},</p>
         <p>Your principal has updated which <strong>programs</strong> are linked to your teacher profile.</p>
         <p style="font-size: 14px; color: #374151;"><strong>Programs now:</strong> ${programList.length ? programList.map((n) => escapeHtml(n)).join(", ") : "None"}</p>
@@ -104,7 +104,7 @@ export async function emailTeacherIfTeachingChanged(
     const href = escapeHtmlAttribute(loginUrl);
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(user.firstName)},</p>
         <p>Your principal has updated your <strong>subject and batch</strong> assignments. Your current list is below.</p>
         <ul style="line-height: 1.6;">${listHtml}</ul>
@@ -121,7 +121,7 @@ export async function emailTeacherIfTeachingChanged(
   const href2 = escapeHtmlAttribute(loginUrl);
   const html = `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #4f46e5;">Intellee College</h2>
+      {INSTITUTION_HEADER}
       <p>Hello ${escapeHtml(user.firstName)},</p>
       <p>Your principal has removed all <strong>subject and batch</strong> teaching assignments from your profile.</p>
       <p style="font-size: 14px; color: #374151;"><strong>Programs still linked:</strong> ${programList.length ? programList.map((n) => escapeHtml(n)).join(", ") : "None"}</p>

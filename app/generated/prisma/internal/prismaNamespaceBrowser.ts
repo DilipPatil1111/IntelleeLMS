@@ -140,6 +140,8 @@ export const UserScalarFieldEnum = {
   profilePicture: 'profilePicture',
   mustChangePassword: 'mustChangePassword',
   isActive: 'isActive',
+  signatureImageUrl: 'signatureImageUrl',
+  signatureTypedName: 'signatureTypedName',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

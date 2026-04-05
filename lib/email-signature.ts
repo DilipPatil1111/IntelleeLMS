@@ -32,18 +32,32 @@ interface SenderInfo {
 /** Fetches the sender user record (with signature fields). Returns null when userId is empty/missing. */
 export async function getSenderInfo(userId: string | null | undefined): Promise<SenderInfo | null> {
   if (!userId) return null;
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      role: true,
-      signatureImageUrl: true,
-      signatureTypedName: true,
-    },
-  });
-  return user ?? null;
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        signatureImageUrl: true,
+        signatureTypedName: true,
+      },
+    });
+    return user ?? null;
+  } catch {
+    // Fallback when the DB migration hasn't been applied yet (signatureImageUrl/signatureTypedName columns don't exist)
+    try {
+      const user = await db.user.findUnique({
+        where: { id: userId },
+        select: { id: true, firstName: true, lastName: true, role: true },
+      });
+      if (!user) return null;
+      return { ...user, signatureImageUrl: null, signatureTypedName: null };
+    } catch {
+      return null;
+    }
+  }
 }
 
 /** Builds the full-width HR separator + signature footer for HTML emails. */
@@ -74,47 +88,7 @@ export async function buildEmailSignatureHtml(userId: string | null | undefined)
   }
 
   // ── Institution block ───────────────────────────────────────────────────
-  const instParts: string[] = [];
-
-  if (profile.logoUrl) {
-    instParts.push(
-      `<img src="${escapeHtml(profile.logoUrl)}" alt="${escapeHtml(profile.legalName ?? "Institution logo")}" style="max-height:48px;max-width:160px;display:block;margin-bottom:6px;" />`,
-    );
-  }
-
-  if (profile.legalName) {
-    instParts.push(`<strong style="font-size:13px;color:#111827;">${escapeHtml(profile.legalName)}</strong>`);
-  }
-
-  const addressLine = [profile.permanentAddress, profile.mailingAddress]
-    .filter(Boolean)
-    .join(" | ");
-  if (addressLine) {
-    instParts.push(`<span style="font-size:12px;color:#374151;">${escapeHtml(addressLine)}</span>`);
-  }
-
-  const contactParts = [
-    profile.phone ? `Tel: ${profile.phone}` : null,
-    profile.email ? `Email: ${profile.email}` : null,
-    profile.website ? `Web: ${profile.website}` : null,
-  ].filter(Boolean);
-  if (contactParts.length) {
-    instParts.push(`<span style="font-size:12px;color:#374151;">${contactParts.map(escapeHtml).join(" &nbsp;|&nbsp; ")}</span>`);
-  }
-
-  const socialLinks = [
-    profile.socialFacebookUrl ? `<a href="${escapeHtml(profile.socialFacebookUrl)}" style="color:#4f46e5;font-size:11px;text-decoration:none;">Facebook</a>` : null,
-    profile.socialLinkedInUrl ? `<a href="${escapeHtml(profile.socialLinkedInUrl)}" style="color:#4f46e5;font-size:11px;text-decoration:none;">LinkedIn</a>` : null,
-    profile.socialTwitterUrl ? `<a href="${escapeHtml(profile.socialTwitterUrl)}" style="color:#4f46e5;font-size:11px;text-decoration:none;">X/Twitter</a>` : null,
-    profile.socialInstagramUrl ? `<a href="${escapeHtml(profile.socialInstagramUrl)}" style="color:#4f46e5;font-size:11px;text-decoration:none;">Instagram</a>` : null,
-  ].filter(Boolean);
-  if (socialLinks.length) {
-    instParts.push(socialLinks.join(" &nbsp;·&nbsp; "));
-  }
-
-  const institutionBlock = instParts.length
-    ? `<div style="margin-top:8px;">${instParts.join("<br>")}</div>`
-    : "";
+  const institutionBlock = buildInstitutionBlock(profile);
 
   if (!signatureLine && !institutionBlock) return "";
 
@@ -126,14 +100,82 @@ export async function buildEmailSignatureHtml(userId: string | null | undefined)
 }
 
 /**
- * Convenience wrapper: builds the signature for `senderUserId`, then calls `sendEmail()`.
+ * Builds the institution name row: logo image (if any) inline to the left of the name.
+ * Used both in the email header (top of every email) and the signature footer.
+ */
+function buildInstitutionBlock(profile: Awaited<ReturnType<typeof getOrCreateInstitutionProfile>>): string {
+  const parts: string[] = [];
+
+  // Logo + name on the same line using an inline-table so email clients honour it
+  const logoHtml = profile.logoUrl
+    ? `<img src="${escapeHtml(profile.logoUrl)}" alt="${escapeHtml(profile.legalName ?? "logo")}" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;display:inline-block;" />`
+    : "";
+  const nameHtml = profile.legalName
+    ? `<strong style="font-size:15px;color:#111827;vertical-align:middle;">${escapeHtml(profile.legalName)}</strong>`
+    : "";
+
+  if (logoHtml || nameHtml) {
+    parts.push(`<div style="margin-bottom:4px;line-height:1;">${logoHtml}${nameHtml}</div>`);
+  }
+
+  const addressLine = [profile.permanentAddress, profile.mailingAddress]
+    .filter(Boolean)
+    .join(" | ");
+  if (addressLine) {
+    parts.push(`<div style="font-size:12px;color:#374151;">${escapeHtml(addressLine)}</div>`);
+  }
+
+  const contactParts = [
+    profile.phone ? `Tel: ${profile.phone}` : null,
+    profile.email ? `Email: ${profile.email}` : null,
+    profile.website
+      ? `Web: <a href="${escapeHtml(profile.website)}" style="color:#4f46e5;text-decoration:none;">${escapeHtml(profile.website)}</a>`
+      : null,
+  ].filter(Boolean);
+  if (contactParts.length) {
+    parts.push(`<div style="font-size:12px;color:#374151;">${contactParts.join(" &nbsp;|&nbsp; ")}</div>`);
+  }
+
+  const socialLinks = [
+    profile.socialFacebookUrl ? `<a href="${escapeHtml(profile.socialFacebookUrl)}" style="color:#4f46e5;font-size:11px;text-decoration:none;">Facebook</a>` : null,
+    profile.socialLinkedInUrl ? `<a href="${escapeHtml(profile.socialLinkedInUrl)}" style="color:#4f46e5;font-size:11px;text-decoration:none;">LinkedIn</a>` : null,
+    profile.socialTwitterUrl ? `<a href="${escapeHtml(profile.socialTwitterUrl)}" style="color:#4f46e5;font-size:11px;text-decoration:none;">X/Twitter</a>` : null,
+    profile.socialInstagramUrl ? `<a href="${escapeHtml(profile.socialInstagramUrl)}" style="color:#4f46e5;font-size:11px;text-decoration:none;">Instagram</a>` : null,
+  ].filter(Boolean);
+  if (socialLinks.length) {
+    parts.push(`<div style="font-size:11px;margin-top:2px;">${socialLinks.join(" &nbsp;·&nbsp; ")}</div>`);
+  }
+
+  return parts.length ? `<div style="font-family:sans-serif;">${parts.join("")}</div>` : "";
+}
+
+/**
+ * Builds the branded header shown at the TOP of every outgoing email body.
+ * Logo (if any) sits to the left of the institution name on the same line.
+ * Call once per email and prepend it before the email body content.
+ */
+export async function buildEmailHeader(): Promise<string> {
+  const profile = await getOrCreateInstitutionProfile();
+  const institutionBlock = buildInstitutionBlock(profile);
+  if (!institutionBlock) {
+    // Fallback to plain text name when no profile data is set
+    return `<div style="font-family:sans-serif;max-width:600px;margin-bottom:16px;"><h2 style="color:#4f46e5;margin:0;">Intellee College</h2></div>`;
+  }
+  return `<div style="font-family:sans-serif;max-width:600px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #e5e7eb;">${institutionBlock}</div>`;
+}
+
+/**
+ * Convenience wrapper: builds the header + signature for `senderUserId`, then calls `sendEmail()`.
  * Use this everywhere instead of `sendEmail()` so every email automatically gets the
- * correct signature (principal custom sig or generic institutional footer).
+ * correct institution header (logo + name at top) and signature footer.
  */
 export async function sendEmailWithSignature(
   params: Parameters<typeof sendEmail>[0] & { senderUserId?: string | null },
 ): Promise<SendEmailResult> {
   const { senderUserId, ...emailParams } = params;
-  const signatureHtml = await buildEmailSignatureHtml(senderUserId);
-  return sendEmail({ ...emailParams, signatureHtml: signatureHtml || null });
+  const [signatureHtml, headerHtml] = await Promise.all([
+    buildEmailSignatureHtml(senderUserId),
+    buildEmailHeader(),
+  ]);
+  return sendEmail({ ...emailParams, signatureHtml: signatureHtml || null, headerHtml });
 }

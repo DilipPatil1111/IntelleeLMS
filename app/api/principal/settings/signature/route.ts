@@ -9,15 +9,20 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { signatureImageUrl: true, signatureTypedName: true },
-  });
+  try {
+    const user = await db.user.findUnique({
+      where: { id: session.user.id },
+      select: { signatureImageUrl: true, signatureTypedName: true },
+    });
 
-  return NextResponse.json({
-    signatureImageUrl: user?.signatureImageUrl ?? null,
-    signatureTypedName: user?.signatureTypedName ?? null,
-  });
+    return NextResponse.json({
+      signatureImageUrl: user?.signatureImageUrl ?? null,
+      signatureTypedName: user?.signatureTypedName ?? null,
+    });
+  } catch {
+    // Migration not yet applied — return empty gracefully
+    return NextResponse.json({ signatureImageUrl: null, signatureTypedName: null });
+  }
 }
 
 /** PUT /api/principal/settings/signature — save signature fields */
@@ -32,16 +37,20 @@ export async function PUT(req: Request) {
     signatureTypedName?: string | null;
   };
 
-  const updated = await db.user.update({
-    where: { id: session.user.id },
-    data: {
-      signatureImageUrl:
-        body.signatureImageUrl !== undefined ? (body.signatureImageUrl || null) : undefined,
-      signatureTypedName:
-        body.signatureTypedName !== undefined ? (body.signatureTypedName?.trim() || null) : undefined,
-    },
-    select: { signatureImageUrl: true, signatureTypedName: true },
-  });
+  try {
+    const updated = await db.user.update({
+      where: { id: session.user.id },
+      data: {
+        signatureImageUrl:
+          body.signatureImageUrl !== undefined ? (body.signatureImageUrl || null) : undefined,
+        signatureTypedName:
+          body.signatureTypedName !== undefined ? (body.signatureTypedName?.trim() || null) : undefined,
+      },
+      select: { signatureImageUrl: true, signatureTypedName: true },
+    });
 
-  return NextResponse.json({ ok: true, ...updated });
+    return NextResponse.json({ ok: true, ...updated });
+  } catch {
+    return NextResponse.json({ error: "Migration not yet applied — run `npx prisma migrate dev` to enable signature fields." }, { status: 503 });
+  }
 }

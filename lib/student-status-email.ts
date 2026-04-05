@@ -78,7 +78,7 @@ export async function sendStudentStatusChangeEmail(params: {
   const html = `
       <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #111827;">
         <div style="border-bottom: 3px solid #4f46e5; padding-bottom: 12px; margin-bottom: 20px;">
-          <h1 style="margin: 0; font-size: 20px; color: #4f46e5;">Intellee College</h1>
+          {INSTITUTION_HEADER}
           <p style="margin: 8px 0 0; font-size: 13px; color: #6b7280;">Enrollment update</p>
         </div>
         <p style="font-size: 16px;">Hello ${escapeHtml(firstName)},</p>
@@ -110,7 +110,7 @@ export async function sendStudentProgramBatchChangeEmail(params: {
   const subj = "Your program or batch was updated — Intellee College";
   const html = `
       <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #111827;">
-        <h1 style="font-size: 20px; color: #4f46e5;">Intellee College</h1>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(firstName)},</p>
         <p>Your principal has updated your <strong>program or batch</strong> assignment in the system.</p>
         ${programName ? `<p><strong>Program:</strong> ${escapeHtml(programName)}</p>` : ""}

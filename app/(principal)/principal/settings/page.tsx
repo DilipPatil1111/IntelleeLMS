@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PageHeader } from "@/components/layout/page-header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PortalAccessSettings } from "@/components/settings/portal-access-settings";
 import { blobFileUrl } from "@/lib/blob-url";
+import { MyProfileClient } from "@/components/profile/my-profile-client";
 
 type Institution = {
   id: number;
@@ -260,6 +261,22 @@ export default function PrincipalSettingsPage() {
           {message.text}
         </div>
       )}
+
+      {/* ── My Profile ── inline at top of Settings ──────────── */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>My Profile</CardTitle>
+          <CardDescription>
+            View and update your name, contact details, profile photo, and password. This is your personal account as
+            principal or administrator.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <MyProfileClient embedded />
+        </CardContent>
+      </Card>
+
+      <div className="my-8 border-t border-gray-200" />
 
       <PortalAccessSettings />
 

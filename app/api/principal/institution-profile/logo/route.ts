@@ -25,6 +25,7 @@ export async function POST(req: Request) {
   const result = await uploadProfilePictureToBlob({
     buffer: buf,
     mimeType: mime,
+    fileName: file.name || "logo.jpg",
     userId: `institution-logo-${session.user.id}`,
   });
 

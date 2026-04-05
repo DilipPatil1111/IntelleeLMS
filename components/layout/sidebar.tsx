@@ -8,7 +8,7 @@ import {
   LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar, CalendarRange,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
-  Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive, Building2,
+  Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive, Building2, ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -38,6 +38,7 @@ const studentNav: NavItem[] = [
 
 const teacherNav: NavItem[] = [
   { label: "Dashboard", href: "/teacher", icon: LayoutDashboard },
+  { label: "My Profile", href: "/teacher/my-profile", icon: Users },
   { label: "Assessments", href: "/teacher/assessments", icon: FileText },
   { label: "Announcements", href: "/teacher/announcements", icon: Megaphone },
   { label: "Question Bank", href: "/teacher/questions", icon: ClipboardList },
@@ -55,12 +56,14 @@ const teacherNav: NavItem[] = [
 
 const principalNav: NavItem[] = [
   { label: "Dashboard", href: "/principal", icon: LayoutDashboard },
+  { label: "My Profile", href: "/principal/my-profile", icon: Users },
   { label: "Applications", href: "/principal/applications", icon: FileCheck },
   { label: "Feedback", href: "/principal/feedback", icon: MessageSquare },
   { label: "Onboarding review", href: "/principal/onboarding-review", icon: ClipboardList },
   { label: "All Assessments", href: "/principal/assessments", icon: FileText },
   { label: "Students", href: "/principal/students", icon: GraduationCap },
   { label: "Teachers", href: "/principal/teachers", icon: Users },
+  { label: "User Management", href: "/principal/users", icon: ShieldCheck },
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
   { label: "Full Calendar", href: "/principal/full-calendar", icon: CalendarRange },
   { label: "Programs", href: "/principal/programs", icon: BookOpen },
@@ -143,7 +146,11 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
       </nav>
 
       <div className="border-t border-gray-800 p-4">
-        <div className="flex items-center gap-3">
+        <Link
+          href={`/${role.toLowerCase() === "principal" ? "principal/my-profile" : role.toLowerCase() === "teacher" ? "teacher/my-profile" : "student/profile"}`}
+          className="flex items-center gap-3 rounded-lg px-2 py-1 hover:bg-gray-800 transition-colors"
+          title={collapsed ? "My Profile" : undefined}
+        >
           {profilePicture ? (
             <Image src={profilePicture} alt="" width={32} height={32} unoptimized={profilePicture.startsWith("data:")} className="h-8 w-8 shrink-0 rounded-full object-cover" />
           ) : (
@@ -157,7 +164,7 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
               <p className="text-xs text-gray-400 capitalize">{role.toLowerCase()}</p>
             </div>
           )}
-        </div>
+        </Link>
         <form action="/api/auth/signout" method="POST" className="mt-3">
           <button
             type="submit"

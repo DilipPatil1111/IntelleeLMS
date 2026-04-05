@@ -80,7 +80,7 @@ export async function POST(
     subject: `Payment Received — ${user.firstName} ${user.lastName}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Dear ${user.firstName},</p>
         <p>Your payment has been confirmed by the administration.</p>
         <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 16px; margin: 16px 0;">

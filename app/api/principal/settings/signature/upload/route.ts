@@ -33,7 +33,7 @@ export async function POST(req: Request) {
   const blob = await blobPut(
     `signatures/${session.user.id}-${randomUUID()}.${ext}`,
     file,
-    { contentType: file.type },
+    { contentType: file.type, access: "public" }, // must be public so email clients can display it
   );
 
   // Persist URL on user immediately

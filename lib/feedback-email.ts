@@ -14,7 +14,7 @@ export async function sendFeedbackReplyEmail(params: {
   const subj = "Update on your feedback — Intellee College";
   const html = `
       <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #111827;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Hello ${escapeHtml(recipientFirstName)},</p>
         <p>The administration has responded to feedback you submitted:</p>
         <div style="background: #f3f4f6; border-radius: 8px; padding: 16px; margin: 16px 0; white-space: pre-wrap;">${escapeHtml(reply)}</div>

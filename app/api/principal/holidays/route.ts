@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       await sendEmailWithSignature({
         to,
         subject: `Holiday update: ${holiday.name}`,
-        html: `<p>Intellee College has added a holiday: <strong>${holiday.name}</strong> on ${new Date(holiday.date).toLocaleDateString()}.</p>`,
+        html: `<div style="font-family:sans-serif;max-width:600px;">{INSTITUTION_HEADER}<p>A holiday has been added: <strong>${holiday.name}</strong> on ${new Date(holiday.date).toLocaleDateString()}.</p></div>`,
         text: `Holiday: ${holiday.name} on ${new Date(holiday.date).toLocaleDateString()}`,
         senderUserId: session.user.id,
       });

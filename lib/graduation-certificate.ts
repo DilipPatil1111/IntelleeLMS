@@ -42,7 +42,7 @@ export async function sendGraduationCertificateEmail(studentUserId: string): Pro
   const subject = `Congratulations — Graduation certificate — ${programName}`;
   const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #4f46e5;">Intellee College</h2>
+        {INSTITUTION_HEADER}
         <p>Dear ${escapeHtml(firstName)},</p>
         <p>Congratulations on completing all academic and compliance requirements for <strong>${escapeHtml(programName)}</strong>.</p>
         <p><strong>Enrollment:</strong> ${escapeHtml(enrollmentNo)}</p>

@@ -179,7 +179,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const html = `<div style="font-family:sans-serif;max-width:600px;"><h2 style="color:#4f46e5;">Intellee College</h2><h3>${escapeHtml(title)}</h3><div>${escapeHtml(textBody).replace(/\n/g, "<br/>")}</div></div>`;
+  const html = `<div style="font-family:sans-serif;max-width:600px;">{INSTITUTION_HEADER}<h3>${escapeHtml(title)}</h3><div>${escapeHtml(textBody).replace(/\n/g, "<br/>")}</div></div>`;
   const textPlain = `${title}\n\n${textBody}`;
 
   let emailsSent = 0;
