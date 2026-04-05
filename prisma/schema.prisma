@@ -568,6 +568,7 @@ model Subject {
   description String?
   programId   String
   credits     Int      @default(3)
+  sortOrder   Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

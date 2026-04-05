@@ -34,6 +34,51 @@ This document is written for **review before implementation**. After approval, r
 
 ---
 
+## 3b. Program Content — Unified authoring flow (Thinkific-style, April 2026)
+
+### Navigation consolidation
+
+- **Principal / Administrator:** Single **Program Content** sidebar entry replaces the separate **Programs** menu item. The page opens at the **Programs list** (Step 1), so programs are managed from within Program Content. The separate `/principal/programs` route remains accessible but is no longer in the sidebar.
+- **Teacher / Trainer:** **Program Content** sidebar entry opens at their assigned programs list (Step 1). Teachers cannot create or delete programs; only view and author curriculum for assigned ones.
+- **Student:** Unchanged — **Program Content** under **Program** menu, view-only.
+
+### Three-step flow inside Program Content
+
+```
+Step 1: Programs list
+  └─ [Create Program] (principal only) — modal with name, code, description, duration, domain/category/type
+  └─ [Click program card] → Step 2
+
+Step 2: Program detail (Subjects + Curriculum)
+  ├─ Syllabus panel: instructions, hours, fees, Published toggle → Save
+  ├─ [Add / link subject] modal:
+  │    • Shows existing subjects for this program (with checkmarks)
+  │    • "Create new subject" form: name (required), code (optional, auto-uppercased)
+  └─ Curriculum tree (subjects → chapters)
+
+Step 3: Curriculum (integrated in Step 2 view)
+  └─ Subject row (expandable) → Chapter rows (expandable) → Lesson rows
+       Chapter actions: [Add chapter] [Settings ⚙] [Delete]
+       Lesson actions: [Publish/Draft toggle] [Edit ✏] [Delete 🗑]
+```
+
+### Chapter settings (all checkboxes shown in modal)
+
+| Setting | Effect |
+|---------|--------|
+| Mandatory chapter | Student alert until complete |
+| Prerequisite | Must complete before next chapter |
+| Free preview | Non-enrolled can view |
+| Enable discussions | Students can comment |
+
+### Lesson type picker (Thinkific-style 3×3 grid)
+
+Text · Video · PDF · Audio · Presentation · Quiz · Download · Survey · Multimedia
+
+Each lesson has a **Draft / Published** toggle switch (off = draft, on = published).
+
+---
+
 ## 4. Roles & navigation
 
 | Role | Menu | Access |

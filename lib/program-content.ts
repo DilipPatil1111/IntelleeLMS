@@ -36,7 +36,7 @@ export async function fetchProgramContentTree(programId: string) {
     include: {
       programSyllabus: true,
       subjects: {
-        orderBy: { name: "asc" },
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
         include: {
           programChapters: {
             orderBy: { sortOrder: "asc" },

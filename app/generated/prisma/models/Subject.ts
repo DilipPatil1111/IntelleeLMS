@@ -28,10 +28,12 @@ export type AggregateSubject = {
 
 export type SubjectAvgAggregateOutputType = {
   credits: number | null
+  sortOrder: number | null
 }
 
 export type SubjectSumAggregateOutputType = {
   credits: number | null
+  sortOrder: number | null
 }
 
 export type SubjectMinAggregateOutputType = {
@@ -41,6 +43,7 @@ export type SubjectMinAggregateOutputType = {
   description: string | null
   programId: string | null
   credits: number | null
+  sortOrder: number | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -53,6 +56,7 @@ export type SubjectMaxAggregateOutputType = {
   description: string | null
   programId: string | null
   credits: number | null
+  sortOrder: number | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -65,6 +69,7 @@ export type SubjectCountAggregateOutputType = {
   description: number
   programId: number
   credits: number
+  sortOrder: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -74,10 +79,12 @@ export type SubjectCountAggregateOutputType = {
 
 export type SubjectAvgAggregateInputType = {
   credits?: true
+  sortOrder?: true
 }
 
 export type SubjectSumAggregateInputType = {
   credits?: true
+  sortOrder?: true
 }
 
 export type SubjectMinAggregateInputType = {
@@ -87,6 +94,7 @@ export type SubjectMinAggregateInputType = {
   description?: true
   programId?: true
   credits?: true
+  sortOrder?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -99,6 +107,7 @@ export type SubjectMaxAggregateInputType = {
   description?: true
   programId?: true
   credits?: true
+  sortOrder?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -111,6 +120,7 @@ export type SubjectCountAggregateInputType = {
   description?: true
   programId?: true
   credits?: true
+  sortOrder?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -210,6 +220,7 @@ export type SubjectGroupByOutputType = {
   description: string | null
   programId: string
   credits: number
+  sortOrder: number
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -245,6 +256,7 @@ export type SubjectWhereInput = {
   description?: Prisma.StringNullableFilter<"Subject"> | string | null
   programId?: Prisma.StringFilter<"Subject"> | string
   credits?: Prisma.IntFilter<"Subject"> | number
+  sortOrder?: Prisma.IntFilter<"Subject"> | number
   isActive?: Prisma.BoolFilter<"Subject"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
@@ -264,6 +276,7 @@ export type SubjectOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -286,6 +299,7 @@ export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Subject"> | string | null
   programId?: Prisma.StringFilter<"Subject"> | string
   credits?: Prisma.IntFilter<"Subject"> | number
+  sortOrder?: Prisma.IntFilter<"Subject"> | number
   isActive?: Prisma.BoolFilter<"Subject"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
@@ -305,6 +319,7 @@ export type SubjectOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -325,6 +340,7 @@ export type SubjectScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Subject"> | string | null
   programId?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   credits?: Prisma.IntWithAggregatesFilter<"Subject"> | number
+  sortOrder?: Prisma.IntWithAggregatesFilter<"Subject"> | number
   isActive?: Prisma.BoolWithAggregatesFilter<"Subject"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Subject"> | Date | string
@@ -336,6 +352,7 @@ export type SubjectCreateInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -355,6 +372,7 @@ export type SubjectUncheckedCreateInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -372,6 +390,7 @@ export type SubjectUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -391,6 +410,7 @@ export type SubjectUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -409,6 +429,7 @@ export type SubjectCreateManyInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -420,6 +441,7 @@ export type SubjectUpdateManyMutationInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -432,6 +454,7 @@ export type SubjectUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -459,6 +482,7 @@ export type SubjectCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -466,6 +490,7 @@ export type SubjectCountOrderByAggregateInput = {
 
 export type SubjectAvgOrderByAggregateInput = {
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type SubjectMaxOrderByAggregateInput = {
@@ -475,6 +500,7 @@ export type SubjectMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -487,6 +513,7 @@ export type SubjectMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   programId?: Prisma.SortOrder
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -494,6 +521,7 @@ export type SubjectMinOrderByAggregateInput = {
 
 export type SubjectSumOrderByAggregateInput = {
   credits?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type SubjectNullableScalarRelationFilter = {
@@ -635,6 +663,7 @@ export type SubjectCreateWithoutProgramInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -652,6 +681,7 @@ export type SubjectUncheckedCreateWithoutProgramInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -699,6 +729,7 @@ export type SubjectScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Subject"> | string | null
   programId?: Prisma.StringFilter<"Subject"> | string
   credits?: Prisma.IntFilter<"Subject"> | number
+  sortOrder?: Prisma.IntFilter<"Subject"> | number
   isActive?: Prisma.BoolFilter<"Subject"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
@@ -710,6 +741,7 @@ export type SubjectCreateWithoutProgramChaptersInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -728,6 +760,7 @@ export type SubjectUncheckedCreateWithoutProgramChaptersInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -760,6 +793,7 @@ export type SubjectUpdateWithoutProgramChaptersInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -778,6 +812,7 @@ export type SubjectUncheckedUpdateWithoutProgramChaptersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -794,6 +829,7 @@ export type SubjectCreateWithoutModulesInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -812,6 +848,7 @@ export type SubjectUncheckedCreateWithoutModulesInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -844,6 +881,7 @@ export type SubjectUpdateWithoutModulesInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -862,6 +900,7 @@ export type SubjectUncheckedUpdateWithoutModulesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -878,6 +917,7 @@ export type SubjectCreateWithoutTeacherAssignmentsInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -896,6 +936,7 @@ export type SubjectUncheckedCreateWithoutTeacherAssignmentsInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -928,6 +969,7 @@ export type SubjectUpdateWithoutTeacherAssignmentsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -946,6 +988,7 @@ export type SubjectUncheckedUpdateWithoutTeacherAssignmentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -962,6 +1005,7 @@ export type SubjectCreateWithoutAssessmentsInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -980,6 +1024,7 @@ export type SubjectUncheckedCreateWithoutAssessmentsInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1012,6 +1057,7 @@ export type SubjectUpdateWithoutAssessmentsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1030,6 +1076,7 @@ export type SubjectUncheckedUpdateWithoutAssessmentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1046,6 +1093,7 @@ export type SubjectCreateWithoutAttendanceSessionsInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1064,6 +1112,7 @@ export type SubjectUncheckedCreateWithoutAttendanceSessionsInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1096,6 +1145,7 @@ export type SubjectUpdateWithoutAttendanceSessionsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1114,6 +1164,7 @@ export type SubjectUncheckedUpdateWithoutAttendanceSessionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1130,6 +1181,7 @@ export type SubjectCreateWithoutProgramCalendarSlotsInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1148,6 +1200,7 @@ export type SubjectUncheckedCreateWithoutProgramCalendarSlotsInput = {
   description?: string | null
   programId: string
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1180,6 +1233,7 @@ export type SubjectUpdateWithoutProgramCalendarSlotsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1198,6 +1252,7 @@ export type SubjectUncheckedUpdateWithoutProgramCalendarSlotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   programId?: Prisma.StringFieldUpdateOperationsInput | string
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1214,6 +1269,7 @@ export type SubjectCreateManyProgramInput = {
   code: string
   description?: string | null
   credits?: number
+  sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1225,6 +1281,7 @@ export type SubjectUpdateWithoutProgramInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1242,6 +1299,7 @@ export type SubjectUncheckedUpdateWithoutProgramInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1259,6 +1317,7 @@ export type SubjectUncheckedUpdateManyWithoutProgramInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   credits?: Prisma.IntFieldUpdateOperationsInput | number
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1347,6 +1406,7 @@ export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   description?: boolean
   programId?: boolean
   credits?: boolean
+  sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1367,6 +1427,7 @@ export type SubjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   programId?: boolean
   credits?: boolean
+  sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1380,6 +1441,7 @@ export type SubjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   programId?: boolean
   credits?: boolean
+  sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1393,12 +1455,13 @@ export type SubjectSelectScalar = {
   description?: boolean
   programId?: boolean
   credits?: boolean
+  sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "programId" | "credits" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
+export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "programId" | "credits" | "sortOrder" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
 export type SubjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   program?: boolean | Prisma.ProgramDefaultArgs<ExtArgs>
   modules?: boolean | Prisma.Subject$modulesArgs<ExtArgs>
@@ -1434,6 +1497,7 @@ export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     description: string | null
     programId: string
     credits: number
+    sortOrder: number
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1873,6 +1937,7 @@ export interface SubjectFieldRefs {
   readonly description: Prisma.FieldRef<"Subject", 'String'>
   readonly programId: Prisma.FieldRef<"Subject", 'String'>
   readonly credits: Prisma.FieldRef<"Subject", 'Int'>
+  readonly sortOrder: Prisma.FieldRef<"Subject", 'Int'>
   readonly isActive: Prisma.FieldRef<"Subject", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Subject", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Subject", 'DateTime'>

@@ -1,0 +1,31 @@
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { hasPrincipalPortalAccess } from "@/lib/portal-access";
+import { staffCanAccessProgram } from "@/lib/program-content";
+import { NextResponse } from "next/server";
+
+export const runtime = "nodejs";
+
+/** PATCH /api/principal/program-content/subjects/reorder
+ *  Body: { programId: string; orderedIds: string[] }
+ *  Sets sortOrder = index for each subject in the given order.
+ */
+export async function PATCH(req: Request) {
+  const session = await auth();
+  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  const body = (await req.json()) as { programId?: string; orderedIds?: string[] };
+  if (!body.programId || !Array.isArray(body.orderedIds)) {
+    return NextResponse.json({ error: "programId and orderedIds required" }, { status: 400 });
+  }
+
+  const can = await staffCanAccessProgram(session.user.id, "PRINCIPAL", body.programId);
+  if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  await Promise.all(
+    body.orderedIds.map((id, idx) => db.subject.update({ where: { id }, data: { sortOrder: idx } }))
+  );
+
+  return NextResponse.json({ ok: true });
+}

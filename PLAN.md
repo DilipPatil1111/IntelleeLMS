@@ -505,6 +505,32 @@ All users can change their password from My Profile (current password required; 
 
 **Goal:** Principal/Teacher **authoring** of a **Program → Subject → Chapter → Lesson** tree (Text, Video, PDF, Presentation, Audio, Quiz, Download, Survey, Multimedia), with **Save as Draft**, **chapter settings** (free preview, prerequisite, discussions, apply-to-all), **Preview**, and **Delete Chapter**. **Students** see **Program Content** under **Program** as **view-only**; quizzes tie into existing **Assessments**; **dashboard alerts** for pending/mandatory assessments, surveys, and **mandatory** chapters; **program completion** leads to **Award Certificates** menu: list of **eligible** students, **select all / deselect / individual**, **Preview** per student, **send email** with certificate **PDF** + **congratulations** body; template from **Upload Certificate Template** (Principal settings); student messaging (**Eligible for award** → **Graduated** after send).
 
+**April 2026 update — Thinkific-style unified authoring UI**
+
+- **Program Content** sidebar entry now replaces the separate **Programs** link for principal. The page opens with a Programs list (cards, Create Program button, edit/delete). Clicking a program enters the curriculum editor.
+- **Step flow:** Programs → Program detail (syllabus + subject/chapter tree) — all in one page, no separate Programs route needed.
+- **Subjects:** Modal shows **existing linked subjects** (with checkmarks) + "Create new subject" form (name, code). Subjects already linked are shown first; create only if missing.
+- **Chapters:** Added via **Add chapter** button per subject; **Settings modal** (⚙ icon) with all 4 checkboxes: Mandatory, Prerequisite, Free preview, Enable discussions. Edit + Delete supported.
+- **Lessons:** **Thinkific-style 3×3 content-type picker** (Text, Video, PDF, Audio, Presentation, Quiz, Download, Survey, Multimedia). Inline Draft/Published toggle switch. Edit + Delete supported.
+- **Teacher portal:** Same component (`ProgramContentAdminClient`) with `canManagePrograms=false` — teachers see assigned programs and build curriculum, but cannot create/delete programs.
+
+**April 2026 update — Program publish/draft visibility, subject edit/delete, approval flow**
+
+- **Publish / Draft program visibility:** Program Content has a clear **Draft / Published** status badge in the syllabus panel. A full-width bold button ("Publish Program" / "Unpublish Program") lets staff toggle publish state instantly; the change persists immediately. While in **Draft**, the program is completely hidden from students. When **Published**, assigned students see it in view-only mode.
+- **Subject edit:** Any subject can be renamed/code-changed at any time by clicking the pencil icon on the subject row (principal or teacher).
+- **Subject delete (draft programs):** Principal and Teacher can delete subjects (and all their chapters/lessons) from unpublished programs. A confirmation dialog appears before deletion.
+- **Subject delete (published programs) — Principal:** Principal can delete a subject from a published program after a strong confirmation warning. The API enforces the business rule (409 if published) — principal can choose to unpublish first.
+- **Subject delete (published programs) — Teacher:** A teacher clicking delete on a published-program subject sees an **approval request modal** instead. Clicking "Send Request to Principal" creates an Announcement in the Principal portal explaining the request. The Principal reviews and acts.
+- **Lesson Draft/Publish toggle:** Restyled as a full-width bold indigo/green button (matching the "Save syllabus" screenshot style) instead of the small toggle switch.
+- **APIs added:** `PATCH/DELETE /api/principal/program-content/subjects/[subjectId]`, `PATCH/DELETE /api/teacher/program-content/subjects/[subjectId]`, `POST /api/teacher/program-content/subjects/[subjectId]/delete-request`, `POST /api/teacher/program-content/subjects` (dedicated teacher create).
+
+**April 2026 update — Subject ordering, Taxonomy panel, blue Add Subject button**
+
+- **Subject drag-and-drop ordering:** New `sortOrder` field on `Subject` model (migration `20260405214959_subject_sort_order`). First created subject appears first by default (ordered by `sortOrder` then `createdAt`). Teachers and Principals can drag subjects up/down in the curriculum view to reorder. Order is persisted via `PATCH /api/principal/program-content/subjects/reorder` and the teacher equivalent.
+- **Add / Link Subject button:** Restyled as a bold blue primary button (`bg-blue-600 font-bold`) so it stands out clearly in the curriculum view.
+- **Program Taxonomy panel embedded in Program Content:** A collapsible "Program Taxonomy" accordion (Domains · Categories · Types) is now shown at the top of the Program Content page for both Principal and Teacher portals. Both roles can create, edit, and delete taxonomy items directly from here. The separate **Program Taxonomy** sidebar entry has been removed from the Principal sidebar — it is now managed exclusively from within Program Content.
+- **Teacher taxonomy APIs:** New teacher-accessible routes `/api/teacher/program-domains`, `/api/teacher/program-categories`, `/api/teacher/program-types` (GET + POST + PUT + DELETE) allow teachers to manage taxonomy items inline.
+
 **Shipped in this codebase**
 
 - **DB:** `ProgramSyllabus`, `ProgramChapter`, `ProgramLesson` (+ `ProgramLessonKind`), `ProgramLessonCompletion`, `ProgramCertificateSend` — migration `20260405202935_program_content_syllabus`.

@@ -4939,6 +4939,7 @@ export const SubjectScalarFieldEnum = {
   description: 'description',
   programId: 'programId',
   credits: 'credits',
+  sortOrder: 'sortOrder',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
