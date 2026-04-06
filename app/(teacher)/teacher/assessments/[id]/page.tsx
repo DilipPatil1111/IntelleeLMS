@@ -30,7 +30,22 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
   if (!assessment) notFound();
 
   if (isTeacherOwnershipRestricted(session) && assessment.createdById !== session.user.id) {
-    notFound();
+    // Also allow if teacher is assigned to the program that owns this assessment
+    const programId = assessment.subject?.programId;
+    if (programId) {
+      const hasAccess = await db.teacherProfile.findFirst({
+        where: {
+          userId: session.user.id,
+          OR: [
+            { teacherPrograms: { some: { programId } } },
+            { subjectAssignments: { some: { subjectId: assessment.subjectId ?? "__none__" } } },
+          ],
+        },
+      });
+      if (!hasAccess) notFound();
+    } else {
+      notFound();
+    }
   }
 
   const appUrl = getServerAppUrl();

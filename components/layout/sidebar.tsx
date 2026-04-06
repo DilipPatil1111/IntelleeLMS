@@ -24,8 +24,7 @@ const studentNav: NavItem[] = [
   { label: "My Profile", href: "/student/profile", icon: Users },
   { label: "Apply", href: "/student/apply", icon: FileCheck },
   { label: "Onboarding", href: "/student/onboarding", icon: ClipboardList },
-  { label: "My Program", href: "/student/program", icon: BookMarked },
-  { label: "Program Content", href: "/student/program-content", icon: Layers },
+  { label: "My Programs", href: "/student/program", icon: BookMarked },
   { label: "Assessments", href: "/student/assessments", icon: FileText },
   { label: "Results", href: "/student/results", icon: Award },
   { label: "Attendance", href: "/student/attendance", icon: Calendar },
@@ -128,7 +127,11 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
 
       <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
         {navItems.map((item) => {
-          const isActive = pathname === item.href || (item.href !== `/${role.toLowerCase()}` && pathname.startsWith(item.href));
+          // Use exact match for root dashboards; for sub-paths require a "/" separator to avoid
+          // "/student/program" matching "/student/program-content" etc.
+          const isActive =
+            pathname === item.href ||
+            (item.href !== `/${role.toLowerCase()}` && pathname.startsWith(item.href + "/"));
           return (
             <Link
               key={item.href}

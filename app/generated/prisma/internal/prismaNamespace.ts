@@ -409,6 +409,7 @@ export const ModelName = {
   TopicContent: 'TopicContent',
   TopicProgress: 'TopicProgress',
   StudentProfile: 'StudentProfile',
+  ProgramEnrollment: 'ProgramEnrollment',
   StudentOnboarding: 'StudentOnboarding',
   TeacherProfile: 'TeacherProfile',
   TeacherProgram: 'TeacherProgram',
@@ -455,7 +456,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "programSyllabus" | "programChapter" | "programLesson" | "programLessonCompletion" | "programCertificateSend" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote"
+    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "programSyllabus" | "programChapter" | "programLesson" | "programLessonCompletion" | "programCertificateSend" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "programEnrollment" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2306,6 +2307,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.StudentProfileCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.StudentProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProgramEnrollment: {
+      payload: Prisma.$ProgramEnrollmentPayload<ExtArgs>
+      fields: Prisma.ProgramEnrollmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramEnrollmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramEnrollmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramEnrollmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramEnrollmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramEnrollmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramEnrollmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramEnrollmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProgramEnrollmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>[]
+        }
+        delete: {
+          args: Prisma.ProgramEnrollmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>
+        }
+        update: {
+          args: Prisma.ProgramEnrollmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramEnrollmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramEnrollmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProgramEnrollmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProgramEnrollmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramEnrollmentPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramEnrollmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramEnrollment>
+        }
+        groupBy: {
+          args: Prisma.ProgramEnrollmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramEnrollmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramEnrollmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramEnrollmentCountAggregateOutputType> | number
         }
       }
     }
@@ -5027,6 +5102,21 @@ export const StudentProfileScalarFieldEnum = {
 export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
 
 
+export const ProgramEnrollmentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  programId: 'programId',
+  batchId: 'batchId',
+  status: 'status',
+  enrollmentNo: 'enrollmentNo',
+  enrollmentDate: 'enrollmentDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramEnrollmentScalarFieldEnum = (typeof ProgramEnrollmentScalarFieldEnum)[keyof typeof ProgramEnrollmentScalarFieldEnum]
+
+
 export const StudentOnboardingScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -6045,6 +6135,7 @@ export type GlobalOmitConfig = {
   topicContent?: Prisma.TopicContentOmit
   topicProgress?: Prisma.TopicProgressOmit
   studentProfile?: Prisma.StudentProfileOmit
+  programEnrollment?: Prisma.ProgramEnrollmentOmit
   studentOnboarding?: Prisma.StudentOnboardingOmit
   teacherProfile?: Prisma.TeacherProfileOmit
   teacherProgram?: Prisma.TeacherProgramOmit

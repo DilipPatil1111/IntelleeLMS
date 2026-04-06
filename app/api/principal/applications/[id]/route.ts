@@ -94,32 +94,44 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       application.status === "ACCEPTED";
 
     if (placementAlreadyRecorded) {
-      await db.programApplication.update({
-        where: { id },
-        data: {
-          status: "ENROLLED",
-          batchId,
-          reviewedById: session.user.id,
-          reviewedAt: new Date(),
-        },
-      });
+      await db.$transaction([
+        db.programApplication.update({
+          where: { id },
+          data: {
+            status: "ENROLLED",
+            batchId,
+            reviewedById: session.user.id,
+            reviewedAt: new Date(),
+          },
+        }),
+        db.programEnrollment.upsert({
+          where: { userId_programId: { userId: application.applicantId, programId: application.programId } },
+          update: { batchId, status: "ENROLLED", enrollmentNo: profile?.enrollmentNo ?? undefined, enrollmentDate: new Date() },
+          create: { userId: application.applicantId, programId: application.programId, batchId, status: "ENROLLED", enrollmentNo: profile?.enrollmentNo ?? undefined, enrollmentDate: new Date() },
+        }),
+      ]);
       await syncStudentProfileWithApplicationEnrolled(application.applicantId, application.programId);
       return NextResponse.json({ success: true, skippedPlacementEmails: true });
     }
 
     const enrollmentNo = `STU-${Date.now().toString(36).toUpperCase()}`;
 
-    await db.programApplication.update({
-      where: { id },
-      data: { status: "ENROLLED", reviewedById: session.user.id, reviewedAt: new Date() },
-    });
-
-    /** Align profile with application ENROLLED (same lifecycle as ProgramApplication). */
-    await db.studentProfile.upsert({
-      where: { userId: application.applicantId },
-      update: { programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
-      create: { userId: application.applicantId, programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
-    });
+    await db.$transaction([
+      db.programApplication.update({
+        where: { id },
+        data: { status: "ENROLLED", reviewedById: session.user.id, reviewedAt: new Date() },
+      }),
+      db.studentProfile.upsert({
+        where: { userId: application.applicantId },
+        update: { programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
+        create: { userId: application.applicantId, programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
+      }),
+      db.programEnrollment.upsert({
+        where: { userId_programId: { userId: application.applicantId, programId: application.programId } },
+        update: { batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
+        create: { userId: application.applicantId, programId: application.programId, batchId, status: "ENROLLED", enrollmentNo, enrollmentDate: new Date() },
+      }),
+    ]);
 
     await syncProgramApplicationsWithProfileEnrolled(application.applicantId, application.programId);
 

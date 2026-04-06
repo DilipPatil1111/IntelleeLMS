@@ -143,6 +143,11 @@ export type TopicProgress = Prisma.TopicProgressModel
  */
 export type StudentProfile = Prisma.StudentProfileModel
 /**
+ * Model ProgramEnrollment
+ * * Tracks each program a student is enrolled in (supports multi-program enrollment).
+ */
+export type ProgramEnrollment = Prisma.ProgramEnrollmentModel
+/**
  * Model StudentOnboarding
  * * Post-enrollment checklist; created when a student is enrolled from an application.
  */

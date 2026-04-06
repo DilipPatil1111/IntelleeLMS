@@ -65,8 +65,22 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   if (status === "ENROLLED") {
     const after = await db.studentProfile.findUnique({
       where: { userId: id },
-      select: { programId: true },
+      select: { programId: true, batchId: true, enrollmentNo: true },
     });
+    if (after?.programId) {
+      await db.programEnrollment.upsert({
+        where: { userId_programId: { userId: id, programId: after.programId } },
+        update: { status: "ENROLLED", batchId: after.batchId ?? null },
+        create: {
+          userId: id,
+          programId: after.programId,
+          batchId: after.batchId ?? null,
+          status: "ENROLLED",
+          enrollmentNo: after.enrollmentNo,
+          enrollmentDate: new Date(),
+        },
+      });
+    }
     await syncProgramApplicationsWithProfileEnrolled(id, after?.programId ?? null);
   }
 

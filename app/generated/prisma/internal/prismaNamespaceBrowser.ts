@@ -76,6 +76,7 @@ export const ModelName = {
   TopicContent: 'TopicContent',
   TopicProgress: 'TopicProgress',
   StudentProfile: 'StudentProfile',
+  ProgramEnrollment: 'ProgramEnrollment',
   StudentOnboarding: 'StudentOnboarding',
   TeacherProfile: 'TeacherProfile',
   TeacherProgram: 'TeacherProgram',
@@ -508,6 +509,21 @@ export const StudentProfileScalarFieldEnum = {
 } as const
 
 export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
+
+
+export const ProgramEnrollmentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  programId: 'programId',
+  batchId: 'batchId',
+  status: 'status',
+  enrollmentNo: 'enrollmentNo',
+  enrollmentDate: 'enrollmentDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramEnrollmentScalarFieldEnum = (typeof ProgramEnrollmentScalarFieldEnum)[keyof typeof ProgramEnrollmentScalarFieldEnum]
 
 
 export const StudentOnboardingScalarFieldEnum = {

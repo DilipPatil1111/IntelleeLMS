@@ -143,6 +143,19 @@ export async function POST(req: Request) {
           programTypeId: snap?.programTypeId ?? null,
         },
       });
+
+      if (["ENROLLED", "COMPLETED", "GRADUATED"].includes(spStatus)) {
+        await tx.programEnrollment.create({
+          data: {
+            userId: u.id,
+            programId: body.programId,
+            batchId: body.batchId || null,
+            status: spStatus,
+            enrollmentNo: body.enrollmentNo || `STU-${Date.now()}`,
+            enrollmentDate: new Date(),
+          },
+        });
+      }
     }
 
     return u;

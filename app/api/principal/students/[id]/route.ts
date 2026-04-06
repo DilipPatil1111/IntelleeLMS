@@ -89,7 +89,25 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         },
       });
 
-      if (next === "ENROLLED") {
+      if (next === "ENROLLED" && mergedProgramId) {
+        const updatedProfile = await db.studentProfile.findUnique({
+          where: { userId: id },
+          select: { batchId: true, enrollmentNo: true },
+        });
+        await db.programEnrollment.upsert({
+          where: { userId_programId: { userId: id, programId: mergedProgramId } },
+          update: { status: "ENROLLED", batchId: updatedProfile?.batchId ?? null },
+          create: {
+            userId: id,
+            programId: mergedProgramId,
+            batchId: updatedProfile?.batchId ?? null,
+            status: "ENROLLED",
+            enrollmentNo: updatedProfile?.enrollmentNo,
+            enrollmentDate: new Date(),
+          },
+        });
+        await syncProgramApplicationsWithProfileEnrolled(id, mergedProgramId);
+      } else if (next === "ENROLLED") {
         await syncProgramApplicationsWithProfileEnrolled(id, mergedProgramId);
       }
 
