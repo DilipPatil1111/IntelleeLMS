@@ -7,10 +7,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
+import { Pagination } from "@/components/ui/pagination";
 import {
   Plus, Search, X, Eye, EyeOff,
   GraduationCap, Users, ShieldCheck, MoreVertical, Pencil, UserX, UserCheck, Trash2,
 } from "lucide-react";
+
+const PAGE_SIZE = 15;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -219,6 +222,7 @@ export default function UserManagementPage() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("ALL");
   const [q, setQ] = useState("");
+  const [page, setPage] = useState(1);
   const [alert, setAlert] = useState<Alert | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | undefined>();
 
@@ -250,6 +254,8 @@ export default function UserManagementPage() {
     }
     setLoading(false);
   }, [tab, q]);
+
+  useEffect(() => { setPage(1); }, [tab, q]);
 
   useEffect(() => { void load(); }, [load]);
 
@@ -468,7 +474,7 @@ export default function UserManagementPage() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-100">
-                  {users.map((u) => (
+                  {users.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((u) => (
                     <tr key={u.id} className={`hover:bg-gray-50 transition-colors ${!u.isActive ? "opacity-60" : ""}`}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
@@ -511,6 +517,8 @@ export default function UserManagementPage() {
           )}
         </CardContent>
       </Card>
+
+      <Pagination page={page} totalPages={Math.ceil(users.length / PAGE_SIZE)} onPageChange={setPage} totalItems={users.length} itemLabel="users" className="mt-4" />
 
       <Modal isOpen={createOpen} onClose={() => { setCreateOpen(false); setCreatedCreds(null); setCreateError(null); }} title="Add New User">
         {createdCreds ? (

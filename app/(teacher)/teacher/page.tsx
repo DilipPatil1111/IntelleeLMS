@@ -72,9 +72,10 @@ export default async function TeacherDashboard() {
   });
 
   const passCount = gradedAttempts.filter((a) => {
-    const passThreshold = a.assessment.passingMarks
-      ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100
-      : 50;
+    const passThreshold =
+      a.assessment.passingMarks && a.assessment.totalMarks > 0
+        ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100
+        : 50;
     return (a.percentage || 0) >= passThreshold;
   }).length;
   const passRate =

@@ -145,12 +145,14 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const existing = await db.assessment.findUnique({ where: { id }, select: { id: true } });
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  await db.answer.deleteMany({ where: { attempt: { assessmentId: id } } });
-  await db.attempt.deleteMany({ where: { assessmentId: id } });
-  await db.scheduledEmail.deleteMany({ where: { assessmentId: id } });
-  await db.assessmentShare.deleteMany({ where: { assessmentId: id } });
-  await db.question.deleteMany({ where: { assessmentId: id } });
-  await db.assessment.delete({ where: { id } });
+  await db.$transaction([
+    db.answer.deleteMany({ where: { attempt: { assessmentId: id } } }),
+    db.attempt.deleteMany({ where: { assessmentId: id } }),
+    db.scheduledEmail.deleteMany({ where: { assessmentId: id } }),
+    db.assessmentShare.deleteMany({ where: { assessmentId: id } }),
+    db.question.deleteMany({ where: { assessmentId: id } }),
+    db.assessment.delete({ where: { id } }),
+  ]);
 
   return NextResponse.json({ success: true });
 }

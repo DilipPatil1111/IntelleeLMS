@@ -19,7 +19,7 @@ export async function GET() {
   });
 
   const passCount = gradedAttempts.filter((a) => {
-    const threshold = a.assessment.passingMarks ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100 : 50;
+    const threshold = a.assessment.passingMarks && a.assessment.totalMarks > 0 ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100 : 50;
     return (a.percentage || 0) >= threshold;
   }).length;
 

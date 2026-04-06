@@ -26,9 +26,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ student
 
   const results = student.attempts.map((a) => {
     const pct = a.percentage || 0;
-    const passThreshold = a.assessment.passingMarks
-      ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100
-      : 50;
+    const passThreshold =
+      a.assessment.passingMarks && a.assessment.totalMarks > 0
+        ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100
+        : 50;
     return {
       title: a.assessment.title,
       subject: a.assessment.subject?.name || "",

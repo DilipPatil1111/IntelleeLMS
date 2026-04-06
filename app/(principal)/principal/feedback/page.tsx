@@ -9,8 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
+import { Pagination } from "@/components/ui/pagination";
 import { formatDate } from "@/lib/utils";
 import { Trash2, MessageSquareReply } from "lucide-react";
+
+const PAGE_SIZE = 12;
 
 interface Author {
   id: string;
@@ -48,6 +51,7 @@ export default function PrincipalFeedbackPage() {
   const [debouncedQ, setDebouncedQ] = useState("");
   const [category, setCategory] = useState("");
   const [role, setRole] = useState("");
+  const [page, setPage] = useState(1);
   const [replyModal, setReplyModal] = useState<FRow | null>(null);
   const [replyText, setReplyText] = useState("");
   const [saving, setSaving] = useState(false);
@@ -56,6 +60,10 @@ export default function PrincipalFeedbackPage() {
     const t = setTimeout(() => setDebouncedQ(q.trim()), 350);
     return () => clearTimeout(t);
   }, [q]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedQ, category, role]);
 
   const load = useCallback(async () => {
     const params = new URLSearchParams();
@@ -140,7 +148,7 @@ export default function PrincipalFeedbackPage() {
             </CardContent>
           </Card>
         ) : (
-          rows.map((r) => (
+          rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((r) => (
             <Card key={r.id}>
               <CardContent className="pt-6">
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
@@ -201,6 +209,8 @@ export default function PrincipalFeedbackPage() {
           ))
         )}
       </div>
+
+      <Pagination page={page} totalPages={Math.ceil(rows.length / PAGE_SIZE)} onPageChange={setPage} totalItems={rows.length} itemLabel="feedback" className="mt-4" />
 
       <Modal
         isOpen={!!replyModal}

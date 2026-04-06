@@ -235,6 +235,7 @@ model User {
   programCertificatesReceived ProgramCertificateSend[] @relation("ProgramCertStudent")
   programCertificatesSentBy   ProgramCertificateSend[] @relation("ProgramCertSentBy")
   programEnrollments          ProgramEnrollment[]
+  sessionRecordingsUploaded   SessionRecording[] @relation("SessionRecordingUploader")
 }
 
 /** Extra portal access (Student / Teacher / Principal UI) beyond the user’s primary `User.role`. Managed in Principal → Settings. */
@@ -350,6 +351,7 @@ model Program {
   programSyllabus       ProgramSyllabus?
   programCertificateSends ProgramCertificateSend[]
   programEnrollments      ProgramEnrollment[]
+  sessionRecordings       SessionRecording[]
 
   @@index([programDomainId])
   @@index([programCategoryId])
@@ -1284,4 +1286,23 @@ model InspectionNote {
   folder DocFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
 
   @@index([folderId])
+}
+
+model SessionRecording {
+  id           String   @id @default(cuid())
+  programId    String
+  title        String
+  sessionDate  DateTime
+  videoUrl     String
+  fileName     String?
+  durationMin  Int?
+  uploadedById String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  program    Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  uploadedBy User    @relation("SessionRecordingUploader", fields: [uploadedById], references: [id])
+
+  @@index([programId])
+  @@index([sessionDate])
 }

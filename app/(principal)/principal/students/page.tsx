@@ -7,8 +7,11 @@ import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
+import { Pagination } from "@/components/ui/pagination";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+
+const PAGE_SIZE = 15;
 
 type StudentStatus =
   | "APPLIED"
@@ -145,6 +148,7 @@ export default function PrincipalStudentsPage() {
   const [filterStatus, setFilterStatus] = useState<StudentStatus | "">("");
   const [filterTeacherId, setFilterTeacherId] = useState("");
   const [teachers, setTeachers] = useState<TeacherOption[]>([]);
+  const [page, setPage] = useState(1);
 
   const programOptions = useMemo(
     () => programs.map((p) => ({ value: p.id, label: p.name })),
@@ -194,6 +198,10 @@ export default function PrincipalStudentsPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void refreshStudentPicker();
   }, [refreshStudentPicker]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [filterStudentId, filterProgramId, filterBatchId, filterStatus, filterTeacherId]);
 
   const loadStudents = useCallback(async () => {
     const params = new URLSearchParams();
@@ -486,6 +494,11 @@ export default function PrincipalStudentsPage() {
         </div>
       )}
 
+      {(() => {
+        const totalPages = Math.ceil(students.length / PAGE_SIZE);
+        const paginatedStudents = students.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+        return (
+          <>
       <div className="overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -501,7 +514,7 @@ export default function PrincipalStudentsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {students.map((s) => {
+            {paginatedStudents.map((s) => {
               const avg = avgScore(s.attempts);
               const attRate = attendancePct(s.attendanceRecords);
               const sp = s.studentProfile;
@@ -555,6 +568,10 @@ export default function PrincipalStudentsPage() {
           </tbody>
         </table>
       </div>
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} totalItems={students.length} itemLabel="students" className="mt-4" />
+          </>
+        );
+      })()}
 
       <Modal
         isOpen={!!statusModal}

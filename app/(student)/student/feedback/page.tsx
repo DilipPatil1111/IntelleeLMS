@@ -8,7 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Pagination } from "@/components/ui/pagination";
 import { formatDate } from "@/lib/utils";
+
+const FEEDBACK_PAGE_SIZE = 10;
 
 type FeedbackCategory = "PROGRAM_CONTENT" | "TEACHING" | "OTHER";
 
@@ -38,6 +41,7 @@ export default function StudentFeedbackPage() {
   const [aboutTeacherId, setAboutTeacherId] = useState("");
   const [saving, setSaving] = useState(false);
   const [banner, setBanner] = useState<string | null>(null);
+  const [fbPage, setFbPage] = useState(1);
 
   const load = useCallback(async () => {
     const [fRes, tRes] = await Promise.all([fetch("/api/student/feedback"), fetch("/api/student/my-teachers")]);
@@ -144,7 +148,7 @@ export default function StudentFeedbackPage() {
             {rows.length === 0 ? (
               <p className="text-sm text-gray-500">No submissions yet.</p>
             ) : (
-              rows.map((r) => (
+              rows.slice((fbPage - 1) * FEEDBACK_PAGE_SIZE, fbPage * FEEDBACK_PAGE_SIZE).map((r) => (
                 <div key={r.id} className="rounded-lg border border-gray-200 p-3 text-sm">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <Badge variant="info">{CAT_LABEL[r.category] || r.category}</Badge>
@@ -169,6 +173,13 @@ export default function StudentFeedbackPage() {
                 </div>
               ))
             )}
+            <Pagination
+              page={fbPage}
+              totalPages={Math.ceil(rows.length / FEEDBACK_PAGE_SIZE)}
+              onPageChange={setFbPage}
+              totalItems={rows.length}
+              itemLabel="feedback"
+            />
           </CardContent>
         </Card>
       </div>

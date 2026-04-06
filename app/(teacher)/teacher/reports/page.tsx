@@ -40,7 +40,7 @@ export default async function TeacherReportsPage() {
     const passed = a.attempts.filter(
       (t) =>
         (t.percentage || 0) >=
-        (a.passingMarks ? (a.passingMarks / a.totalMarks) * 100 : 50)
+        (a.passingMarks && a.totalMarks > 0 ? (a.passingMarks / a.totalMarks) * 100 : 50)
     ).length;
     const failed = a.attempts.length - passed;
     const avg =

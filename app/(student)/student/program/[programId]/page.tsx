@@ -71,6 +71,16 @@ interface SubjectData {
   programChapters: ChapterData[];
 }
 
+interface SessionRecording {
+  id: string;
+  title: string;
+  sessionDate: string;
+  videoUrl: string;
+  fileName: string | null;
+  durationMin: number | null;
+  uploadedBy: { firstName: string; lastName: string };
+}
+
 interface Syllabus {
   instructions: string | null;
   programHours: string | null;
@@ -440,10 +450,17 @@ export default function StudentProgramDetailPage() {
   const [expandedSubjects, setExpandedSubjects] = useState<Record<string, boolean>>({});
   const [expandedChapters, setExpandedChapters] = useState<Record<string, boolean>>({});
   const [activeLesson, setActiveLesson] = useState<LessonData | null>(null);
+  const [recordings, setRecordings] = useState<SessionRecording[]>([]);
+  const [recordingsOpen, setRecordingsOpen] = useState(false);
+  const [expandedRecording, setExpandedRecording] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     try {
-      const data = await fetch(`/api/student/program-content/${programId}`).then((r) => r.json());
+      const [contentRes, recRes] = await Promise.all([
+        fetch(`/api/student/program-content/${programId}`).then((r) => r.json()),
+        fetch(`/api/student/session-recordings?programId=${programId}`).then((r) => r.ok ? r.json() : { recordings: [] }),
+      ]);
+      const data = contentRes;
       if (data.message && !data.program) setMessage(data.message);
       if (data.syllabusPublished === false) setPublished(false);
       if (data.program) {
@@ -452,6 +469,7 @@ export default function StudentProgramDetailPage() {
         for (const s of data.program.subjects) expanded[s.id] = true;
         setExpandedSubjects(expanded);
       }
+      setRecordings(recRes.recordings || []);
     } finally {
       setLoading(false);
     }
@@ -598,6 +616,69 @@ export default function StudentProgramDetailPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Session Recordings */}
+      {recordings.length > 0 && (
+        <Card>
+          <CardContent className="pt-5">
+            <button
+              type="button"
+              onClick={() => setRecordingsOpen((p) => !p)}
+              className="w-full flex items-center justify-between"
+            >
+              <div className="flex items-center gap-2">
+                <Video className="h-5 w-5 text-indigo-600" />
+                <h2 className="font-semibold text-gray-900">Session Recordings</h2>
+                <span className="text-xs text-gray-400">({recordings.length})</span>
+              </div>
+              {recordingsOpen
+                ? <ChevronDown className="h-4 w-4 text-gray-400" />
+                : <ChevronRight className="h-4 w-4 text-gray-400" />}
+            </button>
+
+            {recordingsOpen && (
+              <div className="mt-4 relative pl-6">
+                <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-indigo-100" />
+                <div className="space-y-4">
+                  {recordings.map((rec) => (
+                    <div key={rec.id} className="relative">
+                      <div className="absolute -left-[13px] top-2 h-3 w-3 rounded-full border-2 border-indigo-400 bg-white" />
+                      <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
+                        <button
+                          type="button"
+                          className="w-full text-left"
+                          onClick={() => setExpandedRecording(expandedRecording === rec.id ? null : rec.id)}
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <div>
+                              <p className="font-medium text-gray-900 text-sm">{rec.title}</p>
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                {new Date(rec.sessionDate).toLocaleDateString()}
+                                {rec.durationMin ? ` · ${rec.durationMin} min` : ""}
+                                {` · by ${rec.uploadedBy.firstName} ${rec.uploadedBy.lastName}`}
+                              </p>
+                            </div>
+                            <Play className="h-4 w-4 text-indigo-500 shrink-0" />
+                          </div>
+                        </button>
+                        {expandedRecording === rec.id && (
+                          <div className="mt-3">
+                            <video
+                              controls
+                              className="w-full rounded-lg bg-black max-h-[400px]"
+                              src={rec.videoUrl}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Curriculum section */}
       <div>

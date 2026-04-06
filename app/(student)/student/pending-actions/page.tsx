@@ -15,6 +15,27 @@ interface PendingAssessment {
   type: string;
   scheduledCloseAt: string | null;
   status: "NOT_STARTED" | "IN_PROGRESS";
+  priority: "HIGH" | "NORMAL";
+}
+
+interface BelowPassingResult {
+  id: string;
+  title: string;
+  subjectName: string;
+  type: string;
+  score: number;
+  totalMarks: number;
+  passingMarks: number;
+  priority: "HIGH";
+  message: string;
+}
+
+interface AttendanceAlert {
+  subjectName: string;
+  attendancePercent: number;
+  requiredPercent: number;
+  priority: "HIGH";
+  message: string;
 }
 
 interface TrailVersion {
@@ -46,6 +67,8 @@ interface Receipt {
 
 interface PendingData {
   pendingAssessments: PendingAssessment[];
+  belowPassingResults: BelowPassingResult[];
+  attendanceAlerts: AttendanceAlert[];
   documents: DocumentItem[] | null;
   fees: {
     totalFees: number;
@@ -53,7 +76,7 @@ interface PendingData {
     pendingAmount: number;
     receipts: Receipt[];
   };
-  counts: { assessments: number; documents: number; fees: number; total: number };
+  counts: { assessments: number; documents: number; fees: number; belowPassing: number; attendance: number; highPriority: number; total: number };
 }
 
 export default function PendingActionsPage() {
@@ -156,7 +179,7 @@ export default function PendingActionsPage() {
     );
   }
 
-  const { pendingAssessments, documents, fees, counts } = data;
+  const { pendingAssessments, belowPassingResults = [], attendanceAlerts = [], documents, fees, counts } = data;
   const fmt = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
 
   return (
@@ -166,6 +189,18 @@ export default function PendingActionsPage() {
         description={counts.total > 0 ? `You have ${counts.total} pending item${counts.total === 1 ? "" : "s"}` : "All caught up!"}
       />
 
+      {counts.highPriority > 0 && (
+        <div className="mb-6 rounded-xl border-2 border-red-200 bg-gradient-to-r from-red-50 to-amber-50 p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-red-100 text-red-700 text-xs font-bold">{counts.highPriority}</span>
+            <span className="text-sm font-bold text-red-800">High-Priority Actions Requiring Attention</span>
+          </div>
+          <p className="text-xs text-red-700/80">
+            Items below require your immediate attention — incomplete assessments, missing documents, low marks, or attendance issues.
+          </p>
+        </div>
+      )}
+
       <div className="space-y-6">
         {/* Pending Assessments */}
         <Card>
@@ -174,8 +209,8 @@ export default function PendingActionsPage() {
               <AlertTriangle className="h-5 w-5 text-amber-500" />
               Pending Assessments
               {counts.assessments > 0 && (
-                <span className="ml-auto text-sm font-medium text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full">
-                  {counts.assessments}
+                <span className="ml-auto text-sm font-medium text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full">
+                  {counts.assessments} — HIGH PRIORITY
                 </span>
               )}
             </CardTitle>
@@ -190,14 +225,17 @@ export default function PendingActionsPage() {
               <div className="divide-y">
                 {pendingAssessments.map((a) => (
                   <div key={a.id} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
-                    <div>
-                      <p className="font-medium text-gray-900">{a.title}</p>
-                      <p className="text-sm text-gray-500">
-                        {a.subjectName} &middot; {a.type}
-                        {a.scheduledCloseAt && (
-                          <> &middot; Due: {new Date(a.scheduledCloseAt).toLocaleDateString()}</>
-                        )}
-                      </p>
+                    <div className="flex items-start gap-2">
+                      <span className="mt-1 inline-block h-2 w-2 rounded-full bg-red-500 shrink-0" />
+                      <div>
+                        <p className="font-medium text-gray-900">{a.title}</p>
+                        <p className="text-sm text-gray-500">
+                          {a.subjectName} &middot; {a.type}
+                          {a.scheduledCloseAt && (
+                            <> &middot; Due: {new Date(a.scheduledCloseAt).toLocaleDateString()}</>
+                          )}
+                        </p>
+                      </div>
                     </div>
                     <Link href={`/student/assessments/${a.id}/take`}>
                       <Button size="sm" variant={a.status === "IN_PROGRESS" ? "outline" : "primary"}>
@@ -215,6 +253,72 @@ export default function PendingActionsPage() {
           </CardContent>
         </Card>
 
+        {/* Below-Passing Assessment Results */}
+        {belowPassingResults.length > 0 && (
+          <Card className="border-red-200">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+                Below-Passing Results
+                <span className="ml-auto text-sm font-medium text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full">
+                  {belowPassingResults.length} — HIGH PRIORITY
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="divide-y">
+                {belowPassingResults.map((r) => (
+                  <div key={r.id} className="py-3 first:pt-0 last:pb-0">
+                    <div className="flex items-start gap-2">
+                      <span className="mt-1 inline-block h-2 w-2 rounded-full bg-red-500 shrink-0" />
+                      <div>
+                        <p className="font-medium text-gray-900">{r.title}</p>
+                        <p className="text-sm text-gray-500">
+                          {r.subjectName} &middot; {r.type} &middot; Score: {r.score}/{r.totalMarks} (Passing: {r.passingMarks})
+                        </p>
+                        <p className="mt-1 text-sm font-medium text-red-700">{r.message}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Attendance Alerts */}
+        {attendanceAlerts.length > 0 && (
+          <Card className="border-red-200">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+                Low Attendance Warning
+                <span className="ml-auto text-sm font-medium text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full">
+                  {attendanceAlerts.length} — HIGH PRIORITY
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="divide-y">
+                {attendanceAlerts.map((a, idx) => (
+                  <div key={idx} className="py-3 first:pt-0 last:pb-0">
+                    <div className="flex items-start gap-2">
+                      <span className="mt-1 inline-block h-2 w-2 rounded-full bg-red-500 shrink-0" />
+                      <div>
+                        <p className="font-medium text-gray-900">{a.subjectName}</p>
+                        <p className="text-sm text-gray-500">
+                          Attendance: {a.attendancePercent}% (Required: {a.requiredPercent}%)
+                        </p>
+                        <p className="mt-1 text-sm font-medium text-red-700">{a.message}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Pending Documents */}
         <Card>
           <CardHeader className="pb-3">
@@ -222,8 +326,8 @@ export default function PendingActionsPage() {
               <FileText className="h-5 w-5 text-blue-500" />
               Documents
               {counts.documents > 0 && (
-                <span className="ml-auto text-sm font-medium text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full">
-                  {counts.documents} pending
+                <span className="ml-auto text-sm font-medium text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full">
+                  {counts.documents} pending — HIGH PRIORITY
                 </span>
               )}
             </CardTitle>

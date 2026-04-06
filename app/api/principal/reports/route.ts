@@ -27,7 +27,7 @@ export async function GET(req: Request) {
   });
 
   const data = assessments.map((a) => {
-    const passed = a.attempts.filter((t) => (t.percentage || 0) >= (a.passingMarks ? (a.passingMarks / a.totalMarks) * 100 : 50)).length;
+    const passed = a.attempts.filter((t) => (t.percentage || 0) >= (a.passingMarks && a.totalMarks > 0 ? (a.passingMarks / a.totalMarks) * 100 : 50)).length;
     const avg = a.attempts.length > 0 ? Math.round(a.attempts.reduce((s, t) => s + (t.percentage || 0), 0) / a.attempts.length) : 0;
     return {
       id: a.id,

@@ -44,7 +44,7 @@ export const authConfig: NextAuthConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const pathname = nextUrl.pathname;
-      const publicRoutes = ["/", "/login", "/register", "/forgot-password", "/assess"];
+      const publicRoutes = ["/", "/login", "/register", "/forgot-password", "/reset-password", "/assess"];
       const isPublic = publicRoutes.some(
         (route) => pathname === route || pathname.startsWith(route + "/")
       );

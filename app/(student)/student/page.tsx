@@ -103,21 +103,25 @@ export default async function StudentDashboard() {
           title="Total Assessments"
           value={totalAttempts}
           icon={<FileText className="h-5 w-5" />}
+          variant="indigo"
         />
         <StatCard
           title="Pending"
           value={pendingAssessments}
           icon={<ClipboardList className="h-5 w-5" />}
+          variant={pendingAssessments > 0 ? "rose" : "emerald"}
         />
         <StatCard
           title="Avg. Score"
           value={`${avgScore}%`}
           icon={<Award className="h-5 w-5" />}
+          variant="amber"
         />
         <StatCard
           title="Attendance"
           value={`${attendanceRate}%`}
           icon={<Calendar className="h-5 w-5" />}
+          variant={attendanceRate >= 75 ? "emerald" : "rose"}
         />
       </div>
 
@@ -165,7 +169,7 @@ export default async function StudentDashboard() {
                 {user.attempts.map((attempt) => (
                   <div
                     key={attempt.id}
-                    className="flex items-center justify-between p-3 rounded-lg bg-gray-50"
+                    className="flex items-center justify-between p-3 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-sm transition-all"
                   >
                     <div>
                       <p className="text-sm font-medium text-gray-900">
@@ -184,11 +188,12 @@ export default async function StudentDashboard() {
                               ? "success"
                               : "danger"
                           }
+                          dot
                         >
                           {attempt.percentage}%
                         </Badge>
                       ) : (
-                        <Badge variant="warning">
+                        <Badge variant="warning" dot>
                           {attempt.status === "SUBMITTED"
                             ? "Pending"
                             : "In Progress"}
@@ -215,33 +220,21 @@ export default async function StudentDashboard() {
           <CardContent>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: "My Profile", href: "/student/profile", icon: "👤" },
-                {
-                  label: "Assessments",
-                  href: "/student/assessments",
-                  icon: "📝",
-                },
-                { label: "Results", href: "/student/results", icon: "🏆" },
-                {
-                  label: "Attendance",
-                  href: "/student/attendance",
-                  icon: "📅",
-                },
-                { label: "Fees", href: "/student/fees", icon: "💰" },
-                {
-                  label: "Notifications",
-                  href: "/student/notifications",
-                  icon: "🔔",
-                },
-                { label: "Feedback", href: "/student/feedback", icon: "💬" },
+                { label: "My Profile", href: "/student/profile", icon: "👤", color: "from-indigo-50 to-white border-indigo-100" },
+                { label: "Assessments", href: "/student/assessments", icon: "📝", color: "from-violet-50 to-white border-violet-100" },
+                { label: "Results", href: "/student/results", icon: "🏆", color: "from-amber-50 to-white border-amber-100" },
+                { label: "Attendance", href: "/student/attendance", icon: "📅", color: "from-emerald-50 to-white border-emerald-100" },
+                { label: "Fees", href: "/student/fees", icon: "💰", color: "from-green-50 to-white border-green-100" },
+                { label: "Notifications", href: "/student/notifications", icon: "🔔", color: "from-sky-50 to-white border-sky-100" },
+                { label: "Feedback", href: "/student/feedback", icon: "💬", color: "from-rose-50 to-white border-rose-100" },
               ].map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                  className={`flex items-center gap-3 p-3 rounded-xl border bg-gradient-to-br ${link.color} hover:shadow-md transition-all duration-200`}
                 >
                   <span className="text-xl">{link.icon}</span>
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-semibold text-gray-700">
                     {link.label}
                   </span>
                 </Link>

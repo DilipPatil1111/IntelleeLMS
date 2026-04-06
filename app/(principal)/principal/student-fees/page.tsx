@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
+import { Pagination } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 import {
   DollarSign,
@@ -18,6 +19,8 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
+
+const PAGE_SIZE = 15;
 
 interface Program {
   id: string;
@@ -88,6 +91,7 @@ export default function StudentFeesPage() {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [students, setStudents] = useState<StudentFeeRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
   const [programId, setProgramId] = useState("");
   const [batchId, setBatchId] = useState("");
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
@@ -127,6 +131,10 @@ export default function StudentFeesPage() {
      
     void loadMeta();
   }, [loadMeta]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [programId, batchId]);
 
   const loadFees = useCallback(async () => {
     setLoading(true);
@@ -346,7 +354,7 @@ export default function StudentFeesPage() {
                 </td>
               </tr>
             ) : (
-              students.map((s) => {
+              students.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((s) => {
                 const isExpanded = expandedRows.has(s.userId);
                 const hasReceipts = s.receipts.length > 0;
                 return (
@@ -371,6 +379,8 @@ export default function StudentFeesPage() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={Math.ceil(students.length / PAGE_SIZE)} onPageChange={setPage} totalItems={students.length} itemLabel="students" className="mt-4" />
 
       {/* Confirm Payment modal */}
       <Modal

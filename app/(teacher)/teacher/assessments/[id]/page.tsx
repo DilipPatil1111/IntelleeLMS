@@ -9,6 +9,7 @@ import { formatDate, formatDateTime } from "@/lib/utils";
 import Link from "next/link";
 import { CopyLinkButton } from "./copy-link-button";
 import { AssessmentActions } from "./assessment-actions";
+import { SubmissionsTableClient } from "./submissions-table-client";
 import { getServerAppUrl } from "@/lib/app-url";
 import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 
@@ -139,32 +140,17 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
       <Card>
         <CardHeader><CardTitle>Submissions ({assessment.attempts.length})</CardTitle></CardHeader>
         <CardContent>
-          {assessment.attempts.length === 0 ? (
-            <p className="text-center text-gray-500 py-4">No submissions yet.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Student</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Score</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Submitted</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {assessment.attempts.map((attempt) => (
-                    <tr key={attempt.id}>
-                      <td className="px-4 py-3 text-sm text-gray-900">{attempt.student.firstName} {attempt.student.lastName}</td>
-                      <td className="px-4 py-3"><Badge variant={attempt.status === "GRADED" ? "success" : attempt.status === "SUBMITTED" ? "warning" : "default"}>{attempt.status}</Badge></td>
-                      <td className="px-4 py-3 text-sm">{attempt.totalScore !== null ? `${attempt.totalScore}/${assessment.totalMarks} (${attempt.percentage}%)` : "—"}</td>
-                      <td className="px-4 py-3 text-sm text-gray-500">{attempt.submittedAt ? formatDateTime(attempt.submittedAt) : "—"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+          <SubmissionsTableClient
+            attempts={assessment.attempts.map((a) => ({
+              id: a.id,
+              studentName: `${a.student.firstName} ${a.student.lastName}`,
+              status: a.status,
+              totalScore: a.totalScore,
+              totalMarks: assessment.totalMarks,
+              percentage: a.percentage,
+              submittedAt: a.submittedAt?.toISOString() ?? null,
+            }))}
+          />
         </CardContent>
       </Card>
     </>
