@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { requireStudentPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
 import { StudentSubmissionKind } from "@/app/generated/prisma/client";
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireStudentPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const user = await db.user.findUnique({
     where: { id: session.user.id },

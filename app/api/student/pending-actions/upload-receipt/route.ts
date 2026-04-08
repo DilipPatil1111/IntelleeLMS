@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { requireStudentPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { StudentSubmissionKind } from "@/app/generated/prisma/client";
 import { blobPut } from "@/lib/vercel-blob";
@@ -7,8 +7,9 @@ import { randomUUID } from "crypto";
 import path from "path";
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireStudentPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const profile = await db.studentProfile.findUnique({
     where: { userId: session.user.id },

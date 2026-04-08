@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/app/generated/prisma/client";
 import { getTeacherVisibleBatchIds } from "@/lib/teacher-visible-batches";
@@ -6,8 +6,9 @@ import { NextResponse } from "next/server";
 
 /** Students in batches assigned to the current teacher, with optional search/filters. */
 export async function GET(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q")?.trim();

@@ -366,7 +366,7 @@ export default function StudentFeesPage() {
             ) : (
               students.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((s) => {
                 const isExpanded = expandedRows.has(s.userId);
-                const hasReceipts = s.receipts.length > 0;
+                const hasReceipts = (s.receipts?.length ?? 0) > 0;
                 return (
                   <StudentFeeRowBlock
                     key={s.userId}
@@ -514,7 +514,7 @@ function StudentFeeRowBlock({
                   key={r.id}
                   className="flex flex-wrap items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm"
                 >
-                  <span className="font-medium text-gray-900">{r.fileName}</span>
+                  <span className="font-medium text-gray-900">{r.fileName ?? "receipt"}</span>
                   <span className="text-gray-500">{currency(r.amount)}</span>
                   <span className="text-gray-400">
                     {new Date(r.date).toLocaleDateString("en-US", {
@@ -532,15 +532,17 @@ function StudentFeeRowBlock({
                     <Badge variant="warning">Unconfirmed</Badge>
                   )}
                   <div className="ml-auto flex items-center gap-2">
-                    <a
-                      href={r.receiptUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50"
-                    >
-                      <Eye className="h-3.5 w-3.5" />
-                      View
-                    </a>
+                    {r.receiptUrl && (
+                      <a
+                        href={r.receiptUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50"
+                      >
+                        <Eye className="h-3.5 w-3.5" />
+                        View
+                      </a>
+                    )}
                     {!r.confirmed && (
                       <Button
                         variant="primary"

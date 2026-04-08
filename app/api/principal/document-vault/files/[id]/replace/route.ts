@@ -3,6 +3,16 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { blobDel, blobPut } from "@/lib/vercel-blob";
 import { randomUUID } from "crypto";
+import path from "path";
+
+export const runtime = "nodejs";
+
+const VAULT_ALLOWED_EXT = new Set([
+  ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+  ".png", ".jpg", ".jpeg", ".gif", ".webp",
+  ".txt", ".csv", ".zip", ".rar",
+]);
+const VAULT_MAX_BYTES = 50 * 1024 * 1024; // 50 MB
 
 export async function POST(
   req: Request,
@@ -25,15 +35,26 @@ export async function POST(
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
+  const ext = path.extname(file.name).toLowerCase();
+  if (!VAULT_ALLOWED_EXT.has(ext)) {
+    return NextResponse.json(
+      { error: `File type "${ext}" is not allowed. Accepted: ${[...VAULT_ALLOWED_EXT].join(", ")}` },
+      { status: 400 },
+    );
+  }
+  if (file.size > VAULT_MAX_BYTES) {
+    return NextResponse.json(
+      { error: `File exceeds the 50 MB size limit.` },
+      { status: 400 },
+    );
+  }
+
   try {
     await blobDel(existing.fileUrl);
   } catch {
     /* blob may already be removed */
   }
 
-  const ext = file.name.includes(".")
-    ? file.name.substring(file.name.lastIndexOf("."))
-    : "";
   const blobPath = `document-vault/${existing.folderId}/${randomUUID()}${ext}`;
   const blob = await blobPut(blobPath, file);
 

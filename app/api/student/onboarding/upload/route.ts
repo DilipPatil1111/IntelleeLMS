@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireStudentPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { ONBOARDING_ALLOWED_EXT, ONBOARDING_MAX_BYTES, uploadToBlob } from "@/lib/file-upload";
 import { notifyPrincipalsIfOnboardingChecklistJustCompleted } from "@/lib/notify-principals-onboarding-complete";
@@ -10,8 +10,9 @@ export const runtime = "nodejs";
 type Step = "contract" | "ids" | "fee";
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireStudentPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   let formData: FormData;
   try {

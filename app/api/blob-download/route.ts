@@ -28,10 +28,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing url param" }, { status: 400 });
   }
 
+  const BLOB_URL_RE = /^https:\/\/[a-z0-9-]+\.(?:public\.)?blob\.vercel-storage\.com\//;
+  if (!BLOB_URL_RE.test(blobUrl)) {
+    return new NextResponse("Invalid blob URL", { status: 400 });
+  }
+
   const inline = searchParams.get("inline") === "1";
-  const filename =
+  const rawFilename =
     searchParams.get("filename") ??
     decodeURIComponent(blobUrl.split("/").pop() ?? "file");
+  const filename = rawFilename.replace(/["\r\n\\]/g, "_");
 
   const token = env.BLOB_READ_WRITE_TOKEN;
 

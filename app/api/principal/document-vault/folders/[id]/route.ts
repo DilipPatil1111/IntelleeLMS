@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { blobDel } from "@/lib/vercel-blob";
 import { NextResponse } from "next/server";
 
 export async function PUT(
@@ -54,7 +55,24 @@ export async function DELETE(
     );
   }
 
+  const allFiles = await db.docFile.findMany({
+    where: {
+      folder: {
+        OR: [
+          { id },
+          { parentId: id },
+          { parent: { parentId: id } },
+        ],
+      },
+    },
+    select: { fileUrl: true },
+  });
+
   await db.docFolder.delete({ where: { id } });
+
+  for (const f of allFiles) {
+    try { await blobDel(f.fileUrl); } catch { /* best-effort cleanup */ }
+  }
 
   return NextResponse.json({ ok: true });
 }

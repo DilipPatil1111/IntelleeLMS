@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { evaluateLowAttendanceForStudents } from "@/lib/attendance-threshold";
@@ -6,8 +6,9 @@ import { evaluateLowAttendanceForStudents } from "@/lib/attendance-threshold";
 const TEACHER_STATUSES = ["PRESENT", "ABSENT", "LATE", "EXCUSED"] as const;
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const body = await req.json();
   const { subjectId, batchId, sessionDate, startTime, endTime, attendance, overrideHoliday, teacherSelfStatus } = body;

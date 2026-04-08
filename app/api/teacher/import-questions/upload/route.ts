@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { NextResponse } from "next/server";
 
 interface ParsedQuestion {
@@ -11,8 +11,9 @@ interface ParsedQuestion {
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   try {
     const formData = await req.formData();

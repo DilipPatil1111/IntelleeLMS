@@ -106,9 +106,9 @@ export function buildAssessmentInviteEmail(assessmentTitle: string, link: string
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         {INSTITUTION_HEADER}
         <p>You have been assigned a new assessment:</p>
-        <h3>${assessmentTitle}</h3>
-        <p><a href="${link}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Take Assessment</a></p>
-        <p style="color: #6b7280; font-size: 14px;">If the button doesn't work, copy this link: ${link}</p>
+        <h3>${escapeHtml(assessmentTitle)}</h3>
+        <p><a href="${escapeHtmlAttribute(link)}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block;">Take Assessment</a></p>
+        <p style="color: #6b7280; font-size: 14px;">If the button doesn't work, copy this link: ${escapeHtml(link)}</p>
       </div>
     `,
   };
@@ -384,8 +384,8 @@ export function buildResultsEmail(studentName: string, assessmentTitle: string, 
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         {INSTITUTION_HEADER}
-        <p>Dear ${studentName},</p>
-        <p>Your results for <strong>${assessmentTitle}</strong> are now available:</p>
+        <p>Dear ${escapeHtml(studentName)},</p>
+        <p>Your results for <strong>${escapeHtml(assessmentTitle)}</strong> are now available:</p>
         <div style="background: ${passed ? "#f0fdf4" : "#fef2f2"}; border: 1px solid ${passed ? "#86efac" : "#fca5a5"}; border-radius: 8px; padding: 16px; margin: 16px 0;">
           <p style="font-size: 24px; font-weight: bold; margin: 0;">${score} / ${total}</p>
           <p style="margin: 4px 0;">${percentage}% — <strong style="color: ${passed ? "#16a34a" : "#dc2626"}">${passed ? "PASS" : "FAIL"}</strong></p>

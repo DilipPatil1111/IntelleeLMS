@@ -24,8 +24,13 @@ export const authConfig: NextAuthConfig = {
         if (typeof s.mustChangePassword === "boolean") {
           token.mustChangePassword = s.mustChangePassword;
         }
-        if (Array.isArray(s.grantedPortals)) {
-          token.grantedPortals = s.grantedPortals as ("STUDENT" | "TEACHER" | "PRINCIPAL")[];
+        if (s.refreshPortals === true && token.id) {
+          const { db } = await import("@/lib/db");
+          const grants = await db.userPortalGrant.findMany({
+            where: { userId: token.id as string },
+            select: { portal: true },
+          });
+          token.grantedPortals = grants.map((g: { portal: string }) => g.portal) as ("STUDENT" | "TEACHER" | "PRINCIPAL")[];
         }
       }
       return token;

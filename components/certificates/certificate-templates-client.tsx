@@ -149,13 +149,17 @@ export function CertificateTemplatesClient({ apiPrefix, programsApiUrl }: Props)
 
   const loadTemplates = useCallback(async () => {
     setLoading(true);
-    const res = await fetch(apiPrefix);
-    const data = await res.json();
-    setTemplates(data.templates || []);
-    setLoading(false);
+    try {
+      const res = await fetch(apiPrefix);
+      const data = await res.json();
+      setTemplates(data.templates || []);
+    } catch (err) {
+      console.error("[certificate-templates] load failed:", err);
+    } finally {
+      setLoading(false);
+    }
   }, [apiPrefix]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { void loadTemplates(); }, [loadTemplates]);
 
   function openCreate() {

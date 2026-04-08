@@ -179,7 +179,7 @@ export default function PendingActionsPage() {
     );
   }
 
-  const { pendingAssessments, belowPassingResults = [], attendanceAlerts = [], documents, fees, counts } = data;
+  const { pendingAssessments = [], belowPassingResults = [], attendanceAlerts = [], documents, fees, counts } = data;
   const fmt = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
 
   return (

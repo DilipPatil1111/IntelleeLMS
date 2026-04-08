@@ -1,10 +1,11 @@
-import { auth } from "@/lib/auth";
+import { requireStudentPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireStudentPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const profile = await db.studentProfile.findUnique({
     where: { userId: session.user.id },
@@ -65,8 +66,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requireStudentPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   const body = await req.json();
   const { topicId } = body;

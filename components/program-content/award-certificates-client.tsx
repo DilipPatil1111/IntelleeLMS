@@ -175,6 +175,13 @@ export function AwardCertificatesClient(props: {
                     </tr>
                   </thead>
                   <tbody>
+                    {rows.length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="p-8 text-center text-sm text-gray-500">
+                          No students found for this program.
+                        </td>
+                      </tr>
+                    )}
                     {rows.map((r) => (
                       <tr key={r.studentUserId} className="border-b border-gray-100">
                         <td className="p-2">

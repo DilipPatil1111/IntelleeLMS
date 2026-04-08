@@ -1,11 +1,12 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 /** Programs with subjects and batches for principal teacher course assignment. */
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const programs = await db.program.findMany({
     where: { isActive: true },

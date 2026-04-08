@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import DOMPurify from "isomorphic-dompurify";
 import {
   BookOpen,
   Eye,
@@ -273,7 +274,7 @@ function LessonContentPanel({
       <div className="px-6 py-6 space-y-5 max-h-[600px] overflow-y-auto">
         {lesson.kind === "TEXT" && (
           <div className="prose prose-gray max-w-none"
-            dangerouslySetInnerHTML={{ __html: str("html") || "<p>No content available.</p>" }} />
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(str("html") || "<p>No content available.</p>") }} />
         )}
 
         {lesson.kind === "VIDEO" && (
@@ -291,14 +292,14 @@ function LessonContentPanel({
             )}
             {str("notes") && (
               <div className="prose prose-gray max-w-none border-t pt-4"
-                dangerouslySetInnerHTML={{ __html: str("notes")! }} />
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(str("notes")!) }} />
             )}
           </>
         )}
 
         {lesson.kind === "AUDIO" && (
           <>
-            {str("body") && <div className="prose prose-gray max-w-none" dangerouslySetInnerHTML={{ __html: str("body")! }} />}
+            {str("body") && <div className="prose prose-gray max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(str("body")!) }} />}
             {files("audioUrls").length > 0
               ? files("audioUrls").map((url, i) => <audio key={i} controls className="w-full rounded-lg" src={url} />)
               : <div className="flex items-center justify-center h-32 rounded-xl bg-gray-100 text-gray-300"><Music className="h-10 w-10" /></div>
@@ -466,7 +467,7 @@ export default function StudentProgramDetailPage() {
       if (data.program) {
         setProgram(data.program);
         const expanded: Record<string, boolean> = {};
-        for (const s of data.program.subjects) expanded[s.id] = true;
+        for (const s of (data.program.subjects ?? [])) expanded[s.id] = true;
         setExpandedSubjects(expanded);
       }
       setRecordings(recRes.recordings || []);
@@ -655,7 +656,7 @@ export default function StudentProgramDetailPage() {
                               <p className="text-xs text-gray-500 mt-0.5">
                                 {new Date(rec.sessionDate).toLocaleDateString()}
                                 {rec.durationMin ? ` · ${rec.durationMin} min` : ""}
-                                {` · by ${rec.uploadedBy.firstName} ${rec.uploadedBy.lastName}`}
+                                {rec.uploadedBy ? ` · by ${rec.uploadedBy.firstName} ${rec.uploadedBy.lastName}` : ""}
                               </p>
                             </div>
                             <Play className="h-4 w-4 text-indigo-500 shrink-0" />

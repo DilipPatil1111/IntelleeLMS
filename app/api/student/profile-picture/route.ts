@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireStudentPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { uploadProfilePictureToBlob } from "@/lib/file-upload";
 import { NextResponse } from "next/server";
@@ -6,8 +6,9 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireStudentPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   try {
     const formData = await req.formData();
@@ -40,8 +41,9 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requireStudentPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   await db.user.update({
     where: { id: session.user.id },

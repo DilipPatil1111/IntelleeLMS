@@ -118,19 +118,23 @@ function TaxonomyPanel({
 
   const loadAll = useCallback(async () => {
     setLoading(true);
-    const [d, c, t] = await Promise.all([
-      fetch(taxonomyUrls.domains).then((r) => r.json()),
-      fetch(taxonomyUrls.categories).then((r) => r.json()),
-      fetch(taxonomyUrls.types).then((r) => r.json()),
-    ]);
-    setDomains(d.domains || []);
-    setCategories(c.categories || []);
-    setTypes(t.types || []);
-    setLoading(false);
+    try {
+      const [d, c, t] = await Promise.all([
+        fetch(taxonomyUrls.domains).then((r) => r.json()),
+        fetch(taxonomyUrls.categories).then((r) => r.json()),
+        fetch(taxonomyUrls.types).then((r) => r.json()),
+      ]);
+      setDomains(d.domains || []);
+      setCategories(c.categories || []);
+      setTypes(t.types || []);
+    } catch (err) {
+      console.error("[taxonomy] load failed:", err);
+    } finally {
+      setLoading(false);
+    }
   }, [taxonomyUrls]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (open) void loadAll();
   }, [open, loadAll]);
 

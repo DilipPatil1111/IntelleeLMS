@@ -11,13 +11,12 @@ export const LESSON_PRESENTATION_ALLOWED_EXT = new Set([".ppt", ".pptx", ".pdf"]
 export const LESSON_DOWNLOAD_ALLOWED_EXT = new Set([
   ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
   ".zip", ".rar", ".7z", ".tar", ".gz",
-  ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg",
+  ".png", ".jpg", ".jpeg", ".gif", ".webp",
   ".mp4", ".mov", ".webm", ".mp3", ".wav", ".aac",
   ".txt", ".csv", ".json",
 ]);
 export const LESSON_MULTIMEDIA_ALLOWED_EXT = new Set([
   ".zip", ".rar", ".7z", ".tar", ".gz",
-  ".html", ".htm",
 ]);
 
 export const LESSON_VIDEO_MAX_BYTES = 200 * 1024 * 1024;   // 200 MB

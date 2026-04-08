@@ -1,19 +1,21 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import type { PolicyType } from "@/app/generated/prisma/enums";
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const policies = await db.policy.findMany({ orderBy: { createdAt: "desc" } });
   return NextResponse.json({ policies });
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requirePrincipalPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   const body = await req.json();
   const policy = await db.policy.create({

@@ -1,11 +1,12 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id: topicId } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+
 
   const body = await req.json();
   const { title, type, content, mediaUrl, orderIndex, duration } = body;
@@ -29,8 +30,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requireTeacherPortal();
+  if (!gate2.ok) return gate2.response;
+
 
   const body = await req.json();
   const { contentId, ...data } = body;

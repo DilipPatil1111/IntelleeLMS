@@ -1,11 +1,12 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 /** Teachers assigned to the given program (TeacherProgram) and/or batch (TeacherSubjectAssignment). */
 export async function GET(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const { searchParams } = new URL(req.url);
   const programId = searchParams.get("programId")?.trim() || undefined;

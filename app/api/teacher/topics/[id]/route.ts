@@ -1,11 +1,11 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
 
   const topic = await db.topic.findUnique({
     where: { id },
@@ -22,8 +22,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requireTeacherPortal();
+  if (!gate2.ok) return gate2.response;
 
   const body = await req.json();
   const topic = await db.topic.update({
@@ -41,8 +41,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate3 = await requireTeacherPortal();
+  if (!gate3.ok) return gate3.response;
 
   await db.topic.delete({ where: { id } });
   return NextResponse.json({ success: true });

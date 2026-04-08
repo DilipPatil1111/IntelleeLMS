@@ -1,10 +1,11 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const { searchParams } = new URL(req.url);
   const subjectId = searchParams.get("subjectId");
@@ -24,8 +25,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requireTeacherPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   const body = await req.json();
   const { name, description, subjectId, orderIndex, requiresCompletion, prerequisiteModuleId } = body;
