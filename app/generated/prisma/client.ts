@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model CanvaAccount
+ * * Stores Canva OAuth tokens for a user so they can design in Canva and import results.
+ */
+export type CanvaAccount = Prisma.CanvaAccountModel
+/**
  * Model UserPortalGrant
  * * Extra portal access (Student / Teacher / Principal UI) beyond the user’s primary `User.role`. Managed in Principal → Settings.
  */
@@ -101,6 +106,21 @@ export type ProgramLessonCompletion = Prisma.ProgramLessonCompletionModel
  * * Program Content completion certificate emailed (separate from graduationCertificateSentAt).
  */
 export type ProgramCertificateSend = Prisma.ProgramCertificateSendModel
+/**
+ * Model CertificateTemplate
+ * * Reusable certificate template — background image/PDF + field layout.
+ */
+export type CertificateTemplate = Prisma.CertificateTemplateModel
+/**
+ * Model CertificateIssued
+ * * Tracks every certificate issued with a unique certificate number.
+ */
+export type CertificateIssued = Prisma.CertificateIssuedModel
+/**
+ * Model CertificateCounter
+ * * Auto-incrementing counter for certificate numbers (e.g., INT001).
+ */
+export type CertificateCounter = Prisma.CertificateCounterModel
 /**
  * Model InstitutionProfile
  * * Master institutional branding and contact (singleton row id = 1).
@@ -326,3 +346,8 @@ export type DocFile = Prisma.DocFileModel
  * 
  */
 export type InspectionNote = Prisma.InspectionNoteModel
+/**
+ * Model SessionRecording
+ * 
+ */
+export type SessionRecording = Prisma.SessionRecordingModel

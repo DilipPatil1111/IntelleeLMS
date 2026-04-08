@@ -49,6 +49,7 @@ export type InstitutionProfileMinAggregateOutputType = {
   socialInstagramUrl: string | null
   logoUrl: string | null
   brandColor: string | null
+  brandingDisplayMode: string | null
   updatedAt: Date | null
 }
 
@@ -67,6 +68,7 @@ export type InstitutionProfileMaxAggregateOutputType = {
   socialInstagramUrl: string | null
   logoUrl: string | null
   brandColor: string | null
+  brandingDisplayMode: string | null
   updatedAt: Date | null
 }
 
@@ -85,6 +87,7 @@ export type InstitutionProfileCountAggregateOutputType = {
   socialInstagramUrl: number
   logoUrl: number
   brandColor: number
+  brandingDisplayMode: number
   updatedAt: number
   _all: number
 }
@@ -113,6 +116,7 @@ export type InstitutionProfileMinAggregateInputType = {
   socialInstagramUrl?: true
   logoUrl?: true
   brandColor?: true
+  brandingDisplayMode?: true
   updatedAt?: true
 }
 
@@ -131,6 +135,7 @@ export type InstitutionProfileMaxAggregateInputType = {
   socialInstagramUrl?: true
   logoUrl?: true
   brandColor?: true
+  brandingDisplayMode?: true
   updatedAt?: true
 }
 
@@ -149,6 +154,7 @@ export type InstitutionProfileCountAggregateInputType = {
   socialInstagramUrl?: true
   logoUrl?: true
   brandColor?: true
+  brandingDisplayMode?: true
   updatedAt?: true
   _all?: true
 }
@@ -254,6 +260,7 @@ export type InstitutionProfileGroupByOutputType = {
   socialInstagramUrl: string | null
   logoUrl: string | null
   brandColor: string | null
+  brandingDisplayMode: string
   updatedAt: Date
   _count: InstitutionProfileCountAggregateOutputType | null
   _avg: InstitutionProfileAvgAggregateOutputType | null
@@ -295,6 +302,7 @@ export type InstitutionProfileWhereInput = {
   socialInstagramUrl?: Prisma.StringNullableFilter<"InstitutionProfile"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"InstitutionProfile"> | string | null
   brandColor?: Prisma.StringNullableFilter<"InstitutionProfile"> | string | null
+  brandingDisplayMode?: Prisma.StringFilter<"InstitutionProfile"> | string
   updatedAt?: Prisma.DateTimeFilter<"InstitutionProfile"> | Date | string
 }
 
@@ -313,6 +321,7 @@ export type InstitutionProfileOrderByWithRelationInput = {
   socialInstagramUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   brandColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  brandingDisplayMode?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -334,6 +343,7 @@ export type InstitutionProfileWhereUniqueInput = Prisma.AtLeast<{
   socialInstagramUrl?: Prisma.StringNullableFilter<"InstitutionProfile"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"InstitutionProfile"> | string | null
   brandColor?: Prisma.StringNullableFilter<"InstitutionProfile"> | string | null
+  brandingDisplayMode?: Prisma.StringFilter<"InstitutionProfile"> | string
   updatedAt?: Prisma.DateTimeFilter<"InstitutionProfile"> | Date | string
 }, "id">
 
@@ -352,6 +362,7 @@ export type InstitutionProfileOrderByWithAggregationInput = {
   socialInstagramUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   brandColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  brandingDisplayMode?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.InstitutionProfileCountOrderByAggregateInput
   _avg?: Prisma.InstitutionProfileAvgOrderByAggregateInput
@@ -378,6 +389,7 @@ export type InstitutionProfileScalarWhereWithAggregatesInput = {
   socialInstagramUrl?: Prisma.StringNullableWithAggregatesFilter<"InstitutionProfile"> | string | null
   logoUrl?: Prisma.StringNullableWithAggregatesFilter<"InstitutionProfile"> | string | null
   brandColor?: Prisma.StringNullableWithAggregatesFilter<"InstitutionProfile"> | string | null
+  brandingDisplayMode?: Prisma.StringWithAggregatesFilter<"InstitutionProfile"> | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"InstitutionProfile"> | Date | string
 }
 
@@ -396,6 +408,7 @@ export type InstitutionProfileCreateInput = {
   socialInstagramUrl?: string | null
   logoUrl?: string | null
   brandColor?: string | null
+  brandingDisplayMode?: string
   updatedAt?: Date | string
 }
 
@@ -414,6 +427,7 @@ export type InstitutionProfileUncheckedCreateInput = {
   socialInstagramUrl?: string | null
   logoUrl?: string | null
   brandColor?: string | null
+  brandingDisplayMode?: string
   updatedAt?: Date | string
 }
 
@@ -432,6 +446,7 @@ export type InstitutionProfileUpdateInput = {
   socialInstagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandingDisplayMode?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -450,6 +465,7 @@ export type InstitutionProfileUncheckedUpdateInput = {
   socialInstagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandingDisplayMode?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -468,6 +484,7 @@ export type InstitutionProfileCreateManyInput = {
   socialInstagramUrl?: string | null
   logoUrl?: string | null
   brandColor?: string | null
+  brandingDisplayMode?: string
   updatedAt?: Date | string
 }
 
@@ -486,6 +503,7 @@ export type InstitutionProfileUpdateManyMutationInput = {
   socialInstagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandingDisplayMode?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -504,6 +522,7 @@ export type InstitutionProfileUncheckedUpdateManyInput = {
   socialInstagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandingDisplayMode?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -522,6 +541,7 @@ export type InstitutionProfileCountOrderByAggregateInput = {
   socialInstagramUrl?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   brandColor?: Prisma.SortOrder
+  brandingDisplayMode?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -544,6 +564,7 @@ export type InstitutionProfileMaxOrderByAggregateInput = {
   socialInstagramUrl?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   brandColor?: Prisma.SortOrder
+  brandingDisplayMode?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -562,6 +583,7 @@ export type InstitutionProfileMinOrderByAggregateInput = {
   socialInstagramUrl?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   brandColor?: Prisma.SortOrder
+  brandingDisplayMode?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -586,6 +608,7 @@ export type InstitutionProfileSelect<ExtArgs extends runtime.Types.Extensions.In
   socialInstagramUrl?: boolean
   logoUrl?: boolean
   brandColor?: boolean
+  brandingDisplayMode?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["institutionProfile"]>
 
@@ -604,6 +627,7 @@ export type InstitutionProfileSelectCreateManyAndReturn<ExtArgs extends runtime.
   socialInstagramUrl?: boolean
   logoUrl?: boolean
   brandColor?: boolean
+  brandingDisplayMode?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["institutionProfile"]>
 
@@ -622,6 +646,7 @@ export type InstitutionProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.
   socialInstagramUrl?: boolean
   logoUrl?: boolean
   brandColor?: boolean
+  brandingDisplayMode?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["institutionProfile"]>
 
@@ -640,10 +665,11 @@ export type InstitutionProfileSelectScalar = {
   socialInstagramUrl?: boolean
   logoUrl?: boolean
   brandColor?: boolean
+  brandingDisplayMode?: boolean
   updatedAt?: boolean
 }
 
-export type InstitutionProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "institutionNumber" | "legalName" | "permanentAddress" | "mailingAddress" | "phone" | "email" | "website" | "socialFacebookUrl" | "socialLinkedInUrl" | "socialTwitterUrl" | "socialInstagramUrl" | "logoUrl" | "brandColor" | "updatedAt", ExtArgs["result"]["institutionProfile"]>
+export type InstitutionProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "institutionNumber" | "legalName" | "permanentAddress" | "mailingAddress" | "phone" | "email" | "website" | "socialFacebookUrl" | "socialLinkedInUrl" | "socialTwitterUrl" | "socialInstagramUrl" | "logoUrl" | "brandColor" | "brandingDisplayMode" | "updatedAt", ExtArgs["result"]["institutionProfile"]>
 
 export type $InstitutionProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InstitutionProfile"
@@ -663,6 +689,10 @@ export type $InstitutionProfilePayload<ExtArgs extends runtime.Types.Extensions.
     socialInstagramUrl: string | null
     logoUrl: string | null
     brandColor: string | null
+    /**
+     * * How institution branding is displayed: LOGO_ONLY, TEXT_ONLY, or LOGO_WITH_TEXT (default).
+     */
+    brandingDisplayMode: string
     updatedAt: Date
   }, ExtArgs["result"]["institutionProfile"]>
   composites: {}
@@ -1101,6 +1131,7 @@ export interface InstitutionProfileFieldRefs {
   readonly socialInstagramUrl: Prisma.FieldRef<"InstitutionProfile", 'String'>
   readonly logoUrl: Prisma.FieldRef<"InstitutionProfile", 'String'>
   readonly brandColor: Prisma.FieldRef<"InstitutionProfile", 'String'>
+  readonly brandingDisplayMode: Prisma.FieldRef<"InstitutionProfile", 'String'>
   readonly updatedAt: Prisma.FieldRef<"InstitutionProfile", 'DateTime'>
 }
     

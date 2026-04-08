@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useBranding } from "@/hooks/use-branding";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -55,6 +56,7 @@ const teacherNav: NavItem[] = [
   { label: "Program Content", href: "/teacher/program-content", icon: Layers },
   { label: "Session Recordings", href: "/teacher/session-recordings", icon: Video },
   { label: "Award Certificates", href: "/teacher/award-certificates", icon: Award },
+  { label: "Templates", href: "/teacher/certificate-templates", icon: FolderOpen },
   { label: "Settings", href: "/teacher/settings", icon: Settings },
 ];
 
@@ -104,6 +106,7 @@ interface SidebarProps {
 export function Sidebar({ role, userName, userInitials, profilePicture, allowedPaths }: SidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const { logoUrl, legalName, brandingDisplayMode, loaded } = useBranding();
   const allNavItems = navMap[role.toLowerCase()] || [];
   const navItems = allowedPaths ? allNavItems.filter((item) => allowedPaths.includes(item.href)) : allNavItems;
 
@@ -115,14 +118,42 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
       )}
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-800">
-        {!collapsed && (
-          <Link href={`/${role.toLowerCase()}`} className="text-lg font-bold text-indigo-400">
-            Intellee
-          </Link>
-        )}
+        <Link href={`/${role.toLowerCase()}`} className="flex items-center gap-2 min-w-0">
+          {(() => {
+            if (!loaded) {
+              return !collapsed ? <span className="text-lg font-bold text-indigo-400 truncate">&nbsp;</span> : null;
+            }
+            const showLogo = logoUrl && (brandingDisplayMode === "LOGO_ONLY" || brandingDisplayMode === "LOGO_WITH_TEXT");
+            const showText = legalName && (brandingDisplayMode === "TEXT_ONLY" || brandingDisplayMode === "LOGO_WITH_TEXT");
+
+            return (
+              <>
+                {showLogo && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={logoUrl}
+                    alt={legalName ?? "Logo"}
+                    className={cn(
+                      "object-contain flex-shrink-0",
+                      collapsed ? "h-8 w-8" : "h-8 w-auto max-w-[120px]"
+                    )}
+                  />
+                )}
+                {showText && !collapsed && (
+                  <span className="text-lg font-bold text-indigo-400 truncate">
+                    {legalName}
+                  </span>
+                )}
+                {!showLogo && !showText && !collapsed && (
+                  <span className="text-lg font-bold text-indigo-400 truncate">Intellee</span>
+                )}
+              </>
+            );
+          })()}
+        </Link>
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1 rounded hover:bg-gray-800 text-gray-400"
+          className="p-1 rounded hover:bg-gray-800 text-gray-400 flex-shrink-0"
         >
           {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
         </button>

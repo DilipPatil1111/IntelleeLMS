@@ -120,6 +120,7 @@ export type EligibleRow = {
 };
 
 export async function listStudentsForAwardCertificates(programId: string): Promise<EligibleRow[]> {
+  // Students from StudentProfile (legacy single-program field)
   const profiles = await db.studentProfile.findMany({
     where: {
       programId,
@@ -129,6 +130,50 @@ export async function listStudentsForAwardCertificates(programId: string): Promi
     orderBy: { enrollmentNo: "asc" },
   });
 
+  // Also include students enrolled via ProgramEnrollment (multi-program support)
+  const enrollments = await db.programEnrollment.findMany({
+    where: {
+      programId,
+      status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] },
+    },
+    include: {
+      user: {
+        include: {
+          studentProfile: { select: { enrollmentNo: true } },
+        },
+      },
+    },
+  });
+
+  // Merge both sets, dedup by userId
+  const seen = new Set<string>();
+  const allStudents: { userId: string; firstName: string; lastName: string; email: string; enrollmentNo: string }[] = [];
+
+  for (const p of profiles) {
+    if (!seen.has(p.userId)) {
+      seen.add(p.userId);
+      allStudents.push({
+        userId: p.userId,
+        firstName: p.user.firstName,
+        lastName: p.user.lastName,
+        email: p.user.email,
+        enrollmentNo: p.enrollmentNo,
+      });
+    }
+  }
+  for (const e of enrollments) {
+    if (!seen.has(e.userId)) {
+      seen.add(e.userId);
+      allStudents.push({
+        userId: e.userId,
+        firstName: e.user.firstName,
+        lastName: e.user.lastName,
+        email: e.user.email,
+        enrollmentNo: e.user.studentProfile?.enrollmentNo ?? e.enrollmentNo ?? "",
+      });
+    }
+  }
+
   const sent = await db.programCertificateSend.findMany({
     where: { programId },
     select: { studentUserId: true },
@@ -136,16 +181,16 @@ export async function listStudentsForAwardCertificates(programId: string): Promi
   const sentSet = new Set(sent.map((s) => s.studentUserId));
 
   const rows: EligibleRow[] = [];
-  for (const p of profiles) {
-    const eligible = await isProgramContentCompleteForStudent(p.userId, programId);
+  for (const s of allStudents) {
+    const eligible = await isProgramContentCompleteForStudent(s.userId, programId);
     rows.push({
-      studentUserId: p.userId,
-      firstName: p.user.firstName,
-      lastName: p.user.lastName,
-      email: p.user.email,
-      enrollmentNo: p.enrollmentNo,
+      studentUserId: s.userId,
+      firstName: s.firstName,
+      lastName: s.lastName,
+      email: s.email,
+      enrollmentNo: s.enrollmentNo,
       eligible,
-      certificateSent: sentSet.has(p.userId),
+      certificateSent: sentSet.has(s.userId),
     });
   }
   return rows;

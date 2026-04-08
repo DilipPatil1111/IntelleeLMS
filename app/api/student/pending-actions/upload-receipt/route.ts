@@ -19,18 +19,39 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Student profile not found" }, { status: 404 });
   }
 
-  if (!profile.program?.feeStructures.length) {
-    return NextResponse.json({ error: "No fee structure found for your program" }, { status: 400 });
-  }
-
   const formData = await req.formData();
   const file = formData.get("file") as File | null;
   const amountStr = formData.get("amount") as string | null;
+  const feeStructureId = formData.get("feeStructureId") as string | null;
 
   if (!file) return NextResponse.json({ error: "No file provided" }, { status: 400 });
 
   const amount = amountStr ? parseFloat(amountStr) : 0;
   if (amount <= 0) return NextResponse.json({ error: "Amount must be greater than 0" }, { status: 400 });
+
+  // Resolve fee structure: by explicit ID, from enrolled programs, or fallback to profile program
+  let feeStructure: { id: string } | null = null;
+  if (feeStructureId) {
+    feeStructure = await db.feeStructure.findUnique({ where: { id: feeStructureId }, select: { id: true } });
+  }
+  if (!feeStructure) {
+    const enrollments = await db.programEnrollment.findMany({
+      where: { userId: session.user.id, status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] } },
+      include: { program: { include: { feeStructures: { select: { id: true }, take: 1 } } } },
+    });
+    for (const e of enrollments) {
+      if (e.program.feeStructures.length > 0) {
+        feeStructure = e.program.feeStructures[0];
+        break;
+      }
+    }
+  }
+  if (!feeStructure && profile.program?.feeStructures.length) {
+    feeStructure = profile.program.feeStructures[0];
+  }
+  if (!feeStructure) {
+    return NextResponse.json({ error: "No fee structure found for your enrolled programs" }, { status: 400 });
+  }
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const ext = path.extname(file.name).toLowerCase() || ".bin";
@@ -40,8 +61,6 @@ export async function POST(req: NextRequest) {
   const blob = await blobPut(pathname, buffer, {
     contentType: file.type || "application/octet-stream",
   });
-
-  const feeStructure = profile.program.feeStructures[0];
 
   const payment = await db.feePayment.create({
     data: {

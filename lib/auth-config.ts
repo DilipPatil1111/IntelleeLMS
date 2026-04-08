@@ -49,9 +49,11 @@ export const authConfig: NextAuthConfig = {
         (route) => pathname === route || pathname.startsWith(route + "/")
       );
       const isAuthApi = pathname.startsWith("/api/auth");
+      const isPublicApi = pathname.startsWith("/api/public/");
+      const isCanvaCallback = pathname === "/api/canva/callback";
       const isChangePassword = pathname === "/change-password";
 
-      if (isPublic || isAuthApi) return true;
+      if (isPublic || isAuthApi || isPublicApi || isCanvaCallback) return true;
       if (!isLoggedIn) return false;
 
       const mustChange = (auth?.user as unknown as Record<string, unknown>)?.mustChangePassword as boolean | undefined;

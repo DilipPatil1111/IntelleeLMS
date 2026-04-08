@@ -16,6 +16,10 @@ const envSchema = z.object({
   NEXT_PUBLIC_BLOB_ACCESS: z.enum(["public", "private"]).optional(),
   /** Cron secret — required to secure the /api/cron/send-emails endpoint */
   CRON_SECRET: z.string().optional(),
+  /** Canva Connect API credentials — obtain from https://www.canva.com/developers/ */
+  CANVA_CLIENT_ID: z.string().optional(),
+  CANVA_CLIENT_SECRET: z.string().optional(),
+  CANVA_REDIRECT_URI: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);

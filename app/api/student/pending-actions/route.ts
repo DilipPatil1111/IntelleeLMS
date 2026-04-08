@@ -257,9 +257,31 @@ export async function GET() {
       ]
     : null;
 
-  // --- Pending Fees ---
-  const totalFees =
-    profile.program?.feeStructures.reduce((sum, fs) => sum + fs.totalAmount, 0) ?? 0;
+  // --- Pending Fees (multi-program) ---
+  // Collect fee structures from all enrolled programs
+  const enrollments = await db.programEnrollment.findMany({
+    where: { userId: session.user.id, status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] } },
+    include: { program: { include: { feeStructures: true } } },
+  });
+  let totalFees = 0;
+  const feeStructureIds = new Set<string>();
+  for (const e of enrollments) {
+    for (const fs of e.program.feeStructures) {
+      if (!feeStructureIds.has(fs.id)) {
+        feeStructureIds.add(fs.id);
+        totalFees += fs.totalAmount;
+      }
+    }
+  }
+  // Fallback: include profile.program fee structures if not already counted
+  if (profile.program?.feeStructures) {
+    for (const fs of profile.program.feeStructures) {
+      if (!feeStructureIds.has(fs.id)) {
+        feeStructureIds.add(fs.id);
+        totalFees += fs.totalAmount;
+      }
+    }
+  }
   const totalPaid = profile.feePayments.reduce((sum, fp) => sum + fp.amountPaid, 0);
   const pendingAmount = totalFees - totalPaid;
 

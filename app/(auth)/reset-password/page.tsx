@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthHeader } from "@/components/auth/auth-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -139,10 +140,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-600">Intellee College</h1>
-          <p className="text-gray-500 mt-2">Set a new password</p>
-        </div>
+        <AuthHeader subtitle="Set a new password" />
 
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           <Suspense fallback={<div className="animate-pulse space-y-4"><div className="h-10 bg-gray-100 rounded" /><div className="h-10 bg-gray-100 rounded" /><div className="h-10 bg-indigo-100 rounded" /></div>}>

@@ -15,8 +15,14 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const years = parseInt(searchParams.get("years") || "2", 10) || 2;
 
+  const programId = searchParams.get("programId") || undefined;
+
   const all = await db.holiday.findMany({
-    include: { academicYear: { select: { id: true, name: true } } },
+    where: programId ? { OR: [{ programId: null }, { programId }] } : undefined,
+    include: {
+      academicYear: { select: { id: true, name: true } },
+      program: { select: { id: true, name: true } },
+    },
     orderBy: { date: "asc" },
   });
 
@@ -52,6 +58,7 @@ export async function POST(req: Request) {
       date: new Date(body.date),
       type,
       academicYearId: body.academicYearId || null,
+      programId: body.programId || null,
     },
   });
 

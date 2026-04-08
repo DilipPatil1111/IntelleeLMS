@@ -46,6 +46,8 @@ interface StudentFeeRow {
   userId: string;
   name: string;
   email: string;
+  programName: string | null;
+  batchName: string | null;
   total: number;
   paid: number;
   pending: number;
@@ -77,7 +79,7 @@ function SkeletonCard() {
 function SkeletonRow() {
   return (
     <tr>
-      {Array.from({ length: 7 }).map((_, i) => (
+      {Array.from({ length: 9 }).map((_, i) => (
         <td key={i} className="px-4 py-3">
           <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
         </td>
@@ -203,7 +205,12 @@ export default function StudentFeesPage() {
         });
         return;
       }
-      setToast({ message: "Payment confirmed — email sent to student", tone: "success" });
+      const result = await res.json().catch(() => ({ ok: true }));
+      if (result.emailSent === false) {
+        setToast({ message: `Payment confirmed but email could not be sent: ${result.emailError || "unknown error"}`, tone: "error" });
+      } else {
+        setToast({ message: "Payment confirmed — email sent to student", tone: "success" });
+      }
       setConfirmModal(null);
       void loadFees();
     } catch {
@@ -325,6 +332,9 @@ export default function StudentFeesPage() {
                 Student Name
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                Program
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
                 Email
               </th>
               <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">
@@ -349,7 +359,7 @@ export default function StudentFeesPage() {
               Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
             ) : students.length === 0 ? (
               <tr>
-                <td colSpan={8} className="px-4 py-12 text-center text-sm text-gray-500">
+                <td colSpan={9} className="px-4 py-12 text-center text-sm text-gray-500">
                   No students found for the selected filters.
                 </td>
               </tr>
@@ -460,6 +470,7 @@ function StudentFeeRowBlock({
           ) : null}
         </td>
         <td className="px-4 py-3 text-sm font-medium text-gray-900">{student.name}</td>
+        <td className="px-4 py-3 text-sm text-gray-500">{student.programName || "—"}</td>
         <td className="px-4 py-3 text-sm text-gray-500">{student.email}</td>
         <td className="px-4 py-3 text-right text-sm text-gray-900">
           {currency(student.total)}
@@ -493,7 +504,7 @@ function StudentFeeRowBlock({
       </tr>
       {isExpanded && hasReceipts && (
         <tr>
-          <td colSpan={8} className="bg-gray-50 px-4 py-3">
+          <td colSpan={9} className="bg-gray-50 px-4 py-3">
             <div className="ml-8 space-y-2">
               <p className="text-xs font-medium uppercase text-gray-400">
                 Payment Receipts

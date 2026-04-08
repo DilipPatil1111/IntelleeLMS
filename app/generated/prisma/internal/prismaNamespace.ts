@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  CanvaAccount: 'CanvaAccount',
   UserPortalGrant: 'UserPortalGrant',
   Feedback: 'Feedback',
   Account: 'Account',
@@ -396,6 +397,9 @@ export const ModelName = {
   ProgramLesson: 'ProgramLesson',
   ProgramLessonCompletion: 'ProgramLessonCompletion',
   ProgramCertificateSend: 'ProgramCertificateSend',
+  CertificateTemplate: 'CertificateTemplate',
+  CertificateIssued: 'CertificateIssued',
+  CertificateCounter: 'CertificateCounter',
   InstitutionProfile: 'InstitutionProfile',
   ProgramDomain: 'ProgramDomain',
   ProgramCategory: 'ProgramCategory',
@@ -440,7 +444,8 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   DocFolder: 'DocFolder',
   DocFile: 'DocFile',
-  InspectionNote: 'InspectionNote'
+  InspectionNote: 'InspectionNote',
+  SessionRecording: 'SessionRecording'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -456,7 +461,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "programSyllabus" | "programChapter" | "programLesson" | "programLessonCompletion" | "programCertificateSend" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "programEnrollment" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote"
+    modelProps: "user" | "canvaAccount" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "programSyllabus" | "programChapter" | "programLesson" | "programLessonCompletion" | "programCertificateSend" | "certificateTemplate" | "certificateIssued" | "certificateCounter" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "programEnrollment" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote" | "sessionRecording"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -531,6 +536,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    CanvaAccount: {
+      payload: Prisma.$CanvaAccountPayload<ExtArgs>
+      fields: Prisma.CanvaAccountFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CanvaAccountFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CanvaAccountFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>
+        }
+        findFirst: {
+          args: Prisma.CanvaAccountFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CanvaAccountFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>
+        }
+        findMany: {
+          args: Prisma.CanvaAccountFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>[]
+        }
+        create: {
+          args: Prisma.CanvaAccountCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>
+        }
+        createMany: {
+          args: Prisma.CanvaAccountCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CanvaAccountCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>[]
+        }
+        delete: {
+          args: Prisma.CanvaAccountDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>
+        }
+        update: {
+          args: Prisma.CanvaAccountUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>
+        }
+        deleteMany: {
+          args: Prisma.CanvaAccountDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CanvaAccountUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CanvaAccountUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>[]
+        }
+        upsert: {
+          args: Prisma.CanvaAccountUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CanvaAccountPayload>
+        }
+        aggregate: {
+          args: Prisma.CanvaAccountAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCanvaAccount>
+        }
+        groupBy: {
+          args: Prisma.CanvaAccountGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CanvaAccountGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CanvaAccountCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CanvaAccountCountAggregateOutputType> | number
         }
       }
     }
@@ -1345,6 +1424,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProgramCertificateSendCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProgramCertificateSendCountAggregateOutputType> | number
+        }
+      }
+    }
+    CertificateTemplate: {
+      payload: Prisma.$CertificateTemplatePayload<ExtArgs>
+      fields: Prisma.CertificateTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CertificateTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CertificateTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.CertificateTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CertificateTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.CertificateTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.CertificateTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.CertificateTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CertificateTemplateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>[]
+        }
+        delete: {
+          args: Prisma.CertificateTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        update: {
+          args: Prisma.CertificateTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.CertificateTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CertificateTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CertificateTemplateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>[]
+        }
+        upsert: {
+          args: Prisma.CertificateTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.CertificateTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCertificateTemplate>
+        }
+        groupBy: {
+          args: Prisma.CertificateTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CertificateTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CertificateTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CertificateTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
+    CertificateIssued: {
+      payload: Prisma.$CertificateIssuedPayload<ExtArgs>
+      fields: Prisma.CertificateIssuedFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CertificateIssuedFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CertificateIssuedFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>
+        }
+        findFirst: {
+          args: Prisma.CertificateIssuedFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CertificateIssuedFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>
+        }
+        findMany: {
+          args: Prisma.CertificateIssuedFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>[]
+        }
+        create: {
+          args: Prisma.CertificateIssuedCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>
+        }
+        createMany: {
+          args: Prisma.CertificateIssuedCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CertificateIssuedCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>[]
+        }
+        delete: {
+          args: Prisma.CertificateIssuedDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>
+        }
+        update: {
+          args: Prisma.CertificateIssuedUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>
+        }
+        deleteMany: {
+          args: Prisma.CertificateIssuedDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CertificateIssuedUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CertificateIssuedUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>[]
+        }
+        upsert: {
+          args: Prisma.CertificateIssuedUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateIssuedPayload>
+        }
+        aggregate: {
+          args: Prisma.CertificateIssuedAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCertificateIssued>
+        }
+        groupBy: {
+          args: Prisma.CertificateIssuedGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CertificateIssuedGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CertificateIssuedCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CertificateIssuedCountAggregateOutputType> | number
+        }
+      }
+    }
+    CertificateCounter: {
+      payload: Prisma.$CertificateCounterPayload<ExtArgs>
+      fields: Prisma.CertificateCounterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CertificateCounterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CertificateCounterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>
+        }
+        findFirst: {
+          args: Prisma.CertificateCounterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CertificateCounterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>
+        }
+        findMany: {
+          args: Prisma.CertificateCounterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>[]
+        }
+        create: {
+          args: Prisma.CertificateCounterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>
+        }
+        createMany: {
+          args: Prisma.CertificateCounterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CertificateCounterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>[]
+        }
+        delete: {
+          args: Prisma.CertificateCounterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>
+        }
+        update: {
+          args: Prisma.CertificateCounterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>
+        }
+        deleteMany: {
+          args: Prisma.CertificateCounterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CertificateCounterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CertificateCounterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>[]
+        }
+        upsert: {
+          args: Prisma.CertificateCounterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificateCounterPayload>
+        }
+        aggregate: {
+          args: Prisma.CertificateCounterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCertificateCounter>
+        }
+        groupBy: {
+          args: Prisma.CertificateCounterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CertificateCounterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CertificateCounterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CertificateCounterCountAggregateOutputType> | number
         }
       }
     }
@@ -4678,6 +4979,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SessionRecording: {
+      payload: Prisma.$SessionRecordingPayload<ExtArgs>
+      fields: Prisma.SessionRecordingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SessionRecordingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SessionRecordingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>
+        }
+        findFirst: {
+          args: Prisma.SessionRecordingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SessionRecordingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>
+        }
+        findMany: {
+          args: Prisma.SessionRecordingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>[]
+        }
+        create: {
+          args: Prisma.SessionRecordingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>
+        }
+        createMany: {
+          args: Prisma.SessionRecordingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SessionRecordingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>[]
+        }
+        delete: {
+          args: Prisma.SessionRecordingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>
+        }
+        update: {
+          args: Prisma.SessionRecordingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>
+        }
+        deleteMany: {
+          args: Prisma.SessionRecordingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SessionRecordingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SessionRecordingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>[]
+        }
+        upsert: {
+          args: Prisma.SessionRecordingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionRecordingPayload>
+        }
+        aggregate: {
+          args: Prisma.SessionRecordingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSessionRecording>
+        }
+        groupBy: {
+          args: Prisma.SessionRecordingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionRecordingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SessionRecordingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionRecordingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4744,6 +5119,20 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const CanvaAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  canvaUserId: 'canvaUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CanvaAccountScalarFieldEnum = (typeof CanvaAccountScalarFieldEnum)[keyof typeof CanvaAccountScalarFieldEnum]
 
 
 export const UserPortalGrantScalarFieldEnum = {
@@ -4901,6 +5290,48 @@ export const ProgramCertificateSendScalarFieldEnum = {
 export type ProgramCertificateSendScalarFieldEnum = (typeof ProgramCertificateSendScalarFieldEnum)[keyof typeof ProgramCertificateSendScalarFieldEnum]
 
 
+export const CertificateTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  backgroundUrl: 'backgroundUrl',
+  backgroundFileName: 'backgroundFileName',
+  orientation: 'orientation',
+  pageSize: 'pageSize',
+  fieldsJson: 'fieldsJson',
+  isActive: 'isActive',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CertificateTemplateScalarFieldEnum = (typeof CertificateTemplateScalarFieldEnum)[keyof typeof CertificateTemplateScalarFieldEnum]
+
+
+export const CertificateIssuedScalarFieldEnum = {
+  id: 'id',
+  certificateNumber: 'certificateNumber',
+  templateId: 'templateId',
+  recipientId: 'recipientId',
+  programId: 'programId',
+  dataJson: 'dataJson',
+  pdfUrl: 'pdfUrl',
+  sentAt: 'sentAt',
+  sentByUserId: 'sentByUserId',
+  createdAt: 'createdAt'
+} as const
+
+export type CertificateIssuedScalarFieldEnum = (typeof CertificateIssuedScalarFieldEnum)[keyof typeof CertificateIssuedScalarFieldEnum]
+
+
+export const CertificateCounterScalarFieldEnum = {
+  id: 'id',
+  lastValue: 'lastValue'
+} as const
+
+export type CertificateCounterScalarFieldEnum = (typeof CertificateCounterScalarFieldEnum)[keyof typeof CertificateCounterScalarFieldEnum]
+
+
 export const InstitutionProfileScalarFieldEnum = {
   id: 'id',
   institutionNumber: 'institutionNumber',
@@ -4916,6 +5347,7 @@ export const InstitutionProfileScalarFieldEnum = {
   socialInstagramUrl: 'socialInstagramUrl',
   logoUrl: 'logoUrl',
   brandColor: 'brandColor',
+  brandingDisplayMode: 'brandingDisplayMode',
   updatedAt: 'updatedAt'
 } as const
 
@@ -5392,6 +5824,7 @@ export const HolidayScalarFieldEnum = {
   date: 'date',
   type: 'type',
   academicYearId: 'academicYearId',
+  programId: 'programId',
   region: 'region',
   createdAt: 'createdAt'
 } as const
@@ -5610,6 +6043,22 @@ export const InspectionNoteScalarFieldEnum = {
 } as const
 
 export type InspectionNoteScalarFieldEnum = (typeof InspectionNoteScalarFieldEnum)[keyof typeof InspectionNoteScalarFieldEnum]
+
+
+export const SessionRecordingScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  title: 'title',
+  sessionDate: 'sessionDate',
+  videoUrl: 'videoUrl',
+  fileName: 'fileName',
+  durationMin: 'durationMin',
+  uploadedById: 'uploadedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SessionRecordingScalarFieldEnum = (typeof SessionRecordingScalarFieldEnum)[keyof typeof SessionRecordingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -6111,6 +6560,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  canvaAccount?: Prisma.CanvaAccountOmit
   userPortalGrant?: Prisma.UserPortalGrantOmit
   feedback?: Prisma.FeedbackOmit
   account?: Prisma.AccountOmit
@@ -6122,6 +6572,9 @@ export type GlobalOmitConfig = {
   programLesson?: Prisma.ProgramLessonOmit
   programLessonCompletion?: Prisma.ProgramLessonCompletionOmit
   programCertificateSend?: Prisma.ProgramCertificateSendOmit
+  certificateTemplate?: Prisma.CertificateTemplateOmit
+  certificateIssued?: Prisma.CertificateIssuedOmit
+  certificateCounter?: Prisma.CertificateCounterOmit
   institutionProfile?: Prisma.InstitutionProfileOmit
   programDomain?: Prisma.ProgramDomainOmit
   programCategory?: Prisma.ProgramCategoryOmit
@@ -6167,6 +6620,7 @@ export type GlobalOmitConfig = {
   docFolder?: Prisma.DocFolderOmit
   docFile?: Prisma.DocFileOmit
   inspectionNote?: Prisma.InspectionNoteOmit
+  sessionRecording?: Prisma.SessionRecordingOmit
 }
 
 /* Types for Logging */

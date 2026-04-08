@@ -29,6 +29,11 @@ export function blobFileUrl(
   if (!blobUrl) return blobUrl;
   if (!isPrivateStore()) return blobUrl;
 
+  // External URLs (not Vercel Blob) should be served directly
+  if (blobUrl.startsWith("http") && !blobUrl.includes(".blob.vercel-storage.com") && !blobUrl.includes(".public.blob.vercel-storage.com")) {
+    return blobUrl;
+  }
+
   const params = new URLSearchParams({ url: blobUrl });
   if (filename) params.set("filename", filename);
   if (inline) params.set("inline", "1");

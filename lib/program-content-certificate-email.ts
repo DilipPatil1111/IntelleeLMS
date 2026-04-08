@@ -36,7 +36,20 @@ export async function sendProgramContentCertificateEmail(params: {
     where: { userId: studentUserId },
     include: { user: true, program: true },
   });
-  if (!profile?.programId || profile.programId !== programId) {
+  if (!profile) {
+    return { ok: false, error: "Student profile not found." };
+  }
+
+  // Check enrollment via StudentProfile OR ProgramEnrollment
+  const enrolledViaProfile = profile.programId === programId;
+  const enrolledViaEnrollment = await db.programEnrollment.findFirst({
+    where: {
+      userId: studentUserId,
+      programId,
+      status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] },
+    },
+  });
+  if (!enrolledViaProfile && !enrolledViaEnrollment) {
     return { ok: false, error: "Student is not enrolled in this program." };
   }
 

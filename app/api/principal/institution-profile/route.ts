@@ -50,6 +50,7 @@ export async function PUT(req: Request) {
       socialInstagramUrl: str("socialInstagramUrl") ?? null,
       logoUrl: str("logoUrl") ?? null,
       brandColor: str("brandColor") ?? null,
+      brandingDisplayMode: str("brandingDisplayMode") ?? "LOGO_WITH_TEXT",
     },
     update: {
       ...(Object.prototype.hasOwnProperty.call(p, "institutionNumber") && {
@@ -79,6 +80,9 @@ export async function PUT(req: Request) {
       }),
       ...(Object.prototype.hasOwnProperty.call(p, "logoUrl") && { logoUrl: str("logoUrl") ?? null }),
       ...(Object.prototype.hasOwnProperty.call(p, "brandColor") && { brandColor: str("brandColor") ?? null }),
+      ...(Object.prototype.hasOwnProperty.call(p, "brandingDisplayMode") && {
+        brandingDisplayMode: str("brandingDisplayMode") ?? "LOGO_WITH_TEXT",
+      }),
     },
   });
 
