@@ -18,11 +18,7 @@ export async function GET() {
             include: { feeStructure: true },
             orderBy: { paymentDate: "desc" },
           },
-          batch: {
-            include: {
-              subjects: true,
-            },
-          },
+          batch: true,
         },
       },
     },
@@ -119,7 +115,7 @@ export async function GET() {
   }
 
   // --- Below-minimum attendance ---
-  let attendanceAlerts: {
+  const attendanceAlerts: {
     subjectName: string;
     attendancePercent: number;
     requiredPercent: number;
@@ -129,7 +125,7 @@ export async function GET() {
 
   if (batchId) {
     try {
-      const attendanceRecords = await db.attendance.findMany({
+      const attendanceRecords = await db.attendanceRecord.findMany({
         where: { studentId: user.id },
         include: { session: { include: { subject: true } } },
       });

@@ -48,6 +48,7 @@ export async function POST(req: Request) {
         data,
       });
     } else {
+      /* eslint-disable react-hooks/error-boundaries -- server-side PDF generation, not a React component */
       buffer = await renderToBuffer(
         <CertificatePdf
           backgroundUrl={template.backgroundUrl}
@@ -57,9 +58,10 @@ export async function POST(req: Request) {
           data={data}
         />
       );
+      /* eslint-enable react-hooks/error-boundaries */
     }
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

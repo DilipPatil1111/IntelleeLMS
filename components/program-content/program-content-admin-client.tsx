@@ -130,6 +130,7 @@ function TaxonomyPanel({
   }, [taxonomyUrls]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (open) void loadAll();
   }, [open, loadAll]);
 

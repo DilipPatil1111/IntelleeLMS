@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +12,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 import {
   Plus, FileText, Trash2, Edit, Eye, Send, CheckCircle2, Users, X,
-  Image as ImageIcon, FileUp, Loader2, Palette, ExternalLink,
+  Image as ImageIcon, FileUp, Loader2, Palette,
 } from "lucide-react";
 
 const PAGE_SIZE = 8;
@@ -156,6 +155,7 @@ export function CertificateTemplatesClient({ apiPrefix, programsApiUrl }: Props)
     setLoading(false);
   }, [apiPrefix]);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { void loadTemplates(); }, [loadTemplates]);
 
   function openCreate() {

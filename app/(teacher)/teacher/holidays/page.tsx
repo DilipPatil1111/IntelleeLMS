@@ -26,12 +26,13 @@ const PAGE_SIZE = 15;
 
 export default function TeacherHolidaysViewPage() {
   const [allHolidays, setAllHolidays] = useState<Holiday[]>([]);
-  const [totalFromApi, setTotalFromApi] = useState(0);
+  const [_totalFromApi, setTotalFromApi] = useState(0);
   const [programs, setPrograms] = useState<ProgramOpt[]>([]);
   const [selectedProgramId, setSelectedProgramId] = useState("all");
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
+  /* eslint-disable react-hooks/set-state-in-effect -- data fetch on filter change */
   useEffect(() => {
     setLoading(true);
     const params = new URLSearchParams({ years: "3", page: "1", pageSize: "500" });
@@ -61,6 +62,7 @@ export default function TeacherHolidaysViewPage() {
       })
       .finally(() => setLoading(false));
   }, [selectedProgramId]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Filter client-side
   const filtered =

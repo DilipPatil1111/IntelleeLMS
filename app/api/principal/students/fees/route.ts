@@ -130,7 +130,7 @@ export async function GET(req: Request) {
         fileUrl: onboarding.feeProofUploadUrl,
         amountPaid: 0,
         confirmed: false,
-        programName: null,
+        programName: "",
       });
     }
 

@@ -62,6 +62,7 @@ export default function PrincipalFeedbackPage() {
   }, [q]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPage(1);
   }, [debouncedQ, category, role]);
 

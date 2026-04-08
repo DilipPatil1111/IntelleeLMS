@@ -63,12 +63,14 @@ export function SessionRecordingsManager({
     }
   }, [apiPrefix, selectedProgramId]);
 
+  /* eslint-disable react-hooks/set-state-in-effect -- data fetch on program change */
   useEffect(() => {
     if (selectedProgramId) {
       loadRecordings();
       setPage(1);
     }
   }, [selectedProgramId, loadRecordings]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleUpload() {
     if (!file || !title.trim() || !sessionDate || !selectedProgramId) return;

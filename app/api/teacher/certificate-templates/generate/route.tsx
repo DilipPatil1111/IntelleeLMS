@@ -28,7 +28,7 @@ export async function GET(req: Request) {
 
   // Students from teacher's assigned programs
   const teacherPrograms = await db.teacherProgram.findMany({
-    where: { userId: session.user.id },
+    where: { teacherProfile: { userId: session.user.id } },
     select: { programId: true },
   });
   const programIds = programId ? [programId] : teacherPrograms.map((tp) => tp.programId);

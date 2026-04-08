@@ -87,7 +87,7 @@ export async function POST(req: Request) {
       );
     }
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       status: 200,
       headers: { "Content-Type": "application/pdf", "Content-Disposition": `inline; filename="certificate-preview.pdf"` },
     });
