@@ -85,9 +85,9 @@ export async function POST(req: Request) {
         CUSTOM_TEXT: customText || "Certificate of Completion",
       };
 
-      let buffer: Uint8Array | Buffer;
+      let pdfBytes: Uint8Array;
       if (usePdfTemplate) {
-        buffer = await generateCertificateFromPdfTemplate({
+        pdfBytes = await generateCertificateFromPdfTemplate({
           pdfUrl: template.backgroundUrl!,
           orientation: template.orientation as "LANDSCAPE" | "PORTRAIT",
           pageSize: template.pageSize as "A4" | "LETTER",
@@ -96,7 +96,7 @@ export async function POST(req: Request) {
         });
       } else {
         /* eslint-disable react-hooks/error-boundaries -- server-side PDF generation, not a React component */
-        buffer = await renderToBuffer(
+        const rendered = await renderToBuffer(
           <CertificatePdf
             backgroundUrl={template.backgroundUrl}
             orientation={template.orientation as "LANDSCAPE" | "PORTRAIT"}
@@ -106,6 +106,7 @@ export async function POST(req: Request) {
           />
         );
         /* eslint-enable react-hooks/error-boundaries */
+        pdfBytes = new Uint8Array(rendered);
       }
 
       await db.certificateIssued.create({
@@ -133,7 +134,7 @@ export async function POST(req: Request) {
             <p style="color:#6b7280;font-size:13px;">Congratulations on your achievement!</p>
           </div>
         `,
-        attachments: [{ filename: `Certificate-${certNumber}.pdf`, content: Buffer.from(buffer) }],
+        attachments: [{ filename: `Certificate-${certNumber}.pdf`, content: Buffer.from(pdfBytes) }],
         senderUserId: session.user.id,
       });
 

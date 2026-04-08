@@ -19,10 +19,11 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const data = await getAssessmentResultsReportData(assessmentId);
   if (!data) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const buffer = await renderToBuffer(<AssessmentResultsPdf data={data} />);
+  const rendered = await renderToBuffer(<AssessmentResultsPdf data={data} />);
+  const pdfBytes = new Uint8Array(rendered);
   const safeTitle = data.assessment.title.replace(/[^\w\-]+/g, "_").slice(0, 60) || "assessment";
 
-  return new NextResponse(new Uint8Array(buffer), {
+  return new NextResponse(pdfBytes.buffer.slice(pdfBytes.byteOffset, pdfBytes.byteOffset + pdfBytes.byteLength) as ArrayBuffer, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="${safeTitle}-results.pdf"`,

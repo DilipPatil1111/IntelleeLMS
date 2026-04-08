@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     }
     const buf = new Uint8Array(await response.arrayBuffer());
     const fname = settings.certificateTemplateFileName || "certificate-preview.pdf";
-    return new NextResponse(buf, {
+    return new NextResponse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
