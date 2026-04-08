@@ -2,9 +2,9 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatYmd } from "@/lib/day-boundaries";
 import { redirect } from "next/navigation";
-import { FullProgramCalendarClient } from "@/components/calendar/full-program-calendar-client";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
+import { FullCalendarMultiProgram } from "./full-calendar-multi-program";
 
 export default async function StudentFullCalendarPage() {
   const session = await auth();
@@ -15,7 +15,42 @@ export default async function StudentFullCalendarPage() {
     include: { program: true, batch: true },
   });
 
-  if (!profile?.batchId) {
+  const enrollments = await db.programEnrollment.findMany({
+    where: {
+      userId: session.user.id,
+      status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] },
+    },
+    include: {
+      program: { select: { id: true, name: true } },
+      batch: { select: { id: true, name: true, startDate: true, endDate: true } },
+    },
+  });
+
+  const programsMap = new Map<string, { id: string; name: string; batchId: string | null; batchName: string | null; startDate: string | null; endDate: string | null }>();
+  for (const e of enrollments) {
+    programsMap.set(e.programId, {
+      id: e.programId,
+      name: e.program.name,
+      batchId: e.batchId,
+      batchName: e.batch?.name ?? null,
+      startDate: e.batch?.startDate ? formatYmd(new Date(e.batch.startDate)) : null,
+      endDate: e.batch?.endDate ? formatYmd(new Date(e.batch.endDate)) : null,
+    });
+  }
+  if (profile?.programId && !programsMap.has(profile.programId)) {
+    programsMap.set(profile.programId, {
+      id: profile.programId,
+      name: profile.program?.name ?? "Unknown",
+      batchId: profile.batchId,
+      batchName: profile.batch?.name ?? null,
+      startDate: profile.batch?.startDate ? formatYmd(new Date(profile.batch.startDate)) : null,
+      endDate: profile.batch?.endDate ? formatYmd(new Date(profile.batch.endDate)) : null,
+    });
+  }
+
+  const programs = Array.from(programsMap.values());
+
+  if (programs.length === 0 || !programs.some((p) => p.batchId)) {
     return (
       <>
         <PageHeader title="Full Calendar" description="Program schedule" />
@@ -28,19 +63,12 @@ export default async function StudentFullCalendarPage() {
     );
   }
 
-  const batch = profile.batch;
-  const studentBatchRange =
-    batch?.startDate && batch?.endDate
-      ? { from: formatYmd(new Date(batch.startDate)), to: formatYmd(new Date(batch.endDate)) }
-      : null;
+  const defaultProgramId = profile?.programId ?? programs[0]?.id ?? "";
 
   return (
-    <FullProgramCalendarClient
-      mode="student"
-      fixedBatchId={profile.batchId}
-      studentProgramName={profile.program?.name ?? null}
-      studentBatchName={batch?.name ?? null}
-      studentBatchRange={studentBatchRange}
+    <FullCalendarMultiProgram
+      programs={programs}
+      defaultProgramId={defaultProgramId}
     />
   );
 }

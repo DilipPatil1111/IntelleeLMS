@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { blobFileUrl } from "@/lib/blob-url";
+import { invalidateBrandingCache } from "@/hooks/use-branding";
 
 type Profile = {
   institutionNumber: string | null;
@@ -22,6 +23,7 @@ type Profile = {
   socialInstagramUrl: string | null;
   logoUrl: string | null;
   brandColor: string | null;
+  brandingDisplayMode: string;
 };
 
 const empty: Profile = {
@@ -38,7 +40,14 @@ const empty: Profile = {
   socialInstagramUrl: null,
   logoUrl: null,
   brandColor: null,
+  brandingDisplayMode: "LOGO_WITH_TEXT",
 };
+
+const BRANDING_MODES = [
+  { value: "LOGO_ONLY", label: "Logo only", desc: "Display only the uploaded logo image" },
+  { value: "TEXT_ONLY", label: "Text only", desc: "Display only the institution name" },
+  { value: "LOGO_WITH_TEXT", label: "Logo + Text", desc: "Display the logo alongside the institution name" },
+] as const;
 
 export default function InstitutionProfilePage() {
   const [profile, setProfile] = useState<Profile>(empty);
@@ -73,6 +82,7 @@ export default function InstitutionProfilePage() {
     if (res.ok) {
       setMessage({ tone: "ok", text: "Institution profile saved." });
       if (data.profile) setProfile({ ...empty, ...data.profile });
+      invalidateBrandingCache();
     } else {
       setMessage({ tone: "err", text: (data as { error?: string }).error || "Save failed." });
     }
@@ -166,6 +176,52 @@ export default function InstitutionProfilePage() {
               onChange={(e) => field("brandColor", e.target.value)}
               placeholder="#4f46e5"
             />
+
+            {/* Branding display mode */}
+            <div>
+              <p className="text-sm font-medium text-gray-700 mb-2">Branding display mode</p>
+              <p className="text-xs text-gray-500 mb-3">Choose how your institution branding appears on the login page, sidebar, and emails.</p>
+              <div className="grid grid-cols-3 gap-3">
+                {BRANDING_MODES.map((mode) => {
+                  const selected = profile.brandingDisplayMode === mode.value;
+                  return (
+                    <button
+                      key={mode.value}
+                      type="button"
+                      onClick={() => setProfile((p) => ({ ...p, brandingDisplayMode: mode.value }))}
+                      className={`rounded-lg border-2 p-3 text-left transition-all ${
+                        selected
+                          ? "border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500"
+                          : "border-gray-200 bg-white hover:border-gray-300"
+                      }`}
+                    >
+                      <span className={`block text-sm font-medium ${selected ? "text-indigo-700" : "text-gray-700"}`}>
+                        {mode.label}
+                      </span>
+                      <span className="block text-xs text-gray-500 mt-0.5">{mode.desc}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Live preview */}
+            <div>
+              <p className="text-sm font-medium text-gray-700 mb-2">Preview</p>
+              <div className="rounded-lg border border-gray-200 bg-gray-900 p-4 flex items-center gap-3">
+                {(profile.brandingDisplayMode === "LOGO_ONLY" || profile.brandingDisplayMode === "LOGO_WITH_TEXT") && profile.logoUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={blobFileUrl(profile.logoUrl, "logo", true)} alt="" className="h-8 w-auto object-contain" />
+                )}
+                {(profile.brandingDisplayMode === "TEXT_ONLY" || profile.brandingDisplayMode === "LOGO_WITH_TEXT") && (
+                  <span className="text-lg font-bold text-indigo-400">{profile.legalName || "Institution Name"}</span>
+                )}
+                {!profile.logoUrl && profile.brandingDisplayMode !== "TEXT_ONLY" && (
+                  <span className="text-xs text-gray-500 italic">No logo uploaded — upload one above</span>
+                )}
+              </div>
+              <p className="text-xs text-gray-400 mt-1">This is how branding will appear in the sidebar. Login page and emails use a similar layout.</p>
+            </div>
           </CardContent>
         </Card>
 

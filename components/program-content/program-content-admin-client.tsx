@@ -12,6 +12,7 @@ import {
   AlertCircle, Settings, Book, FolderOpen, GripVertical, Tag, ChevronUp,
 } from "lucide-react";
 import type { ProgramLessonKind } from "@/app/generated/prisma/enums";
+import { LessonEditorModal } from "./lesson-editor-modal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -35,6 +36,7 @@ type LessonRow = {
   kind: ProgramLessonKind;
   isDraft: boolean;
   assessmentId: string | null;
+  content?: Record<string, unknown> | null;
 };
 type ChapterRow = {
   id: string;
@@ -366,12 +368,6 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
     chapterId: string;
     editing: LessonRow | null;
   }>({ open: false, chapterId: "", editing: null });
-  const [lessonForm, setLessonForm] = useState({
-    title: "",
-    kind: "TEXT" as ProgramLessonKind,
-    assessmentId: "",
-    isDraft: true,
-  });
   const [contentSaving, setContentSaving] = useState(false);
 
   // ── Load programs ─────────────────────────────────────────────────────────
@@ -695,50 +691,12 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
   // ── Lesson CRUD ───────────────────────────────────────────────────────────
 
   function openAddLesson(chapterId: string) {
-    setLessonForm({ title: "", kind: "TEXT", assessmentId: "", isDraft: true });
     setLessonModal({ open: true, chapterId, editing: null });
     setExpandedChapters((prev) => ({ ...prev, [chapterId]: true }));
   }
 
   function openEditLesson(les: LessonRow, chapterId: string) {
-    setLessonForm({ title: les.title, kind: les.kind, assessmentId: les.assessmentId || "", isDraft: les.isDraft });
     setLessonModal({ open: true, chapterId, editing: les });
-  }
-
-  async function saveLesson() {
-    if (!lessonForm.title.trim() || !selectedProgram) return;
-    setContentSaving(true);
-    try {
-      if (lessonModal.editing) {
-        await fetch(`${apiPrefix}/lessons/${lessonModal.editing.id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: lessonForm.title.trim(),
-            kind: lessonForm.kind,
-            assessmentId: lessonForm.kind === "QUIZ" && lessonForm.assessmentId.trim() ? lessonForm.assessmentId.trim() : null,
-            isDraft: lessonForm.isDraft,
-          }),
-        });
-      } else {
-        await fetch(`${apiPrefix}/lessons`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chapterId: lessonModal.chapterId,
-            kind: lessonForm.kind,
-            title: lessonForm.title.trim(),
-            assessmentId: lessonForm.kind === "QUIZ" && lessonForm.assessmentId.trim() ? lessonForm.assessmentId.trim() : null,
-            isDraft: lessonForm.isDraft,
-            content: {},
-          }),
-        });
-      }
-      setLessonModal({ open: false, chapterId: "", editing: null });
-      await loadSubjectsAndTree(selectedProgram.id);
-    } finally {
-      setContentSaving(false);
-    }
   }
 
   async function deleteLesson(lessonId: string) {
@@ -974,8 +932,8 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
                     </Button>
                   </div>
 
-                  {/* Publish / Unpublish full-width button — styled like screenshot */}
-                  <div className="sm:col-span-3 pt-1">
+                  {/* Publish / Unpublish button */}
+                  <div className="sm:col-span-3 pt-1 flex flex-col items-start gap-1">
                     <button
                       type="button"
                       onClick={() => {
@@ -988,15 +946,16 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
                           body: JSON.stringify(next),
                         }).then(() => loadSubjectsAndTree(selectedProgram!.id));
                       }}
-                      className={`w-full rounded-xl py-3 text-sm font-bold tracking-wide transition-colors ${
+                      className={`inline-flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-semibold transition-colors ${
                         syllabus.isPublished
                           ? "bg-amber-500 hover:bg-amber-600 text-white"
                           : "bg-indigo-600 hover:bg-indigo-700 text-white"
                       }`}
                     >
-                      {syllabus.isPublished ? "⬤  Unpublish Program (hide from students)" : "⬤  Publish Program (make visible to students)"}
+                      <span className={`h-2 w-2 rounded-full ${syllabus.isPublished ? "bg-white/80" : "bg-white/80"}`} />
+                      {syllabus.isPublished ? "Unpublish Program" : "Publish Program"}
                     </button>
-                    <p className="text-[11px] text-gray-400 mt-1.5 text-center">
+                    <p className="text-[11px] text-gray-400">
                       {syllabus.isPublished
                         ? "Students can currently view this program. Unpublishing will hide it immediately."
                         : "While in Draft, this program is invisible to students. Publish to make it visible."}
@@ -1178,26 +1137,28 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
                                     )}
                                   </div>
 
-                                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div className="flex items-center gap-1">
+                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                      <button
+                                        type="button"
+                                        className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-indigo-600"
+                                        title="Chapter settings"
+                                        onClick={(e) => { e.stopPropagation(); openEditChapter(ch, sub.id, e); }}
+                                      >
+                                        <Settings className="h-3.5 w-3.5" />
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-red-500"
+                                        title="Delete chapter"
+                                        onClick={(e) => { e.stopPropagation(); deleteChapter(ch.id); }}
+                                      >
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                      </button>
+                                    </div>
                                     <button
                                       type="button"
-                                      className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-indigo-600"
-                                      title="Chapter settings"
-                                      onClick={(e) => { e.stopPropagation(); openEditChapter(ch, sub.id, e); }}
-                                    >
-                                      <Settings className="h-3.5 w-3.5" />
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-red-500"
-                                      title="Delete chapter"
-                                      onClick={(e) => { e.stopPropagation(); deleteChapter(ch.id); }}
-                                    >
-                                      <Trash2 className="h-3.5 w-3.5" />
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="flex items-center gap-1 ml-1 px-2 py-1 rounded text-xs bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors"
+                                      className="flex items-center gap-1 rounded-md bg-indigo-50 px-3 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-100 transition-colors"
                                       onClick={(e) => { e.stopPropagation(); openAddLesson(ch.id); }}
                                     >
                                       <Plus className="h-3 w-3" /> Lesson
@@ -1628,92 +1589,25 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
       </Modal>
 
       {/* ═══════════════════════════════════════════════════════════════════ */}
-      {/* MODAL: Add / edit lesson (content type picker)                     */}
+      {/* MODAL: Full lesson editor                                          */}
       {/* ═══════════════════════════════════════════════════════════════════ */}
-      <Modal
+      <LessonEditorModal
         isOpen={lessonModal.open}
         onClose={() => setLessonModal({ open: false, chapterId: "", editing: null })}
-        title={lessonModal.editing ? "Edit lesson" : "Add lesson"}
-        className="max-w-2xl"
-      >
-        <div className="space-y-4">
-          <div>
-            <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
-              Lesson title *
-            </label>
-            <Input
-              placeholder="e.g. Introduction to SELECT statements"
-              value={lessonForm.title}
-              onChange={(e) => setLessonForm({ ...lessonForm, title: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Lesson type</p>
-            <div className="grid grid-cols-3 gap-2">
-              {LESSON_KINDS.map(({ kind, label, icon }) => (
-                <button
-                  key={kind}
-                  type="button"
-                  onClick={() => setLessonForm({ ...lessonForm, kind })}
-                  className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border px-3 py-4 text-xs font-medium transition-all ${
-                    lessonForm.kind === kind
-                      ? "border-indigo-500 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-300"
-                      : "border-gray-200 text-gray-600 hover:border-indigo-300 hover:bg-indigo-50/50"
-                  }`}
-                >
-                  <span className={lessonForm.kind === kind ? "text-indigo-600" : "text-gray-400"}>{icon}</span>
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {lessonForm.kind === "QUIZ" && (
-            <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
-                Link to assessment <span className="text-gray-400">(paste Assessment ID)</span>
-              </label>
-              <Input
-                placeholder="Assessment ID from Assessments menu"
-                value={lessonForm.assessmentId}
-                onChange={(e) => setLessonForm({ ...lessonForm, assessmentId: e.target.value })}
-                className="font-mono text-xs"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                The quiz will appear in the student&apos;s Assessments tab and count toward program completion.
-              </p>
-            </div>
-          )}
-
-          {/* Draft / Publish toggle — styled to match screenshot (bold indigo bg button) */}
-          <button
-            type="button"
-            onClick={() => setLessonForm({ ...lessonForm, isDraft: !lessonForm.isDraft })}
-            className={`w-full rounded-xl py-3 text-sm font-bold tracking-wide transition-colors ${
-              lessonForm.isDraft
-                ? "bg-indigo-600 hover:bg-indigo-700 text-white"
-                : "bg-green-600 hover:bg-green-700 text-white"
-            }`}
-          >
-            {lessonForm.isDraft ? "⬤  Save as Draft (hidden from students)" : "⬤  Published (visible to students)"}
-          </button>
-          <p className="text-[11px] text-gray-400 -mt-1 text-center">
-            {lessonForm.isDraft
-              ? "Click to toggle — draft lessons are never shown to students."
-              : "Click to toggle — lesson will be visible once the program is published."}
-          </p>
-
-          <div className="flex justify-end gap-2 pt-1">
-            <Button variant="outline" onClick={() => setLessonModal({ open: false, chapterId: "", editing: null })}>
-              Cancel
-            </Button>
-            <Button onClick={saveLesson} disabled={contentSaving || !lessonForm.title.trim()}>
-              {contentSaving ? "Saving…" : lessonModal.editing ? "Save lesson" : "Add lesson"}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        chapterId={lessonModal.chapterId}
+        chapter={
+          lessonModal.chapterId
+            ? (linkedSubjects
+                .flatMap((s) => s.programChapters)
+                .find((c) => c.id === lessonModal.chapterId) ?? null)
+            : null
+        }
+        editing={lessonModal.editing}
+        apiPrefix={apiPrefix}
+        onSaved={() => {
+          if (selectedProgram) loadSubjectsAndTree(selectedProgram.id);
+        }}
+      />
     </div>
   );
 }

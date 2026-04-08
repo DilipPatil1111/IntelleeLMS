@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  CanvaAccount: 'CanvaAccount',
   UserPortalGrant: 'UserPortalGrant',
   Feedback: 'Feedback',
   Account: 'Account',
@@ -63,6 +64,9 @@ export const ModelName = {
   ProgramLesson: 'ProgramLesson',
   ProgramLessonCompletion: 'ProgramLessonCompletion',
   ProgramCertificateSend: 'ProgramCertificateSend',
+  CertificateTemplate: 'CertificateTemplate',
+  CertificateIssued: 'CertificateIssued',
+  CertificateCounter: 'CertificateCounter',
   InstitutionProfile: 'InstitutionProfile',
   ProgramDomain: 'ProgramDomain',
   ProgramCategory: 'ProgramCategory',
@@ -76,6 +80,7 @@ export const ModelName = {
   TopicContent: 'TopicContent',
   TopicProgress: 'TopicProgress',
   StudentProfile: 'StudentProfile',
+  ProgramEnrollment: 'ProgramEnrollment',
   StudentOnboarding: 'StudentOnboarding',
   TeacherProfile: 'TeacherProfile',
   TeacherProgram: 'TeacherProgram',
@@ -106,7 +111,8 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   DocFolder: 'DocFolder',
   DocFile: 'DocFile',
-  InspectionNote: 'InspectionNote'
+  InspectionNote: 'InspectionNote',
+  SessionRecording: 'SessionRecording'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -152,6 +158,20 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const CanvaAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  canvaUserId: 'canvaUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CanvaAccountScalarFieldEnum = (typeof CanvaAccountScalarFieldEnum)[keyof typeof CanvaAccountScalarFieldEnum]
 
 
 export const UserPortalGrantScalarFieldEnum = {
@@ -309,6 +329,48 @@ export const ProgramCertificateSendScalarFieldEnum = {
 export type ProgramCertificateSendScalarFieldEnum = (typeof ProgramCertificateSendScalarFieldEnum)[keyof typeof ProgramCertificateSendScalarFieldEnum]
 
 
+export const CertificateTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  backgroundUrl: 'backgroundUrl',
+  backgroundFileName: 'backgroundFileName',
+  orientation: 'orientation',
+  pageSize: 'pageSize',
+  fieldsJson: 'fieldsJson',
+  isActive: 'isActive',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CertificateTemplateScalarFieldEnum = (typeof CertificateTemplateScalarFieldEnum)[keyof typeof CertificateTemplateScalarFieldEnum]
+
+
+export const CertificateIssuedScalarFieldEnum = {
+  id: 'id',
+  certificateNumber: 'certificateNumber',
+  templateId: 'templateId',
+  recipientId: 'recipientId',
+  programId: 'programId',
+  dataJson: 'dataJson',
+  pdfUrl: 'pdfUrl',
+  sentAt: 'sentAt',
+  sentByUserId: 'sentByUserId',
+  createdAt: 'createdAt'
+} as const
+
+export type CertificateIssuedScalarFieldEnum = (typeof CertificateIssuedScalarFieldEnum)[keyof typeof CertificateIssuedScalarFieldEnum]
+
+
+export const CertificateCounterScalarFieldEnum = {
+  id: 'id',
+  lastValue: 'lastValue'
+} as const
+
+export type CertificateCounterScalarFieldEnum = (typeof CertificateCounterScalarFieldEnum)[keyof typeof CertificateCounterScalarFieldEnum]
+
+
 export const InstitutionProfileScalarFieldEnum = {
   id: 'id',
   institutionNumber: 'institutionNumber',
@@ -324,6 +386,7 @@ export const InstitutionProfileScalarFieldEnum = {
   socialInstagramUrl: 'socialInstagramUrl',
   logoUrl: 'logoUrl',
   brandColor: 'brandColor',
+  brandingDisplayMode: 'brandingDisplayMode',
   updatedAt: 'updatedAt'
 } as const
 
@@ -508,6 +571,21 @@ export const StudentProfileScalarFieldEnum = {
 } as const
 
 export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
+
+
+export const ProgramEnrollmentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  programId: 'programId',
+  batchId: 'batchId',
+  status: 'status',
+  enrollmentNo: 'enrollmentNo',
+  enrollmentDate: 'enrollmentDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramEnrollmentScalarFieldEnum = (typeof ProgramEnrollmentScalarFieldEnum)[keyof typeof ProgramEnrollmentScalarFieldEnum]
 
 
 export const StudentOnboardingScalarFieldEnum = {
@@ -785,6 +863,7 @@ export const HolidayScalarFieldEnum = {
   date: 'date',
   type: 'type',
   academicYearId: 'academicYearId',
+  programId: 'programId',
   region: 'region',
   createdAt: 'createdAt'
 } as const
@@ -1003,6 +1082,22 @@ export const InspectionNoteScalarFieldEnum = {
 } as const
 
 export type InspectionNoteScalarFieldEnum = (typeof InspectionNoteScalarFieldEnum)[keyof typeof InspectionNoteScalarFieldEnum]
+
+
+export const SessionRecordingScalarFieldEnum = {
+  id: 'id',
+  programId: 'programId',
+  title: 'title',
+  sessionDate: 'sessionDate',
+  videoUrl: 'videoUrl',
+  fileName: 'fileName',
+  durationMin: 'durationMin',
+  uploadedById: 'uploadedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SessionRecordingScalarFieldEnum = (typeof SessionRecordingScalarFieldEnum)[keyof typeof SessionRecordingScalarFieldEnum]
 
 
 export const SortOrder = {

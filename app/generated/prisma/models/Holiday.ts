@@ -30,6 +30,7 @@ export type HolidayMinAggregateOutputType = {
   date: Date | null
   type: $Enums.HolidayType | null
   academicYearId: string | null
+  programId: string | null
   region: string | null
   createdAt: Date | null
 }
@@ -40,6 +41,7 @@ export type HolidayMaxAggregateOutputType = {
   date: Date | null
   type: $Enums.HolidayType | null
   academicYearId: string | null
+  programId: string | null
   region: string | null
   createdAt: Date | null
 }
@@ -50,6 +52,7 @@ export type HolidayCountAggregateOutputType = {
   date: number
   type: number
   academicYearId: number
+  programId: number
   region: number
   createdAt: number
   _all: number
@@ -62,6 +65,7 @@ export type HolidayMinAggregateInputType = {
   date?: true
   type?: true
   academicYearId?: true
+  programId?: true
   region?: true
   createdAt?: true
 }
@@ -72,6 +76,7 @@ export type HolidayMaxAggregateInputType = {
   date?: true
   type?: true
   academicYearId?: true
+  programId?: true
   region?: true
   createdAt?: true
 }
@@ -82,6 +87,7 @@ export type HolidayCountAggregateInputType = {
   date?: true
   type?: true
   academicYearId?: true
+  programId?: true
   region?: true
   createdAt?: true
   _all?: true
@@ -165,6 +171,7 @@ export type HolidayGroupByOutputType = {
   date: Date
   type: $Enums.HolidayType
   academicYearId: string | null
+  programId: string | null
   region: string | null
   createdAt: Date
   _count: HolidayCountAggregateOutputType | null
@@ -196,9 +203,11 @@ export type HolidayWhereInput = {
   date?: Prisma.DateTimeFilter<"Holiday"> | Date | string
   type?: Prisma.EnumHolidayTypeFilter<"Holiday"> | $Enums.HolidayType
   academicYearId?: Prisma.StringNullableFilter<"Holiday"> | string | null
+  programId?: Prisma.StringNullableFilter<"Holiday"> | string | null
   region?: Prisma.StringNullableFilter<"Holiday"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Holiday"> | Date | string
   academicYear?: Prisma.XOR<Prisma.AcademicYearNullableScalarRelationFilter, Prisma.AcademicYearWhereInput> | null
+  program?: Prisma.XOR<Prisma.ProgramNullableScalarRelationFilter, Prisma.ProgramWhereInput> | null
 }
 
 export type HolidayOrderByWithRelationInput = {
@@ -207,9 +216,11 @@ export type HolidayOrderByWithRelationInput = {
   date?: Prisma.SortOrder
   type?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrderInput | Prisma.SortOrder
+  programId?: Prisma.SortOrderInput | Prisma.SortOrder
   region?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   academicYear?: Prisma.AcademicYearOrderByWithRelationInput
+  program?: Prisma.ProgramOrderByWithRelationInput
 }
 
 export type HolidayWhereUniqueInput = Prisma.AtLeast<{
@@ -221,9 +232,11 @@ export type HolidayWhereUniqueInput = Prisma.AtLeast<{
   date?: Prisma.DateTimeFilter<"Holiday"> | Date | string
   type?: Prisma.EnumHolidayTypeFilter<"Holiday"> | $Enums.HolidayType
   academicYearId?: Prisma.StringNullableFilter<"Holiday"> | string | null
+  programId?: Prisma.StringNullableFilter<"Holiday"> | string | null
   region?: Prisma.StringNullableFilter<"Holiday"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Holiday"> | Date | string
   academicYear?: Prisma.XOR<Prisma.AcademicYearNullableScalarRelationFilter, Prisma.AcademicYearWhereInput> | null
+  program?: Prisma.XOR<Prisma.ProgramNullableScalarRelationFilter, Prisma.ProgramWhereInput> | null
 }, "id">
 
 export type HolidayOrderByWithAggregationInput = {
@@ -232,6 +245,7 @@ export type HolidayOrderByWithAggregationInput = {
   date?: Prisma.SortOrder
   type?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrderInput | Prisma.SortOrder
+  programId?: Prisma.SortOrderInput | Prisma.SortOrder
   region?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.HolidayCountOrderByAggregateInput
@@ -248,6 +262,7 @@ export type HolidayScalarWhereWithAggregatesInput = {
   date?: Prisma.DateTimeWithAggregatesFilter<"Holiday"> | Date | string
   type?: Prisma.EnumHolidayTypeWithAggregatesFilter<"Holiday"> | $Enums.HolidayType
   academicYearId?: Prisma.StringNullableWithAggregatesFilter<"Holiday"> | string | null
+  programId?: Prisma.StringNullableWithAggregatesFilter<"Holiday"> | string | null
   region?: Prisma.StringNullableWithAggregatesFilter<"Holiday"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Holiday"> | Date | string
 }
@@ -260,6 +275,7 @@ export type HolidayCreateInput = {
   region?: string | null
   createdAt?: Date | string
   academicYear?: Prisma.AcademicYearCreateNestedOneWithoutHolidaysInput
+  program?: Prisma.ProgramCreateNestedOneWithoutHolidaysInput
 }
 
 export type HolidayUncheckedCreateInput = {
@@ -268,6 +284,7 @@ export type HolidayUncheckedCreateInput = {
   date: Date | string
   type?: $Enums.HolidayType
   academicYearId?: string | null
+  programId?: string | null
   region?: string | null
   createdAt?: Date | string
 }
@@ -280,6 +297,7 @@ export type HolidayUpdateInput = {
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   academicYear?: Prisma.AcademicYearUpdateOneWithoutHolidaysNestedInput
+  program?: Prisma.ProgramUpdateOneWithoutHolidaysNestedInput
 }
 
 export type HolidayUncheckedUpdateInput = {
@@ -288,6 +306,7 @@ export type HolidayUncheckedUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   type?: Prisma.EnumHolidayTypeFieldUpdateOperationsInput | $Enums.HolidayType
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  programId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -298,6 +317,7 @@ export type HolidayCreateManyInput = {
   date: Date | string
   type?: $Enums.HolidayType
   academicYearId?: string | null
+  programId?: string | null
   region?: string | null
   createdAt?: Date | string
 }
@@ -317,6 +337,7 @@ export type HolidayUncheckedUpdateManyInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   type?: Prisma.EnumHolidayTypeFieldUpdateOperationsInput | $Enums.HolidayType
   academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  programId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -337,6 +358,7 @@ export type HolidayCountOrderByAggregateInput = {
   date?: Prisma.SortOrder
   type?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
+  programId?: Prisma.SortOrder
   region?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -347,6 +369,7 @@ export type HolidayMaxOrderByAggregateInput = {
   date?: Prisma.SortOrder
   type?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
+  programId?: Prisma.SortOrder
   region?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -357,8 +380,51 @@ export type HolidayMinOrderByAggregateInput = {
   date?: Prisma.SortOrder
   type?: Prisma.SortOrder
   academicYearId?: Prisma.SortOrder
+  programId?: Prisma.SortOrder
   region?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type HolidayCreateNestedManyWithoutProgramInput = {
+  create?: Prisma.XOR<Prisma.HolidayCreateWithoutProgramInput, Prisma.HolidayUncheckedCreateWithoutProgramInput> | Prisma.HolidayCreateWithoutProgramInput[] | Prisma.HolidayUncheckedCreateWithoutProgramInput[]
+  connectOrCreate?: Prisma.HolidayCreateOrConnectWithoutProgramInput | Prisma.HolidayCreateOrConnectWithoutProgramInput[]
+  createMany?: Prisma.HolidayCreateManyProgramInputEnvelope
+  connect?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+}
+
+export type HolidayUncheckedCreateNestedManyWithoutProgramInput = {
+  create?: Prisma.XOR<Prisma.HolidayCreateWithoutProgramInput, Prisma.HolidayUncheckedCreateWithoutProgramInput> | Prisma.HolidayCreateWithoutProgramInput[] | Prisma.HolidayUncheckedCreateWithoutProgramInput[]
+  connectOrCreate?: Prisma.HolidayCreateOrConnectWithoutProgramInput | Prisma.HolidayCreateOrConnectWithoutProgramInput[]
+  createMany?: Prisma.HolidayCreateManyProgramInputEnvelope
+  connect?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+}
+
+export type HolidayUpdateManyWithoutProgramNestedInput = {
+  create?: Prisma.XOR<Prisma.HolidayCreateWithoutProgramInput, Prisma.HolidayUncheckedCreateWithoutProgramInput> | Prisma.HolidayCreateWithoutProgramInput[] | Prisma.HolidayUncheckedCreateWithoutProgramInput[]
+  connectOrCreate?: Prisma.HolidayCreateOrConnectWithoutProgramInput | Prisma.HolidayCreateOrConnectWithoutProgramInput[]
+  upsert?: Prisma.HolidayUpsertWithWhereUniqueWithoutProgramInput | Prisma.HolidayUpsertWithWhereUniqueWithoutProgramInput[]
+  createMany?: Prisma.HolidayCreateManyProgramInputEnvelope
+  set?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+  disconnect?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+  delete?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+  connect?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+  update?: Prisma.HolidayUpdateWithWhereUniqueWithoutProgramInput | Prisma.HolidayUpdateWithWhereUniqueWithoutProgramInput[]
+  updateMany?: Prisma.HolidayUpdateManyWithWhereWithoutProgramInput | Prisma.HolidayUpdateManyWithWhereWithoutProgramInput[]
+  deleteMany?: Prisma.HolidayScalarWhereInput | Prisma.HolidayScalarWhereInput[]
+}
+
+export type HolidayUncheckedUpdateManyWithoutProgramNestedInput = {
+  create?: Prisma.XOR<Prisma.HolidayCreateWithoutProgramInput, Prisma.HolidayUncheckedCreateWithoutProgramInput> | Prisma.HolidayCreateWithoutProgramInput[] | Prisma.HolidayUncheckedCreateWithoutProgramInput[]
+  connectOrCreate?: Prisma.HolidayCreateOrConnectWithoutProgramInput | Prisma.HolidayCreateOrConnectWithoutProgramInput[]
+  upsert?: Prisma.HolidayUpsertWithWhereUniqueWithoutProgramInput | Prisma.HolidayUpsertWithWhereUniqueWithoutProgramInput[]
+  createMany?: Prisma.HolidayCreateManyProgramInputEnvelope
+  set?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+  disconnect?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+  delete?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+  connect?: Prisma.HolidayWhereUniqueInput | Prisma.HolidayWhereUniqueInput[]
+  update?: Prisma.HolidayUpdateWithWhereUniqueWithoutProgramInput | Prisma.HolidayUpdateWithWhereUniqueWithoutProgramInput[]
+  updateMany?: Prisma.HolidayUpdateManyWithWhereWithoutProgramInput | Prisma.HolidayUpdateManyWithWhereWithoutProgramInput[]
+  deleteMany?: Prisma.HolidayScalarWhereInput | Prisma.HolidayScalarWhereInput[]
 }
 
 export type HolidayCreateNestedManyWithoutAcademicYearInput = {
@@ -407,6 +473,66 @@ export type EnumHolidayTypeFieldUpdateOperationsInput = {
   set?: $Enums.HolidayType
 }
 
+export type HolidayCreateWithoutProgramInput = {
+  id?: string
+  name: string
+  date: Date | string
+  type?: $Enums.HolidayType
+  region?: string | null
+  createdAt?: Date | string
+  academicYear?: Prisma.AcademicYearCreateNestedOneWithoutHolidaysInput
+}
+
+export type HolidayUncheckedCreateWithoutProgramInput = {
+  id?: string
+  name: string
+  date: Date | string
+  type?: $Enums.HolidayType
+  academicYearId?: string | null
+  region?: string | null
+  createdAt?: Date | string
+}
+
+export type HolidayCreateOrConnectWithoutProgramInput = {
+  where: Prisma.HolidayWhereUniqueInput
+  create: Prisma.XOR<Prisma.HolidayCreateWithoutProgramInput, Prisma.HolidayUncheckedCreateWithoutProgramInput>
+}
+
+export type HolidayCreateManyProgramInputEnvelope = {
+  data: Prisma.HolidayCreateManyProgramInput | Prisma.HolidayCreateManyProgramInput[]
+  skipDuplicates?: boolean
+}
+
+export type HolidayUpsertWithWhereUniqueWithoutProgramInput = {
+  where: Prisma.HolidayWhereUniqueInput
+  update: Prisma.XOR<Prisma.HolidayUpdateWithoutProgramInput, Prisma.HolidayUncheckedUpdateWithoutProgramInput>
+  create: Prisma.XOR<Prisma.HolidayCreateWithoutProgramInput, Prisma.HolidayUncheckedCreateWithoutProgramInput>
+}
+
+export type HolidayUpdateWithWhereUniqueWithoutProgramInput = {
+  where: Prisma.HolidayWhereUniqueInput
+  data: Prisma.XOR<Prisma.HolidayUpdateWithoutProgramInput, Prisma.HolidayUncheckedUpdateWithoutProgramInput>
+}
+
+export type HolidayUpdateManyWithWhereWithoutProgramInput = {
+  where: Prisma.HolidayScalarWhereInput
+  data: Prisma.XOR<Prisma.HolidayUpdateManyMutationInput, Prisma.HolidayUncheckedUpdateManyWithoutProgramInput>
+}
+
+export type HolidayScalarWhereInput = {
+  AND?: Prisma.HolidayScalarWhereInput | Prisma.HolidayScalarWhereInput[]
+  OR?: Prisma.HolidayScalarWhereInput[]
+  NOT?: Prisma.HolidayScalarWhereInput | Prisma.HolidayScalarWhereInput[]
+  id?: Prisma.StringFilter<"Holiday"> | string
+  name?: Prisma.StringFilter<"Holiday"> | string
+  date?: Prisma.DateTimeFilter<"Holiday"> | Date | string
+  type?: Prisma.EnumHolidayTypeFilter<"Holiday"> | $Enums.HolidayType
+  academicYearId?: Prisma.StringNullableFilter<"Holiday"> | string | null
+  programId?: Prisma.StringNullableFilter<"Holiday"> | string | null
+  region?: Prisma.StringNullableFilter<"Holiday"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Holiday"> | Date | string
+}
+
 export type HolidayCreateWithoutAcademicYearInput = {
   id?: string
   name: string
@@ -414,6 +540,7 @@ export type HolidayCreateWithoutAcademicYearInput = {
   type?: $Enums.HolidayType
   region?: string | null
   createdAt?: Date | string
+  program?: Prisma.ProgramCreateNestedOneWithoutHolidaysInput
 }
 
 export type HolidayUncheckedCreateWithoutAcademicYearInput = {
@@ -421,6 +548,7 @@ export type HolidayUncheckedCreateWithoutAcademicYearInput = {
   name: string
   date: Date | string
   type?: $Enums.HolidayType
+  programId?: string | null
   region?: string | null
   createdAt?: Date | string
 }
@@ -451,17 +579,44 @@ export type HolidayUpdateManyWithWhereWithoutAcademicYearInput = {
   data: Prisma.XOR<Prisma.HolidayUpdateManyMutationInput, Prisma.HolidayUncheckedUpdateManyWithoutAcademicYearInput>
 }
 
-export type HolidayScalarWhereInput = {
-  AND?: Prisma.HolidayScalarWhereInput | Prisma.HolidayScalarWhereInput[]
-  OR?: Prisma.HolidayScalarWhereInput[]
-  NOT?: Prisma.HolidayScalarWhereInput | Prisma.HolidayScalarWhereInput[]
-  id?: Prisma.StringFilter<"Holiday"> | string
-  name?: Prisma.StringFilter<"Holiday"> | string
-  date?: Prisma.DateTimeFilter<"Holiday"> | Date | string
-  type?: Prisma.EnumHolidayTypeFilter<"Holiday"> | $Enums.HolidayType
-  academicYearId?: Prisma.StringNullableFilter<"Holiday"> | string | null
-  region?: Prisma.StringNullableFilter<"Holiday"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Holiday"> | Date | string
+export type HolidayCreateManyProgramInput = {
+  id?: string
+  name: string
+  date: Date | string
+  type?: $Enums.HolidayType
+  academicYearId?: string | null
+  region?: string | null
+  createdAt?: Date | string
+}
+
+export type HolidayUpdateWithoutProgramInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.EnumHolidayTypeFieldUpdateOperationsInput | $Enums.HolidayType
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  academicYear?: Prisma.AcademicYearUpdateOneWithoutHolidaysNestedInput
+}
+
+export type HolidayUncheckedUpdateWithoutProgramInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.EnumHolidayTypeFieldUpdateOperationsInput | $Enums.HolidayType
+  academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type HolidayUncheckedUpdateManyWithoutProgramInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.EnumHolidayTypeFieldUpdateOperationsInput | $Enums.HolidayType
+  academicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type HolidayCreateManyAcademicYearInput = {
@@ -469,6 +624,7 @@ export type HolidayCreateManyAcademicYearInput = {
   name: string
   date: Date | string
   type?: $Enums.HolidayType
+  programId?: string | null
   region?: string | null
   createdAt?: Date | string
 }
@@ -480,6 +636,7 @@ export type HolidayUpdateWithoutAcademicYearInput = {
   type?: Prisma.EnumHolidayTypeFieldUpdateOperationsInput | $Enums.HolidayType
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  program?: Prisma.ProgramUpdateOneWithoutHolidaysNestedInput
 }
 
 export type HolidayUncheckedUpdateWithoutAcademicYearInput = {
@@ -487,6 +644,7 @@ export type HolidayUncheckedUpdateWithoutAcademicYearInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   type?: Prisma.EnumHolidayTypeFieldUpdateOperationsInput | $Enums.HolidayType
+  programId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -496,6 +654,7 @@ export type HolidayUncheckedUpdateManyWithoutAcademicYearInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   type?: Prisma.EnumHolidayTypeFieldUpdateOperationsInput | $Enums.HolidayType
+  programId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -508,9 +667,11 @@ export type HolidaySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   date?: boolean
   type?: boolean
   academicYearId?: boolean
+  programId?: boolean
   region?: boolean
   createdAt?: boolean
   academicYear?: boolean | Prisma.Holiday$academicYearArgs<ExtArgs>
+  program?: boolean | Prisma.Holiday$programArgs<ExtArgs>
 }, ExtArgs["result"]["holiday"]>
 
 export type HolidaySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -519,9 +680,11 @@ export type HolidaySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   date?: boolean
   type?: boolean
   academicYearId?: boolean
+  programId?: boolean
   region?: boolean
   createdAt?: boolean
   academicYear?: boolean | Prisma.Holiday$academicYearArgs<ExtArgs>
+  program?: boolean | Prisma.Holiday$programArgs<ExtArgs>
 }, ExtArgs["result"]["holiday"]>
 
 export type HolidaySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -530,9 +693,11 @@ export type HolidaySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   date?: boolean
   type?: boolean
   academicYearId?: boolean
+  programId?: boolean
   region?: boolean
   createdAt?: boolean
   academicYear?: boolean | Prisma.Holiday$academicYearArgs<ExtArgs>
+  program?: boolean | Prisma.Holiday$programArgs<ExtArgs>
 }, ExtArgs["result"]["holiday"]>
 
 export type HolidaySelectScalar = {
@@ -541,25 +706,30 @@ export type HolidaySelectScalar = {
   date?: boolean
   type?: boolean
   academicYearId?: boolean
+  programId?: boolean
   region?: boolean
   createdAt?: boolean
 }
 
-export type HolidayOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "date" | "type" | "academicYearId" | "region" | "createdAt", ExtArgs["result"]["holiday"]>
+export type HolidayOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "date" | "type" | "academicYearId" | "programId" | "region" | "createdAt", ExtArgs["result"]["holiday"]>
 export type HolidayInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   academicYear?: boolean | Prisma.Holiday$academicYearArgs<ExtArgs>
+  program?: boolean | Prisma.Holiday$programArgs<ExtArgs>
 }
 export type HolidayIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   academicYear?: boolean | Prisma.Holiday$academicYearArgs<ExtArgs>
+  program?: boolean | Prisma.Holiday$programArgs<ExtArgs>
 }
 export type HolidayIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   academicYear?: boolean | Prisma.Holiday$academicYearArgs<ExtArgs>
+  program?: boolean | Prisma.Holiday$programArgs<ExtArgs>
 }
 
 export type $HolidayPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Holiday"
   objects: {
     academicYear: Prisma.$AcademicYearPayload<ExtArgs> | null
+    program: Prisma.$ProgramPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -567,6 +737,7 @@ export type $HolidayPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     date: Date
     type: $Enums.HolidayType
     academicYearId: string | null
+    programId: string | null
     region: string | null
     createdAt: Date
   }, ExtArgs["result"]["holiday"]>
@@ -964,6 +1135,7 @@ readonly fields: HolidayFieldRefs;
 export interface Prisma__HolidayClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   academicYear<T extends Prisma.Holiday$academicYearArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Holiday$academicYearArgs<ExtArgs>>): Prisma.Prisma__AcademicYearClient<runtime.Types.Result.GetResult<Prisma.$AcademicYearPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  program<T extends Prisma.Holiday$programArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Holiday$programArgs<ExtArgs>>): Prisma.Prisma__ProgramClient<runtime.Types.Result.GetResult<Prisma.$ProgramPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -998,6 +1170,7 @@ export interface HolidayFieldRefs {
   readonly date: Prisma.FieldRef<"Holiday", 'DateTime'>
   readonly type: Prisma.FieldRef<"Holiday", 'HolidayType'>
   readonly academicYearId: Prisma.FieldRef<"Holiday", 'String'>
+  readonly programId: Prisma.FieldRef<"Holiday", 'String'>
   readonly region: Prisma.FieldRef<"Holiday", 'String'>
   readonly createdAt: Prisma.FieldRef<"Holiday", 'DateTime'>
 }
@@ -1417,6 +1590,25 @@ export type Holiday$academicYearArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   include?: Prisma.AcademicYearInclude<ExtArgs> | null
   where?: Prisma.AcademicYearWhereInput
+}
+
+/**
+ * Holiday.program
+ */
+export type Holiday$programArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Program
+   */
+  select?: Prisma.ProgramSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Program
+   */
+  omit?: Prisma.ProgramOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramInclude<ExtArgs> | null
+  where?: Prisma.ProgramWhereInput
 }
 
 /**

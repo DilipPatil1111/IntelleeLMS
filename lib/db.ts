@@ -25,9 +25,11 @@ const DELEGATES_USED_APP_WIDE = [
   "attendanceSession",
   "attendanceRecord",
   "programCalendarSlot",
+  "programEnrollment",
   "subject",
   "holiday",
   "user",
+  "canvaAccount",
 ] as const;
 
 function prismaClientIsComplete(

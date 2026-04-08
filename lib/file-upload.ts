@@ -2,6 +2,33 @@ import { randomUUID } from "crypto";
 import path from "path";
 import { blobPut, defaultBlobAccess } from "@/lib/vercel-blob";
 
+// ─── Lesson content upload types ─────────────────────────────────────────────
+
+export const LESSON_VIDEO_ALLOWED_EXT = new Set([".mp4", ".mov", ".webm", ".avi", ".mkv"]);
+export const LESSON_AUDIO_ALLOWED_EXT = new Set([".mp3", ".wav", ".ogg", ".m4a", ".aac", ".flac"]);
+export const LESSON_PDF_ALLOWED_EXT = new Set([".pdf"]);
+export const LESSON_PRESENTATION_ALLOWED_EXT = new Set([".ppt", ".pptx", ".pdf"]);
+export const LESSON_DOWNLOAD_ALLOWED_EXT = new Set([
+  ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+  ".zip", ".rar", ".7z", ".tar", ".gz",
+  ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg",
+  ".mp4", ".mov", ".webm", ".mp3", ".wav", ".aac",
+  ".txt", ".csv", ".json",
+]);
+export const LESSON_MULTIMEDIA_ALLOWED_EXT = new Set([
+  ".zip", ".rar", ".7z", ".tar", ".gz",
+  ".html", ".htm",
+]);
+
+export const LESSON_VIDEO_MAX_BYTES = 200 * 1024 * 1024;   // 200 MB
+export const LESSON_AUDIO_MAX_BYTES = 50 * 1024 * 1024;    // 50 MB
+export const LESSON_PDF_MAX_BYTES = 50 * 1024 * 1024;      // 50 MB
+export const LESSON_PRESENTATION_MAX_BYTES = 100 * 1024 * 1024; // 100 MB
+export const LESSON_DOWNLOAD_MAX_BYTES = 200 * 1024 * 1024; // 200 MB
+export const LESSON_MULTIMEDIA_MAX_BYTES = 200 * 1024 * 1024; // 200 MB
+
+// ─── Existing upload types ────────────────────────────────────────────────────
+
 /** Student onboarding: PDF + common image types. */
 export const ONBOARDING_ALLOWED_EXT = new Set([
   ".pdf",
@@ -143,20 +170,46 @@ export async function uploadProfilePictureToBlob(params: {
   }
 }
 
-function getMimeType(ext: string): string {
+export function getMimeType(ext: string): string {
   const map: Record<string, string> = {
-    ".pdf": "application/pdf",
-    ".doc": "application/msword",
+    ".pdf":  "application/pdf",
+    ".doc":  "application/msword",
     ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    ".png": "image/png",
-    ".jpg": "image/jpeg",
+    ".xls":  "application/vnd.ms-excel",
+    ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ".ppt":  "application/vnd.ms-powerpoint",
+    ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    ".png":  "image/png",
+    ".jpg":  "image/jpeg",
     ".jpeg": "image/jpeg",
-    ".gif": "image/gif",
+    ".gif":  "image/gif",
     ".webp": "image/webp",
-    ".bmp": "image/bmp",
-    ".tif": "image/tiff",
+    ".bmp":  "image/bmp",
+    ".svg":  "image/svg+xml",
+    ".tif":  "image/tiff",
     ".tiff": "image/tiff",
     ".heic": "image/heic",
+    ".mp4":  "video/mp4",
+    ".mov":  "video/quicktime",
+    ".webm": "video/webm",
+    ".avi":  "video/x-msvideo",
+    ".mkv":  "video/x-matroska",
+    ".mp3":  "audio/mpeg",
+    ".wav":  "audio/wav",
+    ".ogg":  "audio/ogg",
+    ".m4a":  "audio/mp4",
+    ".aac":  "audio/aac",
+    ".flac": "audio/flac",
+    ".zip":  "application/zip",
+    ".rar":  "application/vnd.rar",
+    ".7z":   "application/x-7z-compressed",
+    ".tar":  "application/x-tar",
+    ".gz":   "application/gzip",
+    ".txt":  "text/plain",
+    ".csv":  "text/csv",
+    ".json": "application/json",
+    ".html": "text/html",
+    ".htm":  "text/html",
   };
   return map[ext] ?? "application/octet-stream";
 }

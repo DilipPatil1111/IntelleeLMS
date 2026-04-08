@@ -105,13 +105,16 @@ export async function buildEmailSignatureHtml(userId: string | null | undefined)
  */
 function buildInstitutionBlock(profile: Awaited<ReturnType<typeof getOrCreateInstitutionProfile>>): string {
   const parts: string[] = [];
+  const mode = (profile as { brandingDisplayMode?: string }).brandingDisplayMode ?? "LOGO_WITH_TEXT";
 
-  // Logo + name on the same line using an inline-table so email clients honour it
-  const logoHtml = profile.logoUrl
-    ? `<img src="${escapeHtml(profile.logoUrl)}" alt="${escapeHtml(profile.legalName ?? "logo")}" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;display:inline-block;" />`
+  const showLogo = profile.logoUrl && (mode === "LOGO_ONLY" || mode === "LOGO_WITH_TEXT");
+  const showText = profile.legalName && (mode === "TEXT_ONLY" || mode === "LOGO_WITH_TEXT");
+
+  const logoHtml = showLogo
+    ? `<img src="${escapeHtml(profile.logoUrl!)}" alt="${escapeHtml(profile.legalName ?? "logo")}" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;display:inline-block;" />`
     : "";
-  const nameHtml = profile.legalName
-    ? `<strong style="font-size:15px;color:#111827;vertical-align:middle;">${escapeHtml(profile.legalName)}</strong>`
+  const nameHtml = showText
+    ? `<strong style="font-size:15px;color:#111827;vertical-align:middle;">${escapeHtml(profile.legalName!)}</strong>`
     : "";
 
   if (logoHtml || nameHtml) {

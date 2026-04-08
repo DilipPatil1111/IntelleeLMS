@@ -16,6 +16,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const source = await db.assessment.findUnique({
       where: { id },
       include: {
+        subject: { select: { programId: true } },
         assignedStudents: { select: { studentId: true } },
         questions: {
           include: { options: { orderBy: { orderIndex: "asc" } } },
@@ -27,7 +28,22 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     if (!source) return NextResponse.json({ error: "Assessment not found" }, { status: 404 });
 
     if (isTeacherOwnershipRestricted(session) && source.createdById !== session.user.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      // Allow if teacher teaches the program that owns this assessment
+      const programId = source.subject?.programId;
+      if (programId) {
+        const tp = await db.teacherProfile.findFirst({
+          where: {
+            userId: session.user.id,
+            OR: [
+              { teacherPrograms: { some: { programId } } },
+              { subjectAssignments: { some: { subjectId: source.subjectId ?? "__none__" } } },
+            ],
+          },
+        });
+        if (!tp) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      } else {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
     }
 
     const copy = await db.assessment.create({

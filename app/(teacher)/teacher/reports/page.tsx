@@ -10,8 +10,23 @@ export default async function TeacherReportsPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const teacherProfile = await db.teacherProfile.findUnique({
+    where: { userId: session.user.id },
+    include: { teacherPrograms: { select: { programId: true } } },
+  });
+  const teacherProgramIds = teacherProfile?.teacherPrograms.map((tp) => tp.programId) ?? [];
+  const assessmentWhere =
+    teacherProgramIds.length > 0
+      ? {
+          OR: [
+            { createdById: session.user.id },
+            { subject: { programId: { in: teacherProgramIds } } },
+          ],
+        }
+      : { createdById: session.user.id };
+
   const assessments = await db.assessment.findMany({
-    where: { createdById: session.user.id },
+    where: assessmentWhere,
     include: {
       subject: true,
       attempts: {
@@ -25,7 +40,7 @@ export default async function TeacherReportsPage() {
     const passed = a.attempts.filter(
       (t) =>
         (t.percentage || 0) >=
-        (a.passingMarks ? (a.passingMarks / a.totalMarks) * 100 : 50)
+        (a.passingMarks && a.totalMarks > 0 ? (a.passingMarks / a.totalMarks) * 100 : 50)
     ).length;
     const failed = a.attempts.length - passed;
     const avg =

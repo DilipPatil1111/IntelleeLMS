@@ -3,11 +3,53 @@ import { db } from "@/lib/db";
 import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
+import type { Session } from "next-auth";
+
+/** Returns true if this teacher session is allowed to access the given assessment. */
+async function teacherCanAccess(
+  session: Session,
+  assessmentId: string
+): Promise<{ allowed: boolean; assessment?: { createdById: string; subjectId: string | null } }> {
+  if (!isTeacherOwnershipRestricted(session)) return { allowed: true };
+
+  const assessment = await db.assessment.findUnique({
+    where: { id: assessmentId },
+    select: { createdById: true, subjectId: true, subject: { select: { programId: true } } },
+  });
+  if (!assessment) return { allowed: false };
+
+  // Creator always has access
+  if (assessment.createdById === session.user.id) return { allowed: true, assessment };
+
+  // Check if teacher is assigned to the program or subject
+  const teacherProfile = await db.teacherProfile.findUnique({
+    where: { userId: session.user.id },
+    select: {
+      teacherPrograms: {
+        where: { programId: assessment.subject?.programId ?? "__none__" },
+        select: { id: true },
+      },
+      subjectAssignments: {
+        where: { subjectId: assessment.subjectId ?? "__none__" },
+        select: { id: true },
+      },
+    },
+  });
+
+  const allowed =
+    (teacherProfile?.teacherPrograms.length ?? 0) > 0 ||
+    (teacherProfile?.subjectAssignments.length ?? 0) > 0;
+
+  return { allowed, assessment };
+}
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { allowed } = await teacherCanAccess(session, id);
+  if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const assessment = await db.assessment.findUnique({
     where: { id },
@@ -24,10 +66,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   if (!assessment) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  if (isTeacherOwnershipRestricted(session) && assessment.createdById !== session.user.id) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
   return NextResponse.json({ assessment });
 }
 
@@ -36,14 +74,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const existing = await db.assessment.findUnique({
-    where: { id },
-    select: { createdById: true },
-  });
+  const { allowed } = await teacherCanAccess(session, id);
+  if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  const existing = await db.assessment.findUnique({ where: { id }, select: { id: true } });
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (isTeacherOwnershipRestricted(session) && existing.createdById !== session.user.id) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
 
   const body = await req.json();
 
@@ -104,22 +139,20 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const existing = await db.assessment.findUnique({
-    where: { id },
-    select: { createdById: true },
-  });
-  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (isTeacherOwnershipRestricted(session) && existing.createdById !== session.user.id) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const { allowed } = await teacherCanAccess(session, id);
+  if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-  // Delete questions (cascades to options), attempts, answers, then assessment
-  await db.answer.deleteMany({ where: { attempt: { assessmentId: id } } });
-  await db.attempt.deleteMany({ where: { assessmentId: id } });
-  await db.scheduledEmail.deleteMany({ where: { assessmentId: id } });
-  await db.assessmentShare.deleteMany({ where: { assessmentId: id } });
-  await db.question.deleteMany({ where: { assessmentId: id } });
-  await db.assessment.delete({ where: { id } });
+  const existing = await db.assessment.findUnique({ where: { id }, select: { id: true } });
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  await db.$transaction([
+    db.answer.deleteMany({ where: { attempt: { assessmentId: id } } }),
+    db.attempt.deleteMany({ where: { assessmentId: id } }),
+    db.scheduledEmail.deleteMany({ where: { assessmentId: id } }),
+    db.assessmentShare.deleteMany({ where: { assessmentId: id } }),
+    db.question.deleteMany({ where: { assessmentId: id } }),
+    db.assessment.delete({ where: { id } }),
+  ]);
 
   return NextResponse.json({ success: true });
 }

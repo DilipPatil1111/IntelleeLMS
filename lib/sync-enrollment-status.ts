@@ -17,7 +17,7 @@ export async function syncProgramApplicationsWithProfileEnrolled(
 
 /**
  * When `ProgramApplication.status` becomes ENROLLED, align `StudentProfile.status` for the same
- * program enrollment (applicant’s profile `programId` must match the application).
+ * program enrollment and ensure a ProgramEnrollment record exists.
  */
 export async function syncStudentProfileWithApplicationEnrolled(
   applicantId: string,
@@ -25,8 +25,22 @@ export async function syncStudentProfileWithApplicationEnrolled(
 ): Promise<void> {
   const profile = await db.studentProfile.findUnique({
     where: { userId: applicantId },
-    select: { programId: true, status: true },
+    select: { programId: true, status: true, batchId: true, enrollmentNo: true },
   });
+
+  await db.programEnrollment.upsert({
+    where: { userId_programId: { userId: applicantId, programId } },
+    update: { status: "ENROLLED" },
+    create: {
+      userId: applicantId,
+      programId,
+      batchId: profile?.batchId ?? null,
+      status: "ENROLLED",
+      enrollmentNo: profile?.enrollmentNo ?? null,
+      enrollmentDate: new Date(),
+    },
+  });
+
   if (!profile?.programId || profile.programId !== programId) return;
   if (profile.status === "ENROLLED") return;
   await db.studentProfile.update({

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { AuthHeader } from "@/components/auth/auth-header";
 import { registerUser } from "@/lib/actions/auth-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -57,10 +58,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4 py-8">
       <div className="w-full max-w-lg">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-600">Intellee College</h1>
-          <p className="text-gray-500 mt-2">Create your account</p>
-        </div>
+        <AuthHeader subtitle="Create your account" />
 
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           {error && (

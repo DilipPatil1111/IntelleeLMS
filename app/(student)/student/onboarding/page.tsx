@@ -31,6 +31,8 @@ export default function StudentOnboardingPage() {
   const [onboarding, setOnboarding] = useState<Ob | null>(null);
   const [sampleContractUrl, setSampleContractUrl] = useState<string | null>(null);
   const [sampleContractLabel, setSampleContractLabel] = useState<string | null>(null);
+  const [profileStatus, setProfileStatus] = useState<string | null>(null);
+  const [isVocational, setIsVocational] = useState(true);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
   const [uploadNote, setUploadNote] = useState<{ step: string; tone: "success" | "error"; text: string } | null>(null);
@@ -41,6 +43,8 @@ export default function StudentOnboardingPage() {
     setOnboarding(data.onboarding || null);
     setSampleContractUrl(data.sampleContractUrl || null);
     setSampleContractLabel(data.sampleContractFileName || null);
+    setProfileStatus(data.studentProfileStatus || null);
+    setIsVocational(data.isVocational ?? true);
     setLoading(false);
   }
 
@@ -48,11 +52,13 @@ export default function StudentOnboardingPage() {
     let cancelled = false;
     void fetch("/api/student/onboarding")
       .then((r) => r.json())
-      .then((data: { onboarding?: Ob | null; sampleContractUrl?: string | null; sampleContractFileName?: string | null }) => {
+      .then((data: { onboarding?: Ob | null; sampleContractUrl?: string | null; sampleContractFileName?: string | null; studentProfileStatus?: string | null; isVocational?: boolean }) => {
         if (cancelled) return;
         setOnboarding(data.onboarding || null);
         setSampleContractUrl(data.sampleContractUrl || null);
         setSampleContractLabel(data.sampleContractFileName || null);
+        setProfileStatus(data.studentProfileStatus || null);
+        setIsVocational(data.isVocational ?? true);
         setLoading(false);
       })
       .catch(() => {
@@ -145,7 +151,7 @@ export default function StudentOnboardingPage() {
     }
   }
 
-  const steps: { key: "contract" | "ids" | "fee" | "preAdmission"; patchStep: "contract" | "governmentIds" | "feeProof" | "preAdmission"; title: string; desc: string }[] = [
+  const allStepsDef: { key: "contract" | "ids" | "fee" | "preAdmission"; patchStep: "contract" | "governmentIds" | "feeProof" | "preAdmission"; title: string; desc: string; vocationalOnly?: boolean }[] = [
     {
       key: "contract",
       patchStep: "contract",
@@ -169,23 +175,20 @@ export default function StudentOnboardingPage() {
       patchStep: "preAdmission",
       title: "Step 4 — Pre-admission test",
       desc: "Complete the assigned assessment when shared, or mark complete when applicable.",
+      vocationalOnly: true,
     },
   ];
 
-  const allStudentSteps =
-    onboarding.contractAcknowledgedAt &&
-    onboarding.governmentIdsUploadedAt &&
-    onboarding.feeProofUploadedAt &&
-    onboarding.preAdmissionCompletedAt;
+  const steps = allStepsDef.filter((s) => !s.vocationalOnly || isVocational);
+  const totalSteps = steps.length;
 
-  const checklistDoneCount = [
-    onboarding.contractAcknowledgedAt,
-    onboarding.governmentIdsUploadedAt,
-    onboarding.feeProofUploadedAt,
-    onboarding.preAdmissionCompletedAt,
-  ].filter(Boolean).length;
+  const allStudentSteps = steps.every((s) => stepComplete(s.key));
 
-  const checklistPercent = Math.round((checklistDoneCount / 4) * 100);
+  const checklistDoneCount = steps.filter((s) => stepComplete(s.key)).length;
+  const checklistPercent = Math.round((checklistDoneCount / totalSteps) * 100);
+
+  const isEnrolled = profileStatus === "ENROLLED" || profileStatus === "COMPLETED" || profileStatus === "GRADUATED";
+  const pendingStepNames = steps.filter((s) => !stepComplete(s.key)).map((s) => s.title);
 
   return (
     <>
@@ -197,7 +200,7 @@ export default function StudentOnboardingPage() {
       <div className="mb-6 rounded-xl border border-indigo-100 bg-gradient-to-r from-indigo-50/90 to-white p-4 shadow-sm">
         <div className="mb-2 flex items-center justify-between gap-2">
           <p className="text-sm font-semibold text-indigo-950">Checklist progress</p>
-          <span className="text-sm font-medium text-indigo-700">{checklistDoneCount} of 4 steps</span>
+          <span className="text-sm font-medium text-indigo-700">{checklistDoneCount} of {totalSteps} steps</span>
         </div>
         <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200/90">
           <div
@@ -214,9 +217,29 @@ export default function StudentOnboardingPage() {
         </p>
       </div>
 
-      {allStudentSteps && !onboarding.principalConfirmedAt && (
+      {allStudentSteps && !onboarding.principalConfirmedAt && !isEnrolled && (
         <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           All checklist items are done. Your principal will confirm your onboarding to unlock full course access.
+        </div>
+      )}
+
+      {allStudentSteps && !onboarding.principalConfirmedAt && isEnrolled && (
+        <div className="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+          Your onboarding is complete. You have full access to your program content.{" "}
+          <Link href="/student/program" className="font-medium underline">
+            Go to course content
+          </Link>
+        </div>
+      )}
+
+      {!allStudentSteps && isEnrolled && (
+        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p className="font-medium">The following onboarding steps still need to be completed:</p>
+          <ul className="mt-1 list-inside list-disc">
+            {pendingStepNames.map((name) => (
+              <li key={name}>{name}</li>
+            ))}
+          </ul>
         </div>
       )}
 
@@ -310,7 +333,7 @@ export default function StudentOnboardingPage() {
                         <label className="flex cursor-pointer flex-wrap items-center gap-2">
                           <span className="inline-flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-100">
                             <Upload className="h-4 w-4" />
-                            {busy === s.key ? "Uploading…" : "Choose file"}
+                            {busy === s.key ? "Uploading…" : "Upload Document"}
                           </span>
                           <input
                             type="file"
@@ -334,6 +357,15 @@ export default function StudentOnboardingPage() {
                           onClick={() => void markOnboardingStep(s.patchStep)}
                         >
                           Mark complete (no upload)
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          disabled={busy !== null}
+                          onClick={() => setUploadNote(null)}
+                        >
+                          Submit Later
                         </Button>
                       </div>
                     )}

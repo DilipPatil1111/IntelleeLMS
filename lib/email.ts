@@ -350,6 +350,33 @@ export function buildTeacherCoursesAssignedEmail(params: {
   };
 }
 
+export function buildPasswordResetEmail(params: {
+  firstName: string;
+  resetUrl: string;
+}) {
+  const { firstName, resetUrl } = params;
+  const href = escapeHtmlAttribute(resetUrl);
+  return {
+    subject: "Reset your password — Intellee College",
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        {INSTITUTION_HEADER}
+        <h2 style="color: #1f2937;">Password Reset Request</h2>
+        <p style="color: #374151;">Hi ${escapeHtml(firstName)},</p>
+        <p style="color: #374151;">We received a request to reset your password. Click the button below to set a new password:</p>
+        <p style="margin: 24px 0;">
+          <a href="${href}" style="background: #4f46e5; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: 600;">
+            Reset Password
+          </a>
+        </p>
+        <p style="color: #6b7280; font-size: 14px;">This link expires in 1 hour. If you didn't request a password reset, you can safely ignore this email.</p>
+        <p style="color: #6b7280; font-size: 13px;">If the button doesn't work, copy and paste this link into your browser:<br/>${escapeHtml(resetUrl)}</p>
+      </div>
+    `,
+    text: `Hi ${firstName},\n\nWe received a request to reset your password. Visit the following link to set a new password:\n\n${resetUrl}\n\nThis link expires in 1 hour. If you didn't request this, ignore this email.\n`,
+  };
+}
+
 export function buildResultsEmail(studentName: string, assessmentTitle: string, score: number, total: number, percentage: number) {
   const passed = percentage >= 50;
   return {

@@ -38,6 +38,19 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
         where: { applicantId: studentUserId, programId: profile.programId },
         data: { status: "ENROLLED" },
       });
+
+      await tx.programEnrollment.upsert({
+        where: { userId_programId: { userId: studentUserId, programId: profile.programId } },
+        update: { status: "ENROLLED", batchId: profile.batchId ?? null },
+        create: {
+          userId: studentUserId,
+          programId: profile.programId,
+          batchId: profile.batchId ?? null,
+          status: "ENROLLED",
+          enrollmentNo: profile.enrollmentNo,
+          enrollmentDate: new Date(),
+        },
+      });
     }
   });
 

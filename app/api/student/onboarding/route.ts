@@ -15,7 +15,16 @@ export async function GET() {
 
   const user = await db.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true, studentProfile: { select: { id: true, status: true } } },
+    select: {
+      role: true,
+      studentProfile: {
+        select: {
+          id: true,
+          status: true,
+          program: { select: { programCategory: { select: { name: true } } } },
+        },
+      },
+    },
   });
 
   /** Legacy / edge: ensure row only for fully enrolled statuses (not APPLIED / bare ACCEPTED). */
@@ -43,11 +52,17 @@ export async function GET() {
     institution?.studentContractSampleFileName ||
     (sampleContractUrl && onboarding?.contractDocumentUrl ? "Sample agreement" : null);
 
+  const categoryName = user?.studentProfile?.program?.programCategory?.name ?? "";
+  const isVocational =
+    categoryName.toLowerCase().includes("vocational") &&
+    !categoryName.toLowerCase().includes("non");
+
   return NextResponse.json({
     onboarding,
     sampleContractUrl,
     sampleContractFileName,
     studentProfileStatus: user?.studentProfile?.status ?? null,
+    isVocational,
   });
 }
 

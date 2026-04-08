@@ -82,10 +82,22 @@ export async function POST(req: Request) {
     },
   });
 
-  await db.studentProfile.updateMany({
+  const existingProfile = await db.studentProfile.findUnique({
     where: { userId: session.user.id },
-    data: { programId, batchId: validBatchId, status: "APPLIED" },
+    select: { programId: true, status: true },
   });
+
+  const isAlreadyEnrolled =
+    existingProfile?.programId &&
+    existingProfile.status &&
+    ["ENROLLED", "COMPLETED", "GRADUATED"].includes(existingProfile.status);
+
+  if (!isAlreadyEnrolled) {
+    await db.studentProfile.updateMany({
+      where: { userId: session.user.id },
+      data: { programId, batchId: validBatchId, status: "APPLIED" },
+    });
+  }
 
   // Create auto-reply notification
   await db.notification.create({

@@ -15,7 +15,29 @@ export async function GET(req: Request) {
   const status = searchParams.get("status") || undefined;
   const type = searchParams.get("type") || undefined;
 
-  const and: Prisma.AssessmentWhereInput[] = [{ createdById: session.user.id }];
+  // Fetch programs and subjects this teacher is assigned to, so they can see
+  // quizzes created by principals/others via Program Content for their programs.
+  const teacherProfile = await db.teacherProfile.findUnique({
+    where: { userId: session.user.id },
+    include: {
+      teacherPrograms: { select: { programId: true } },
+      subjectAssignments: { select: { subjectId: true } },
+    },
+  });
+  const teacherProgramIds = teacherProfile?.teacherPrograms.map((tp) => tp.programId) ?? [];
+  const teacherSubjectIds = teacherProfile?.subjectAssignments.map((sa) => sa.subjectId) ?? [];
+
+  // Build visibility: own creations + assessments for programs/subjects they teach
+  const orClauses: Prisma.AssessmentWhereInput[] = [{ createdById: session.user.id }];
+  if (teacherProgramIds.length > 0) {
+    orClauses.push({ subject: { programId: { in: teacherProgramIds } } });
+  }
+  if (teacherSubjectIds.length > 0) {
+    orClauses.push({ subjectId: { in: teacherSubjectIds } });
+  }
+  const visibilityFilter: Prisma.AssessmentWhereInput = { OR: orClauses };
+
+  const and: Prisma.AssessmentWhereInput[] = [visibilityFilter];
 
   if (q) {
     and.push({

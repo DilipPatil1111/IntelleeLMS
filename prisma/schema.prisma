@@ -234,6 +234,26 @@ model User {
   programLessonCompletions ProgramLessonCompletion[]
   programCertificatesReceived ProgramCertificateSend[] @relation("ProgramCertStudent")
   programCertificatesSentBy   ProgramCertificateSend[] @relation("ProgramCertSentBy")
+  certTemplatesCreated        CertificateTemplate[]    @relation("CertTemplateCreator")
+  certificatesReceived        CertificateIssued[]      @relation("CertRecipient")
+  certificatesSentBy          CertificateIssued[]      @relation("CertSentBy")
+  programEnrollments          ProgramEnrollment[]
+  sessionRecordingsUploaded   SessionRecording[] @relation("SessionRecordingUploader")
+  canvaAccount                CanvaAccount?
+}
+
+/** Stores Canva OAuth tokens for a user so they can design in Canva and import results. */
+model CanvaAccount {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  accessToken   String   @db.Text
+  refreshToken  String   @db.Text
+  expiresAt     DateTime
+  canvaUserId   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 /** Extra portal access (Student / Teacher / Principal UI) beyond the user’s primary `User.role`. Managed in Principal → Settings. */
@@ -348,6 +368,10 @@ model Program {
   programCalendarSlots ProgramCalendarSlot[]
   programSyllabus       ProgramSyllabus?
   programCertificateSends ProgramCertificateSend[]
+  certificatesIssued      CertificateIssued[]
+  programEnrollments      ProgramEnrollment[]
+  sessionRecordings       SessionRecording[]
+  holidays                Holiday[]
 
   @@index([programDomainId])
   @@index([programCategoryId])
@@ -436,6 +460,66 @@ model ProgramCertificateSend {
   @@index([programId])
 }
 
+/** Reusable certificate template — background image/PDF + field layout. */
+model CertificateTemplate {
+  id              String   @id @default(cuid())
+  name            String
+  description     String?
+  /** Background image URL (PNG/JPG) uploaded via Vercel Blob. */
+  backgroundUrl   String?
+  backgroundFileName String?
+  /** Orientation: LANDSCAPE or PORTRAIT */
+  orientation     String   @default("LANDSCAPE")
+  /** Page size: A4, LETTER, etc. */
+  pageSize        String   @default("A4")
+  /**
+   * JSON array of field positions.
+   * Each entry: { key, label, x, y, fontSize, fontWeight, color, align }
+   * Keys: STUDENT_NAME, PROGRAM_NAME, CERTIFICATE_NUMBER, COMPLETION_DATE,
+   *       PRINCIPAL_NAME, PRINCIPAL_SIGNATURE, INSTITUTION_NAME, INSTITUTION_LOGO, CUSTOM_TEXT
+   */
+  fieldsJson      String   @db.Text @default("[]")
+  isActive        Boolean  @default(true)
+  createdById     String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  createdBy       User     @relation("CertTemplateCreator", fields: [createdById], references: [id])
+  certificatesIssued CertificateIssued[]
+
+  @@index([createdById])
+}
+
+/** Tracks every certificate issued with a unique certificate number. */
+model CertificateIssued {
+  id                String   @id @default(cuid())
+  certificateNumber String   @unique
+  templateId        String
+  recipientId       String
+  programId         String?
+  /** Snapshot of the data used to generate the PDF */
+  dataJson          String   @db.Text @default("{}")
+  pdfUrl            String?
+  sentAt            DateTime?
+  sentByUserId      String?
+  createdAt         DateTime @default(now())
+
+  template          CertificateTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  recipient         User                @relation("CertRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  program           Program?            @relation(fields: [programId], references: [id], onDelete: SetNull)
+  sentBy            User?               @relation("CertSentBy", fields: [sentByUserId], references: [id])
+
+  @@index([templateId])
+  @@index([recipientId])
+  @@index([programId])
+}
+
+/** Auto-incrementing counter for certificate numbers (e.g., INT001). */
+model CertificateCounter {
+  id        Int @id @default(1)
+  lastValue Int @default(0)
+}
+
 /** Master institutional branding and contact (singleton row id = 1). */
 model InstitutionProfile {
   id Int @id @default(1)
@@ -453,6 +537,8 @@ model InstitutionProfile {
   socialInstagramUrl String?
   logoUrl           String?
   brandColor        String?
+  /** How institution branding is displayed: LOGO_ONLY, TEXT_ONLY, or LOGO_WITH_TEXT (default). */
+  brandingDisplayMode String @default("LOGO_WITH_TEXT")
 
   updatedAt DateTime @updatedAt
 }
@@ -559,6 +645,7 @@ model Batch {
   announcements Announcement[]
   programApplications ProgramApplication[]
   programCalendarSlots ProgramCalendarSlot[]
+  programEnrollments   ProgramEnrollment[]
 }
 
 model Subject {
@@ -672,6 +759,27 @@ model StudentProfile {
   batch          Batch?        @relation(fields: [batchId], references: [id])
   feePayments    FeePayment[]
   submissionLogs StudentSubmissionLog[]
+}
+
+/** Tracks each program a student is enrolled in (supports multi-program enrollment). */
+model ProgramEnrollment {
+  id             String        @id @default(cuid())
+  userId         String
+  programId      String
+  batchId        String?
+  status         StudentStatus @default(ENROLLED)
+  enrollmentNo   String?
+  enrollmentDate DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program        Program       @relation(fields: [programId], references: [id])
+  batch          Batch?        @relation(fields: [batchId], references: [id])
+
+  @@unique([userId, programId])
+  @@index([userId])
+  @@index([programId])
 }
 
 /** Post-enrollment checklist; created when a student is enrolled from an application. */
@@ -1004,10 +1112,14 @@ model Holiday {
   date           DateTime
   type           HolidayType @default(PUBLIC)
   academicYearId String?
+  programId      String?
   region         String?
   createdAt      DateTime    @default(now())
 
   academicYear   AcademicYear? @relation(fields: [academicYearId], references: [id])
+  program        Program?      @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@index([programId])
 }
 
 /** Principal-configured time blocks on the Full Calendar (per program/batch/day, per teacher). */
@@ -1260,4 +1372,23 @@ model InspectionNote {
   folder DocFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
 
   @@index([folderId])
+}
+
+model SessionRecording {
+  id           String   @id @default(cuid())
+  programId    String
+  title        String
+  sessionDate  DateTime
+  videoUrl     String
+  fileName     String?
+  durationMin  Int?
+  uploadedById String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  program    Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  uploadedBy User    @relation("SessionRecordingUploader", fields: [uploadedById], references: [id])
+
+  @@index([programId])
+  @@index([sessionDate])
 }

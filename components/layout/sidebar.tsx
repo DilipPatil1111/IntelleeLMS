@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useBranding } from "@/hooks/use-branding";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -9,6 +10,7 @@ import {
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
   Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive, Building2, ShieldCheck,
+  Video,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -24,8 +26,7 @@ const studentNav: NavItem[] = [
   { label: "My Profile", href: "/student/profile", icon: Users },
   { label: "Apply", href: "/student/apply", icon: FileCheck },
   { label: "Onboarding", href: "/student/onboarding", icon: ClipboardList },
-  { label: "My Program", href: "/student/program", icon: BookMarked },
-  { label: "Program Content", href: "/student/program-content", icon: Layers },
+  { label: "My Programs", href: "/student/program", icon: BookMarked },
   { label: "Assessments", href: "/student/assessments", icon: FileText },
   { label: "Results", href: "/student/results", icon: Award },
   { label: "Attendance", href: "/student/attendance", icon: Calendar },
@@ -53,7 +54,9 @@ const teacherNav: NavItem[] = [
   { label: "Subjects", href: "/teacher/subjects", icon: BookOpen },
   { label: "Course Content", href: "/teacher/modules", icon: BookMarked },
   { label: "Program Content", href: "/teacher/program-content", icon: Layers },
+  { label: "Session Recordings", href: "/teacher/session-recordings", icon: Video },
   { label: "Award Certificates", href: "/teacher/award-certificates", icon: Award },
+  { label: "Templates", href: "/teacher/certificate-templates", icon: FolderOpen },
   { label: "Settings", href: "/teacher/settings", icon: Settings },
 ];
 
@@ -70,6 +73,7 @@ const principalNav: NavItem[] = [
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
   { label: "Full Calendar", href: "/principal/full-calendar", icon: CalendarRange },
   { label: "Program Content", href: "/principal/program-content", icon: Layers },
+  { label: "Session Recordings", href: "/principal/session-recordings", icon: Video },
   { label: "Award Certificates", href: "/principal/award-certificates", icon: Award },
   { label: "Institution profile", href: "/principal/institution-profile", icon: Building2 },
   { label: "Academic years", href: "/principal/academic-years", icon: CalendarRange },
@@ -102,6 +106,7 @@ interface SidebarProps {
 export function Sidebar({ role, userName, userInitials, profilePicture, allowedPaths }: SidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const { logoUrl, legalName, brandingDisplayMode, loaded } = useBranding();
   const allNavItems = navMap[role.toLowerCase()] || [];
   const navItems = allowedPaths ? allNavItems.filter((item) => allowedPaths.includes(item.href)) : allNavItems;
 
@@ -113,14 +118,42 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
       )}
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-800">
-        {!collapsed && (
-          <Link href={`/${role.toLowerCase()}`} className="text-lg font-bold text-indigo-400">
-            Intellee
-          </Link>
-        )}
+        <Link href={`/${role.toLowerCase()}`} className="flex items-center gap-2 min-w-0">
+          {(() => {
+            if (!loaded) {
+              return !collapsed ? <span className="text-lg font-bold text-indigo-400 truncate">&nbsp;</span> : null;
+            }
+            const showLogo = logoUrl && (brandingDisplayMode === "LOGO_ONLY" || brandingDisplayMode === "LOGO_WITH_TEXT");
+            const showText = legalName && (brandingDisplayMode === "TEXT_ONLY" || brandingDisplayMode === "LOGO_WITH_TEXT");
+
+            return (
+              <>
+                {showLogo && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={logoUrl}
+                    alt={legalName ?? "Logo"}
+                    className={cn(
+                      "object-contain flex-shrink-0",
+                      collapsed ? "h-8 w-8" : "h-8 w-auto max-w-[120px]"
+                    )}
+                  />
+                )}
+                {showText && !collapsed && (
+                  <span className="text-lg font-bold text-indigo-400 truncate">
+                    {legalName}
+                  </span>
+                )}
+                {!showLogo && !showText && !collapsed && (
+                  <span className="text-lg font-bold text-indigo-400 truncate">Intellee</span>
+                )}
+              </>
+            );
+          })()}
+        </Link>
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1 rounded hover:bg-gray-800 text-gray-400"
+          className="p-1 rounded hover:bg-gray-800 text-gray-400 flex-shrink-0"
         >
           {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
         </button>
@@ -128,7 +161,11 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
 
       <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
         {navItems.map((item) => {
-          const isActive = pathname === item.href || (item.href !== `/${role.toLowerCase()}` && pathname.startsWith(item.href));
+          // Use exact match for root dashboards; for sub-paths require a "/" separator to avoid
+          // "/student/program" matching "/student/program-content" etc.
+          const isActive =
+            pathname === item.href ||
+            (item.href !== `/${role.toLowerCase()}` && pathname.startsWith(item.href + "/"));
           return (
             <Link
               key={item.href}

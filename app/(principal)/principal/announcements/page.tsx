@@ -10,7 +10,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
+import { Pagination } from "@/components/ui/pagination";
 import { Plus, Trash2, Megaphone } from "lucide-react";
+
+const PAGE_SIZE = 10;
 
 interface AnnouncementRow {
   id: string;
@@ -88,6 +91,7 @@ export default function PrincipalAnnouncementsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [list, setList] = useState<AnnouncementRow[]>([]);
+  const [page, setPage] = useState(1);
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>([]);
   const [batches, setBatches] = useState<{ value: string; label: string; programId?: string }[]>([]);
   const [students, setStudents] = useState<StudentOpt[]>([]);
@@ -300,7 +304,7 @@ export default function PrincipalAnnouncementsPage() {
       />
 
       <div className="space-y-4">
-        {list.map((a) => (
+        {list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((a) => (
           <Card key={a.id}>
             <CardContent className="pt-6">
               <div className="flex items-start justify-between gap-4">
@@ -328,6 +332,8 @@ export default function PrincipalAnnouncementsPage() {
           </Card>
         ))}
       </div>
+
+      <Pagination page={page} totalPages={Math.ceil(list.length / PAGE_SIZE)} onPageChange={setPage} totalItems={list.length} itemLabel="announcements" className="mt-4" />
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create announcement" className="max-w-2xl">
         <div className="space-y-4 max-h-[75vh] overflow-y-auto pr-1">

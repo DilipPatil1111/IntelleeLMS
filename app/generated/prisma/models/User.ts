@@ -357,6 +357,12 @@ export type UserWhereInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionListRelationFilter
   programCertificatesReceived?: Prisma.ProgramCertificateSendListRelationFilter
   programCertificatesSentBy?: Prisma.ProgramCertificateSendListRelationFilter
+  certTemplatesCreated?: Prisma.CertificateTemplateListRelationFilter
+  certificatesReceived?: Prisma.CertificateIssuedListRelationFilter
+  certificatesSentBy?: Prisma.CertificateIssuedListRelationFilter
+  programEnrollments?: Prisma.ProgramEnrollmentListRelationFilter
+  sessionRecordingsUploaded?: Prisma.SessionRecordingListRelationFilter
+  canvaAccount?: Prisma.XOR<Prisma.CanvaAccountNullableScalarRelationFilter, Prisma.CanvaAccountWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -414,6 +420,12 @@ export type UserOrderByWithRelationInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionOrderByRelationAggregateInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendOrderByRelationAggregateInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendOrderByRelationAggregateInput
+  certTemplatesCreated?: Prisma.CertificateTemplateOrderByRelationAggregateInput
+  certificatesReceived?: Prisma.CertificateIssuedOrderByRelationAggregateInput
+  certificatesSentBy?: Prisma.CertificateIssuedOrderByRelationAggregateInput
+  programEnrollments?: Prisma.ProgramEnrollmentOrderByRelationAggregateInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingOrderByRelationAggregateInput
+  canvaAccount?: Prisma.CanvaAccountOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -474,6 +486,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   programLessonCompletions?: Prisma.ProgramLessonCompletionListRelationFilter
   programCertificatesReceived?: Prisma.ProgramCertificateSendListRelationFilter
   programCertificatesSentBy?: Prisma.ProgramCertificateSendListRelationFilter
+  certTemplatesCreated?: Prisma.CertificateTemplateListRelationFilter
+  certificatesReceived?: Prisma.CertificateIssuedListRelationFilter
+  certificatesSentBy?: Prisma.CertificateIssuedListRelationFilter
+  programEnrollments?: Prisma.ProgramEnrollmentListRelationFilter
+  sessionRecordingsUploaded?: Prisma.SessionRecordingListRelationFilter
+  canvaAccount?: Prisma.XOR<Prisma.CanvaAccountNullableScalarRelationFilter, Prisma.CanvaAccountWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -589,6 +607,12 @@ export type UserCreateInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -646,6 +670,12 @@ export type UserUncheckedCreateInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -703,6 +733,12 @@ export type UserUpdateInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -760,6 +796,12 @@ export type UserUncheckedUpdateInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -962,6 +1004,20 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type UserCreateNestedOneWithoutCanvaAccountInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCanvaAccountInput, Prisma.UserUncheckedCreateWithoutCanvaAccountInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCanvaAccountInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCanvaAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCanvaAccountInput, Prisma.UserUncheckedCreateWithoutCanvaAccountInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCanvaAccountInput
+  upsert?: Prisma.UserUpsertWithoutCanvaAccountInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCanvaAccountInput, Prisma.UserUpdateWithoutCanvaAccountInput>, Prisma.UserUncheckedUpdateWithoutCanvaAccountInput>
+}
+
 export type UserCreateNestedOneWithoutPortalGrantsReceivedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPortalGrantsReceivedInput, Prisma.UserUncheckedCreateWithoutPortalGrantsReceivedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortalGrantsReceivedInput
@@ -1124,6 +1180,50 @@ export type UserUpdateOneRequiredWithoutProgramCertificatesSentByNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProgramCertificatesSentByInput, Prisma.UserUpdateWithoutProgramCertificatesSentByInput>, Prisma.UserUncheckedUpdateWithoutProgramCertificatesSentByInput>
 }
 
+export type UserCreateNestedOneWithoutCertTemplatesCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCertTemplatesCreatedInput, Prisma.UserUncheckedCreateWithoutCertTemplatesCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCertTemplatesCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCertTemplatesCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCertTemplatesCreatedInput, Prisma.UserUncheckedCreateWithoutCertTemplatesCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCertTemplatesCreatedInput
+  upsert?: Prisma.UserUpsertWithoutCertTemplatesCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCertTemplatesCreatedInput, Prisma.UserUpdateWithoutCertTemplatesCreatedInput>, Prisma.UserUncheckedUpdateWithoutCertTemplatesCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutCertificatesReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCertificatesReceivedInput, Prisma.UserUncheckedCreateWithoutCertificatesReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCertificatesReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutCertificatesSentByInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCertificatesSentByInput, Prisma.UserUncheckedCreateWithoutCertificatesSentByInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCertificatesSentByInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCertificatesReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCertificatesReceivedInput, Prisma.UserUncheckedCreateWithoutCertificatesReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCertificatesReceivedInput
+  upsert?: Prisma.UserUpsertWithoutCertificatesReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCertificatesReceivedInput, Prisma.UserUpdateWithoutCertificatesReceivedInput>, Prisma.UserUncheckedUpdateWithoutCertificatesReceivedInput>
+}
+
+export type UserUpdateOneWithoutCertificatesSentByNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCertificatesSentByInput, Prisma.UserUncheckedCreateWithoutCertificatesSentByInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCertificatesSentByInput
+  upsert?: Prisma.UserUpsertWithoutCertificatesSentByInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCertificatesSentByInput, Prisma.UserUpdateWithoutCertificatesSentByInput>, Prisma.UserUncheckedUpdateWithoutCertificatesSentByInput>
+}
+
 export type UserCreateNestedOneWithoutTopicProgressInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutTopicProgressInput, Prisma.UserUncheckedCreateWithoutTopicProgressInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutTopicProgressInput
@@ -1150,6 +1250,20 @@ export type UserUpdateOneRequiredWithoutStudentProfileNestedInput = {
   upsert?: Prisma.UserUpsertWithoutStudentProfileInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStudentProfileInput, Prisma.UserUpdateWithoutStudentProfileInput>, Prisma.UserUncheckedUpdateWithoutStudentProfileInput>
+}
+
+export type UserCreateNestedOneWithoutProgramEnrollmentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramEnrollmentsInput, Prisma.UserUncheckedCreateWithoutProgramEnrollmentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramEnrollmentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutProgramEnrollmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProgramEnrollmentsInput, Prisma.UserUncheckedCreateWithoutProgramEnrollmentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProgramEnrollmentsInput
+  upsert?: Prisma.UserUpsertWithoutProgramEnrollmentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProgramEnrollmentsInput, Prisma.UserUpdateWithoutProgramEnrollmentsInput>, Prisma.UserUncheckedUpdateWithoutProgramEnrollmentsInput>
 }
 
 export type UserCreateNestedOneWithoutStudentOnboardingInput = {
@@ -1428,6 +1542,284 @@ export type UserUpdateOneRequiredWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type UserCreateNestedOneWithoutSessionRecordingsUploadedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionRecordingsUploadedInput, Prisma.UserUncheckedCreateWithoutSessionRecordingsUploadedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionRecordingsUploadedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSessionRecordingsUploadedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionRecordingsUploadedInput, Prisma.UserUncheckedCreateWithoutSessionRecordingsUploadedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionRecordingsUploadedInput
+  upsert?: Prisma.UserUpsertWithoutSessionRecordingsUploadedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionRecordingsUploadedInput, Prisma.UserUpdateWithoutSessionRecordingsUploadedInput>, Prisma.UserUncheckedUpdateWithoutSessionRecordingsUploadedInput>
+}
+
+export type UserCreateWithoutCanvaAccountInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserUncheckedCreateWithoutCanvaAccountInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserCreateOrConnectWithoutCanvaAccountInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCanvaAccountInput, Prisma.UserUncheckedCreateWithoutCanvaAccountInput>
+}
+
+export type UserUpsertWithoutCanvaAccountInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCanvaAccountInput, Prisma.UserUncheckedUpdateWithoutCanvaAccountInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCanvaAccountInput, Prisma.UserUncheckedCreateWithoutCanvaAccountInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCanvaAccountInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCanvaAccountInput, Prisma.UserUncheckedUpdateWithoutCanvaAccountInput>
+}
+
+export type UserUpdateWithoutCanvaAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCanvaAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+}
+
 export type UserCreateWithoutPortalGrantsReceivedInput = {
   id?: string
   email: string
@@ -1482,6 +1874,12 @@ export type UserCreateWithoutPortalGrantsReceivedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPortalGrantsReceivedInput = {
@@ -1538,6 +1936,12 @@ export type UserUncheckedCreateWithoutPortalGrantsReceivedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPortalGrantsReceivedInput = {
@@ -1599,6 +2003,12 @@ export type UserCreateWithoutPortalGrantsCreatedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPortalGrantsCreatedInput = {
@@ -1655,6 +2065,12 @@ export type UserUncheckedCreateWithoutPortalGrantsCreatedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPortalGrantsCreatedInput = {
@@ -1727,6 +2143,12 @@ export type UserUpdateWithoutPortalGrantsReceivedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPortalGrantsReceivedInput = {
@@ -1783,6 +2205,12 @@ export type UserUncheckedUpdateWithoutPortalGrantsReceivedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutPortalGrantsCreatedInput = {
@@ -1850,6 +2278,12 @@ export type UserUpdateWithoutPortalGrantsCreatedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPortalGrantsCreatedInput = {
@@ -1906,6 +2340,12 @@ export type UserUncheckedUpdateWithoutPortalGrantsCreatedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFeedbackAuthoredInput = {
@@ -1962,6 +2402,12 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -2018,6 +2464,12 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -2079,6 +2531,12 @@ export type UserCreateWithoutFeedbackAboutStudentInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
@@ -2135,6 +2593,12 @@ export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAboutStudentInput = {
@@ -2196,6 +2660,12 @@ export type UserCreateWithoutFeedbackAboutTeacherInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
@@ -2252,6 +2722,12 @@ export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAboutTeacherInput = {
@@ -2313,6 +2789,12 @@ export type UserCreateWithoutFeedbackRepliesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
@@ -2369,6 +2851,12 @@ export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackRepliesInput = {
@@ -2441,6 +2929,12 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -2497,6 +2991,12 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFeedbackAboutStudentInput = {
@@ -2564,6 +3064,12 @@ export type UserUpdateWithoutFeedbackAboutStudentInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
@@ -2620,6 +3126,12 @@ export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFeedbackAboutTeacherInput = {
@@ -2687,6 +3199,12 @@ export type UserUpdateWithoutFeedbackAboutTeacherInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
@@ -2743,6 +3261,12 @@ export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFeedbackRepliesInput = {
@@ -2810,6 +3334,12 @@ export type UserUpdateWithoutFeedbackRepliesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
@@ -2866,6 +3396,12 @@ export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -2922,6 +3458,12 @@ export type UserCreateWithoutAccountsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -2978,6 +3520,12 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -3050,6 +3598,12 @@ export type UserUpdateWithoutAccountsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -3106,6 +3660,12 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -3162,6 +3722,12 @@ export type UserCreateWithoutSessionsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -3218,6 +3784,12 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -3290,6 +3862,12 @@ export type UserUpdateWithoutSessionsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -3346,6 +3924,12 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProgramLessonCompletionsInput = {
@@ -3402,6 +3986,12 @@ export type UserCreateWithoutProgramLessonCompletionsInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProgramLessonCompletionsInput = {
@@ -3458,6 +4048,12 @@ export type UserUncheckedCreateWithoutProgramLessonCompletionsInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProgramLessonCompletionsInput = {
@@ -3530,6 +4126,12 @@ export type UserUpdateWithoutProgramLessonCompletionsInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramLessonCompletionsInput = {
@@ -3586,6 +4188,12 @@ export type UserUncheckedUpdateWithoutProgramLessonCompletionsInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProgramCertificatesReceivedInput = {
@@ -3642,6 +4250,12 @@ export type UserCreateWithoutProgramCertificatesReceivedInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProgramCertificatesReceivedInput = {
@@ -3698,6 +4312,12 @@ export type UserUncheckedCreateWithoutProgramCertificatesReceivedInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProgramCertificatesReceivedInput = {
@@ -3759,6 +4379,12 @@ export type UserCreateWithoutProgramCertificatesSentByInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProgramCertificatesSentByInput = {
@@ -3815,6 +4441,12 @@ export type UserUncheckedCreateWithoutProgramCertificatesSentByInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProgramCertificatesSentByInput = {
@@ -3887,6 +4519,12 @@ export type UserUpdateWithoutProgramCertificatesReceivedInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramCertificatesReceivedInput = {
@@ -3943,6 +4581,12 @@ export type UserUncheckedUpdateWithoutProgramCertificatesReceivedInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutProgramCertificatesSentByInput = {
@@ -4010,6 +4654,12 @@ export type UserUpdateWithoutProgramCertificatesSentByInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramCertificatesSentByInput = {
@@ -4066,6 +4716,804 @@ export type UserUncheckedUpdateWithoutProgramCertificatesSentByInput = {
   portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCertTemplatesCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCertTemplatesCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCertTemplatesCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCertTemplatesCreatedInput, Prisma.UserUncheckedCreateWithoutCertTemplatesCreatedInput>
+}
+
+export type UserUpsertWithoutCertTemplatesCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCertTemplatesCreatedInput, Prisma.UserUncheckedUpdateWithoutCertTemplatesCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCertTemplatesCreatedInput, Prisma.UserUncheckedCreateWithoutCertTemplatesCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCertTemplatesCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCertTemplatesCreatedInput, Prisma.UserUncheckedUpdateWithoutCertTemplatesCreatedInput>
+}
+
+export type UserUpdateWithoutCertTemplatesCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCertTemplatesCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCertificatesReceivedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCertificatesReceivedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCertificatesReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCertificatesReceivedInput, Prisma.UserUncheckedCreateWithoutCertificatesReceivedInput>
+}
+
+export type UserCreateWithoutCertificatesSentByInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCertificatesSentByInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCertificatesSentByInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCertificatesSentByInput, Prisma.UserUncheckedCreateWithoutCertificatesSentByInput>
+}
+
+export type UserUpsertWithoutCertificatesReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCertificatesReceivedInput, Prisma.UserUncheckedUpdateWithoutCertificatesReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCertificatesReceivedInput, Prisma.UserUncheckedCreateWithoutCertificatesReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCertificatesReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCertificatesReceivedInput, Prisma.UserUncheckedUpdateWithoutCertificatesReceivedInput>
+}
+
+export type UserUpdateWithoutCertificatesReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCertificatesReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutCertificatesSentByInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCertificatesSentByInput, Prisma.UserUncheckedUpdateWithoutCertificatesSentByInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCertificatesSentByInput, Prisma.UserUncheckedCreateWithoutCertificatesSentByInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCertificatesSentByInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCertificatesSentByInput, Prisma.UserUncheckedUpdateWithoutCertificatesSentByInput>
+}
+
+export type UserUpdateWithoutCertificatesSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCertificatesSentByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTopicProgressInput = {
@@ -4122,6 +5570,12 @@ export type UserCreateWithoutTopicProgressInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTopicProgressInput = {
@@ -4178,6 +5632,12 @@ export type UserUncheckedCreateWithoutTopicProgressInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTopicProgressInput = {
@@ -4250,6 +5710,12 @@ export type UserUpdateWithoutTopicProgressInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTopicProgressInput = {
@@ -4306,6 +5772,12 @@ export type UserUncheckedUpdateWithoutTopicProgressInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStudentProfileInput = {
@@ -4362,6 +5834,12 @@ export type UserCreateWithoutStudentProfileInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -4418,6 +5896,12 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -4490,6 +5974,12 @@ export type UserUpdateWithoutStudentProfileInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -4546,6 +6036,276 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutProgramEnrollmentsInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutProgramEnrollmentsInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutProgramEnrollmentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramEnrollmentsInput, Prisma.UserUncheckedCreateWithoutProgramEnrollmentsInput>
+}
+
+export type UserUpsertWithoutProgramEnrollmentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProgramEnrollmentsInput, Prisma.UserUncheckedUpdateWithoutProgramEnrollmentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProgramEnrollmentsInput, Prisma.UserUncheckedCreateWithoutProgramEnrollmentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProgramEnrollmentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProgramEnrollmentsInput, Prisma.UserUncheckedUpdateWithoutProgramEnrollmentsInput>
+}
+
+export type UserUpdateWithoutProgramEnrollmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProgramEnrollmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStudentOnboardingInput = {
@@ -4602,6 +6362,12 @@ export type UserCreateWithoutStudentOnboardingInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStudentOnboardingInput = {
@@ -4658,6 +6424,12 @@ export type UserUncheckedCreateWithoutStudentOnboardingInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStudentOnboardingInput = {
@@ -4730,6 +6502,12 @@ export type UserUpdateWithoutStudentOnboardingInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
@@ -4786,6 +6564,12 @@ export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTeacherProfileInput = {
@@ -4842,6 +6626,12 @@ export type UserCreateWithoutTeacherProfileInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTeacherProfileInput = {
@@ -4898,6 +6688,12 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTeacherProfileInput = {
@@ -4970,6 +6766,12 @@ export type UserUpdateWithoutTeacherProfileInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherProfileInput = {
@@ -5026,6 +6828,12 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedAssessmentsInput = {
@@ -5082,6 +6890,12 @@ export type UserCreateWithoutCreatedAssessmentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -5138,6 +6952,12 @@ export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -5210,6 +7030,12 @@ export type UserUpdateWithoutCreatedAssessmentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -5266,6 +7092,12 @@ export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssessmentAssignmentsInput = {
@@ -5322,6 +7154,12 @@ export type UserCreateWithoutAssessmentAssignmentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
@@ -5378,6 +7216,12 @@ export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentAssignmentsInput = {
@@ -5450,6 +7294,12 @@ export type UserUpdateWithoutAssessmentAssignmentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
@@ -5506,6 +7356,12 @@ export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAttemptsInput = {
@@ -5562,6 +7418,12 @@ export type UserCreateWithoutAttemptsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAttemptsInput = {
@@ -5618,6 +7480,12 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAttemptsInput = {
@@ -5690,6 +7558,12 @@ export type UserUpdateWithoutAttemptsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttemptsInput = {
@@ -5746,6 +7620,12 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAnswersInput = {
@@ -5802,6 +7682,12 @@ export type UserCreateWithoutAnswersInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAnswersInput = {
@@ -5858,6 +7744,12 @@ export type UserUncheckedCreateWithoutAnswersInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAnswersInput = {
@@ -5930,6 +7822,12 @@ export type UserUpdateWithoutAnswersInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnswersInput = {
@@ -5986,6 +7884,12 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssessmentSharesInput = {
@@ -6042,6 +7946,12 @@ export type UserCreateWithoutAssessmentSharesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentSharesInput = {
@@ -6098,6 +8008,12 @@ export type UserUncheckedCreateWithoutAssessmentSharesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentSharesInput = {
@@ -6159,6 +8075,12 @@ export type UserCreateWithoutCreatedSharesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSharesInput = {
@@ -6215,6 +8137,12 @@ export type UserUncheckedCreateWithoutCreatedSharesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSharesInput = {
@@ -6287,6 +8215,12 @@ export type UserUpdateWithoutAssessmentSharesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
@@ -6343,6 +8277,12 @@ export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCreatedSharesInput = {
@@ -6410,6 +8350,12 @@ export type UserUpdateWithoutCreatedSharesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSharesInput = {
@@ -6466,6 +8412,12 @@ export type UserUncheckedUpdateWithoutCreatedSharesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTeacherAttendancesInput = {
@@ -6522,6 +8474,12 @@ export type UserCreateWithoutTeacherAttendancesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
@@ -6578,6 +8536,12 @@ export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTeacherAttendancesInput = {
@@ -6650,6 +8614,12 @@ export type UserUpdateWithoutTeacherAttendancesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
@@ -6706,6 +8676,12 @@ export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAttendanceRecordsInput = {
@@ -6762,6 +8738,12 @@ export type UserCreateWithoutAttendanceRecordsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -6818,6 +8800,12 @@ export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -6890,6 +8878,12 @@ export type UserUpdateWithoutAttendanceRecordsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -6946,6 +8940,12 @@ export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProgramCalendarSlotsAsTeacherInput = {
@@ -7002,6 +9002,12 @@ export type UserCreateWithoutProgramCalendarSlotsAsTeacherInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput = {
@@ -7058,6 +9064,12 @@ export type UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProgramCalendarSlotsAsTeacherInput = {
@@ -7130,6 +9142,12 @@ export type UserUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
@@ -7186,6 +9204,12 @@ export type UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -7242,6 +9266,12 @@ export type UserCreateWithoutNotificationsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -7298,6 +9328,12 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -7370,6 +9406,12 @@ export type UserUpdateWithoutNotificationsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -7426,6 +9468,12 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -7482,6 +9530,12 @@ export type UserCreateWithoutApplicationsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -7538,6 +9592,12 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -7610,6 +9670,12 @@ export type UserUpdateWithoutApplicationsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -7666,6 +9732,12 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedDocumentsInput = {
@@ -7722,6 +9794,12 @@ export type UserCreateWithoutCreatedDocumentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
@@ -7778,6 +9856,12 @@ export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDocumentsInput = {
@@ -7839,6 +9923,12 @@ export type UserCreateWithoutSharedDocumentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSharedDocumentsInput = {
@@ -7895,6 +9985,12 @@ export type UserUncheckedCreateWithoutSharedDocumentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSharedDocumentsInput = {
@@ -7967,6 +10063,12 @@ export type UserUpdateWithoutCreatedDocumentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
@@ -8023,6 +10125,12 @@ export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutSharedDocumentsInput = {
@@ -8124,6 +10232,12 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
@@ -8180,6 +10294,12 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementsCreatedInput = {
@@ -8252,6 +10372,12 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
@@ -8308,6 +10434,12 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAnnouncementRecipientsInput = {
@@ -8364,6 +10496,12 @@ export type UserCreateWithoutAnnouncementRecipientsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
@@ -8420,6 +10558,12 @@ export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementRecipientsInput = {
@@ -8492,6 +10636,12 @@ export type UserUpdateWithoutAnnouncementRecipientsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
@@ -8548,6 +10698,12 @@ export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -8604,6 +10760,12 @@ export type UserCreateWithoutAuditLogsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -8660,6 +10822,12 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -8732,6 +10900,12 @@ export type UserUpdateWithoutAuditLogsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -8788,6 +10962,276 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSessionRecordingsUploadedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSessionRecordingsUploadedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSessionRecordingsUploadedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionRecordingsUploadedInput, Prisma.UserUncheckedCreateWithoutSessionRecordingsUploadedInput>
+}
+
+export type UserUpsertWithoutSessionRecordingsUploadedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSessionRecordingsUploadedInput, Prisma.UserUncheckedUpdateWithoutSessionRecordingsUploadedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionRecordingsUploadedInput, Prisma.UserUncheckedCreateWithoutSessionRecordingsUploadedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSessionRecordingsUploadedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSessionRecordingsUploadedInput, Prisma.UserUncheckedUpdateWithoutSessionRecordingsUploadedInput>
+}
+
+export type UserUpdateWithoutSessionRecordingsUploadedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSessionRecordingsUploadedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpdateWithoutSharedDocumentsInput = {
@@ -8844,6 +11288,12 @@ export type UserUpdateWithoutSharedDocumentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
@@ -8900,6 +11350,12 @@ export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
   programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
   programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutSharedDocumentsInput = {
@@ -8962,6 +11418,11 @@ export type UserCountOutputType = {
   programLessonCompletions: number
   programCertificatesReceived: number
   programCertificatesSentBy: number
+  certTemplatesCreated: number
+  certificatesReceived: number
+  certificatesSentBy: number
+  programEnrollments: number
+  sessionRecordingsUploaded: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -8993,6 +11454,11 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   programLessonCompletions?: boolean | UserCountOutputTypeCountProgramLessonCompletionsArgs
   programCertificatesReceived?: boolean | UserCountOutputTypeCountProgramCertificatesReceivedArgs
   programCertificatesSentBy?: boolean | UserCountOutputTypeCountProgramCertificatesSentByArgs
+  certTemplatesCreated?: boolean | UserCountOutputTypeCountCertTemplatesCreatedArgs
+  certificatesReceived?: boolean | UserCountOutputTypeCountCertificatesReceivedArgs
+  certificatesSentBy?: boolean | UserCountOutputTypeCountCertificatesSentByArgs
+  programEnrollments?: boolean | UserCountOutputTypeCountProgramEnrollmentsArgs
+  sessionRecordingsUploaded?: boolean | UserCountOutputTypeCountSessionRecordingsUploadedArgs
 }
 
 /**
@@ -9201,6 +11667,41 @@ export type UserCountOutputTypeCountProgramCertificatesSentByArgs<ExtArgs extend
   where?: Prisma.ProgramCertificateSendWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCertTemplatesCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CertificateTemplateWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCertificatesReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CertificateIssuedWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCertificatesSentByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CertificateIssuedWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProgramEnrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramEnrollmentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionRecordingsUploadedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionRecordingWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -9257,6 +11758,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   programLessonCompletions?: boolean | Prisma.User$programLessonCompletionsArgs<ExtArgs>
   programCertificatesReceived?: boolean | Prisma.User$programCertificatesReceivedArgs<ExtArgs>
   programCertificatesSentBy?: boolean | Prisma.User$programCertificatesSentByArgs<ExtArgs>
+  certTemplatesCreated?: boolean | Prisma.User$certTemplatesCreatedArgs<ExtArgs>
+  certificatesReceived?: boolean | Prisma.User$certificatesReceivedArgs<ExtArgs>
+  certificatesSentBy?: boolean | Prisma.User$certificatesSentByArgs<ExtArgs>
+  programEnrollments?: boolean | Prisma.User$programEnrollmentsArgs<ExtArgs>
+  sessionRecordingsUploaded?: boolean | Prisma.User$sessionRecordingsUploadedArgs<ExtArgs>
+  canvaAccount?: boolean | Prisma.User$canvaAccountArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -9371,6 +11878,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   programLessonCompletions?: boolean | Prisma.User$programLessonCompletionsArgs<ExtArgs>
   programCertificatesReceived?: boolean | Prisma.User$programCertificatesReceivedArgs<ExtArgs>
   programCertificatesSentBy?: boolean | Prisma.User$programCertificatesSentByArgs<ExtArgs>
+  certTemplatesCreated?: boolean | Prisma.User$certTemplatesCreatedArgs<ExtArgs>
+  certificatesReceived?: boolean | Prisma.User$certificatesReceivedArgs<ExtArgs>
+  certificatesSentBy?: boolean | Prisma.User$certificatesSentByArgs<ExtArgs>
+  programEnrollments?: boolean | Prisma.User$programEnrollmentsArgs<ExtArgs>
+  sessionRecordingsUploaded?: boolean | Prisma.User$sessionRecordingsUploadedArgs<ExtArgs>
+  canvaAccount?: boolean | Prisma.User$canvaAccountArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -9410,6 +11923,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     programLessonCompletions: Prisma.$ProgramLessonCompletionPayload<ExtArgs>[]
     programCertificatesReceived: Prisma.$ProgramCertificateSendPayload<ExtArgs>[]
     programCertificatesSentBy: Prisma.$ProgramCertificateSendPayload<ExtArgs>[]
+    certTemplatesCreated: Prisma.$CertificateTemplatePayload<ExtArgs>[]
+    certificatesReceived: Prisma.$CertificateIssuedPayload<ExtArgs>[]
+    certificatesSentBy: Prisma.$CertificateIssuedPayload<ExtArgs>[]
+    programEnrollments: Prisma.$ProgramEnrollmentPayload<ExtArgs>[]
+    sessionRecordingsUploaded: Prisma.$SessionRecordingPayload<ExtArgs>[]
+    canvaAccount: Prisma.$CanvaAccountPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -9860,6 +12379,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   programLessonCompletions<T extends Prisma.User$programLessonCompletionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programLessonCompletionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramLessonCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   programCertificatesReceived<T extends Prisma.User$programCertificatesReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programCertificatesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCertificateSendPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   programCertificatesSentBy<T extends Prisma.User$programCertificatesSentByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programCertificatesSentByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCertificateSendPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  certTemplatesCreated<T extends Prisma.User$certTemplatesCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$certTemplatesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificateTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  certificatesReceived<T extends Prisma.User$certificatesReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$certificatesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificateIssuedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  certificatesSentBy<T extends Prisma.User$certificatesSentByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$certificatesSentByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificateIssuedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  programEnrollments<T extends Prisma.User$programEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$programEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessionRecordingsUploaded<T extends Prisma.User$sessionRecordingsUploadedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionRecordingsUploadedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  canvaAccount<T extends Prisma.User$canvaAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$canvaAccountArgs<ExtArgs>>): Prisma.Prisma__CanvaAccountClient<runtime.Types.Result.GetResult<Prisma.$CanvaAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11031,6 +13556,145 @@ export type User$programCertificatesSentByArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.ProgramCertificateSendScalarFieldEnum | Prisma.ProgramCertificateSendScalarFieldEnum[]
+}
+
+/**
+ * User.certTemplatesCreated
+ */
+export type User$certTemplatesCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CertificateTemplate
+   */
+  select?: Prisma.CertificateTemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CertificateTemplate
+   */
+  omit?: Prisma.CertificateTemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CertificateTemplateInclude<ExtArgs> | null
+  where?: Prisma.CertificateTemplateWhereInput
+  orderBy?: Prisma.CertificateTemplateOrderByWithRelationInput | Prisma.CertificateTemplateOrderByWithRelationInput[]
+  cursor?: Prisma.CertificateTemplateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CertificateTemplateScalarFieldEnum | Prisma.CertificateTemplateScalarFieldEnum[]
+}
+
+/**
+ * User.certificatesReceived
+ */
+export type User$certificatesReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CertificateIssued
+   */
+  select?: Prisma.CertificateIssuedSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CertificateIssued
+   */
+  omit?: Prisma.CertificateIssuedOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CertificateIssuedInclude<ExtArgs> | null
+  where?: Prisma.CertificateIssuedWhereInput
+  orderBy?: Prisma.CertificateIssuedOrderByWithRelationInput | Prisma.CertificateIssuedOrderByWithRelationInput[]
+  cursor?: Prisma.CertificateIssuedWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CertificateIssuedScalarFieldEnum | Prisma.CertificateIssuedScalarFieldEnum[]
+}
+
+/**
+ * User.certificatesSentBy
+ */
+export type User$certificatesSentByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CertificateIssued
+   */
+  select?: Prisma.CertificateIssuedSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CertificateIssued
+   */
+  omit?: Prisma.CertificateIssuedOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CertificateIssuedInclude<ExtArgs> | null
+  where?: Prisma.CertificateIssuedWhereInput
+  orderBy?: Prisma.CertificateIssuedOrderByWithRelationInput | Prisma.CertificateIssuedOrderByWithRelationInput[]
+  cursor?: Prisma.CertificateIssuedWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CertificateIssuedScalarFieldEnum | Prisma.CertificateIssuedScalarFieldEnum[]
+}
+
+/**
+ * User.programEnrollments
+ */
+export type User$programEnrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramEnrollment
+   */
+  select?: Prisma.ProgramEnrollmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramEnrollment
+   */
+  omit?: Prisma.ProgramEnrollmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramEnrollmentInclude<ExtArgs> | null
+  where?: Prisma.ProgramEnrollmentWhereInput
+  orderBy?: Prisma.ProgramEnrollmentOrderByWithRelationInput | Prisma.ProgramEnrollmentOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramEnrollmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramEnrollmentScalarFieldEnum | Prisma.ProgramEnrollmentScalarFieldEnum[]
+}
+
+/**
+ * User.sessionRecordingsUploaded
+ */
+export type User$sessionRecordingsUploadedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SessionRecording
+   */
+  select?: Prisma.SessionRecordingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SessionRecording
+   */
+  omit?: Prisma.SessionRecordingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionRecordingInclude<ExtArgs> | null
+  where?: Prisma.SessionRecordingWhereInput
+  orderBy?: Prisma.SessionRecordingOrderByWithRelationInput | Prisma.SessionRecordingOrderByWithRelationInput[]
+  cursor?: Prisma.SessionRecordingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionRecordingScalarFieldEnum | Prisma.SessionRecordingScalarFieldEnum[]
+}
+
+/**
+ * User.canvaAccount
+ */
+export type User$canvaAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CanvaAccount
+   */
+  select?: Prisma.CanvaAccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CanvaAccount
+   */
+  omit?: Prisma.CanvaAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CanvaAccountInclude<ExtArgs> | null
+  where?: Prisma.CanvaAccountWhereInput
 }
 
 /**

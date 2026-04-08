@@ -20,6 +20,7 @@ export default async function TeacherDashboard() {
       teacherProfile: {
         include: {
           subjectAssignments: { include: { batch: true, subject: true } },
+          teacherPrograms: { select: { programId: true } },
         },
       },
     },
@@ -31,8 +32,22 @@ export default async function TeacherDashboard() {
     user.teacherProfile?.subjectAssignments.map((a) => a.batchId) || [];
   const uniqueBatchIds = [...new Set(batchIds)];
 
+  // Teachers see their own assessments OR assessments in programs/subjects they teach
+  const teacherProgramIds = user.teacherProfile?.teacherPrograms.map((tp) => tp.programId) ?? [];
+  const teacherSubjectIds = user.teacherProfile?.subjectAssignments.map((sa) => sa.subjectId) ?? [];
+  const assessmentOrClauses: { createdById?: string; subject?: object; subjectId?: object }[] = [
+    { createdById: user.id },
+  ];
+  if (teacherProgramIds.length > 0) {
+    assessmentOrClauses.push({ subject: { programId: { in: teacherProgramIds } } });
+  }
+  if (teacherSubjectIds.length > 0) {
+    assessmentOrClauses.push({ subjectId: { in: teacherSubjectIds } });
+  }
+  const assessmentVisibilityWhere = { OR: assessmentOrClauses };
+
   const totalAssessments = await db.assessment.count({
-    where: { createdById: user.id },
+    where: assessmentVisibilityWhere,
   });
   const totalStudents =
     uniqueBatchIds.length > 0
@@ -43,13 +58,13 @@ export default async function TeacherDashboard() {
 
   const pendingGrading = await db.attempt.count({
     where: {
-      assessment: { createdById: user.id },
+      assessment: assessmentVisibilityWhere,
       status: "SUBMITTED",
     },
   });
 
   const gradedAttempts = await db.attempt.findMany({
-    where: { assessment: { createdById: user.id }, status: "GRADED" },
+    where: { assessment: assessmentVisibilityWhere, status: "GRADED" },
     select: {
       percentage: true,
       assessment: { select: { passingMarks: true, totalMarks: true } },
@@ -57,9 +72,10 @@ export default async function TeacherDashboard() {
   });
 
   const passCount = gradedAttempts.filter((a) => {
-    const passThreshold = a.assessment.passingMarks
-      ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100
-      : 50;
+    const passThreshold =
+      a.assessment.passingMarks && a.assessment.totalMarks > 0
+        ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100
+        : 50;
     return (a.percentage || 0) >= passThreshold;
   }).length;
   const passRate =
@@ -68,7 +84,7 @@ export default async function TeacherDashboard() {
       : 0;
 
   const recentAssessments = await db.assessment.findMany({
-    where: { createdById: user.id },
+    where: assessmentVisibilityWhere,
     include: {
       subject: true,
       batch: true,
