@@ -1,4 +1,6 @@
 import { db } from "@/lib/db";
+import type { Session } from "next-auth";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 
 export type CatalogSubject = {
   id: string;
@@ -18,12 +20,40 @@ export type CatalogBatch = {
  * Subjects and batches this teacher may use (TeacherSubjectAssignment rows +
  * TeacherProgram — all subjects/batches in those programs).
  * Matches {@link getTeacherVisibleBatchIds} so dropdown choices always load students.
+ *
+ * When a session is provided and the caller is a Principal, returns ALL active
+ * programs/subjects/batches so every dropdown is populated.
  */
-export async function getTeacherCatalogForOptions(teacherUserId: string): Promise<{
+export async function getTeacherCatalogForOptions(
+  teacherUserId: string,
+  session?: Session | null,
+): Promise<{
   programRows: { id: string; name: string }[];
   subjectRows: CatalogSubject[];
   batchRows: CatalogBatch[];
 }> {
+  if (session && !isTeacherOwnershipRestricted(session)) {
+    const [allSubjects, allBatches] = await Promise.all([
+      db.subject.findMany({
+        where: { isActive: true },
+        include: { program: true },
+        orderBy: { name: "asc" },
+      }),
+      db.batch.findMany({
+        where: { isActive: true },
+        include: { program: true },
+        orderBy: { name: "asc" },
+      }),
+    ]);
+
+    const programMap = new Map<string, { id: string; name: string }>();
+    for (const s of allSubjects) programMap.set(s.programId, { id: s.program.id, name: s.program.name });
+    for (const b of allBatches) programMap.set(b.programId, { id: b.program.id, name: b.program.name });
+    const programRows = [...programMap.values()].sort((a, b) => a.name.localeCompare(b.name));
+
+    return { programRows, subjectRows: allSubjects, batchRows: allBatches };
+  }
+
   const profile = await db.teacherProfile.findUnique({
     where: { userId: teacherUserId },
     include: {

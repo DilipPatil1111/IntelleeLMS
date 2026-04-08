@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { hasTeacherPortalAccess } from "@/lib/portal-access";
+import { hasTeacherPortalAccess, isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -26,12 +26,22 @@ export async function GET(req: Request) {
     });
   }
 
-  // Students from teacher's assigned programs
-  const teacherPrograms = await db.teacherProgram.findMany({
-    where: { teacherProfile: { userId: session.user.id } },
-    select: { programId: true },
-  });
-  const programIds = programId ? [programId] : teacherPrograms.map((tp) => tp.programId);
+  let programIds: string[];
+
+  if (!isTeacherOwnershipRestricted(session)) {
+    if (programId) {
+      programIds = [programId];
+    } else {
+      const allProgs = await db.program.findMany({ where: { isActive: true }, select: { id: true } });
+      programIds = allProgs.map((p) => p.id);
+    }
+  } else {
+    const teacherPrograms = await db.teacherProgram.findMany({
+      where: { teacherProfile: { userId: session.user.id } },
+      select: { programId: true },
+    });
+    programIds = programId ? [programId] : teacherPrograms.map((tp) => tp.programId);
+  }
 
   const enrollments = await db.programEnrollment.findMany({
     where: { programId: { in: programIds }, status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] } },

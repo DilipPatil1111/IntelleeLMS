@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useBranding } from "@/hooks/use-branding";
+import { blobFileUrl } from "@/lib/blob-url";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -131,7 +132,7 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
                 {showLogo && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={logoUrl}
+                    src={blobFileUrl(logoUrl, "logo", true)}
                     alt={legalName ?? "Logo"}
                     className={cn(
                       "object-contain flex-shrink-0",
@@ -192,7 +193,7 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
           title={collapsed ? "My Profile" : undefined}
         >
           {profilePicture ? (
-            <Image src={profilePicture} alt="" width={32} height={32} unoptimized={profilePicture.startsWith("data:")} className="h-8 w-8 shrink-0 rounded-full object-cover" />
+            <Image src={blobFileUrl(profilePicture, undefined, true)} alt="" width={32} height={32} unoptimized className="h-8 w-8 shrink-0 rounded-full object-cover" />
           ) : (
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-sm font-medium">
               {userInitials}

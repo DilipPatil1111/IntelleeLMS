@@ -26,7 +26,14 @@ export async function GET() {
   });
 
   if (!user?.studentProfile) {
-    return NextResponse.json({ error: "Student profile not found" }, { status: 404 });
+    return NextResponse.json({
+      pendingAssessments: [],
+      belowPassingResults: [],
+      attendanceAlerts: [],
+      documents: null,
+      fees: { totalFees: 0, totalPaid: 0, pendingAmount: 0, receipts: [] },
+      counts: { assessments: 0, documents: 0, fees: 0, belowPassing: 0, attendance: 0, highPriority: 0, total: 0 },
+    });
   }
 
   const profile = user.studentProfile;

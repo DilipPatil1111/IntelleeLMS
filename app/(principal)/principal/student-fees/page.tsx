@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
 import { Pagination } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
+import { blobFileUrl } from "@/lib/blob-url";
 import {
   DollarSign,
   CheckCircle2,
@@ -534,7 +535,7 @@ function StudentFeeRowBlock({
                   <div className="ml-auto flex items-center gap-2">
                     {r.receiptUrl && (
                       <a
-                        href={r.receiptUrl}
+                        href={blobFileUrl(r.receiptUrl, r.fileName ?? "receipt", true)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50"

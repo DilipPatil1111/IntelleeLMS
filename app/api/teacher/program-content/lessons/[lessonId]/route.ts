@@ -7,13 +7,13 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-async function assertLessonAccess(sessionUserId: string, lessonId: string) {
+async function assertLessonAccess(sessionUserId: string, lessonId: string, session: Parameters<typeof staffCanAccessProgram>[1]) {
   const lesson = await db.programLesson.findUnique({
     where: { id: lessonId },
     include: { chapter: { include: { subject: true } } },
   });
   if (!lesson) return { error: "Not found" as const };
-  const can = await staffCanAccessProgram(sessionUserId, "TEACHER", lesson.chapter.subject.programId);
+  const can = await staffCanAccessProgram(sessionUserId, session, lesson.chapter.subject.programId);
   if (!can) return { error: "Forbidden" as const };
   return { lesson };
 }
@@ -24,7 +24,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ lesson
   if (!hasTeacherPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { lessonId } = await params;
-  const a = await assertLessonAccess(session.user.id, lessonId);
+  const a = await assertLessonAccess(session.user.id, lessonId, session);
   if ("error" in a && a.error === "Not found") return NextResponse.json({ error: "Not found" }, { status: 404 });
   if ("error" in a) return NextResponse.json({ error: a.error }, { status: 403 });
 
@@ -69,7 +69,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ less
   if (!hasTeacherPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { lessonId } = await params;
-  const a = await assertLessonAccess(session.user.id, lessonId);
+  const a = await assertLessonAccess(session.user.id, lessonId, session);
   if ("error" in a && a.error === "Not found") return NextResponse.json({ error: "Not found" }, { status: 404 });
   if ("error" in a) return NextResponse.json({ error: a.error }, { status: 403 });
 

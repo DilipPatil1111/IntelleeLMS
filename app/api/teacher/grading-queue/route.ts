@@ -1,9 +1,10 @@
 import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import type { Prisma } from "@/app/generated/prisma/client";
 import { NextResponse } from "next/server";
 
-/** Paginated grading queue (SUBMITTED / GRADED attempts for teacher’s assessments). */
+/** Paginated grading queue (SUBMITTED / GRADED attempts for teacher's assessments). */
 export async function GET(req: Request) {
   const gate = await requireTeacherPortal();
   if (!gate.ok) return gate.response;
@@ -16,7 +17,7 @@ export async function GET(req: Request) {
   pageSize = Math.min(Math.max(1, pageSize), 50);
 
   const where: Prisma.AttemptWhereInput = {
-    assessment: { createdById: session.user.id },
+    ...(isTeacherOwnershipRestricted(session) ? { assessment: { createdById: session.user.id } } : {}),
     status: { in: ["SUBMITTED", "GRADED"] },
   };
   if (assessmentId) {

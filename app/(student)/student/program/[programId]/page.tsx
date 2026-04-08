@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
+import { blobFileUrl } from "@/lib/blob-url";
 import {
   BookOpen,
   Eye,
@@ -234,9 +235,11 @@ function LessonContentPanel({
   const str = (key: string) => (typeof content?.[key] === "string" ? (content[key] as string) : null);
   const files = (key: string): string[] => {
     const v = content?.[key];
-    if (Array.isArray(v)) return v.filter((x): x is string => typeof x === "string");
-    if (typeof v === "string" && v) return [v];
-    return [];
+    let urls: string[];
+    if (Array.isArray(v)) urls = v.filter((x): x is string => typeof x === "string");
+    else if (typeof v === "string" && v) urls = [v];
+    else urls = [];
+    return urls.map((u) => blobFileUrl(u, undefined, true));
   };
 
   async function markDone() {
@@ -667,7 +670,7 @@ export default function StudentProgramDetailPage() {
                             <video
                               controls
                               className="w-full rounded-lg bg-black max-h-[400px]"
-                              src={rec.videoUrl}
+                              src={blobFileUrl(rec.videoUrl, undefined, true)}
                             />
                           </div>
                         )}

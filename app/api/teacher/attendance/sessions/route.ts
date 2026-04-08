@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     );
   }
 
-  const allowedBatchIds = await getTeacherVisibleBatchIds(session.user.id);
+  const allowedBatchIds = await getTeacherVisibleBatchIds(session.user.id, session);
   const hasBatchVisibility = allowedBatchIds.includes(batchId);
   if (!hasBatchVisibility) {
     const ownSession = await db.attendanceSession.findFirst({

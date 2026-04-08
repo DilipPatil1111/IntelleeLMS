@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   });
   if (!chapter) return NextResponse.json({ error: "Chapter not found" }, { status: 404 });
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", chapter.subject.programId);
+  const can = await staffCanAccessProgram(session.user.id, session, chapter.subject.programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   if (body.assessmentId) {

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { blobFileUrl } from "@/lib/blob-url";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -144,7 +145,7 @@ export function ApplicationsClient() {
                   <div className="flex items-center gap-3">
                     {app.applicant.profilePicture ? (
                       <Image
-                        src={app.applicant.profilePicture}
+                        src={blobFileUrl(app.applicant.profilePicture, undefined, true)}
                         alt=""
                         width={40}
                         height={40}

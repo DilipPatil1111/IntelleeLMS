@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "programId and name required" }, { status: 400 });
   }
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", body.programId);
+  const can = await staffCanAccessProgram(session.user.id, session, body.programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const code =

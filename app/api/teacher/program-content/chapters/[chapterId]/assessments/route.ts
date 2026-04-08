@@ -22,7 +22,7 @@ export async function GET(
   });
   if (!chapter) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", chapter.subject.programId);
+  const can = await staffCanAccessProgram(session.user.id, session, chapter.subject.programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   // Fetch all QUIZ assessments belonging to this program's subjects

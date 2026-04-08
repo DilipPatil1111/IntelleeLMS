@@ -18,7 +18,7 @@ export async function GET(req: Request) {
   let pageSize = Number.parseInt(searchParams.get("pageSize") || "15", 10) || 15;
   pageSize = Math.min(Math.max(1, pageSize), 100);
 
-  const batchIds = await getTeacherVisibleBatchIds(session.user.id);
+  const batchIds = await getTeacherVisibleBatchIds(session.user.id, session);
 
   const batchesMeta = await db.batch.findMany({
     where: { id: { in: batchIds } },

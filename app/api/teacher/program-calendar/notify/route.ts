@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { hasTeacherPortalAccess } from "@/lib/portal-access";
+import { hasTeacherPortalAccess, isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 import { formatYmd } from "@/lib/day-boundaries";
 
@@ -13,16 +13,18 @@ export async function POST(req: Request) {
   const { batchId, slotDate, message } = body as { batchId?: string; slotDate?: string; message?: string };
   if (!batchId || !slotDate) return NextResponse.json({ error: "batchId and slotDate required" }, { status: 400 });
 
-  const tp = await db.teacherProfile.findUnique({
-    where: { userId: session.user.id },
-    select: { id: true },
-  });
-  if (!tp) return NextResponse.json({ error: "No teacher profile" }, { status: 403 });
+  if (isTeacherOwnershipRestricted(session)) {
+    const tp = await db.teacherProfile.findUnique({
+      where: { userId: session.user.id },
+      select: { id: true },
+    });
+    if (!tp) return NextResponse.json({ error: "No teacher profile" }, { status: 403 });
 
-  const assigned = await db.teacherSubjectAssignment.findFirst({
-    where: { batchId, teacherProfileId: tp.id },
-  });
-  if (!assigned) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    const assigned = await db.teacherSubjectAssignment.findFirst({
+      where: { batchId, teacherProfileId: tp.id },
+    });
+    if (!assigned) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const teacher = await db.user.findUnique({
     where: { id: session.user.id },

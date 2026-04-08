@@ -47,7 +47,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ lessonI
   });
   if (!lesson) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", lesson.chapter.subject.programId);
+  const can = await staffCanAccessProgram(session.user.id, session, lesson.chapter.subject.programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const config = getAllowedConfig(lesson.kind);

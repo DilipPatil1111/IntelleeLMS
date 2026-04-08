@@ -10,6 +10,7 @@ import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Pagination } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
+import { blobFileUrl } from "@/lib/blob-url";
 import {
   Plus, FileText, Trash2, Edit, Eye, Send, CheckCircle2, Users, X,
   Image as ImageIcon, FileUp, Loader2, Palette,
@@ -399,7 +400,7 @@ export function CertificateTemplatesClient({ apiPrefix, programsApiUrl }: Props)
                   >
                     {t.backgroundUrl && !cardIsPdf && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={t.backgroundUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                      <img src={blobFileUrl(t.backgroundUrl, undefined, true)} alt="" className="absolute inset-0 w-full h-full object-cover" />
                     )}
                     {t.backgroundUrl && cardIsPdf && (
                       <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center">
@@ -571,10 +572,10 @@ export function CertificateTemplatesClient({ apiPrefix, programsApiUrl }: Props)
               {/* Background layer */}
               {form.backgroundUrl && !isPdf && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={form.backgroundUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                <img src={blobFileUrl(form.backgroundUrl, undefined, true)} alt="" className="absolute inset-0 w-full h-full object-cover" />
               )}
               {form.backgroundUrl && isPdf && (
-                <iframe src={`${form.backgroundUrl}#toolbar=0&navpanes=0&scrollbar=0`} className="absolute inset-0 w-full h-full border-0" title="PDF background" />
+                <iframe src={`${blobFileUrl(form.backgroundUrl, undefined, true)}#toolbar=0&navpanes=0&scrollbar=0`} className="absolute inset-0 w-full h-full border-0" title="PDF background" />
               )}
               {!form.backgroundUrl && (
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">

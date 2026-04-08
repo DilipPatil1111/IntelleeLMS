@@ -13,7 +13,7 @@ export async function GET(req: Request) {
 
   if (!batchId) return NextResponse.json({ students: [] });
 
-  const allowed = await getTeacherVisibleBatchIds(session.user.id);
+  const allowed = await getTeacherVisibleBatchIds(session.user.id, session);
   if (!allowed.includes(batchId)) return NextResponse.json({ students: [] });
 
   const students = await db.user.findMany({

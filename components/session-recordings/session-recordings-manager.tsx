@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Pagination } from "@/components/ui/pagination";
 import { Video, Trash2, Upload, Calendar, Clock } from "lucide-react";
+import { blobFileUrl } from "@/lib/blob-url";
 
 interface Recording {
   id: string;
@@ -188,7 +189,7 @@ export function SessionRecordingsManager({
                     </p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <a href={rec.videoUrl} target="_blank" rel="noopener noreferrer">
+                    <a href={blobFileUrl(rec.videoUrl, rec.fileName ?? rec.title, true)} target="_blank" rel="noopener noreferrer">
                       <Button size="sm" variant="outline">View</Button>
                     </a>
                     <Button

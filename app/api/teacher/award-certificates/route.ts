@@ -14,7 +14,7 @@ export async function GET(req: Request) {
   const programId = searchParams.get("programId");
   if (!programId) return NextResponse.json({ error: "programId required" }, { status: 400 });
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", programId);
+  const can = await staffCanAccessProgram(session.user.id, session, programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const students = await listStudentsForAwardCertificates(programId);

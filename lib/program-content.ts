@@ -1,23 +1,35 @@
 import { db } from "@/lib/db";
 import type { ProgramLessonKind, Role } from "@/app/generated/prisma/enums";
+import type { Session } from "next-auth";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 
+/**
+ * @param roleOrSession – pass a Session to auto-detect the real role,
+ *   or the legacy Role string for backward-compat callers.
+ */
 export async function staffCanAccessProgram(
   userId: string,
-  role: Role,
-  programId: string
+  roleOrSession: Role | Session,
+  programId: string,
 ): Promise<boolean> {
-  if (role === "PRINCIPAL") {
+  let restricted = true;
+
+  if (typeof roleOrSession === "string") {
+    restricted = roleOrSession !== "PRINCIPAL";
+  } else {
+    restricted = isTeacherOwnershipRestricted(roleOrSession);
+  }
+
+  if (!restricted) {
     const p = await db.program.findUnique({ where: { id: programId } });
     return !!p;
   }
-  if (role === "TEACHER") {
-    const tp = await db.teacherProfile.findUnique({
-      where: { userId },
-      include: { teacherPrograms: { where: { programId } } },
-    });
-    return (tp?.teacherPrograms.length ?? 0) > 0;
-  }
-  return false;
+
+  const tp = await db.teacherProfile.findUnique({
+    where: { userId },
+    include: { teacherPrograms: { where: { programId } } },
+  });
+  return (tp?.teacherPrograms.length ?? 0) > 0;
 }
 
 export async function getOrCreateProgramSyllabus(programId: string) {

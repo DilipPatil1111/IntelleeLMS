@@ -25,13 +25,13 @@ function toAssessmentType(t: QuizQuestion["type"]): "MCQ" | "SHORT" | "PARAGRAPH
   return "PARAGRAPH";
 }
 
-async function assertAccess(sessionUserId: string, lessonId: string) {
+async function assertAccess(sessionUserId: string, lessonId: string, session: Parameters<typeof staffCanAccessProgram>[1]) {
   const lesson = await db.programLesson.findUnique({
     where: { id: lessonId },
     include: { chapter: { include: { subject: true } } },
   });
   if (!lesson) return { error: "Not found" as const };
-  const can = await staffCanAccessProgram(sessionUserId, "TEACHER", lesson.chapter.subject.programId);
+  const can = await staffCanAccessProgram(sessionUserId, session, lesson.chapter.subject.programId);
   if (!can) return { error: "Forbidden" as const };
   return { lesson };
 }
@@ -42,7 +42,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ lessonI
   if (!hasTeacherPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { lessonId } = await params;
-  const a = await assertAccess(session.user.id, lessonId);
+  const a = await assertAccess(session.user.id, lessonId, session);
   if ("error" in a) return NextResponse.json({ error: a.error }, { status: a.error === "Not found" ? 404 : 403 });
 
   const body = (await req.json()) as {

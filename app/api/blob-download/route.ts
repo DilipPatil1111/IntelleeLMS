@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing url param" }, { status: 400 });
   }
 
-  const BLOB_URL_RE = /^https:\/\/[a-z0-9-]+\.(?:public\.)?blob\.vercel-storage\.com\//;
+  const BLOB_URL_RE = /^https:\/\/[a-z0-9-]+\.(?:public|private)\.blob\.vercel-storage\.com\//;
   if (!BLOB_URL_RE.test(blobUrl)) {
     return new NextResponse("Invalid blob URL", { status: 400 });
   }
