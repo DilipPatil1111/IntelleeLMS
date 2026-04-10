@@ -112,7 +112,8 @@ export const ModelName = {
   DocFolder: 'DocFolder',
   DocFile: 'DocFile',
   InspectionNote: 'InspectionNote',
-  SessionRecording: 'SessionRecording'
+  SessionRecording: 'SessionRecording',
+  AssessmentRetakeRequest: 'AssessmentRetakeRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1098,6 +1099,22 @@ export const SessionRecordingScalarFieldEnum = {
 } as const
 
 export type SessionRecordingScalarFieldEnum = (typeof SessionRecordingScalarFieldEnum)[keyof typeof SessionRecordingScalarFieldEnum]
+
+
+export const AssessmentRetakeRequestScalarFieldEnum = {
+  id: 'id',
+  assessmentId: 'assessmentId',
+  studentUserId: 'studentUserId',
+  status: 'status',
+  studentMessage: 'studentMessage',
+  staffMessage: 'staffMessage',
+  resolvedById: 'resolvedById',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentRetakeRequestScalarFieldEnum = (typeof AssessmentRetakeRequestScalarFieldEnum)[keyof typeof AssessmentRetakeRequestScalarFieldEnum]
 
 
 export const SortOrder = {

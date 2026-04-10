@@ -97,6 +97,10 @@ enum NotificationType {
   LOW_ATTENDANCE_STAFF
   /** Teacher requests calendar/hours correction for a batch date. */
   CALENDAR_HOURS_UPDATE_REQUEST
+  /** Student requests a retake for a below-passing assessment. */
+  RETAKE_REQUEST
+  /** Staff resolved a retake request (approved, excused, or denied). */
+  RETAKE_REQUEST_RESOLVED
 }
 
 /** Admission / enrollment lifecycle (principal may set Cancelled, Suspended, Expelled, Transferred). */
@@ -129,6 +133,13 @@ enum PolicyType {
   COLLEGE
   STUDENT
   OTHER
+}
+
+enum RetakeRequestStatus {
+  PENDING
+  APPROVED_RETAKE
+  EXCUSED
+  DENIED
 }
 
 enum ApplicationStatus {
@@ -240,6 +251,8 @@ model User {
   programEnrollments          ProgramEnrollment[]
   sessionRecordingsUploaded   SessionRecording[] @relation("SessionRecordingUploader")
   canvaAccount                CanvaAccount?
+  retakeRequestsAsStudent     AssessmentRetakeRequest[] @relation("RetakeRequestStudent")
+  retakeRequestsResolved      AssessmentRetakeRequest[] @relation("RetakeRequestResolver")
 }
 
 /** Stores Canva OAuth tokens for a user so they can design in Canva and import results. */
@@ -951,6 +964,7 @@ model Assessment {
   /** When empty, any student in the batch may see the assessment (legacy). */
   assignedStudents AssessmentAssignedStudent[]
   programLessons   ProgramLesson[] @relation("ProgramLessonAssessment")
+  retakeRequests   AssessmentRetakeRequest[]
 }
 
 model AssessmentAssignedStudent {
@@ -1391,4 +1405,28 @@ model SessionRecording {
 
   @@index([programId])
   @@index([sessionDate])
+}
+
+// ─── Assessment Retake Requests ─────────────────────────────────────
+
+/** A student requests a retake after failing an assessment; staff can approve retake or excuse for certificate. */
+model AssessmentRetakeRequest {
+  id              String              @id @default(cuid())
+  assessmentId    String
+  studentUserId   String
+  status          RetakeRequestStatus @default(PENDING)
+  studentMessage  String?             @db.Text
+  staffMessage    String?             @db.Text
+  resolvedById    String?
+  resolvedAt      DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  student    User       @relation("RetakeRequestStudent", fields: [studentUserId], references: [id], onDelete: Cascade)
+  resolvedBy User?      @relation("RetakeRequestResolver", fields: [resolvedById], references: [id])
+
+  @@unique([assessmentId, studentUserId])
+  @@index([studentUserId])
+  @@index([status])
 }

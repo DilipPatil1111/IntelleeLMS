@@ -327,3 +327,8 @@ export type InspectionNote = Prisma.InspectionNoteModel
  * 
  */
 export type SessionRecording = Prisma.SessionRecordingModel
+/**
+ * Model AssessmentRetakeRequest
+ * * A student requests a retake after failing an assessment; staff can approve retake or excuse for certificate.
+ */
+export type AssessmentRetakeRequest = Prisma.AssessmentRetakeRequestModel

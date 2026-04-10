@@ -21,6 +21,8 @@ type TeacherFooterRow = {
   byDate: Record<string, { hours: number; attendance: string }>;
 };
 
+type AssignedTeacher = { id: string; firstName: string; lastName: string };
+
 type GridData = {
   batch: {
     id: string;
@@ -34,6 +36,7 @@ type GridData = {
   dateMeta: Record<string, DateColumnMeta>;
   subjectName: string;
   teacherFooterRows?: TeacherFooterRow[];
+  assignedTeachers?: AssignedTeacher[];
 };
 
 type Opt = { value: string; label: string };
@@ -83,6 +86,9 @@ export function AttendanceProgramGridClient({
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState<{ date: string; studentId: string; letter: string }[]>([]);
   const [studentSubjects, setStudentSubjects] = useState<Opt[]>([]);
+  const [defaultStartTime, setDefaultStartTime] = useState("09:00");
+  const [defaultEndTime, setDefaultEndTime] = useState("17:00");
+  const [teacherId, setTeacherId] = useState("");
 
   useEffect(() => {
     if (apiRole === "student") {
@@ -135,6 +141,15 @@ export function AttendanceProgramGridClient({
     if (res.ok && hasGridShape) {
       setData(json as GridData);
       setDirty([]);
+      const gd = json as GridData;
+      if (gd.assignedTeachers && gd.assignedTeachers.length > 0) {
+        setTeacherId((prev) => {
+          const stillValid = gd.assignedTeachers!.some((t) => t.id === prev);
+          return stillValid ? prev : gd.assignedTeachers![0].id;
+        });
+      } else {
+        setTeacherId("");
+      }
     } else {
       setData(null);
       const msg =
@@ -152,6 +167,14 @@ export function AttendanceProgramGridClient({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadGrid();
   }, [loadGrid]);
+
+  const teacherOptions = useMemo((): Opt[] => {
+    if (!data?.assignedTeachers) return [];
+    return data.assignedTeachers.map((t) => ({
+      value: t.id,
+      label: `${t.firstName} ${t.lastName}`.trim(),
+    }));
+  }, [data]);
 
   const maxTeacherHourRows = useMemo(() => {
     if (!data?.dateMeta) return 0;
@@ -187,7 +210,14 @@ export function AttendanceProgramGridClient({
     await fetch(base, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ batchId, subjectId, changes: dirty }),
+      body: JSON.stringify({
+        batchId,
+        subjectId,
+        changes: dirty,
+        defaultStartTime,
+        defaultEndTime,
+        teacherId: teacherId || undefined,
+      }),
     });
     setSaving(false);
     setDirty([]);
@@ -209,17 +239,18 @@ export function AttendanceProgramGridClient({
     return `${bg} w-full min-h-[32px] ${cursor} border border-gray-200 text-center text-xs font-bold`;
   }
 
-  const studentTotalHours = useMemo(() => {
+  const studentTotals = useMemo(() => {
     if (!data) return {};
-    const out: Record<string, number> = {};
+    const out: Record<string, { hours: number; days: number }> = {};
     for (const s of data.students) {
       let t = 0;
+      let days = 0;
       for (const ymd of data.dateKeys) {
         const v = data.cells[s.id]?.[ymd] ?? "";
         const h = data.dateMeta[ymd]?.hoursForDay ?? 1;
-        if (v === "1" || v === "L") t += h;
+        if (v === "1" || v === "L") { t += h; days++; }
       }
-      out[s.id] = Math.round(t * 10) / 10;
+      out[s.id] = { hours: Math.round(t * 10) / 10, days };
     }
     return out;
   }, [data]);
@@ -242,16 +273,19 @@ export function AttendanceProgramGridClient({
     return out;
   }, [data]);
 
-  const teacherRowTotalHours = useCallback(
-    (row: TeacherFooterRow) => {
-      if (!data) return 0;
+  const teacherRowTotals = useCallback(
+    (row: TeacherFooterRow): { hours: number; days: number } => {
+      if (!data) return { hours: 0, days: 0 };
       let t = 0;
+      let days = 0;
       for (const ymd of data.dateKeys) {
-        t += row.byDate[ymd]?.hours ?? 0;
+        const cell = row.byDate[ymd];
+        t += cell?.hours ?? 0;
+        if (cell?.attendance === "P" || cell?.attendance === "L") days++;
       }
-      return Math.round(t * 10) / 10;
+      return { hours: Math.round(t * 10) / 10, days };
     },
-    [data]
+    [data],
   );
 
   return (
@@ -301,11 +335,53 @@ export function AttendanceProgramGridClient({
         )}
       </div>
 
-      <div className="mb-4 flex flex-wrap gap-2">
+      {/* ── Teacher, time range, Save ── */}
+      {!readOnly && data && (
+        <div className="mb-4 flex flex-wrap items-end gap-3">
+          {teacherOptions.length > 0 && (
+            <div className="min-w-[200px]">
+              <label className="block text-xs font-medium text-gray-600 mb-0.5">Teacher / Trainer</label>
+              <select
+                className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm"
+                value={teacherId}
+                onChange={(e) => setTeacherId(e.target.value)}
+              >
+                <option value="">Select teacher</option>
+                {teacherOptions.map((t) => (
+                  <option key={t.value} value={t.value}>{t.label}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-0.5">Session start</label>
+            <input
+              type="time"
+              value={defaultStartTime}
+              onChange={(e) => setDefaultStartTime(e.target.value)}
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-0.5">Session end</label>
+            <input
+              type="time"
+              value={defaultEndTime}
+              onChange={(e) => setDefaultEndTime(e.target.value)}
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+            />
+          </div>
+          <Button onClick={() => void save()} disabled={saving || dirty.length === 0}>
+            {saving ? "Saving…" : `Save ${dirty.length ? `(${dirty.length})` : ""}`}
+          </Button>
+        </div>
+      )}
+
+      <div className="mb-4 flex flex-wrap items-end gap-3">
         <Button variant="outline" onClick={() => void loadGrid()} disabled={loading}>
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Reload"}
         </Button>
-        {!readOnly && (
+        {!readOnly && !data && (
           <Button onClick={() => void save()} disabled={saving || dirty.length === 0}>
             {saving ? "Saving…" : `Save ${dirty.length ? `(${dirty.length})` : ""}`}
           </Button>
@@ -448,7 +524,8 @@ export function AttendanceProgramGridClient({
                         }`}
                         style={{ left: STICKY.totalLeft }}
                       >
-                        {studentTotalHours[s.id] ?? 0}
+                        <div>{studentTotals[s.id]?.hours ?? 0}</div>
+                        <div className="text-[9px] font-normal text-gray-500">{studentTotals[s.id]?.days ?? 0}d</div>
                       </td>
                       {data.dateKeys.map((ymd) => (
                         <td key={ymd} className="border border-gray-200 p-0">
@@ -512,7 +589,8 @@ export function AttendanceProgramGridClient({
                             }`}
                             style={{ left: STICKY.totalLeft }}
                           >
-                            {teacherRowTotalHours(row)}
+                            <div>{teacherRowTotals(row).hours}h</div>
+                            <div className="text-[9px] font-normal text-indigo-700">{teacherRowTotals(row).days}d</div>
                           </td>
                           {data.dateKeys.map((ymd) => {
                             const cell = row.byDate[ymd];

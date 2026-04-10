@@ -1,6 +1,5 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { PageHeader } from "@/components/layout/page-header";
@@ -35,14 +34,30 @@ export default async function StudentAssessmentsPage() {
     );
   }
 
-  const batchId = user.studentProfile.batchId;
+  // Collect ALL batch IDs from primary profile + enrollments
+  const allBatchIds = new Set<string>();
+  if (user.studentProfile.batchId) allBatchIds.add(user.studentProfile.batchId);
 
-  // Fetch all visible assessments (current + closed/graded) including program info
-  const allAssessments = batchId
+  const enrollments = await db.programEnrollment.findMany({
+    where: { userId: user.id, status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] } },
+    select: { batchId: true },
+  });
+  for (const e of enrollments) {
+    if (e.batchId) allBatchIds.add(e.batchId);
+  }
+
+  const batchIdArray = [...allBatchIds];
+
+  // Fetch all visible assessments across ALL enrolled batches
+  const allAssessments = batchIdArray.length > 0
     ? await db.assessment.findMany({
         where: {
           status: { in: ["PUBLISHED", "CLOSED", "GRADED"] },
-          AND: [studentVisibleAssessmentFilter(user.id, batchId)],
+          batchId: { in: batchIdArray },
+          OR: [
+            { assignedStudents: { none: {} } },
+            { assignedStudents: { some: { studentId: user.id } } },
+          ],
         },
         include: {
           subject: true,
@@ -56,6 +71,18 @@ export default async function StudentAssessmentsPage() {
         orderBy: { createdAt: "desc" },
       })
     : [];
+
+  // Fetch retake requests for this student (safe if table doesn't exist yet)
+  let retakeMap = new Map<string, string>();
+  try {
+    const retakeRequests = await db.assessmentRetakeRequest.findMany({
+      where: { studentUserId: user.id },
+      select: { assessmentId: true, status: true },
+    });
+    retakeMap = new Map(retakeRequests.map((r) => [r.assessmentId, r.status]));
+  } catch {
+    // Table may not exist yet before migration runs
+  }
 
   // Split into pending (no completed attempt) and history (submitted/graded)
   const pending = allAssessments.filter((a) => {
@@ -90,6 +117,7 @@ export default async function StudentAssessmentsPage() {
       <AssessmentsListClient
         pending={JSON.parse(JSON.stringify(pending))}
         historyByProgram={JSON.parse(JSON.stringify(historyGroups))}
+        retakeStatuses={Object.fromEntries(retakeMap)}
       />
     </>
   );

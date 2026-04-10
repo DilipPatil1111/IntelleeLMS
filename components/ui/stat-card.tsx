@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 interface StatCardProps {
   title: string;
   value: string | number;
+  subtitle?: string;
   icon?: ReactNode;
   trend?: { value: number; label: string };
   className?: string;
@@ -18,7 +19,7 @@ const variantStyles: Record<string, { bg: string; iconBg: string; iconText: stri
   rose: { bg: "bg-gradient-to-br from-rose-50 to-white", iconBg: "bg-rose-100", iconText: "text-rose-600" },
 };
 
-export function StatCard({ title, value, icon, trend, className, variant = "default" }: StatCardProps) {
+export function StatCard({ title, value, subtitle, icon, trend, className, variant = "default" }: StatCardProps) {
   const v = variantStyles[variant] ?? variantStyles.default;
   return (
     <div className={cn(
@@ -35,6 +36,9 @@ export function StatCard({ title, value, icon, trend, className, variant = "defa
         )}
       </div>
       <p className="mt-2 text-3xl font-bold text-gray-900">{value}</p>
+      {subtitle && (
+        <p className="mt-1 text-sm font-medium text-gray-500">{subtitle}</p>
+      )}
       {trend && (
         <p className={cn("mt-2 text-sm font-medium", trend.value >= 0 ? "text-green-600" : "text-red-600")}>
           {trend.value >= 0 ? "↑" : "↓"} {Math.abs(trend.value)}% {trend.label}

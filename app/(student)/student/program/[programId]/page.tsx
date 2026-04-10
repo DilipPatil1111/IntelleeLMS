@@ -420,7 +420,7 @@ function LessonContentPanel({
       </div>
 
       {/* Footer */}
-      {lesson.kind !== "QUIZ" && lesson.kind !== "SURVEY" && (
+      {lesson.kind !== "QUIZ" && (
         <div className="border-t border-gray-200 bg-gray-50 px-6 py-4 flex items-center justify-between">
           <div>
             {lesson.isCompleted && (
@@ -429,11 +429,16 @@ function LessonContentPanel({
               </span>
             )}
           </div>
-          {!lesson.isCompleted && (
+          {!lesson.isCompleted && lesson.kind === "SURVEY" && (
             <button type="button" onClick={markDone} disabled={completing}
               className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 transition-colors">
-              {completing ? "Saving…" : "Mark Complete"}
+              {completing ? "Saving…" : "Submit Survey"}
             </button>
+          )}
+          {!lesson.isCompleted && lesson.kind !== "SURVEY" && (
+            <span className="text-sm text-gray-500 italic">
+              Use &ldquo;Mark Chapter Complete&rdquo; to complete all lessons in this chapter
+            </span>
           )}
         </div>
       )}
@@ -457,6 +462,7 @@ export default function StudentProgramDetailPage() {
   const [recordings, setRecordings] = useState<SessionRecording[]>([]);
   const [recordingsOpen, setRecordingsOpen] = useState(false);
   const [expandedRecording, setExpandedRecording] = useState<string | null>(null);
+  const [markingChapter, setMarkingChapter] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     try {
@@ -491,6 +497,21 @@ export default function StudentProgramDetailPage() {
         .flatMap((ch: ChapterData) => ch.lessons);
       const updated = updatedLessons.find((l: LessonData) => l.id === lessonId);
       if (updated) setActiveLesson(updated);
+    }
+  }
+
+  async function markChapterComplete(chapterId: string) {
+    setMarkingChapter(chapterId);
+    try {
+      const res = await fetch(`/api/student/program-content/chapters/${chapterId}/complete`, { method: "POST" });
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        alert(e.error || "Failed to mark chapter complete");
+        return;
+      }
+      await loadData();
+    } finally {
+      setMarkingChapter(null);
     }
   }
 
@@ -807,38 +828,59 @@ export default function StudentProgramDetailPage() {
                                     No lessons available.
                                   </div>
                                 ) : (
-                                  <div className="divide-y divide-gray-100">
-                                    {ch.lessons.map((les) => {
-                                      const isActive = activeLesson?.id === les.id;
-                                      return (
+                                  <>
+                                    <div className="divide-y divide-gray-100">
+                                      {ch.lessons.map((les) => {
+                                        const isActive = activeLesson?.id === les.id;
+                                        return (
+                                          <button
+                                            key={les.id}
+                                            type="button"
+                                            onClick={() => setActiveLesson(isActive ? null : les)}
+                                            className={`w-full flex items-center gap-3 px-10 py-2.5 text-left transition-colors ${
+                                              isActive
+                                                ? "bg-indigo-50 border-l-2 border-indigo-500"
+                                                : "hover:bg-white"
+                                            }`}
+                                          >
+                                            {les.isCompleted
+                                              ? <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
+                                              : <Circle className="h-4 w-4 text-gray-300 shrink-0" />}
+                                            <span className="text-gray-400 shrink-0">{LESSON_ICONS[les.kind]}</span>
+                                            <span className="flex-1 text-sm text-gray-700">{les.title}</span>
+                                            {les.isCompleted ? (
+                                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-green-50 text-green-700">
+                                                Completed
+                                              </span>
+                                            ) : (
+                                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-gray-100 text-gray-500">
+                                                Pending
+                                              </span>
+                                            )}
+                                          </button>
+                                        );
+                                      })}
+                                    </div>
+                                    {/* Mark Chapter Complete button */}
+                                    {!ch.lessons.every((l) => l.isCompleted) && (
+                                      <div className="border-t border-gray-200 px-6 py-3 flex justify-end">
                                         <button
-                                          key={les.id}
                                           type="button"
-                                          onClick={() => setActiveLesson(isActive ? null : les)}
-                                          className={`w-full flex items-center gap-3 px-10 py-2.5 text-left transition-colors ${
-                                            isActive
-                                              ? "bg-indigo-50 border-l-2 border-indigo-500"
-                                              : "hover:bg-white"
-                                          }`}
+                                          disabled={markingChapter === ch.id}
+                                          onClick={(e) => { e.stopPropagation(); markChapterComplete(ch.id); }}
+                                          className="flex items-center gap-1.5 rounded-lg bg-green-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-green-700 active:bg-green-800 transition-colors disabled:opacity-50"
                                         >
-                                          {les.isCompleted
-                                            ? <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
-                                            : <Circle className="h-4 w-4 text-gray-300 shrink-0" />}
-                                          <span className="text-gray-400 shrink-0">{LESSON_ICONS[les.kind]}</span>
-                                          <span className="flex-1 text-sm text-gray-700">{les.title}</span>
-                                          {les.isCompleted ? (
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-green-50 text-green-700">
-                                              Completed
-                                            </span>
-                                          ) : (
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-gray-100 text-gray-500">
-                                              Pending
-                                            </span>
-                                          )}
+                                          <CheckCircle className="h-4 w-4" />
+                                          {markingChapter === ch.id ? "Marking…" : "Mark Chapter Complete"}
                                         </button>
-                                      );
-                                    })}
-                                  </div>
+                                      </div>
+                                    )}
+                                    {ch.lessons.every((l) => l.isCompleted) && (
+                                      <div className="border-t border-gray-200 px-6 py-3 flex items-center gap-2 text-green-700 text-sm font-semibold">
+                                        <CheckCircle className="h-4 w-4" /> Chapter completed
+                                      </div>
+                                    )}
+                                  </>
                                 )}
                               </div>
                             )}

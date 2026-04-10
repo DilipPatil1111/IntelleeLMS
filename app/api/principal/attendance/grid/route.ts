@@ -35,10 +35,13 @@ export async function POST(req: Request) {
     if (!hasPrincipalPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     const body = await req.json().catch(() => ({}));
-    const { batchId, subjectId, changes } = body as {
+    const { batchId, subjectId, changes, defaultStartTime, defaultEndTime, teacherId } = body as {
       batchId?: string;
       subjectId?: string;
       changes?: { date: string; studentId: string; letter: string }[];
+      defaultStartTime?: string;
+      defaultEndTime?: string;
+      teacherId?: string;
     };
     if (!batchId || !subjectId || !Array.isArray(changes)) {
       return NextResponse.json({ error: "batchId, subjectId, changes[] required" }, { status: 400 });
@@ -49,6 +52,9 @@ export async function POST(req: Request) {
       subjectId,
       createdById: session.user.id,
       changes,
+      autoMarkTeacherId: teacherId || undefined,
+      defaultStartTime: defaultStartTime || undefined,
+      defaultEndTime: defaultEndTime || undefined,
     });
 
     await evaluateLowAttendanceForStudents(batchId, updatedStudents);

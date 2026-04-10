@@ -1234,13 +1234,15 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
                                         })}
                                       </div>
                                     )}
-                                    <button
-                                      type="button"
-                                      className="w-full flex items-center gap-2 px-10 py-2 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50/60 transition-colors"
-                                      onClick={() => openAddLesson(ch.id)}
-                                    >
-                                      <Plus className="h-3.5 w-3.5" /> Add lesson
-                                    </button>
+                                    <div className="flex items-center gap-2 px-10 py-2">
+                                      <button
+                                        type="button"
+                                        className="flex items-center gap-2 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50/60 transition-colors rounded px-2 py-1"
+                                        onClick={() => openAddLesson(ch.id)}
+                                      >
+                                        <Plus className="h-3.5 w-3.5" /> Add lesson
+                                      </button>
+                                    </div>
                                   </div>
                                 )}
                               </div>
@@ -1609,10 +1611,12 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
         }
         editing={lessonModal.editing}
         apiPrefix={apiPrefix}
+        programPublished={syllabus?.isPublished ?? false}
         onSaved={() => {
           if (selectedProgram) loadSubjectsAndTree(selectedProgram.id);
         }}
       />
+
     </div>
   );
 }

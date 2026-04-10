@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
-import { CheckCircle, Clock, BookOpen, TrendingUp, FileText } from "lucide-react";
+import {
+  CheckCircle, Clock, BookOpen, TrendingUp, FileText,
+  RotateCcw, ShieldCheck, X, Send,
+} from "lucide-react";
 
 const PAGE_SIZE = 10;
 
@@ -27,11 +31,38 @@ type Assessment = {
 interface Props {
   pending: Assessment[];
   historyByProgram: { key: string; programName: string; items: Assessment[] }[];
+  retakeStatuses?: Record<string, string>;
 }
 
-export function AssessmentsListClient({ pending, historyByProgram }: Props) {
+export function AssessmentsListClient({ pending, historyByProgram, retakeStatuses = {} }: Props) {
   const [pendingPage, setPendingPage] = useState(1);
   const [historyPage, setHistoryPage] = useState(1);
+  const [retakeModal, setRetakeModal] = useState<{ id: string; title: string } | null>(null);
+  const [retakeMessage, setRetakeMessage] = useState("");
+  const [retakeSubmitting, setRetakeSubmitting] = useState(false);
+  const [localRetakeStatuses, setLocalRetakeStatuses] = useState<Record<string, string>>(retakeStatuses);
+
+  const handleRetakeRequest = useCallback(async () => {
+    if (!retakeModal) return;
+    setRetakeSubmitting(true);
+    try {
+      const res = await fetch("/api/student/retake-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assessmentId: retakeModal.id, message: retakeMessage }),
+      });
+      if (res.ok) {
+        setLocalRetakeStatuses((prev) => ({ ...prev, [retakeModal.id]: "PENDING" }));
+        setRetakeModal(null);
+        setRetakeMessage("");
+      } else {
+        const errBody = await res.json().catch(() => null);
+        alert(errBody?.error ?? "Failed to submit retake request");
+      }
+    } finally {
+      setRetakeSubmitting(false);
+    }
+  }, [retakeModal, retakeMessage]);
 
   const pendingTotalPages = Math.ceil(pending.length / PAGE_SIZE);
   const paginatedPending = pending.slice((pendingPage - 1) * PAGE_SIZE, pendingPage * PAGE_SIZE);
@@ -206,13 +237,58 @@ export function AssessmentsListClient({ pending, historyByProgram }: Props) {
                                 <FileText className="h-3.5 w-3.5" />
                                 Results
                               </Link>
-                              {isGraded && (
-                                <Link href={`/student/assessments/${assessment.id}/take`}
-                                  className="flex items-center gap-1.5 rounded-lg border border-indigo-200 px-3 py-1.5 text-xs font-medium text-indigo-600 hover:bg-indigo-50 transition-colors">
-                                  <CheckCircle className="h-3.5 w-3.5" />
-                                  Retake
-                                </Link>
-                              )}
+                              {(() => {
+                                const rrStatus = localRetakeStatuses[assessment.id];
+                                if (isGraded && !passed && !rrStatus) {
+                                  return (
+                                    <button
+                                      onClick={() => setRetakeModal({ id: assessment.id, title: assessment.title })}
+                                      className="flex items-center gap-1.5 rounded-lg border border-orange-200 px-3 py-1.5 text-xs font-medium text-orange-600 hover:bg-orange-50 transition-colors"
+                                    >
+                                      <RotateCcw className="h-3.5 w-3.5" />
+                                      Request Retake
+                                    </button>
+                                  );
+                                }
+                                if (rrStatus === "PENDING") {
+                                  return (
+                                    <span className="flex items-center gap-1 text-xs text-yellow-700 bg-yellow-50 rounded-lg px-3 py-1.5 border border-yellow-200">
+                                      <Clock className="h-3.5 w-3.5" /> Retake Requested
+                                    </span>
+                                  );
+                                }
+                                if (rrStatus === "APPROVED_RETAKE") {
+                                  return (
+                                    <Link href={`/student/assessments/${assessment.id}/take`}
+                                      className="flex items-center gap-1.5 rounded-lg border border-green-200 px-3 py-1.5 text-xs font-medium text-green-600 hover:bg-green-50 transition-colors">
+                                      <RotateCcw className="h-3.5 w-3.5" />
+                                      Retake Now
+                                    </Link>
+                                  );
+                                }
+                                if (rrStatus === "EXCUSED") {
+                                  return (
+                                    <span className="flex items-center gap-1 text-xs text-orange-700 bg-orange-50 rounded-lg px-3 py-1.5 border border-orange-200">
+                                      <ShieldCheck className="h-3.5 w-3.5" /> Excused
+                                    </span>
+                                  );
+                                }
+                                if (rrStatus === "DENIED") {
+                                  return (
+                                    <span className="flex items-center gap-1 text-xs text-red-700 bg-red-50 rounded-lg px-3 py-1.5 border border-red-200">
+                                      <X className="h-3.5 w-3.5" /> Denied
+                                    </span>
+                                  );
+                                }
+                                if (isGraded && passed) {
+                                  return (
+                                    <span className="flex items-center gap-1 text-xs text-green-700 bg-green-50 rounded-lg px-3 py-1.5">
+                                      <CheckCircle className="h-3.5 w-3.5" /> Passed
+                                    </span>
+                                  );
+                                }
+                                return null;
+                              })()}
                             </div>
                           </div>
                         );
@@ -233,6 +309,54 @@ export function AssessmentsListClient({ pending, historyByProgram }: Props) {
           </>
         )}
       </section>
+
+      {/* ── Retake Request Modal ──────────────────────────────────────── */}
+      {retakeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-full max-w-md rounded-xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b px-6 py-4">
+              <h3 className="text-lg font-semibold text-gray-900">Request Retake</h3>
+              <button
+                onClick={() => { setRetakeModal(null); setRetakeMessage(""); }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="px-6 py-4 space-y-4">
+              <p className="text-sm text-gray-600">
+                Request a retake for <span className="font-semibold">{retakeModal.title}</span>. Your
+                teacher or principal will review this request.
+              </p>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Reason for retake (optional)
+                </label>
+                <textarea
+                  value={retakeMessage}
+                  onChange={(e) => setRetakeMessage(e.target.value)}
+                  rows={3}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Explain why you'd like to retake this assessment..."
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 border-t px-6 py-4">
+              <Button
+                variant="outline"
+                onClick={() => { setRetakeModal(null); setRetakeMessage(""); }}
+                disabled={retakeSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleRetakeRequest} disabled={retakeSubmitting}>
+                <Send className="h-3.5 w-3.5 mr-1" />
+                {retakeSubmitting ? "Submitting..." : "Submit Request"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -53,6 +53,8 @@ type Consolidated = {
     absent: number;
     late: number;
     excused: number;
+    totalSessions: number;
+    presentHours: number;
   }>;
   byTeacher: Array<{
     name: string;
@@ -118,6 +120,10 @@ export function PrincipalAttendanceDashboard({
   const [teacherOpts, setTeacherOpts] = useState<{ value: string; label: string }[]>([]);
   const [subjects, setSubjects] = useState<{ value: string; label: string }[]>([]);
   const [savingAdd, setSavingAdd] = useState(false);
+
+  const [sessTeacher, setSessTeacher] = useState("");
+  const [sessProgram, setSessProgram] = useState("");
+  const [sessBatch, setSessBatch] = useState("");
 
   const batchesFiltered = useMemo(() => {
     if (!programId) return batches;
@@ -259,6 +265,45 @@ export function PrincipalAttendanceDashboard({
     }
   }
 
+  const sessTeacherOpts = useMemo(() => {
+    if (!data) return [];
+    const names = new Set<string>();
+    for (const s of data.sessions) {
+      if (s.teacherAttendance) names.add(s.teacherAttendance.teacherName);
+    }
+    return [...names].sort().map((n) => ({ value: n, label: n }));
+  }, [data]);
+
+  const sessProgramOpts = useMemo(() => {
+    if (!data) return [];
+    const map = new Map<string, string>();
+    for (const s of data.sessions) map.set(s.batch.program.id, s.batch.program.name);
+    return [...map.entries()]
+      .sort((a, b) => a[1].localeCompare(b[1]))
+      .map(([id, name]) => ({ value: id, label: name }));
+  }, [data]);
+
+  const sessBatchOpts = useMemo(() => {
+    if (!data) return [];
+    const map = new Map<string, { name: string; programId: string }>();
+    for (const s of data.sessions) map.set(s.batch.id, { name: s.batch.name, programId: s.batch.program.id });
+    let entries = [...map.entries()];
+    if (sessProgram) entries = entries.filter(([, v]) => v.programId === sessProgram);
+    return entries
+      .sort((a, b) => a[1].name.localeCompare(b[1].name))
+      .map(([id, v]) => ({ value: id, label: v.name }));
+  }, [data, sessProgram]);
+
+  const filteredSessions = useMemo(() => {
+    if (!data) return [];
+    return data.sessions.filter((s) => {
+      if (sessTeacher && s.teacherAttendance?.teacherName !== sessTeacher) return false;
+      if (sessProgram && s.batch.program.id !== sessProgram) return false;
+      if (sessBatch && s.batch.id !== sessBatch) return false;
+      return true;
+    });
+  }, [data, sessTeacher, sessProgram, sessBatch]);
+
   const th = "px-3 py-2 text-left text-xs font-semibold uppercase text-gray-500";
   const td = "px-3 py-2 text-sm text-gray-800";
 
@@ -399,7 +444,10 @@ export function PrincipalAttendanceDashboard({
                       <th className={th}>P</th>
                       <th className={th}>A</th>
                       <th className={th}>L</th>
+                      <th className={th}>E</th>
                       <th className={th}>Total attendance</th>
+                      <th className={th}>Total sessions</th>
+                      <th className={th}>Total hours</th>
                       <th className={th}>Rate</th>
                     </tr>
                   </thead>
@@ -415,7 +463,10 @@ export function PrincipalAttendanceDashboard({
                         <td className={td}>{r.present}</td>
                         <td className={td}>{r.absent}</td>
                         <td className={td}>{r.late}</td>
-                        <td className={td}>{r.present + r.late}</td>
+                        <td className={td}>{r.excused}</td>
+                        <td className={`${td} font-semibold`}>{r.present + r.late}</td>
+                        <td className={td}>{r.totalSessions}</td>
+                        <td className={td}>{r.presentHours} h</td>
                         <td className={td}>{r.rate != null ? `${r.rate}%` : "—"}</td>
                       </tr>
                     ))}
@@ -456,17 +507,42 @@ export function PrincipalAttendanceDashboard({
           </div>
 
           <Card>
-            <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
-              <div>
-                <CardTitle className="text-base">Sessions (edit / delete)</CardTitle>
-                <p className="text-sm text-gray-500">
-                  Edit teacher self-attendance or delete a session. Edit <strong>student</strong> attendance in bulk via{" "}
-                  <strong>Program sheet</strong> (same batch + subject).
-                </p>
+            <CardHeader className="space-y-3">
+              <div className="flex flex-row flex-wrap items-center justify-between gap-2">
+                <div>
+                  <CardTitle className="text-base">Sessions (edit / delete)</CardTitle>
+                  <p className="text-sm text-gray-500">
+                    Edit teacher self-attendance or delete a session. Edit <strong>student</strong> attendance in bulk via{" "}
+                    <strong>Program sheet</strong> (same batch + subject).
+                  </p>
+                </div>
+                <Button onClick={() => setAddOpen(true)} className="shrink-0">
+                  <Plus className="h-4 w-4 mr-1" /> Add session
+                </Button>
               </div>
-              <Button onClick={() => setAddOpen(true)} className="shrink-0">
-                <Plus className="h-4 w-4 mr-1" /> Add session
-              </Button>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Select
+                  label="Teacher"
+                  value={sessTeacher}
+                  onChange={(e) => setSessTeacher(e.target.value)}
+                  options={sessTeacherOpts}
+                  placeholder="All teachers"
+                />
+                <Select
+                  label="Program"
+                  value={sessProgram}
+                  onChange={(e) => { setSessProgram(e.target.value); setSessBatch(""); }}
+                  options={sessProgramOpts}
+                  placeholder="All programs"
+                />
+                <Select
+                  label="Batch"
+                  value={sessBatch}
+                  onChange={(e) => setSessBatch(e.target.value)}
+                  options={sessBatchOpts}
+                  placeholder="All batches"
+                />
+              </div>
             </CardHeader>
             <CardContent className="overflow-x-auto p-0">
               <table className="min-w-full text-sm">
@@ -481,7 +557,7 @@ export function PrincipalAttendanceDashboard({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {data.sessions.map((s) => (
+                  {filteredSessions.map((s) => (
                     <tr key={s.id}>
                       <td className={`${td} whitespace-nowrap tabular-nums`}>
                         {s.sessionDate}

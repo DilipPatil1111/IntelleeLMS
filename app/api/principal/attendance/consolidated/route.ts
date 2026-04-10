@@ -92,6 +92,8 @@ export async function GET(req: Request) {
     absent: number;
     late: number;
     excused: number;
+    totalSessions: number;
+    presentHours: number;
   };
   type TeachAgg = {
     teacherId: string;
@@ -169,9 +171,16 @@ export async function GET(req: Request) {
           absent: 0,
           late: 0,
           excused: 0,
+          totalSessions: 0,
+          presentHours: 0,
         });
       }
       const sg = studentMap.get(pk)!;
+      sg.totalSessions += 1;
+      if (r.status === "PRESENT" || r.status === "LATE") {
+        const mins = slotDurationMinutes(s.startTime, s.endTime);
+        if (mins > 0) sg.presentHours += mins / 60;
+      }
       if (r.status === "PRESENT") {
         sg.present += 1;
         pg.present += 1;
@@ -250,6 +259,10 @@ export async function GET(req: Request) {
       rate: ratePct(r.present, r.absent, r.late, r.excused),
     }))
     .sort((a, b) => a.programName.localeCompare(b.programName) || a.batchName.localeCompare(b.batchName));
+
+  for (const sg of studentMap.values()) {
+    sg.presentHours = Math.round(sg.presentHours * 10) / 10;
+  }
 
   const byStudent = [...studentMap.values()]
     .map((r) => ({

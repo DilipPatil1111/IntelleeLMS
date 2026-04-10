@@ -30,6 +30,7 @@ const DELEGATES_USED_APP_WIDE = [
   "holiday",
   "user",
   "canvaAccount",
+  "assessmentRetakeRequest",
 ] as const;
 
 function prismaClientIsComplete(
