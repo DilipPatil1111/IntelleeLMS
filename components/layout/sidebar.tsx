@@ -11,7 +11,6 @@ import {
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
   Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive, Building2, ShieldCheck,
-  Video, RotateCcw,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -32,7 +31,6 @@ const studentNav: NavItem[] = [
   { label: "Results", href: "/student/results", icon: Award },
   { label: "Attendance", href: "/student/attendance", icon: Calendar },
   { label: "Full Calendar", href: "/student/full-calendar", icon: CalendarRange },
-  { label: "Holidays", href: "/student/holidays", icon: Calendar },
   { label: "Fees", href: "/student/fees", icon: DollarSign },
   { label: "Pending Actions", href: "/student/pending-actions", icon: AlertCircle },
   { label: "Notifications", href: "/student/notifications", icon: Bell },
@@ -50,15 +48,12 @@ const teacherNav: NavItem[] = [
   { label: "Full Calendar", href: "/teacher/full-calendar", icon: CalendarRange },
   { label: "Holidays", href: "/teacher/holidays", icon: Calendar },
   { label: "Students", href: "/teacher/students", icon: GraduationCap },
-  { label: "Feedback", href: "/teacher/feedback", icon: MessageSquare },
   { label: "Reports", href: "/teacher/reports", icon: BarChart3 },
-  { label: "Subjects", href: "/teacher/subjects", icon: BookOpen },
-  { label: "Course Content", href: "/teacher/modules", icon: BookMarked },
   { label: "Program Content", href: "/teacher/program-content", icon: Layers },
-  { label: "Session Recordings", href: "/teacher/session-recordings", icon: Video },
   { label: "Award Certificates", href: "/teacher/award-certificates", icon: Award },
-  { label: "Retake Requests", href: "/teacher/retake-requests", icon: RotateCcw },
+  { label: "Pending Actions", href: "/teacher/pending-actions", icon: AlertCircle },
   { label: "Templates", href: "/teacher/certificate-templates", icon: FolderOpen },
+  { label: "Feedback", href: "/teacher/feedback", icon: MessageSquare },
   { label: "Settings", href: "/teacher/settings", icon: Settings },
 ];
 
@@ -66,7 +61,6 @@ const principalNav: NavItem[] = [
   { label: "Dashboard", href: "/principal", icon: LayoutDashboard },
   { label: "My Profile", href: "/principal/my-profile", icon: Users },
   { label: "Applications", href: "/principal/applications", icon: FileCheck },
-  { label: "Feedback", href: "/principal/feedback", icon: MessageSquare },
   { label: "Onboarding review", href: "/principal/onboarding-review", icon: ClipboardList },
   { label: "All Assessments", href: "/principal/assessments", icon: FileText },
   { label: "Students", href: "/principal/students", icon: GraduationCap },
@@ -75,9 +69,8 @@ const principalNav: NavItem[] = [
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
   { label: "Full Calendar", href: "/principal/full-calendar", icon: CalendarRange },
   { label: "Program Content", href: "/principal/program-content", icon: Layers },
-  { label: "Session Recordings", href: "/principal/session-recordings", icon: Video },
   { label: "Award Certificates", href: "/principal/award-certificates", icon: Award },
-  { label: "Retake Requests", href: "/principal/retake-requests", icon: RotateCcw },
+  { label: "Pending Actions", href: "/principal/pending-actions", icon: AlertCircle },
   { label: "Institution profile", href: "/principal/institution-profile", icon: Building2 },
   { label: "Academic years", href: "/principal/academic-years", icon: CalendarRange },
   { label: "Batches", href: "/principal/batches", icon: Layers },
@@ -89,6 +82,7 @@ const principalNav: NavItem[] = [
   { label: "Templates", href: "/principal/shared-documents", icon: FolderOpen },
   { label: "Inspection Binder", href: "/principal/inspection-binder", icon: Archive },
   { label: "Student Fees", href: "/principal/student-fees", icon: DollarSign },
+  { label: "Feedback", href: "/principal/feedback", icon: MessageSquare },
   { label: "Settings", href: "/principal/settings", icon: Settings },
 ];
 

@@ -4,11 +4,11 @@ import { sendEmailWithSignature } from "@/lib/email-signature";
 const COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
 
 function countsTowardDenominator(status: string): boolean {
-  return status === "PRESENT" || status === "ABSENT" || status === "LATE";
+  return status === "PRESENT" || status === "ABSENT" || status === "LATE" || status === "EXCUSED";
 }
 
 function countsAsAttended(status: string): boolean {
-  return status === "PRESENT" || status === "LATE";
+  return status === "PRESENT" || status === "LATE" || status === "EXCUSED";
 }
 
 /**

@@ -47,7 +47,7 @@ export default async function StudentDashboard() {
       : 0;
   const totalRecords = user.attendanceRecords.length;
   const presentRecords = user.attendanceRecords.filter(
-    (r) => r.status === "PRESENT" || r.status === "LATE"
+    (r) => r.status === "PRESENT" || r.status === "LATE" || r.status === "EXCUSED"
   ).length;
   const attendanceRate =
     totalRecords > 0
@@ -57,7 +57,7 @@ export default async function StudentDashboard() {
   let attendanceTotalMinutes = 0;
   const attendanceDaySet = new Set<string>();
   for (const rec of user.attendanceRecords) {
-    if (rec.status === "PRESENT" || rec.status === "LATE") {
+    if (rec.status === "PRESENT" || rec.status === "LATE" || rec.status === "EXCUSED") {
       const mins = slotDurationMinutes(rec.session.startTime, rec.session.endTime);
       attendanceTotalMinutes += mins;
       const d = rec.session.sessionDate;

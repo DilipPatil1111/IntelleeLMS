@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import type { ProgramLessonKind, Role } from "@/app/generated/prisma/enums";
+import type { ProgramLessonKind, Role, StudentStatus } from "@/app/generated/prisma/enums";
 import type { Session } from "next-auth";
 import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
@@ -114,7 +114,7 @@ export async function isProgramContentCompleteForStudent(
   programId: string
 ): Promise<boolean> {
   const lessons = await getRequiredLessonsForProgram(programId);
-  if (lessons.length === 0) return false;
+  // No published lessons means no lesson requirements — treated as complete
   for (const lesson of lessons) {
     const ok = await isLessonSatisfiedForStudent(studentUserId, lesson);
     if (!ok) return false;
@@ -202,9 +202,11 @@ export async function listStudentsForAwardCertificates(
   programId: string,
   batchId?: string | null,
 ): Promise<EligibleRow[]> {
-  const profileWhere: { programId: string; status: { in: string[] }; batchId?: string } = {
+  const activeStatuses: StudentStatus[] = ["ENROLLED", "COMPLETED", "GRADUATED"];
+
+  const profileWhere: { programId: string; status: { in: StudentStatus[] }; batchId?: string } = {
     programId,
-    status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] },
+    status: { in: activeStatuses },
   };
   if (batchId) profileWhere.batchId = batchId;
 
@@ -214,9 +216,9 @@ export async function listStudentsForAwardCertificates(
     orderBy: { enrollmentNo: "asc" },
   });
 
-  const enrollmentWhere: { programId: string; status: { in: string[] }; batchId?: string } = {
+  const enrollmentWhere: { programId: string; status: { in: StudentStatus[] }; batchId?: string } = {
     programId,
-    status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] },
+    status: { in: activeStatuses },
   };
   if (batchId) enrollmentWhere.batchId = batchId;
 
@@ -275,7 +277,8 @@ export async function listStudentsForAwardCertificates(
     let lessonsComplete = true;
     let incompleteLessons = 0;
     if (lessons.length === 0) {
-      lessonsComplete = false;
+      // No published lessons — no lesson requirements to fulfill
+      lessonsComplete = true;
     } else {
       for (const lesson of lessons) {
         const ok = await isLessonSatisfiedForStudent(s.userId, lesson);
@@ -299,15 +302,15 @@ export async function listStudentsForAwardCertificates(
       // Table may not exist yet before migration runs
     }
 
-    const eligible = lessonsComplete && pendingAssessments === 0 && lessons.length > 0;
+    // A program with no published lessons is treated as having no lesson requirements
+    const eligible = lessonsComplete && pendingAssessments === 0;
 
     let reason: string | undefined;
     if (!eligible) {
       const parts: string[] = [];
-      if (lessons.length === 0) parts.push("No published lessons");
-      else if (incompleteLessons > 0) parts.push(`${incompleteLessons} lesson${incompleteLessons !== 1 ? "s" : ""} incomplete`);
+      if (incompleteLessons > 0) parts.push(`${incompleteLessons} lesson${incompleteLessons !== 1 ? "s" : ""} incomplete`);
       if (pendingAssessments > 0) parts.push(`${pendingAssessments} assessment${pendingAssessments !== 1 ? "s" : ""} pending`);
-      reason = parts.join(", ");
+      reason = parts.join(", ") || "Incomplete";
     } else if (excusedCount > 0) {
       reason = `${excusedCount} assessment${excusedCount !== 1 ? "s" : ""} excused`;
     }
@@ -336,7 +339,6 @@ export async function bulkMarkProgramComplete(
 ): Promise<{ lessonsMarked: number; studentsMarked: number }> {
   const lessons = await getRequiredLessonsForProgram(programId);
   const nonQuizLessons = lessons.filter((l) => l.kind !== "QUIZ");
-  let count = 0;
   for (const studentUserId of studentUserIds) {
     for (const lesson of nonQuizLessons) {
       await db.programLessonCompletion.upsert({
@@ -344,7 +346,6 @@ export async function bulkMarkProgramComplete(
         create: { studentUserId, lessonId: lesson.id },
         update: {},
       });
-      count++;
     }
   }
   return { lessonsMarked: nonQuizLessons.length, studentsMarked: studentUserIds.length };

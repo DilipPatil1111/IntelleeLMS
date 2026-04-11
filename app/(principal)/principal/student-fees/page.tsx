@@ -534,15 +534,26 @@ function StudentFeeRowBlock({
                   )}
                   <div className="ml-auto flex items-center gap-2">
                     {r.receiptUrl && (
-                      <a
-                        href={blobFileUrl(r.receiptUrl, r.fileName ?? "receipt", true)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50"
-                      >
-                        <Eye className="h-3.5 w-3.5" />
-                        View
-                      </a>
+                      <>
+                        <a
+                          href={blobFileUrl(r.receiptUrl, r.fileName ?? "receipt", true)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50"
+                        >
+                          <Eye className="h-3.5 w-3.5" />
+                          View
+                        </a>
+                        <a
+                          href={blobFileUrl(r.receiptUrl, r.fileName ?? "receipt")}
+                          download={r.fileName ?? "receipt"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium text-indigo-600 hover:bg-indigo-50"
+                        >
+                          Download
+                        </a>
+                      </>
                     )}
                     {!r.confirmed && (
                       <Button

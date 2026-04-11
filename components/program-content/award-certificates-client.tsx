@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 type Row = {
   studentUserId: string;
@@ -37,12 +39,11 @@ export function AwardCertificatesClient(props: {
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [marking, setMarking] = useState(false);
+  const { toasts, toast, dismiss } = useToast();
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     loadPrograms().then(setPrograms);
   }, [loadPrograms]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   const loadRows = useCallback(async () => {
     if (!programId) return;
@@ -68,11 +69,9 @@ export function AwardCertificatesClient(props: {
     }
   }, [listUrl, programId, batchId]);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     loadRows();
   }, [loadRows]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   const eligibleNotSent = useMemo(
     () => rows.filter((r) => r.eligible && !r.certificateSent),
@@ -116,7 +115,7 @@ export function AwardCertificatesClient(props: {
     });
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
-      alert(e.error || "Preview failed");
+      toast(e.error || "Preview failed", "error");
       return;
     }
     const blob = await res.blob();
@@ -130,7 +129,7 @@ export function AwardCertificatesClient(props: {
       .filter(([, v]) => v)
       .map(([k]) => k);
     if (ids.length === 0) {
-      alert("Select at least one eligible student.");
+      toast("Select at least one eligible student.", "warning");
       return;
     }
     if (!confirm(`Send certificate email to ${ids.length} student(s)?`)) return;
@@ -143,12 +142,12 @@ export function AwardCertificatesClient(props: {
       });
       const data = await res.json();
       if (!res.ok) {
-        alert(data.error || "Send failed");
+        toast(data.error || "Send failed", "error");
         return;
       }
       const failed = data.results?.filter((x: { ok: boolean }) => !x.ok) || [];
       if (failed.length) {
-        alert(`Some sends failed: ${failed.map((f: { studentUserId: string; error?: string }) => f.error).join("; ")}`);
+        toast(`Some sends failed: ${failed.map((f: { studentUserId: string; error?: string }) => f.error).join("; ")}`, "warning");
       }
       await loadRows();
     } finally {
@@ -161,7 +160,7 @@ export function AwardCertificatesClient(props: {
       .filter(([, v]) => v)
       .map(([k]) => k);
     if (ids.length === 0) {
-      alert("Select at least one student to mark complete.");
+      toast("Select at least one student to mark complete.", "warning");
       return;
     }
     if (!confirm(`Mark all chapters/lessons complete for ${ids.length} student(s)?`)) return;
@@ -174,10 +173,10 @@ export function AwardCertificatesClient(props: {
       });
       const data = await res.json();
       if (!res.ok) {
-        alert(data.error || "Mark complete failed");
+        toast(data.error || "Mark complete failed", "error");
         return;
       }
-      alert(`Marked ${data.lessonsMarked ?? 0} lesson(s) complete for ${data.studentsMarked ?? 0} student(s).`);
+      toast(`Marked ${data.lessonsMarked ?? 0} lesson(s) complete for ${data.studentsMarked ?? 0} student(s).`, "success");
       await loadRows();
     } finally {
       setMarking(false);
@@ -186,6 +185,7 @@ export function AwardCertificatesClient(props: {
 
   return (
     <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       <PageHeader
         title={props.title}
         description="Select Program → Batch → manage completion and certificates for students."

@@ -4,6 +4,11 @@ import bcrypt from "bcryptjs";
 import "dotenv/config";
 import { normalizePgConnectionString } from "../lib/pg-connection-url";
 
+if (process.env.NODE_ENV === "production") {
+  console.error("ERROR: seed.ts must not run in production.");
+  process.exit(1);
+}
+
 const adapter = new PrismaPg({
   connectionString: normalizePgConnectionString(process.env.DATABASE_URL!),
 });

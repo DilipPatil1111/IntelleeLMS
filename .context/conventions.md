@@ -18,8 +18,17 @@ if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status
 Role-based checks use helpers from `lib/api-auth.ts`:
 
 ```typescript
-const { session, error, status } = await requirePrincipalPortal(req);
-if (error) return NextResponse.json({ error }, { status });
+const gate = await requirePrincipalPortal();
+if (!gate.ok) return gate.response;
+const session = gate.session;
+```
+
+For GET routes that use `auth()` directly, always add the portal access check as defense-in-depth:
+
+```typescript
+const session = await auth();
+if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+if (!hasStudentPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 ```
 
 ### Error handling
@@ -240,6 +249,63 @@ const [form, setForm] = useState(() => ({
   ...
 }));
 ```
+
+---
+
+## Toast notifications (no browser alerts)
+
+Never use `window.alert()`, `window.confirm()`, or `window.prompt()`. Use the toast system instead:
+
+```tsx
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
+
+function MyComponent() {
+  const { toasts, toast, dismiss } = useToast();
+
+  function handleAction() {
+    try {
+      // ... action ...
+      toast("Saved successfully!", "success");
+    } catch {
+      toast("Something went wrong", "error");
+    }
+  }
+
+  return (
+    <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
+      {/* ... rest of component ... */}
+    </>
+  );
+}
+```
+
+Tones: `"success"`, `"error"`, `"warning"`, `"info"` (default). Toasts auto-dismiss after 5 seconds.
+
+---
+
+## Embeddable component pattern
+
+When a feature needs to appear both as a standalone page and as a tab within another page, extract the content into a named export with an `embedded` prop:
+
+```tsx
+// page.tsx
+export function FeatureManager({ embedded = false }: { embedded?: boolean }) {
+  return (
+    <>
+      {!embedded && <PageHeader title="Feature" />}
+      {/* ... component content ... */}
+    </>
+  );
+}
+
+export default function FeaturePage() {
+  return <FeatureManager />;
+}
+```
+
+The standalone page calls `<FeatureManager />` (header shown). Tabbed pages call `<FeatureManager embedded />` (header hidden, parent provides framing). Used by: `SubjectsManager`, `HolidaysManager`, `RetakeRequestsClient`, `AttendanceExcusesClient`.
 
 ---
 

@@ -224,7 +224,20 @@ export async function GET() {
     priority: "HIGH";
     message: string;
   };
+  type AbsentRecordItem = {
+    id: string;
+    sessionDate: string;
+    subjectName: string;
+    programId: string;
+    excuseRequest: {
+      id: string;
+      status: string;
+      staffMessage: string | null;
+      resolvedByName: string | null;
+    } | null;
+  };
   const attendanceAlerts: AttendanceAlertItem[] = [];
+  let absentRecords: AbsentRecordItem[] = [];
 
   if (batchIdArray.length > 0) {
     try {
@@ -233,6 +246,25 @@ export async function GET() {
         include: { session: { include: { subject: true } } },
       });
 
+      // Fetch excuse requests for this student
+      type ERRow = {
+        id: string;
+        attendanceRecordId: string;
+        status: string;
+        staffMessage: string | null;
+        resolvedBy: { firstName: string; lastName: string } | null;
+      };
+      let excuseMap = new Map<string, ERRow>();
+      try {
+        const excuseRequests = await db.attendanceExcuseRequest.findMany({
+          where: { studentUserId: user.id },
+          include: { resolvedBy: { select: { firstName: true, lastName: true } } },
+        });
+        excuseMap = new Map(excuseRequests.map((r) => [r.attendanceRecordId, r as ERRow]));
+      } catch {
+        // Table may not exist yet
+      }
+
       const bySubject = new Map<string, { present: number; total: number; name: string; programId: string }>();
       for (const r of attendanceRecords) {
         const subName = r.session?.subject?.name ?? "Unknown";
@@ -240,7 +272,7 @@ export async function GET() {
         const progId = r.session?.subject?.programId ?? "";
         const entry = bySubject.get(subId) ?? { present: 0, total: 0, name: subName, programId: progId };
         entry.total++;
-        if (r.status === "PRESENT" || r.status === "LATE") entry.present++;
+        if (r.status === "PRESENT" || r.status === "LATE" || r.status === "EXCUSED") entry.present++;
         bySubject.set(subId, entry);
       }
 
@@ -259,6 +291,33 @@ export async function GET() {
           });
         }
       }
+
+      // Build absent records with excuse request info (only show unresolved or with pending excuse)
+      absentRecords = attendanceRecords
+        .filter((r) => r.status === "ABSENT")
+        .map((r) => {
+          const er = excuseMap.get(r.id);
+          return {
+            id: r.id,
+            sessionDate: r.session?.sessionDate
+              ? new Date(r.session.sessionDate).toISOString()
+              : new Date().toISOString(),
+            subjectName: r.session?.subject?.name ?? "Unknown",
+            programId: r.session?.subject?.programId ?? "",
+            excuseRequest: er
+              ? {
+                  id: er.id,
+                  status: er.status,
+                  staffMessage: er.staffMessage,
+                  resolvedByName: er.resolvedBy
+                    ? `${er.resolvedBy.firstName} ${er.resolvedBy.lastName}`
+                    : null,
+                }
+              : null,
+          };
+        })
+        // Hide resolved (EXCUSED/DENIED/KEPT_ABSENT) from pending view
+        .filter((r) => !r.excuseRequest || r.excuseRequest.status === "PENDING");
     } catch (err) {
       console.error("[pending-actions] attendance alert fallback:", err);
     }
@@ -271,6 +330,7 @@ export async function GET() {
     pendingAssessments: PendingAssessmentItem[];
     belowPassingResults: BelowPassingItem[];
     attendanceAlerts: AttendanceAlertItem[];
+    absentRecords: AbsentRecordItem[];
     pendingCount: number;
     eligible: boolean;
   };
@@ -281,6 +341,7 @@ export async function GET() {
     const pa = pendingAssessments.filter((a) => a.programId === progId);
     const bp = belowPassingResults.filter((a) => a.programId === progId);
     const aa = attendanceAlerts.filter((a) => a.programId === progId);
+    const ar = absentRecords.filter((a) => a.programId === progId);
     const pendingCount = pa.length + bp.length + aa.length;
 
     let eligible = false;
@@ -298,6 +359,7 @@ export async function GET() {
       pendingAssessments: pa,
       belowPassingResults: bp,
       attendanceAlerts: aa,
+      absentRecords: ar,
       pendingCount,
       eligible,
     });
@@ -443,6 +505,7 @@ export async function GET() {
     pendingAssessments,
     belowPassingResults,
     attendanceAlerts,
+    absentRecords,
     documents,
     fees: { totalFees, totalPaid, pendingAmount, receipts },
     counts: {

@@ -42,12 +42,14 @@ quiz-app/
 │       └── loading.tsx      # assessment loading skeleton
 ├── components/
 │   ├── layout/              # sidebar, page-header, portal-switcher
-│   ├── ui/                  # badge, button, card, data-table, empty-state, input, modal, pagination, select, stat-card, textarea
+│   ├── ui/                  # badge, button, card, data-table, empty-state, input, modal, pagination, select, stat-card, textarea, toast-container
 │   ├── certificates/        # certificate-templates-client
 │   ├── canva/               # canva-design-studio
 │   ├── program-content/     # admin-client, lesson-editor-modal, lesson-editor/* (rich text, quiz, survey, file upload)
 │   ├── calendar/            # full-calendar-client-wrapper, full-program-calendar-client, program-calendar-grid
-│   ├── attendance/          # principal-attendance-dashboard, attendance-program-grid-client
+│   ├── attendance/          # principal-attendance-dashboard, attendance-program-grid-client, student-attendance-grid-embed
+│   ├── attendance-excuses/  # attendance-excuses-client (shared, embedded support)
+│   ├── retake-requests/     # retake-requests-client (shared, embedded support)
 │   ├── document-vault/      # file-viewer
 │   ├── session-recordings/  # session-recordings-manager
 │   ├── settings/            # portal-access-settings
@@ -55,7 +57,7 @@ quiz-app/
 │   ├── pdf/                 # assessment-results-pdf
 │   ├── student/             # student-journey-progress
 │   └── teacher/             # teacher-dashboard-alerts
-├── hooks/                   # use-branding (institution branding hook)
+├── hooks/                   # use-branding (institution branding hook), use-toast (toast notification state manager)
 ├── lib/                     # db, auth, env, email, domain helpers, server actions
 │   ├── file-upload.ts       # uploadToBlob / uploadProfilePictureToBlob (Vercel Blob)
 │   ├── vercel-blob.ts       # blobPut / blobDel wrappers with token passthrough

@@ -72,6 +72,28 @@ export async function PUT(
     },
   });
 
+  // Notify principals about updated fee receipt
+  const student = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { firstName: true, lastName: true },
+  });
+  const studentName = student ? `${student.firstName} ${student.lastName}` : "A student";
+  const principals = await db.user.findMany({
+    where: { role: "PRINCIPAL", isActive: true },
+    select: { id: true },
+  });
+  if (principals.length > 0) {
+    await db.notification.createMany({
+      data: principals.map((p) => ({
+        userId: p.id,
+        type: "GENERAL" as const,
+        title: "Fee Receipt Updated",
+        message: `${studentName} has updated a fee payment receipt ($${Number(payment.amountPaid).toFixed(2)}). You can view or download it from Student Fees.`,
+        link: "/principal/student-fees",
+      })),
+    });
+  }
+
   return NextResponse.json({
     ok: true,
     payment: {

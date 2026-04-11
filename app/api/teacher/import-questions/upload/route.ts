@@ -23,6 +23,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
+    const MAX_IMPORT_BYTES = 10 * 1024 * 1024; // 10 MB
+    if (file.size > MAX_IMPORT_BYTES) {
+      return NextResponse.json({ error: `File too large (max ${MAX_IMPORT_BYTES / 1024 / 1024} MB)` }, { status: 400 });
+    }
+
     const fileName = file.name.toLowerCase();
     const content = await file.text();
 

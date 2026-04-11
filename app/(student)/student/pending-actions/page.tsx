@@ -12,8 +12,6 @@ import {
   Clock,
   Upload,
   ExternalLink,
-  Eye,
-  Pencil,
   Award,
   BookOpen,
   RotateCcw,
@@ -22,7 +20,8 @@ import {
   Send,
 } from "lucide-react";
 import Link from "next/link";
-import { blobFileUrl } from "@/lib/blob-url";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 /* ── Type Definitions ─────────────────────────────────────────────────────── */
 
@@ -67,12 +66,28 @@ interface AttendanceAlert {
   message: string;
 }
 
+interface ExcuseRequestInfo {
+  id: string;
+  status: string;
+  staffMessage: string | null;
+  resolvedByName: string | null;
+}
+
+interface AbsentRecord {
+  id: string;
+  sessionDate: string;
+  subjectName: string;
+  programId: string;
+  excuseRequest: ExcuseRequestInfo | null;
+}
+
 interface ProgramSummary {
   programId: string;
   programName: string;
   pendingAssessments: PendingAssessment[];
   belowPassingResults: BelowPassingResult[];
   attendanceAlerts: AttendanceAlert[];
+  absentRecords: AbsentRecord[];
   pendingCount: number;
   eligible: boolean;
 }
@@ -109,6 +124,7 @@ interface PendingData {
   pendingAssessments: PendingAssessment[];
   belowPassingResults: BelowPassingResult[];
   attendanceAlerts: AttendanceAlert[];
+  absentRecords: AbsentRecord[];
   documents: DocumentItem[] | null;
   fees: {
     totalFees: number;
@@ -139,9 +155,12 @@ export default function PendingActionsPage() {
   const [retakeModal, setRetakeModal] = useState<{ assessmentId: string; title: string } | null>(null);
   const [retakeMessage, setRetakeMessage] = useState("");
   const [retakeSubmitting, setRetakeSubmitting] = useState(false);
+  const [excuseModal, setExcuseModal] = useState<{ recordId: string; subjectName: string; date: string } | null>(null);
+  const [excuseMessage, setExcuseMessage] = useState("");
+  const [excuseSubmitting, setExcuseSubmitting] = useState(false);
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const receiptInputRef = useRef<HTMLInputElement | null>(null);
-  const receiptReplaceRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const { toasts, toast, dismiss } = useToast();
 
   const load = useCallback(async () => {
     try {
@@ -154,11 +173,9 @@ export default function PendingActionsPage() {
     }
   }, []);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     void load();
   }, [load]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleDocUpload(step: string, file: File) {
     setUploading(step);
@@ -171,19 +188,6 @@ export default function PendingActionsPage() {
       else console.error("Upload failed:", await res.text());
     } finally {
       setUploading(null);
-    }
-  }
-
-  async function handleReceiptReplace(paymentId: string, file: File) {
-    setReceiptUploading(true);
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch(`/api/student/pending-actions/receipt/${paymentId}`, { method: "PUT", body: fd });
-      if (res.ok) await load();
-      else console.error("Replace receipt failed:", await res.text());
-    } finally {
-      setReceiptUploading(false);
     }
   }
 
@@ -223,10 +227,32 @@ export default function PendingActionsPage() {
         await load();
       } else {
         const errBody = await res.json().catch(() => null);
-        alert(errBody?.error ?? "Failed to submit retake request");
+        toast(errBody?.error ?? "Failed to submit retake request", "error");
       }
     } finally {
       setRetakeSubmitting(false);
+    }
+  }
+
+  async function handleExcuseRequest() {
+    if (!excuseModal) return;
+    setExcuseSubmitting(true);
+    try {
+      const res = await fetch("/api/student/attendance-excuse-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ attendanceRecordId: excuseModal.recordId, message: excuseMessage }),
+      });
+      if (res.ok) {
+        setExcuseModal(null);
+        setExcuseMessage("");
+        await load();
+      } else {
+        const errBody = await res.json().catch(() => null);
+        toast(errBody?.error ?? "Failed to submit excuse request", "error");
+      }
+    } finally {
+      setExcuseSubmitting(false);
     }
   }
 
@@ -259,6 +285,7 @@ export default function PendingActionsPage() {
 
   return (
     <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       <PageHeader
         title="Pending Actions"
         description={
@@ -499,6 +526,60 @@ export default function PendingActionsPage() {
                     </div>
                   )}
 
+                  {/* Absent Records - Request to Excuse */}
+                  {prog.absentRecords && prog.absentRecords.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-1.5">
+                        <AlertTriangle className="h-4 w-4 text-orange-500" />
+                        Absent Sessions — Request to Excuse
+                      </h4>
+                      <div className="divide-y rounded-lg border border-orange-100 bg-white">
+                        {prog.absentRecords.map((r) => {
+                          const er = r.excuseRequest;
+                          const isPending = er?.status === "PENDING";
+                          return (
+                            <div
+                              key={r.id}
+                              className="flex items-center justify-between px-4 py-3 first:pt-3 last:pb-3"
+                            >
+                              <div className="flex items-start gap-2">
+                                <span className="mt-1.5 inline-block h-2 w-2 rounded-full bg-orange-500 shrink-0" />
+                                <div>
+                                  <p className="font-medium text-gray-900">{r.subjectName}</p>
+                                  <p className="text-sm text-gray-500">
+                                    {new Date(r.sessionDate).toLocaleDateString()} &middot; Absent
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="shrink-0">
+                                {isPending ? (
+                                  <span className="inline-flex items-center gap-1 text-xs font-semibold bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
+                                    <Clock className="h-3 w-3" /> Excuse Requested
+                                  </span>
+                                ) : !er ? (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() =>
+                                      setExcuseModal({
+                                        recordId: r.id,
+                                        subjectName: r.subjectName,
+                                        date: new Date(r.sessionDate).toLocaleDateString(),
+                                      })
+                                    }
+                                  >
+                                    <Send className="h-3.5 w-3.5 mr-1" />
+                                    Request to Excuse
+                                  </Button>
+                                ) : null}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   {/* All clear for this program (but not eligible yet) */}
                   {prog.pendingCount === 0 && !prog.eligible && (
                     <div className="flex items-center gap-2 text-green-600">
@@ -524,23 +605,19 @@ export default function PendingActionsPage() {
           </Card>
         )}
 
-        {/* ── Documents (not program-specific) ───────────────────────────── */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <FileText className="h-5 w-5 text-blue-500" />
-              Documents
-              {counts.documents > 0 && (
+        {/* ── Documents (only show if there are pending uploads) ─────────── */}
+        {documents && documents.some((d) => !d.completed) && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <FileText className="h-5 w-5 text-blue-500" />
+                Documents
                 <span className="ml-auto text-sm font-medium text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full">
-                  {counts.documents} pending — HIGH PRIORITY
+                  {documents.filter((d) => !d.completed).length} pending — HIGH PRIORITY
                 </span>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {!documents ? (
-              <p className="text-sm text-gray-500">No document requirements assigned yet.</p>
-            ) : (
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               <div className="divide-y">
                 {documents
                   .filter((d) => !d.completed)
@@ -573,89 +650,24 @@ export default function PendingActionsPage() {
                       </div>
                     </div>
                   ))}
-                {documents
-                  .filter((d) => d.completed)
-                  .map((d) => (
-                    <div key={d.key} className="py-3 space-y-2">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
-                          <div>
-                            <p className="font-medium text-gray-700">{d.label}</p>
-                            <p className="text-xs text-gray-400">Current version</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 shrink-0">
-                          <input
-                            type="file"
-                            className="hidden"
-                            ref={(el) => {
-                              fileInputRefs.current[`update-${d.step}`] = el;
-                            }}
-                            onChange={(e) => {
-                              const f = e.target.files?.[0];
-                              e.target.value = "";
-                              if (f) handleDocUpload(d.step, f);
-                            }}
-                          />
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => fileInputRefs.current[`update-${d.step}`]?.click()}
-                            disabled={uploading === d.step}
-                          >
-                            <Pencil className="h-3.5 w-3.5 mr-1" />
-                            {uploading === d.step ? "Updating..." : "Update"}
-                          </Button>
-                        </div>
-                      </div>
-                      {d.trail && d.trail.length > 0 && (
-                        <div className="ml-6 rounded-lg border border-gray-100 bg-gray-50/80 p-3 space-y-2">
-                          <p className="text-xs font-medium text-gray-500">Submission history (newest first)</p>
-                          <ul className="space-y-2">
-                            {d.trail.map((t, idx) => (
-                              <li key={idx} className="flex items-center justify-between gap-2 text-sm">
-                                <span className="text-gray-700 truncate">{t.fileName}</span>
-                                <span className="text-xs text-gray-400 shrink-0">
-                                  {new Date(t.uploadedAt).toLocaleString()}
-                                </span>
-                                <a
-                                  href={blobFileUrl(t.fileUrl, t.fileName, true)}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-indigo-600 hover:underline shrink-0 text-xs"
-                                >
-                                  View
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  ))}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
-        {/* ── Fees ────────────────────────────────────────────────────────── */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <DollarSign className="h-5 w-5 text-emerald-500" />
-              Fees
-              {fees.pendingAmount > 0 && (
+        {/* ── Fees (only show if there is a pending amount) ──────────────── */}
+        {fees.totalFees > 0 && fees.pendingAmount > 0 && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <DollarSign className="h-5 w-5 text-emerald-500" />
+                Fees
                 <span className="ml-auto text-sm font-medium text-red-600 bg-red-50 px-2.5 py-0.5 rounded-full">
                   {fmt(fees.pendingAmount)} pending
                 </span>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {fees.totalFees === 0 ? (
-              <p className="text-sm text-gray-500">No fee structure assigned to your program.</p>
-            ) : (
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               <div className="space-y-4">
                 <div className="grid grid-cols-3 gap-4">
                   <div className="rounded-lg bg-gray-50 p-3 text-center">
@@ -666,150 +678,55 @@ export default function PendingActionsPage() {
                     <p className="text-xs text-gray-500">Paid</p>
                     <p className="text-lg font-semibold text-green-700">{fmt(fees.totalPaid)}</p>
                   </div>
-                  <div
-                    className={`rounded-lg p-3 text-center ${fees.pendingAmount > 0 ? "bg-red-50" : "bg-green-50"}`}
-                  >
+                  <div className="rounded-lg bg-red-50 p-3 text-center">
                     <p className="text-xs text-gray-500">Pending</p>
-                    <p
-                      className={`text-lg font-semibold ${fees.pendingAmount > 0 ? "text-red-700" : "text-green-700"}`}
-                    >
-                      {fmt(fees.pendingAmount)}
-                    </p>
+                    <p className="text-lg font-semibold text-red-700">{fmt(fees.pendingAmount)}</p>
                   </div>
                 </div>
 
-                {fees.pendingAmount <= 0 ? (
-                  <div className="flex items-center gap-2 text-green-600">
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span className="text-sm">All fees are paid</span>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {!showReceiptForm ? (
-                      <Button onClick={() => setShowReceiptForm(true)} size="sm">
-                        <Upload className="h-3.5 w-3.5 mr-1" /> Upload Payment Receipt
-                      </Button>
-                    ) : (
-                      <div className="rounded-lg border border-gray-200 p-4 space-y-3">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Payment Amount ($)</label>
-                          <input
-                            type="number"
-                            min="0.01"
-                            step="0.01"
-                            value={receiptAmount}
-                            onChange={(e) => setReceiptAmount(e.target.value)}
-                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Enter amount paid"
-                          />
-                        </div>
-                        <div className="flex gap-2">
-                          <input
-                            type="file"
-                            className="hidden"
-                            ref={receiptInputRef}
-                            onChange={(e) => {
-                              const f = e.target.files?.[0];
-                              if (f) handleReceiptUpload(f);
-                            }}
-                          />
-                          <Button
-                            size="sm"
-                            onClick={() => receiptInputRef.current?.click()}
-                            disabled={receiptUploading || !receiptAmount || parseFloat(receiptAmount) <= 0}
-                          >
-                            {receiptUploading ? "Uploading..." : "Select & Upload Receipt"}
-                          </Button>
-                          <Button size="sm" variant="outline" onClick={() => setShowReceiptForm(false)}>
-                            Cancel
-                          </Button>
-                        </div>
+                <div className="space-y-3">
+                  {!showReceiptForm ? (
+                    <Button onClick={() => setShowReceiptForm(true)} size="sm">
+                      <Upload className="h-3.5 w-3.5 mr-1" /> Upload Payment Receipt
+                    </Button>
+                  ) : (
+                    <div className="rounded-lg border border-gray-200 p-4 space-y-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Payment Amount ($)</label>
+                        <input
+                          type="number"
+                          min="0.01"
+                          step="0.01"
+                          value={receiptAmount}
+                          onChange={(e) => setReceiptAmount(e.target.value)}
+                          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                          placeholder="Enter amount paid"
+                        />
                       </div>
-                    )}
-                  </div>
-                )}
-
-                {fees.receipts.length > 0 && (
-                  <div>
-                    <p className="text-sm font-medium text-gray-700 mb-2">Payment receipts</p>
-                    <div className="space-y-3">
-                      {fees.receipts.map((r) => (
-                        <div key={r.id} className="rounded-lg border border-gray-200 overflow-hidden">
-                          <div className="flex items-center justify-between px-3 py-2 bg-gray-50">
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">{r.fileName}</p>
-                              <p className="text-xs text-gray-500">
-                                {fmt(r.amountPaid)} &middot; {new Date(r.paymentDate).toLocaleDateString()}
-                                {r.confirmed && <span className="ml-1 text-green-600">&middot; Confirmed</span>}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <input
-                                type="file"
-                                className="hidden"
-                                ref={(el) => {
-                                  receiptReplaceRefs.current[r.id] = el;
-                                }}
-                                onChange={(e) => {
-                                  const f = e.target.files?.[0];
-                                  e.target.value = "";
-                                  if (f) void handleReceiptReplace(r.id, f);
-                                }}
-                              />
-                              <a
-                                href={blobFileUrl(r.fileUrl, r.fileName, true)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Button size="sm" variant="ghost">
-                                  <Eye className="h-3.5 w-3.5 mr-1" /> View
-                                </Button>
-                              </a>
-                              <a
-                                href={blobFileUrl(r.fileUrl, r.fileName)}
-                                download={r.fileName}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-xs text-indigo-600 px-2 py-1.5 hover:bg-indigo-50 rounded"
-                              >
-                                Download
-                              </a>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => receiptReplaceRefs.current[r.id]?.click()}
-                                disabled={receiptUploading}
-                              >
-                                <Pencil className="h-3.5 w-3.5 mr-1" />
-                                Update
-                              </Button>
-                            </div>
-                          </div>
-                          {r.trail && r.trail.length > 1 && (
-                            <div className="px-3 py-2 text-xs border-t border-gray-100">
-                              <p className="font-medium text-gray-500 mb-1">Version history (newest first)</p>
-                              <ul className="space-y-1">
-                                {r.trail.map((t, i) => (
-                                  <li key={i} className="flex justify-between gap-2 text-gray-600">
-                                    <span className="truncate">{t.fileName}</span>
-                                    <a
-                                      href={blobFileUrl(t.fileUrl, t.fileName, true)}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-indigo-600 shrink-0"
-                                    >
-                                      View
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                      ))}
+                      <div className="flex gap-2">
+                        <input
+                          type="file"
+                          className="hidden"
+                          ref={receiptInputRef}
+                          onChange={(e) => {
+                            const f = e.target.files?.[0];
+                            if (f) handleReceiptUpload(f);
+                          }}
+                        />
+                        <Button
+                          size="sm"
+                          onClick={() => receiptInputRef.current?.click()}
+                          disabled={receiptUploading || !receiptAmount || parseFloat(receiptAmount) <= 0}
+                        >
+                          {receiptUploading ? "Uploading..." : "Select & Upload Receipt"}
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => setShowReceiptForm(false)}>
+                          Cancel
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 <Link
                   href="/student/fees"
@@ -818,9 +735,9 @@ export default function PendingActionsPage() {
                   View full fee details <ExternalLink className="h-3.5 w-3.5" />
                 </Link>
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* ── Retake Request Modal ──────────────────────────────────────── */}
@@ -865,6 +782,56 @@ export default function PendingActionsPage() {
               <Button onClick={handleRetakeRequest} disabled={retakeSubmitting}>
                 <Send className="h-3.5 w-3.5 mr-1" />
                 {retakeSubmitting ? "Submitting..." : "Submit Request"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Excuse Request Modal ──────────────────────────────────────── */}
+      {excuseModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-full max-w-md rounded-xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b px-6 py-4">
+              <h3 className="text-lg font-semibold text-gray-900">Request to Excuse</h3>
+              <button
+                onClick={() => { setExcuseModal(null); setExcuseMessage(""); }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="px-6 py-4 space-y-4">
+              <p className="text-sm text-gray-600">
+                Request to excuse your absence for{" "}
+                <span className="font-semibold">{excuseModal.subjectName}</span> on{" "}
+                <span className="font-semibold">{excuseModal.date}</span>. Your teacher or principal will
+                review this request.
+              </p>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Reason for absence (optional)
+                </label>
+                <textarea
+                  value={excuseMessage}
+                  onChange={(e) => setExcuseMessage(e.target.value)}
+                  rows={3}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  placeholder="Explain why you were absent..."
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 border-t px-6 py-4">
+              <Button
+                variant="outline"
+                onClick={() => { setExcuseModal(null); setExcuseMessage(""); }}
+                disabled={excuseSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleExcuseRequest} disabled={excuseSubmitting}>
+                <Send className="h-3.5 w-3.5 mr-1" />
+                {excuseSubmitting ? "Submitting..." : "Submit Request"}
               </Button>
             </div>
           </div>

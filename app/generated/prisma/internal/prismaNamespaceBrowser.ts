@@ -113,7 +113,8 @@ export const ModelName = {
   DocFile: 'DocFile',
   InspectionNote: 'InspectionNote',
   SessionRecording: 'SessionRecording',
-  AssessmentRetakeRequest: 'AssessmentRetakeRequest'
+  AssessmentRetakeRequest: 'AssessmentRetakeRequest',
+  AttendanceExcuseRequest: 'AttendanceExcuseRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1115,6 +1116,22 @@ export const AssessmentRetakeRequestScalarFieldEnum = {
 } as const
 
 export type AssessmentRetakeRequestScalarFieldEnum = (typeof AssessmentRetakeRequestScalarFieldEnum)[keyof typeof AssessmentRetakeRequestScalarFieldEnum]
+
+
+export const AttendanceExcuseRequestScalarFieldEnum = {
+  id: 'id',
+  attendanceRecordId: 'attendanceRecordId',
+  studentUserId: 'studentUserId',
+  status: 'status',
+  studentMessage: 'studentMessage',
+  staffMessage: 'staffMessage',
+  resolvedById: 'resolvedById',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AttendanceExcuseRequestScalarFieldEnum = (typeof AttendanceExcuseRequestScalarFieldEnum)[keyof typeof AttendanceExcuseRequestScalarFieldEnum]
 
 
 export const SortOrder = {

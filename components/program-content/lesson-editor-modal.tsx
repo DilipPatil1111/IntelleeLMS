@@ -323,6 +323,7 @@ export function LessonEditorModal({
   }, [
     title, kind, isDraft, textContent, uploadedFiles, pendingFiles,
     multimediaMode, multimediaUrl, surveyQuestions, quizQuestions,
+    linkedAssessmentId, quizMode, quizWarning,
     freePreview, isPrerequisite, enableDiscussions,
     editing, chapterId, chapter, apiPrefix, uploadPendingFiles, onSaved, onClose,
   ]);

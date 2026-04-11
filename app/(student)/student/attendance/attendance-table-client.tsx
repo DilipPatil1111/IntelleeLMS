@@ -80,11 +80,12 @@ export function AttendanceTableClient({ records }: Props) {
                               : record.status === "LATE"
                                 ? "warning"
                                 : record.status === "EXCUSED"
-                                  ? "info"
+                                  ? "default"
                                   : "danger"
                           }
+                          className={record.status === "EXCUSED" ? "bg-violet-100 text-violet-700" : undefined}
                         >
-                          {record.status}
+                          {record.status === "EXCUSED" ? "PRESENT" : record.status}
                         </Badge>
                       </td>
                     </tr>

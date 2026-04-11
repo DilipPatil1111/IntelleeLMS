@@ -12,6 +12,8 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Pagination } from "@/components/ui/pagination";
 import { Plus, Trash2, Megaphone } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 const PAGE_SIZE = 10;
 
@@ -96,6 +98,7 @@ export default function PrincipalAnnouncementsPage() {
   const [batches, setBatches] = useState<{ value: string; label: string; programId?: string }[]>([]);
   const [students, setStudents] = useState<StudentOpt[]>([]);
   const [teachers, setTeachers] = useState<TeacherOpt[]>([]);
+  const { toasts, toast, dismiss } = useToast();
   const subjectParam = searchParams.get("subject");
   const bodyParam = searchParams.get("body");
   const [showModal, setShowModal] = useState(() => !!(subjectParam || bodyParam));
@@ -255,7 +258,7 @@ export default function PrincipalAnnouncementsPage() {
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      alert(typeof err.error === "string" ? err.error : "Could not publish announcement");
+      toast(typeof err.error === "string" ? err.error : "Could not publish announcement", "error");
       return;
     }
     setShowModal(false);
@@ -288,6 +291,7 @@ export default function PrincipalAnnouncementsPage() {
 
   return (
     <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       <PageHeader
         title="Announcements"
         description="Broadcast to students and/or teachers. Narrow by program and batch, or pick individuals. With “all programs” and “all batches”, students in the current academic year are included."

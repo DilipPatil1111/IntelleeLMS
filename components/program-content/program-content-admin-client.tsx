@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import type { ProgramLessonKind } from "@/app/generated/prisma/enums";
 import { LessonEditorModal } from "./lesson-editor-modal";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -115,6 +117,7 @@ function TaxonomyPanel({
   const [editing, setEditing] = useState<TaxItem | null>(null);
   const [form, setForm] = useState(TAX_EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+  const { toasts: taxToasts, toast: taxToast, dismiss: taxDismiss } = useToast();
 
   const loadAll = useCallback(async () => {
     setLoading(true);
@@ -170,19 +173,20 @@ function TaxonomyPanel({
     };
     const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     setSaving(false);
-    if (!res.ok) { const j = await res.json().catch(() => ({})); alert((j as { error?: string }).error || "Save failed"); return; }
+    if (!res.ok) { const j = await res.json().catch(() => ({})); taxToast((j as { error?: string }).error || "Save failed", "error"); return; }
     setModalOpen(false);
     void loadAll();
   }
   async function remove(x: TaxItem) {
     if (!confirm(`Delete "${x.name}"?`)) return;
     const res = await fetch(`${baseUrl}/${x.id}`, { method: "DELETE" });
-    if (!res.ok) { const j = await res.json().catch(() => ({})); alert((j as { error?: string }).error || "Delete failed"); return; }
+    if (!res.ok) { const j = await res.json().catch(() => ({})); taxToast((j as { error?: string }).error || "Delete failed", "error"); return; }
     void loadAll();
   }
 
   return (
     <div className="mb-6 rounded-xl border border-indigo-100 bg-indigo-50/40 overflow-hidden">
+      <ToastContainer toasts={taxToasts} dismiss={taxDismiss} />
       {/* Header toggle */}
       <button
         type="button"
@@ -304,6 +308,8 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
     programsApiUrl = "/api/principal/programs",
     programTaxonomyUrls,
   } = props;
+
+  const { toasts, toast, dismiss } = useToast();
 
   // ── Step navigation ──────────────────────────────────────────────────────
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -473,7 +479,7 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
         programTypeId: programForm.programTypeId || null,
       }),
     });
-    if (!res.ok) { alert("Failed to save program"); return; }
+    if (!res.ok) { toast("Failed to save program", "error"); return; }
     setShowProgramModal(false);
     await fetchPrograms();
   }
@@ -579,7 +585,7 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
     const res = await fetch(`${apiPrefix}/subjects/${sub.id}`, { method: "DELETE" });
     if (!res.ok) {
       const e = await res.json();
-      alert((e as { error?: string }).error || "Delete failed");
+      toast((e as { error?: string }).error || "Delete failed", "error");
       return;
     }
     await loadSubjectsAndTree(selectedProgram.id);
@@ -597,9 +603,9 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
         body: JSON.stringify({ programId: selectedProgram.id, subjectName: approvalModal.subjectName }),
       });
       setApprovalModal({ open: false, subjectId: "", subjectName: "" });
-      alert("Approval request sent to Principal/Administrator.");
+      toast("Approval request sent to Principal/Administrator.", "success");
     } catch {
-      alert("Failed to send request. Please contact your Principal directly.");
+      toast("Failed to send request. Please contact your Principal directly.", "error");
     } finally {
       setApprovalSending(false);
     }
@@ -729,6 +735,7 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
 
   return (
     <div className="flex flex-col h-full">
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       {/* ── Taxonomy panel (always visible at top, collapsible) ───────────── */}
       {programTaxonomyUrls && (
         <TaxonomyPanel taxonomyUrls={programTaxonomyUrls} />

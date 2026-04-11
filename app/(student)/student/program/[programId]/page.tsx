@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
 import { blobFileUrl } from "@/lib/blob-url";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 import {
   BookOpen,
   Eye,
@@ -463,6 +465,7 @@ export default function StudentProgramDetailPage() {
   const [recordingsOpen, setRecordingsOpen] = useState(false);
   const [expandedRecording, setExpandedRecording] = useState<string | null>(null);
   const [markingChapter, setMarkingChapter] = useState<string | null>(null);
+  const { toasts, toast, dismiss } = useToast();
 
   const loadData = useCallback(async () => {
     try {
@@ -506,7 +509,7 @@ export default function StudentProgramDetailPage() {
       const res = await fetch(`/api/student/program-content/chapters/${chapterId}/complete`, { method: "POST" });
       if (!res.ok) {
         const e = await res.json().catch(() => ({}));
-        alert(e.error || "Failed to mark chapter complete");
+        toast(e.error || "Failed to mark chapter complete", "error");
         return;
       }
       await loadData();
@@ -560,6 +563,7 @@ export default function StudentProgramDetailPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       {/* Breadcrumb */}
       <div>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">

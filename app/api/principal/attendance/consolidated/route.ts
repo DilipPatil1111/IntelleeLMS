@@ -12,7 +12,8 @@ export const runtime = "nodejs";
 function ratePct(present: number, absent: number, late: number, excused: number): number | null {
   const t = present + absent + late + excused;
   if (t === 0) return null;
-  return Math.round(((present + late * 0.5) / t) * 1000) / 10;
+  // Late and Excused both count as fully present
+  return Math.round(((present + excused + late) / t) * 1000) / 10;
 }
 
 export async function GET(req: Request) {
@@ -177,7 +178,7 @@ export async function GET(req: Request) {
       }
       const sg = studentMap.get(pk)!;
       sg.totalSessions += 1;
-      if (r.status === "PRESENT" || r.status === "LATE") {
+      if (r.status === "PRESENT" || r.status === "LATE" || r.status === "EXCUSED") {
         const mins = slotDurationMinutes(s.startTime, s.endTime);
         if (mins > 0) sg.presentHours += mins / 60;
       }
@@ -222,7 +223,7 @@ export async function GET(req: Request) {
       else if (ta.status === "ABSENT") tg.absent += 1;
       else if (ta.status === "LATE") tg.late += 1;
       else if (ta.status === "EXCUSED") tg.excused += 1;
-      if (ta.status === "PRESENT" || ta.status === "LATE") {
+      if (ta.status === "PRESENT" || ta.status === "LATE" || ta.status === "EXCUSED") {
         const m = slotDurationMinutes(s.startTime, s.endTime);
         if (m > 0) tg.presentHours += m / 60;
       }

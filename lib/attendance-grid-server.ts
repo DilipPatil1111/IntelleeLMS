@@ -22,7 +22,7 @@ export function statusToDisplay(status: AttendanceStatus): string {
   if (status === "PRESENT") return "1";
   if (status === "ABSENT") return "0";
   if (status === "LATE") return "L";
-  if (status === "EXCUSED") return "E";
+  if (status === "EXCUSED") return "P"; // Excused displays as "P" with violet bg
   return "";
 }
 
@@ -51,7 +51,7 @@ function teacherSelfAttendanceShort(status: AttendanceStatus): string {
   if (status === "PRESENT") return "P";
   if (status === "ABSENT") return "A";
   if (status === "LATE") return "L";
-  if (status === "EXCUSED") return "E";
+  if (status === "EXCUSED") return "PE"; // Excused: displays "P" with violet color
   return "—";
 }
 

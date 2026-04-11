@@ -66,6 +66,21 @@ Complete inventory of implemented features, their locations, and key files.
 - Collapsible timeline with play-on-expand video player
 - **API (read-only):** `app/api/student/session-recordings/route.ts`
 
+### Pending Actions
+- **Page:** `app/(student)/student/pending-actions/page.tsx`
+- **API:** `app/api/student/pending-actions/route.ts`
+- High-priority alerts banner with count
+- Program-wise grouping of pending items
+- Sections: pending assessments (HIGH), below-passing results with "Request Retake" (HIGH), attendance alerts with "Request Excuse" (HIGH), pending documents (HIGH), fees (hidden when fully paid)
+- Retake request flow: student requests → teacher/principal reviews (approve retake / excuse for certificate / deny) → email notification to student + principal
+- Attendance excuse request flow: student requests → teacher/principal reviews (excused / denied / kept absent) → email notification
+- Document upload/replace with version history via `StudentSubmissionLog`; auto-hides from pending when all required docs submitted; notification to principals on completion
+- Receipt upload with amount; auto-hides fees section when all paid; notification to principals
+- **Retake Request API:** `app/api/student/pending-actions/retake-request/route.ts`
+- **Excuse Request API:** `app/api/student/pending-actions/excuse-request/route.ts`
+- **Receipt API:** `app/api/student/pending-actions/upload-receipt/route.ts`, `receipt/[id]/route.ts`
+- Uses `useToast` + `ToastContainer` for inline error/success messages (no browser alerts)
+
 ### Assessments
 - **List:** `app/(student)/student/assessments/page.tsx`, `assessments-list-client.tsx`
 - **Take:** `app/(student)/student/assessments/[id]/take/page.tsx`, `take-assessment-client.tsx`
@@ -90,16 +105,6 @@ Complete inventory of implemented features, their locations, and key files.
 - Multi-program selector
 - Uses `FullProgramCalendarClient` with `fixedBatchId`
 
-### Pending Actions
-- **Page:** `app/(student)/student/pending-actions/page.tsx`
-- **API:** `app/api/student/pending-actions/route.ts`
-- High-priority alerts banner with count
-- Sections: pending assessments (HIGH), below-passing results (HIGH), attendance alerts (HIGH), pending documents (HIGH), fees
-- Contact principal/administrator messages for below-passing marks and low attendance
-- Document upload/replace with version history via `StudentSubmissionLog`
-- Receipt upload with amount
-- **Receipt API:** `app/api/student/pending-actions/upload-receipt/route.ts`
-- **Receipt fetch:** `app/api/student/pending-actions/receipt/[id]/route.ts`
 
 ### Fees
 - **Page:** `app/(student)/student/fees/page.tsx`
@@ -139,19 +144,24 @@ Complete inventory of implemented features, their locations, and key files.
 - **Submissions:** `[id]/submissions-table-client.tsx` (paginated, 15 per page)
 - Cascading delete in transactions
 
-### Session Recordings
-- **Page:** `app/(teacher)/teacher/session-recordings/page.tsx`
-- **API:** `app/api/teacher/session-recordings/route.ts` (GET, POST)
-- **Delete API:** `app/api/teacher/session-recordings/[id]/route.ts` (sends email alert to principal)
-- Upload UI with title, date, duration, video file
-- Paginated list with delete
-
-### Program Content
-- **Page:** `app/(teacher)/teacher/program-content/page.tsx`
-- Uses shared `ProgramContentAdminClient` (`components/program-content/program-content-admin-client.tsx`)
+### Program Content (tabbed: Curriculum, Subjects, Session Recordings)
+- **Page:** `app/(teacher)/teacher/program-content/page.tsx` — three-tab layout
+- **Tab 1 (Curriculum):** Uses shared `ProgramContentAdminClient` (`components/program-content/program-content-admin-client.tsx`)
 - Lesson editor modal with specialized editors: rich text, quiz builder, survey builder, file upload area
 - **APIs:** Full CRUD under `app/api/teacher/program-content/*` (subjects, chapters, lessons, syllabus, uploads, quiz linking)
 - Subject delete request flow: `app/api/teacher/program-content/subjects/[subjectId]/delete-request/route.ts`
+- **Tab 2 (Subjects):** Embeds `SubjectsManager` component (from `app/(teacher)/teacher/subjects/page.tsx`) with `embedded` prop
+- **Tab 3 (Session Recordings):** Embeds `SessionRecordingsManager` component
+- **Session Recording APIs:** `app/api/teacher/session-recordings/route.ts` (GET, POST), `[id]/route.ts` (DELETE, sends email alert to principal)
+- Standalone pages at `/teacher/session-recordings` and `/teacher/subjects` still exist for backward compatibility
+
+### Pending Actions (tabbed: Retake Requests, Attendance Excuses)
+- **Page:** `app/(teacher)/teacher/pending-actions/page.tsx`
+- **Tab 1 (Retake Requests):** Embeds `RetakeRequestsClient` with `embedded` prop and `role="teacher"`
+- **Tab 2 (Attendance Excuses):** Embeds `AttendanceExcusesClient` with `embedded` prop and `role="teacher"`
+- **Retake Request API:** `app/api/teacher/retake-requests/route.ts`, `[id]/route.ts` (approve/deny/excuse)
+- **Attendance Excuse API:** `app/api/teacher/attendance-excuses/route.ts`, `[id]/route.ts` (excuse/deny/keep-absent)
+- Standalone pages at `/teacher/retake-requests` and `/teacher/attendance-excuses` still exist for backward compatibility
 
 ### Certificate Templates
 - **Page:** `app/(teacher)/teacher/certificate-templates/page.tsx`
@@ -194,6 +204,11 @@ Complete inventory of implemented features, their locations, and key files.
 ### Dashboard
 - **File:** `app/(principal)/principal/page.tsx`
 - **Analytics:** `app/api/principal/analytics/route.ts`, `app/api/principal/stats/route.ts`
+- **Charts:** `app/(principal)/principal/principal-charts-client.tsx`, `principal-charts.tsx` (lazy-loaded via `next/dynamic`)
+- **Stat cards (Row 1):** Total Students, Total Teachers, Total Programs (V/NV breakdown), Total Batches, Total Applicants, Enrollment Rate
+- **Stat cards (Row 2):** Total Enrolled, Total Expelled, Total Transferred, Total Quitted (CANCELLED status), Total Suspended, Total Passed, Total Failed
+- **Stat cards (Row 3):** Total Fees, Total Fees Collected, Total Pending Fees, Overall Pass Rate
+- **Charts:** Subject-wise pass/fail bar chart, Program-wise passing rate horizontal bar chart with color-coded bars and legend table
 
 ### Applications
 - **Page:** `app/(principal)/principal/applications/page.tsx`
@@ -215,17 +230,13 @@ Complete inventory of implemented features, their locations, and key files.
 - **Confirm payment:** `app/api/principal/students/[id]/fees/confirm/route.ts`
 - Student-wise fee summary (total/paid/pending), receipt viewing, payment confirmation with email
 
-### Session Recordings
-- **Page:** `app/(principal)/principal/session-recordings/page.tsx`
-- **API:** `app/api/principal/session-recordings/route.ts` (GET, POST)
-- **Delete API:** `app/api/principal/session-recordings/[id]/route.ts`
-- Full upload/delete management
-
-### Program Content
-- **Page:** `app/(principal)/principal/program-content/page.tsx`
-- Uses shared `ProgramContentAdminClient`
-- Full CRUD: subjects, chapters, lessons with all lesson types
+### Program Content (tabbed: Curriculum, Session Recordings)
+- **Page:** `app/(principal)/principal/program-content/page.tsx` — two-tab layout
+- **Tab 1 (Curriculum):** Uses shared `ProgramContentAdminClient` with full CRUD: subjects, chapters, lessons with all lesson types
 - **APIs:** Full CRUD under `app/api/principal/program-content/*`
+- **Tab 2 (Session Recordings):** Embeds `SessionRecordingsManager` component
+- **Session Recording APIs:** `app/api/principal/session-recordings/route.ts` (GET, POST), `[id]/route.ts` (DELETE)
+- Standalone page at `/principal/session-recordings` still exists for backward compatibility
 
 ### Certificate Templates
 - **Page:** `app/(principal)/principal/certificate-templates/page.tsx`
@@ -272,6 +283,14 @@ Complete inventory of implemented features, their locations, and key files.
 - **Template upload:** `app/api/principal/settings/upload/route.ts`
 - Compliance thresholds (attendance, marks, fees), certificate/transcript templates, contract samples
 
+### Pending Actions (tabbed: Retake Requests, Attendance Excuses)
+- **Page:** `app/(principal)/principal/pending-actions/page.tsx`
+- **Tab 1 (Retake Requests):** Embeds `RetakeRequestsClient` with `embedded` prop and `role="principal"`
+- **Tab 2 (Attendance Excuses):** Embeds `AttendanceExcusesClient` with `embedded` prop and `role="principal"`
+- **Retake Request API:** `app/api/principal/retake-requests/route.ts`, `[id]/route.ts` (approve/deny/excuse)
+- **Attendance Excuse API:** `app/api/principal/attendance-excuses/route.ts`, `[id]/route.ts` (excuse/deny/keep-absent)
+- Standalone pages at `/principal/retake-requests` and `/principal/attendance-excuses` still exist for backward compatibility
+
 ### Other Principal Features
 - Feedback (with pagination), Onboarding Review, All Assessments (detailed results + PDF export), Teachers, User Management (paginated, search via `app/api/principal/users-search/route.ts`), Attendance (consolidated + grid), Batches, Reports, Holidays, Email Templates, Announcements, Policies, Shared Documents, My Profile
 - **Teacher Attendance:** `app/api/principal/teacher-attendance/route.ts`, `[id]/route.ts`
@@ -314,6 +333,13 @@ Canva integration is optional. Requires `CANVA_CLIENT_ID`, `CANVA_CLIENT_SECRET`
 | `PageHeader` | `components/layout/page-header.tsx` | Title, description, optional actions slot |
 | `Sidebar` | `components/layout/sidebar.tsx` | Role-based nav with all feature links |
 | `PortalSwitcher` | `components/layout/portal-switcher.tsx` | Cross-portal navigation for users with grants |
+| `ToastContainer` | `components/ui/toast-container.tsx` | Inline toast notifications (success/error/warning/info) with auto-dismiss and animations |
+
+### Toast Notification System
+- **Hook:** `hooks/use-toast.ts` — lightweight state manager providing `toast()`, `dismiss()`, and `toasts` list
+- **Component:** `components/ui/toast-container.tsx` — renders styled, animated toast notifications at top-right
+- Replaces all browser-level `alert()` / `confirm()` calls across the application
+- Used in: award certificates, program content admin, calendar, attendance dashboard, pending actions (all roles), assessments, announcements, academic years, program taxonomy, retake requests, attendance excuses
 
 ### Session Recordings Manager
 - **Shared component:** `components/session-recordings/session-recordings-manager.tsx`
@@ -365,8 +391,21 @@ Canva integration is optional. Requires `CANVA_CLIENT_ID`, `CANVA_CLIENT_SECRET`
 - **Hook:** `hooks/use-branding.ts`
 - Client-side fetch and cache of institution branding data (logo, name, color, display mode)
 
+### Retake Requests Client
+- **Shared component:** `components/retake-requests/retake-requests-client.tsx`
+- Used by teacher and principal Pending Actions pages (embedded) and standalone pages
+- Supports `embedded` prop to hide PageHeader when used in tabbed layout
+- **API base:** configurable via `apiBasePath` prop (teacher/principal)
+
+### Attendance Excuses Client
+- **Shared component:** `components/attendance-excuses/attendance-excuses-client.tsx`
+- Used by teacher and principal Pending Actions pages (embedded) and standalone pages
+- Supports `embedded` prop to hide PageHeader when used in tabbed layout
+- **API base:** configurable via `apiBasePath` prop (teacher/principal)
+
 ### Navigation
 - **Sidebar:** `components/layout/sidebar.tsx`
-- Student: ~15 nav items (includes Program Content, Pending Actions)
-- Teacher: ~18 nav items (includes Session Recordings, Certificate Templates, Award Certificates, Program Content, Full Calendar)
-- Principal: ~25 nav items (includes all teacher items plus Inspection Binder, Student Fees, Program Taxonomy, Institution Profile, User Management)
+- Student: ~13 nav items (includes Pending Actions, Full Calendar with Holidays tab)
+- Teacher: ~16 nav items (Program Content has Curriculum/Subjects/Recordings tabs; Pending Actions has Retake/Excuses tabs; no separate Session Recordings, Subjects, Retake Requests, Attendance Excuses, or Course Content items)
+- Principal: ~22 nav items (Program Content has Curriculum/Recordings tabs; Pending Actions has Retake/Excuses tabs; no separate Session Recordings, Retake Requests, or Attendance Excuses items)
+- All removed sidebar items retain standalone page routes for backward compatibility (bookmarks/direct links still work)

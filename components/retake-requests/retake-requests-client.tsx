@@ -13,6 +13,8 @@ import {
   AlertTriangle,
   MessageSquare,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 interface RetakeRequest {
   id: string;
@@ -41,15 +43,17 @@ interface RetakeRequest {
 interface Props {
   apiBasePath: string;
   role: "teacher" | "principal";
+  embedded?: boolean;
 }
 
-export function RetakeRequestsClient({ apiBasePath, role }: Props) {
+export function RetakeRequestsClient({ apiBasePath, role, embedded = false }: Props) {
   const [requests, setRequests] = useState<RetakeRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionModal, setActionModal] = useState<{ req: RetakeRequest; action: string } | null>(null);
   const [staffMessage, setStaffMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [filter, setFilter] = useState<"ALL" | "PENDING" | "RESOLVED">("PENDING");
+  const { toasts, toast, dismiss } = useToast();
 
   const load = useCallback(async () => {
     try {
@@ -65,11 +69,9 @@ export function RetakeRequestsClient({ apiBasePath, role }: Props) {
     }
   }, [apiBasePath]);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     void load();
   }, [load]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleResolve() {
     if (!actionModal) return;
@@ -86,7 +88,7 @@ export function RetakeRequestsClient({ apiBasePath, role }: Props) {
         await load();
       } else {
         const errBody = await res.json().catch(() => null);
-        alert(errBody?.error ?? "Action failed");
+        toast(errBody?.error ?? "Action failed", "error");
       }
     } finally {
       setSubmitting(false);
@@ -104,7 +106,7 @@ export function RetakeRequestsClient({ apiBasePath, role }: Props) {
   if (loading) {
     return (
       <>
-        <PageHeader title="Retake Requests" description="Manage student assessment retake requests" />
+        {!embedded && <PageHeader title="Retake Requests" description="Manage student assessment retake requests" />}
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-24 rounded-xl border border-gray-200 bg-gray-50 animate-pulse" />
@@ -116,14 +118,17 @@ export function RetakeRequestsClient({ apiBasePath, role }: Props) {
 
   return (
     <>
-      <PageHeader
-        title="Retake Requests"
-        description={
-          pendingCount > 0
-            ? `${pendingCount} pending request${pendingCount === 1 ? "" : "s"} require your attention`
-            : "No pending retake requests"
-        }
-      />
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
+      {!embedded && (
+        <PageHeader
+          title="Retake Requests"
+          description={
+            pendingCount > 0
+              ? `${pendingCount} pending request${pendingCount === 1 ? "" : "s"} require your attention`
+              : "No pending retake requests"
+          }
+        />
+      )}
 
       {/* Filter tabs */}
       <div className="mb-6 flex gap-2">

@@ -9,6 +9,7 @@ const STUDENT_CATEGORIES: FeedbackCategory[] = ["PROGRAM_CONTENT", "TEACHING", "
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!hasStudentPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const rows = await db.feedback.findMany({
     where: { authorId: session.user.id },

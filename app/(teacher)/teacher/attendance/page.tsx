@@ -35,7 +35,7 @@ const STATUS_LABEL: Record<string, string> = {
   PRESENT: "Present",
   ABSENT: "Absent",
   LATE: "Late",
-  EXCUSED: "Excused",
+  EXCUSED: "Present (Excused)",
 };
 
 /** Sorted roster for Recent Sessions — shows each student so names are visible (not only counts). */
@@ -80,7 +80,7 @@ function formatSessionDate(isoDate: string): string {
 function studentAttendanceStats(records: { status: string }[]) {
   const n = records.length;
   const present = records.filter(
-    (r) => r.status === "PRESENT" || r.status === "LATE"
+    (r) => r.status === "PRESENT" || r.status === "LATE" || r.status === "EXCUSED"
   ).length;
   const absent = records.filter((r) => r.status === "ABSENT").length;
   const pctPres = n ? Math.round((100 * present) / n) : 0;
@@ -388,7 +388,6 @@ function TeacherAttendanceInner() {
                     { value: "PRESENT", label: "Present" },
                     { value: "LATE", label: "Late" },
                     { value: "ABSENT", label: "Absent" },
-                    { value: "EXCUSED", label: "Excused" },
                   ]}
                 />
                 <Button onClick={resolvePendingTeacherAttendance} isLoading={resolvingSession}>
@@ -431,18 +430,18 @@ function TeacherAttendanceInner() {
                     Record my attendance for this class session (recommended)
                   </label>
                   <div className="flex flex-wrap gap-2">
-                    {["PRESENT", "LATE", "ABSENT", "EXCUSED"].map((status) => (
+                    {["PRESENT", "LATE", "ABSENT"].map((status) => (
                       <button
                         key={status}
                         type="button"
                         onClick={() => setTeacherSelfStatus(status)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
-                          teacherSelfStatus === status
+                          (teacherSelfStatus === status || (status === "PRESENT" && teacherSelfStatus === "EXCUSED"))
                             ? "bg-indigo-600 text-white"
                             : "bg-white border border-gray-200 text-gray-600"
                         }`}
                       >
-                        {status}
+                        {STATUS_LABEL[status] ?? status}
                       </button>
                     ))}
                   </div>
@@ -475,30 +474,34 @@ function TeacherAttendanceInner() {
                           </td>
                           <td className="px-4 py-3">
                             <div className="flex gap-2">
-                              {["PRESENT", "ABSENT", "LATE", "EXCUSED"].map(
-                                (status) => (
-                                  <button
-                                    key={status}
-                                    onClick={() =>
-                                      setAttendance({
-                                        ...attendance,
-                                        [s.id]: status,
-                                      })
-                                    }
-                                    className={`px-3 py-1 rounded text-xs font-medium ${
-                                      attendance[s.id] === status
-                                        ? status === "PRESENT"
-                                          ? "bg-green-600 text-white"
-                                          : status === "ABSENT"
-                                            ? "bg-red-600 text-white"
-                                            : status === "LATE"
-                                              ? "bg-yellow-500 text-white"
-                                              : "bg-blue-600 text-white"
-                                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                    }`}
-                                  >
-                                    {status}
-                                  </button>
+                              {attendance[s.id] === "EXCUSED" ? (
+                                <span className="px-3 py-1 rounded text-xs font-medium bg-violet-600 text-white">
+                                  Present (Excused)
+                                </span>
+                              ) : (
+                                ["PRESENT", "ABSENT", "LATE"].map(
+                                  (status) => (
+                                    <button
+                                      key={status}
+                                      onClick={() =>
+                                        setAttendance({
+                                          ...attendance,
+                                          [s.id]: status,
+                                        })
+                                      }
+                                      className={`px-3 py-1 rounded text-xs font-medium ${
+                                        attendance[s.id] === status
+                                          ? status === "PRESENT"
+                                            ? "bg-green-600 text-white"
+                                            : status === "ABSENT"
+                                              ? "bg-red-600 text-white"
+                                              : "bg-yellow-500 text-white"
+                                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                      }`}
+                                    >
+                                      {STATUS_LABEL[status] ?? status}
+                                    </button>
+                                  )
                                 )
                               )}
                             </div>

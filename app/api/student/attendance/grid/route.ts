@@ -22,7 +22,21 @@ export async function GET(req: Request) {
       where: { userId: session.user.id },
       select: { batchId: true },
     });
-    if (!profile || profile.batchId !== batchId) {
+
+    // Allow access if batchId matches the student's primary profile OR any enrollment
+    let hasAccess = profile?.batchId === batchId;
+    if (!hasAccess) {
+      const enrollment = await db.programEnrollment.findFirst({
+        where: {
+          userId: session.user.id,
+          batchId,
+          status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] },
+        },
+        select: { id: true },
+      });
+      hasAccess = !!enrollment;
+    }
+    if (!hasAccess) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

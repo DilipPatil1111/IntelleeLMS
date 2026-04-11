@@ -101,6 +101,10 @@ enum NotificationType {
   RETAKE_REQUEST
   /** Staff resolved a retake request (approved, excused, or denied). */
   RETAKE_REQUEST_RESOLVED
+  /** Student requests attendance excuse. */
+  ATTENDANCE_EXCUSE_REQUEST
+  /** Staff resolved an attendance excuse request. */
+  ATTENDANCE_EXCUSE_RESOLVED
 }
 
 /** Admission / enrollment lifecycle (principal may set Cancelled, Suspended, Expelled, Transferred). */
@@ -140,6 +144,13 @@ enum RetakeRequestStatus {
   APPROVED_RETAKE
   EXCUSED
   DENIED
+}
+
+enum AttendanceExcuseStatus {
+  PENDING
+  EXCUSED
+  DENIED
+  KEPT_ABSENT
 }
 
 enum ApplicationStatus {
@@ -253,6 +264,8 @@ model User {
   canvaAccount                CanvaAccount?
   retakeRequestsAsStudent     AssessmentRetakeRequest[] @relation("RetakeRequestStudent")
   retakeRequestsResolved      AssessmentRetakeRequest[] @relation("RetakeRequestResolver")
+  attendanceExcuseRequestsAsStudent  AttendanceExcuseRequest[] @relation("AttendanceExcuseStudent")
+  attendanceExcuseRequestsResolved   AttendanceExcuseRequest[] @relation("AttendanceExcuseResolver")
 }
 
 /** Stores Canva OAuth tokens for a user so they can design in Canva and import results. */
@@ -1116,6 +1129,7 @@ model AttendanceRecord {
 
   session             AttendanceSession @relation(fields: [attendanceSessionId], references: [id], onDelete: Cascade)
   student             User              @relation(fields: [studentId], references: [id])
+  excuseRequests      AttendanceExcuseRequest[]
 
   @@unique([attendanceSessionId, studentId])
 }
@@ -1427,6 +1441,30 @@ model AssessmentRetakeRequest {
   resolvedBy User?      @relation("RetakeRequestResolver", fields: [resolvedById], references: [id])
 
   @@unique([assessmentId, studentUserId])
+  @@index([studentUserId])
+  @@index([status])
+}
+
+// ─── Attendance Excuse Requests ─────────────────────────────────────
+
+/** Student requests an excuse for an ABSENT attendance record; staff can excuse, deny, or keep absent. */
+model AttendanceExcuseRequest {
+  id                  String                @id @default(cuid())
+  attendanceRecordId  String
+  studentUserId       String
+  status              AttendanceExcuseStatus @default(PENDING)
+  studentMessage      String?               @db.Text
+  staffMessage        String?               @db.Text
+  resolvedById        String?
+  resolvedAt          DateTime?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  attendanceRecord AttendanceRecord @relation(fields: [attendanceRecordId], references: [id], onDelete: Cascade)
+  student          User             @relation("AttendanceExcuseStudent", fields: [studentUserId], references: [id], onDelete: Cascade)
+  resolvedBy       User?            @relation("AttendanceExcuseResolver", fields: [resolvedById], references: [id])
+
+  @@unique([attendanceRecordId, studentUserId])
   @@index([studentUserId])
   @@index([status])
 }

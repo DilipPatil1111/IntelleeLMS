@@ -60,10 +60,13 @@ const STICKY = {
 export function AttendanceProgramGridClient({
   apiRole,
   embedded = false,
+  studentProgramId,
 }: {
   apiRole: "teacher" | "principal" | "student";
   /** When true, no outer title (parent Attendance page provides it). */
   embedded?: boolean;
+  /** For student role: the currently selected program id from the parent page. */
+  studentProgramId?: string;
 }) {
   const readOnly = apiRole === "student";
   const base =
@@ -92,13 +95,14 @@ export function AttendanceProgramGridClient({
 
   useEffect(() => {
     if (apiRole === "student") {
-      void fetch("/api/student/attendance/grid-options", { cache: "no-store" })
+      const qs = studentProgramId ? `?programId=${encodeURIComponent(studentProgramId)}` : "";
+      void fetch(`/api/student/attendance/grid-options${qs}`, { cache: "no-store" })
         .then((r) => r.json())
         .then((d: { batchId?: string; subjects?: { id: string; name: string }[] }) => {
-          if (d.batchId) setBatchId(d.batchId);
+          setBatchId(d.batchId ?? "");
           const opts = (d.subjects || []).map((s) => ({ value: s.id, label: s.name }));
           setStudentSubjects(opts);
-          setSubjectId((prev) => prev || opts[0]?.value || "");
+          setSubjectId(opts[0]?.value || "");
         });
       return;
     }
@@ -113,7 +117,7 @@ export function AttendanceProgramGridClient({
           setTeacherBatches((d.batches || []).map((b: { value: string; label: string }) => ({ value: b.value, label: b.label })));
         }
       });
-  }, [apiRole]);
+  }, [apiRole, studentProgramId]);
 
   const principalSubjects = useMemo(() => {
     const p = programs.find((x) => x.id === programId);
@@ -189,6 +193,8 @@ export function AttendanceProgramGridClient({
   function cycleCell(sid: string, ymd: string) {
     if (readOnly) return;
     const cur = data?.cells[sid]?.[ymd] ?? "";
+    // "P" (excused) cells are managed via excuse requests — don't allow cycling
+    if (cur === "P") return;
     const order = ["", "1", "0", "L"];
     const i = order.indexOf(cur);
     const next = order[(i + 1) % order.length];
@@ -231,7 +237,8 @@ export function AttendanceProgramGridClient({
     const isWeekend = dow === 0 || dow === 6;
     const isHol = data?.holidayYmds.includes(ymd);
     let bg = "bg-white";
-    if (v === "1") bg = "bg-emerald-200 text-emerald-950";
+    if (v === "P") bg = "bg-violet-200 text-violet-950";
+    else if (v === "1") bg = "bg-emerald-200 text-emerald-950";
     else if (v === "0") bg = "bg-red-200 text-red-950";
     else if (v === "L") bg = "bg-amber-200 text-amber-950";
     else if (isWeekend || isHol) bg = "bg-red-100/90";
@@ -248,7 +255,7 @@ export function AttendanceProgramGridClient({
       for (const ymd of data.dateKeys) {
         const v = data.cells[s.id]?.[ymd] ?? "";
         const h = data.dateMeta[ymd]?.hoursForDay ?? 1;
-        if (v === "1" || v === "L") { t += h; days++; }
+        if (v === "1" || v === "L" || v === "P") { t += h; days++; }
       }
       out[s.id] = { hours: Math.round(t * 10) / 10, days };
     }
@@ -264,7 +271,7 @@ export function AttendanceProgramGridClient({
         l = 0;
       for (const s of data.students) {
         const v = data.cells[s.id]?.[ymd] ?? "";
-        if (v === "1") one++;
+        if (v === "1" || v === "P") one++;
         else if (v === "0") zero++;
         else if (v === "L") l++;
       }
@@ -281,7 +288,7 @@ export function AttendanceProgramGridClient({
       for (const ymd of data.dateKeys) {
         const cell = row.byDate[ymd];
         t += cell?.hours ?? 0;
-        if (cell?.attendance === "P" || cell?.attendance === "L") days++;
+        if (cell?.attendance === "P" || cell?.attendance === "PE" || cell?.attendance === "L") days++;
       }
       return { hours: Math.round(t * 10) / 10, days };
     },
@@ -599,18 +606,18 @@ export function AttendanceProgramGridClient({
                                 <div className="text-[10px] text-indigo-900">{cell?.hours ?? 0}h</div>
                                 <div
                                   className={`text-[10px] font-bold ${
-                                    cell?.attendance === "P"
-                                      ? "text-emerald-700"
-                                      : cell?.attendance === "A"
-                                        ? "text-red-700"
-                                        : cell?.attendance === "L"
-                                          ? "text-amber-700"
-                                          : cell?.attendance === "E"
-                                            ? "text-blue-700"
+                                    cell?.attendance === "PE"
+                                      ? "text-violet-700"
+                                      : cell?.attendance === "P"
+                                        ? "text-emerald-700"
+                                        : cell?.attendance === "A"
+                                          ? "text-red-700"
+                                          : cell?.attendance === "L"
+                                            ? "text-amber-700"
                                             : "text-gray-500"
                                   }`}
                                 >
-                                  {cell?.attendance ?? "—"}
+                                  {cell?.attendance === "PE" ? "P" : (cell?.attendance ?? "—")}
                                 </div>
                               </td>
                             );

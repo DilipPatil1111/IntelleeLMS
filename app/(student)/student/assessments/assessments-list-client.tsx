@@ -11,6 +11,8 @@ import {
   CheckCircle, Clock, BookOpen, TrendingUp, FileText,
   RotateCcw, ShieldCheck, X, Send,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 const PAGE_SIZE = 10;
 
@@ -41,6 +43,7 @@ export function AssessmentsListClient({ pending, historyByProgram, retakeStatuse
   const [retakeMessage, setRetakeMessage] = useState("");
   const [retakeSubmitting, setRetakeSubmitting] = useState(false);
   const [localRetakeStatuses, setLocalRetakeStatuses] = useState<Record<string, string>>(retakeStatuses);
+  const { toasts, toast, dismiss } = useToast();
 
   const handleRetakeRequest = useCallback(async () => {
     if (!retakeModal) return;
@@ -57,12 +60,12 @@ export function AssessmentsListClient({ pending, historyByProgram, retakeStatuse
         setRetakeMessage("");
       } else {
         const errBody = await res.json().catch(() => null);
-        alert(errBody?.error ?? "Failed to submit retake request");
+        toast(errBody?.error ?? "Failed to submit retake request", "error");
       }
     } finally {
       setRetakeSubmitting(false);
     }
-  }, [retakeModal, retakeMessage]);
+  }, [retakeModal, retakeMessage, toast]);
 
   const pendingTotalPages = Math.ceil(pending.length / PAGE_SIZE);
   const paginatedPending = pending.slice((pendingPage - 1) * PAGE_SIZE, pendingPage * PAGE_SIZE);
@@ -81,6 +84,7 @@ export function AssessmentsListClient({ pending, historyByProgram, retakeStatuse
 
   return (
     <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       {/* ── Current / Pending ──────────────────────────────────────────────── */}
       <section className="mb-10">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3 flex items-center gap-2">

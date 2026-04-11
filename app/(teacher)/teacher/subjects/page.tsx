@@ -25,7 +25,7 @@ interface Subject {
   }[];
 }
 
-export default function TeacherSubjectsPage() {
+export function SubjectsManager({ embedded = false }: { embedded?: boolean }) {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [programs, setPrograms] = useState<{ value: string; label: string }[]>(
     []
@@ -92,27 +92,43 @@ export default function TeacherSubjectsPage() {
 
   return (
     <>
-      <PageHeader
-        title="Subjects"
-        description="Manage subjects and course modules"
-        actions={
+      {!embedded ? (
+        <PageHeader
+          title="Subjects"
+          description="Manage subjects and course modules"
+          actions={
+            <Button
+              onClick={() => {
+                setEditing(null);
+                setForm({
+                  name: "",
+                  code: "",
+                  description: "",
+                  programId: "",
+                  credits: 3,
+                });
+                setShowModal(true);
+              }}
+            >
+              <Plus className="h-4 w-4 mr-1" /> Add Subject
+            </Button>
+          }
+        />
+      ) : (
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm text-gray-600">Manage subjects across all your programs</p>
           <Button
+            size="sm"
             onClick={() => {
               setEditing(null);
-              setForm({
-                name: "",
-                code: "",
-                description: "",
-                programId: "",
-                credits: 3,
-              });
+              setForm({ name: "", code: "", description: "", programId: "", credits: 3 });
               setShowModal(true);
             }}
           >
             <Plus className="h-4 w-4 mr-1" /> Add Subject
           </Button>
-        }
-      />
+        </div>
+      )}
 
       {subjects.length === 0 ? (
         <Card>
@@ -228,4 +244,8 @@ export default function TeacherSubjectsPage() {
       </Modal>
     </>
   );
+}
+
+export default function TeacherSubjectsPage() {
+  return <SubjectsManager />;
 }
