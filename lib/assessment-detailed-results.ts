@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
-import type { Answer, Question, QuestionOption } from "@/app/generated/prisma/client";
+import type { Answer, Prisma, Question, QuestionOption } from "@/app/generated/prisma/client";
 
 export type PassFail = "PASS" | "FAIL" | "PENDING";
 
@@ -31,6 +31,8 @@ export type StudentAttemptResult = {
   questions: QuestionResultRow[];
 };
 
+export type DropdownOption = { value: string; label: string };
+
 export type AssessmentResultsReportData = {
   collegeName: string;
   generatedAt: string;
@@ -43,11 +45,17 @@ export type AssessmentResultsReportData = {
     durationMinutes: number | null;
     assessmentDate: string | null;
     createdAt: string;
+    subjectId: string;
     subjectName: string;
-    programName: string;
+    batchId: string;
     batchName: string;
+    programId: string;
+    programName: string;
     creatorName: string;
   };
+  subjectOptions: DropdownOption[];
+  batchOptions: DropdownOption[];
+  programOptions: DropdownOption[];
   studentResults: StudentAttemptResult[];
 };
 
@@ -169,6 +177,15 @@ export async function getAssessmentResultsReportData(
   if (!assessment) return null;
   if (forStudentId && assessment.attempts.length === 0) return null;
 
+  const [subjects, batches, programs] = await Promise.all([
+    db.subject.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
+    db.batch.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true, program: { select: { id: true, name: true } } },
+    }),
+    db.program.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
+  ]);
+
   const thresholdMeta = {
     passingMarks: assessment.passingMarks,
     totalMarks: assessment.totalMarks,
@@ -217,11 +234,20 @@ export async function getAssessmentResultsReportData(
       durationMinutes: assessment.duration ?? null,
       assessmentDate: assessment.assessmentDate?.toISOString() ?? null,
       createdAt: assessment.createdAt.toISOString(),
+      subjectId: assessment.subjectId,
       subjectName: assessment.subject.name,
-      programName: assessment.batch.program.name,
+      batchId: assessment.batchId,
       batchName: assessment.batch.name,
+      programId: assessment.batch.program.id,
+      programName: assessment.batch.program.name,
       creatorName: `${assessment.creator.firstName} ${assessment.creator.lastName}`,
     },
+    subjectOptions: subjects.map((s) => ({ value: s.id, label: s.name })),
+    batchOptions: batches.map((b) => ({
+      value: b.id,
+      label: `${b.program.name} — ${b.name}`,
+    })),
+    programOptions: programs.map((p) => ({ value: p.id, label: p.name })),
     studentResults,
   };
 }
@@ -237,31 +263,63 @@ export async function canViewAssessmentResults(
 ): Promise<boolean> {
   const a = await db.assessment.findUnique({
     where: { id: assessmentId },
-    select: { createdById: true },
+    select: { createdById: true, subjectId: true, batch: { select: { programId: true } } },
   });
   if (!a) return false;
   const role = session.user.role;
   const granted = session.user.grantedPortals ?? [];
   if (role === "PRINCIPAL" || granted.includes("PRINCIPAL")) return true;
-  if ((role === "TEACHER" || granted.includes("TEACHER")) && a.createdById === userId) return true;
+
+  const isTeacher = role === "TEACHER" || granted.includes("TEACHER");
+  if (!isTeacher) return false;
+
+  if (a.createdById === userId) return true;
+
+  const tp = await db.teacherProfile.findUnique({
+    where: { userId },
+    select: {
+      teacherPrograms: { where: { programId: a.batch.programId }, select: { id: true } },
+      subjectAssignments: { where: { subjectId: a.subjectId ?? "__none__" }, select: { id: true } },
+    },
+  });
+  if ((tp?.teacherPrograms.length ?? 0) > 0) return true;
+  if ((tp?.subjectAssignments.length ?? 0) > 0) return true;
+
   return false;
 }
 
 /**
  * Student may load their own detailed results if the assessment is visible to them and they have an attempt.
+ * Checks both the primary studentProfile.batchId AND any batches from ProgramEnrollment.
  */
 export async function canStudentViewOwnAssessmentResults(studentUserId: string, assessmentId: string): Promise<boolean> {
-  const user = await db.user.findUnique({
-    where: { id: studentUserId },
-    select: { studentProfile: { select: { batchId: true } } },
-  });
-  const batchId = user?.studentProfile?.batchId;
-  if (!batchId) return false;
+  const [user, enrollments] = await Promise.all([
+    db.user.findUnique({
+      where: { id: studentUserId },
+      select: { studentProfile: { select: { batchId: true } } },
+    }),
+    db.programEnrollment.findMany({
+      where: { userId: studentUserId, status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] } },
+      select: { batchId: true },
+    }),
+  ]);
+
+  const batchIds = new Set<string>();
+  if (user?.studentProfile?.batchId) batchIds.add(user.studentProfile.batchId);
+  for (const e of enrollments) {
+    if (e.batchId) batchIds.add(e.batchId);
+  }
+
+  if (batchIds.size === 0) return false;
+
+  const filters: Prisma.AssessmentWhereInput[] = [...batchIds].map((bid) =>
+    studentVisibleAssessmentFilter(studentUserId, bid)
+  );
 
   const row = await db.assessment.findFirst({
     where: {
       id: assessmentId,
-      AND: [studentVisibleAssessmentFilter(studentUserId, batchId)],
+      OR: filters,
       attempts: { some: { studentId: studentUserId } },
     },
     select: { id: true },

@@ -8,6 +8,8 @@ import { Select } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Plus, Pencil, Trash2, LayoutGrid } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 type Consolidated = {
   summary: {
@@ -53,6 +55,8 @@ type Consolidated = {
     absent: number;
     late: number;
     excused: number;
+    totalSessions: number;
+    presentHours: number;
   }>;
   byTeacher: Array<{
     name: string;
@@ -84,7 +88,6 @@ const TEACHER_STATUS_OPTS = [
   { value: "PRESENT", label: "Present" },
   { value: "ABSENT", label: "Absent" },
   { value: "LATE", label: "Late" },
-  { value: "EXCUSED", label: "Excused" },
 ];
 
 export function PrincipalAttendanceDashboard({
@@ -100,6 +103,7 @@ export function PrincipalAttendanceDashboard({
   const [to, setTo] = useState("");
   const [data, setData] = useState<Consolidated | null>(null);
   const [loading, setLoading] = useState(false);
+  const { toasts, toast, dismiss } = useToast();
 
   const [editTa, setEditTa] = useState<{ id: string; name: string; status: string } | null>(null);
   const [editStatus, setEditStatus] = useState("PRESENT");
@@ -118,6 +122,10 @@ export function PrincipalAttendanceDashboard({
   const [teacherOpts, setTeacherOpts] = useState<{ value: string; label: string }[]>([]);
   const [subjects, setSubjects] = useState<{ value: string; label: string }[]>([]);
   const [savingAdd, setSavingAdd] = useState(false);
+
+  const [sessTeacher, setSessTeacher] = useState("");
+  const [sessProgram, setSessProgram] = useState("");
+  const [sessBatch, setSessBatch] = useState("");
 
   const batchesFiltered = useMemo(() => {
     if (!programId) return batches;
@@ -255,15 +263,55 @@ export function PrincipalAttendanceDashboard({
       void load();
     } else {
       const err = await res.json().catch(() => ({}));
-      alert(typeof err?.error === "string" ? err.error : "Could not create session");
+      toast(typeof err?.error === "string" ? err.error : "Could not create session", "error");
     }
   }
+
+  const sessTeacherOpts = useMemo(() => {
+    if (!data) return [];
+    const names = new Set<string>();
+    for (const s of data.sessions) {
+      if (s.teacherAttendance) names.add(s.teacherAttendance.teacherName);
+    }
+    return [...names].sort().map((n) => ({ value: n, label: n }));
+  }, [data]);
+
+  const sessProgramOpts = useMemo(() => {
+    if (!data) return [];
+    const map = new Map<string, string>();
+    for (const s of data.sessions) map.set(s.batch.program.id, s.batch.program.name);
+    return [...map.entries()]
+      .sort((a, b) => a[1].localeCompare(b[1]))
+      .map(([id, name]) => ({ value: id, label: name }));
+  }, [data]);
+
+  const sessBatchOpts = useMemo(() => {
+    if (!data) return [];
+    const map = new Map<string, { name: string; programId: string }>();
+    for (const s of data.sessions) map.set(s.batch.id, { name: s.batch.name, programId: s.batch.program.id });
+    let entries = [...map.entries()];
+    if (sessProgram) entries = entries.filter(([, v]) => v.programId === sessProgram);
+    return entries
+      .sort((a, b) => a[1].name.localeCompare(b[1].name))
+      .map(([id, v]) => ({ value: id, label: v.name }));
+  }, [data, sessProgram]);
+
+  const filteredSessions = useMemo(() => {
+    if (!data) return [];
+    return data.sessions.filter((s) => {
+      if (sessTeacher && s.teacherAttendance?.teacherName !== sessTeacher) return false;
+      if (sessProgram && s.batch.program.id !== sessProgram) return false;
+      if (sessBatch && s.batch.id !== sessBatch) return false;
+      return true;
+    });
+  }, [data, sessTeacher, sessProgram, sessBatch]);
 
   const th = "px-3 py-2 text-left text-xs font-semibold uppercase text-gray-500";
   const td = "px-3 py-2 text-sm text-gray-800";
 
   return (
     <div className="space-y-8">
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Filters</CardTitle>
@@ -299,7 +347,7 @@ export function PrincipalAttendanceDashboard({
             </Card>
             <Card>
               <CardContent className="pt-6">
-                <p className="text-xs font-medium text-gray-500">Student attendance (P/A/L/E)</p>
+                <p className="text-xs font-medium text-gray-500">Student attendance (P/A/L)</p>
                 <p className="text-2xl font-semibold text-gray-900">{data.summary.totalStudentAttendance}</p>
               </CardContent>
             </Card>
@@ -320,9 +368,8 @@ export function PrincipalAttendanceDashboard({
           </div>
 
           <p className="text-sm text-gray-600 mb-6 -mt-2">
-            <strong>P</strong>resent / <strong>A</strong>bsent / <strong>L</strong>ate / <strong>E</strong>xcused —{" "}
-            <strong>Excused</strong> means an approved absence (for example medical leave or a college-sanctioned event). It is
-            counted separately from unexcused <strong>Absent</strong>, so reports can tell the difference.
+            <strong>P</strong>resent / <strong>A</strong>bsent / <strong>L</strong>ate —{" "}
+            <strong>Excused</strong> absences are counted and displayed as <strong>Present</strong>.
           </p>
 
           <div className="grid gap-6 lg:grid-cols-2">
@@ -400,6 +447,8 @@ export function PrincipalAttendanceDashboard({
                       <th className={th}>A</th>
                       <th className={th}>L</th>
                       <th className={th}>Total attendance</th>
+                      <th className={th}>Total sessions</th>
+                      <th className={th}>Total hours</th>
                       <th className={th}>Rate</th>
                     </tr>
                   </thead>
@@ -412,10 +461,12 @@ export function PrincipalAttendanceDashboard({
                           <br />
                           <span className="text-xs">{r.batchName}</span>
                         </td>
-                        <td className={td}>{r.present}</td>
+                        <td className={td}>{r.present + (r.excused ?? 0)}</td>
                         <td className={td}>{r.absent}</td>
                         <td className={td}>{r.late}</td>
-                        <td className={td}>{r.present + r.late}</td>
+                        <td className={`${td} font-semibold`}>{r.present + r.late + (r.excused ?? 0)}</td>
+                        <td className={td}>{r.totalSessions}</td>
+                        <td className={td}>{r.presentHours} h</td>
                         <td className={td}>{r.rate != null ? `${r.rate}%` : "—"}</td>
                       </tr>
                     ))}
@@ -445,7 +496,7 @@ export function PrincipalAttendanceDashboard({
                         <td className={td}>{r.sessionsRecorded}</td>
                         <td className={td}>{r.presentHours}</td>
                         <td className={`${td} text-xs`}>
-                          {r.present}/{r.absent}/{r.late}
+                          {r.present + (r.excused ?? 0)}/{r.absent}/{r.late}
                         </td>
                       </tr>
                     ))}
@@ -456,17 +507,42 @@ export function PrincipalAttendanceDashboard({
           </div>
 
           <Card>
-            <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
-              <div>
-                <CardTitle className="text-base">Sessions (edit / delete)</CardTitle>
-                <p className="text-sm text-gray-500">
-                  Edit teacher self-attendance or delete a session. Edit <strong>student</strong> attendance in bulk via{" "}
-                  <strong>Program sheet</strong> (same batch + subject).
-                </p>
+            <CardHeader className="space-y-3">
+              <div className="flex flex-row flex-wrap items-center justify-between gap-2">
+                <div>
+                  <CardTitle className="text-base">Sessions (edit / delete)</CardTitle>
+                  <p className="text-sm text-gray-500">
+                    Edit teacher self-attendance or delete a session. Edit <strong>student</strong> attendance in bulk via{" "}
+                    <strong>Program sheet</strong> (same batch + subject).
+                  </p>
+                </div>
+                <Button onClick={() => setAddOpen(true)} className="shrink-0">
+                  <Plus className="h-4 w-4 mr-1" /> Add session
+                </Button>
               </div>
-              <Button onClick={() => setAddOpen(true)} className="shrink-0">
-                <Plus className="h-4 w-4 mr-1" /> Add session
-              </Button>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Select
+                  label="Teacher"
+                  value={sessTeacher}
+                  onChange={(e) => setSessTeacher(e.target.value)}
+                  options={sessTeacherOpts}
+                  placeholder="All teachers"
+                />
+                <Select
+                  label="Program"
+                  value={sessProgram}
+                  onChange={(e) => { setSessProgram(e.target.value); setSessBatch(""); }}
+                  options={sessProgramOpts}
+                  placeholder="All programs"
+                />
+                <Select
+                  label="Batch"
+                  value={sessBatch}
+                  onChange={(e) => setSessBatch(e.target.value)}
+                  options={sessBatchOpts}
+                  placeholder="All batches"
+                />
+              </div>
             </CardHeader>
             <CardContent className="overflow-x-auto p-0">
               <table className="min-w-full text-sm">
@@ -481,7 +557,7 @@ export function PrincipalAttendanceDashboard({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {data.sessions.map((s) => (
+                  {filteredSessions.map((s) => (
                     <tr key={s.id}>
                       <td className={`${td} whitespace-nowrap tabular-nums`}>
                         {s.sessionDate}
@@ -511,8 +587,11 @@ export function PrincipalAttendanceDashboard({
                         {s.teacherAttendance ? (
                           <div className="flex flex-wrap items-center gap-1">
                             <span className="text-xs">{s.teacherAttendance.teacherName}</span>
-                            <Badge variant={s.teacherAttendance.status === "PRESENT" ? "success" : "warning"}>
-                              {s.teacherAttendance.status}
+                            <Badge
+                              variant={s.teacherAttendance.status === "PRESENT" ? "success" : s.teacherAttendance.status === "EXCUSED" ? "default" : "warning"}
+                              className={s.teacherAttendance.status === "EXCUSED" ? "bg-violet-100 text-violet-700" : undefined}
+                            >
+                              {s.teacherAttendance.status === "EXCUSED" ? "PRESENT" : s.teacherAttendance.status}
                             </Badge>
                             <Button
                               variant="ghost"
@@ -656,7 +735,6 @@ export function PrincipalAttendanceDashboard({
                         <option value="PRESENT">Present</option>
                         <option value="ABSENT">Absent</option>
                         <option value="LATE">Late</option>
-                        <option value="EXCUSED">Excused</option>
                       </select>
                     </div>
                   ))}

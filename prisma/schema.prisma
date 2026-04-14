@@ -97,6 +97,14 @@ enum NotificationType {
   LOW_ATTENDANCE_STAFF
   /** Teacher requests calendar/hours correction for a batch date. */
   CALENDAR_HOURS_UPDATE_REQUEST
+  /** Student requests a retake for a below-passing assessment. */
+  RETAKE_REQUEST
+  /** Staff resolved a retake request (approved, excused, or denied). */
+  RETAKE_REQUEST_RESOLVED
+  /** Student requests attendance excuse. */
+  ATTENDANCE_EXCUSE_REQUEST
+  /** Staff resolved an attendance excuse request. */
+  ATTENDANCE_EXCUSE_RESOLVED
 }
 
 /** Admission / enrollment lifecycle (principal may set Cancelled, Suspended, Expelled, Transferred). */
@@ -129,6 +137,20 @@ enum PolicyType {
   COLLEGE
   STUDENT
   OTHER
+}
+
+enum RetakeRequestStatus {
+  PENDING
+  APPROVED_RETAKE
+  EXCUSED
+  DENIED
+}
+
+enum AttendanceExcuseStatus {
+  PENDING
+  EXCUSED
+  DENIED
+  KEPT_ABSENT
 }
 
 enum ApplicationStatus {
@@ -240,6 +262,10 @@ model User {
   programEnrollments          ProgramEnrollment[]
   sessionRecordingsUploaded   SessionRecording[] @relation("SessionRecordingUploader")
   canvaAccount                CanvaAccount?
+  retakeRequestsAsStudent     AssessmentRetakeRequest[] @relation("RetakeRequestStudent")
+  retakeRequestsResolved      AssessmentRetakeRequest[] @relation("RetakeRequestResolver")
+  attendanceExcuseRequestsAsStudent  AttendanceExcuseRequest[] @relation("AttendanceExcuseStudent")
+  attendanceExcuseRequestsResolved   AttendanceExcuseRequest[] @relation("AttendanceExcuseResolver")
 }
 
 /** Stores Canva OAuth tokens for a user so they can design in Canva and import results. */
@@ -951,6 +977,7 @@ model Assessment {
   /** When empty, any student in the batch may see the assessment (legacy). */
   assignedStudents AssessmentAssignedStudent[]
   programLessons   ProgramLesson[] @relation("ProgramLessonAssessment")
+  retakeRequests   AssessmentRetakeRequest[]
 }
 
 model AssessmentAssignedStudent {
@@ -1102,6 +1129,7 @@ model AttendanceRecord {
 
   session             AttendanceSession @relation(fields: [attendanceSessionId], references: [id], onDelete: Cascade)
   student             User              @relation(fields: [studentId], references: [id])
+  excuseRequests      AttendanceExcuseRequest[]
 
   @@unique([attendanceSessionId, studentId])
 }
@@ -1391,4 +1419,52 @@ model SessionRecording {
 
   @@index([programId])
   @@index([sessionDate])
+}
+
+// ─── Assessment Retake Requests ─────────────────────────────────────
+
+/** A student requests a retake after failing an assessment; staff can approve retake or excuse for certificate. */
+model AssessmentRetakeRequest {
+  id              String              @id @default(cuid())
+  assessmentId    String
+  studentUserId   String
+  status          RetakeRequestStatus @default(PENDING)
+  studentMessage  String?             @db.Text
+  staffMessage    String?             @db.Text
+  resolvedById    String?
+  resolvedAt      DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  student    User       @relation("RetakeRequestStudent", fields: [studentUserId], references: [id], onDelete: Cascade)
+  resolvedBy User?      @relation("RetakeRequestResolver", fields: [resolvedById], references: [id])
+
+  @@unique([assessmentId, studentUserId])
+  @@index([studentUserId])
+  @@index([status])
+}
+
+// ─── Attendance Excuse Requests ─────────────────────────────────────
+
+/** Student requests an excuse for an ABSENT attendance record; staff can excuse, deny, or keep absent. */
+model AttendanceExcuseRequest {
+  id                  String                @id @default(cuid())
+  attendanceRecordId  String
+  studentUserId       String
+  status              AttendanceExcuseStatus @default(PENDING)
+  studentMessage      String?               @db.Text
+  staffMessage        String?               @db.Text
+  resolvedById        String?
+  resolvedAt          DateTime?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  attendanceRecord AttendanceRecord @relation(fields: [attendanceRecordId], references: [id], onDelete: Cascade)
+  student          User             @relation("AttendanceExcuseStudent", fields: [studentUserId], references: [id], onDelete: Cascade)
+  resolvedBy       User?            @relation("AttendanceExcuseResolver", fields: [resolvedById], references: [id])
+
+  @@unique([attendanceRecordId, studentUserId])
+  @@index([studentUserId])
+  @@index([status])
 }

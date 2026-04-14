@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { isCanvaConfigured, generatePKCE, buildAuthorizeUrl } from "@/lib/canva";
-import { randomBytes, createCipheriv, createDecipheriv } from "crypto";
+import { randomBytes, createCipheriv, createDecipheriv, createHash } from "crypto";
 
 const ALGO = "aes-256-gcm";
 
 function getEncryptionKey(): Buffer {
   const secret = process.env.AUTH_SECRET || "";
-  const { createHash } = require("crypto") as typeof import("crypto");
   return createHash("sha256").update(secret).digest();
 }
 

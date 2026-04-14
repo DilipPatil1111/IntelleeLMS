@@ -61,6 +61,7 @@ export function CertificatePdf({
   return (
     <Document>
       <Page size={[dims.width, dims.height]} style={styles.page}>
+        {/* eslint-disable-next-line jsx-a11y/alt-text */}
         {backgroundUrl && <Image src={backgroundUrl} style={styles.background} />}
 
         {fields.map((field, i) => {
@@ -77,6 +78,7 @@ export function CertificatePdf({
           if (field.key === "PRINCIPAL_SIGNATURE" && value) {
             return (
               <View key={i} style={fieldStyle}>
+                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <Image src={value} style={styles.signatureImage} />
               </View>
             );
@@ -85,6 +87,7 @@ export function CertificatePdf({
           if (field.key === "INSTITUTION_LOGO" && value) {
             return (
               <View key={i} style={fieldStyle}>
+                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <Image src={value} style={styles.logoImage} />
               </View>
             );
@@ -137,7 +140,7 @@ export async function generateCertificateFromPdfTemplate(params: {
   const templateDoc = await PDFDocument.load(templateBuffer);
 
   const newDoc = await PDFDocument.create();
-  const dims = PAGE_SIZES[pageSize]?.[orientation] ?? PAGE_SIZES.A4.LANDSCAPE;
+  const _dims = PAGE_SIZES[pageSize]?.[orientation] ?? PAGE_SIZES.A4.LANDSCAPE;
 
   // Copy the first page from the template
   const [templatePage] = await newDoc.copyPages(templateDoc, [0]);

@@ -4,7 +4,7 @@ import { formatYmd } from "@/lib/day-boundaries";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
-import { FullCalendarMultiProgram } from "./full-calendar-multi-program";
+import { FullCalendarWithHolidays } from "./full-calendar-with-holidays";
 
 export default async function StudentFullCalendarPage() {
   const session = await auth();
@@ -53,7 +53,7 @@ export default async function StudentFullCalendarPage() {
   if (programs.length === 0 || !programs.some((p) => p.batchId)) {
     return (
       <>
-        <PageHeader title="Full Calendar" description="Program schedule" />
+        <PageHeader title="Full Calendar" description="Program schedule & holidays" />
         <Card>
           <CardContent className="py-12 text-center text-gray-500">
             You are not assigned to a batch yet. When you are enrolled, your program calendar will appear here.
@@ -66,7 +66,7 @@ export default async function StudentFullCalendarPage() {
   const defaultProgramId = profile?.programId ?? programs[0]?.id ?? "";
 
   return (
-    <FullCalendarMultiProgram
+    <FullCalendarWithHolidays
       programs={programs}
       defaultProgramId={defaultProgramId}
     />

@@ -12,7 +12,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ programI
   if (!hasTeacherPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { programId } = await params;
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", programId);
+  const can = await staffCanAccessProgram(session.user.id, session, programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = (await req.json()) as {

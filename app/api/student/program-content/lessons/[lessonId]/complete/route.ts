@@ -5,6 +5,11 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+/**
+ * Students can only self-complete SURVEY lessons (by submitting the survey).
+ * All other lesson types are marked complete by the assigned Teacher or
+ * Principal/Administrator.
+ */
 export async function POST(_req: Request, { params }: { params: Promise<{ lessonId: string }> }) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -22,6 +27,13 @@ export async function POST(_req: Request, { params }: { params: Promise<{ lesson
 
   if (lesson.kind === "QUIZ") {
     return NextResponse.json({ error: "Complete the quiz from Assessments" }, { status: 400 });
+  }
+
+  if (lesson.kind !== "SURVEY") {
+    return NextResponse.json(
+      { error: "Lessons are marked complete by your Teacher or Principal" },
+      { status: 403 },
+    );
   }
 
   const profile = await db.studentProfile.findUnique({

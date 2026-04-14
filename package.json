@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "build": "prisma generate && prisma migrate resolve --rolled-back 20260408000000_add_certificates_canva_branding 2>/dev/null; prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "npx prisma generate",
@@ -36,6 +36,7 @@
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "isomorphic-dompurify": "^3.7.1",
     "lucide-react": "^1.6.0",
     "next": "16.2.1",
     "next-auth": "^5.0.0-beta.30",

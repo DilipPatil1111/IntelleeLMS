@@ -22,7 +22,7 @@ export function statusToDisplay(status: AttendanceStatus): string {
   if (status === "PRESENT") return "1";
   if (status === "ABSENT") return "0";
   if (status === "LATE") return "L";
-  if (status === "EXCUSED") return "E";
+  if (status === "EXCUSED") return "P"; // Excused displays as "P" with violet bg
   return "";
 }
 
@@ -51,7 +51,7 @@ function teacherSelfAttendanceShort(status: AttendanceStatus): string {
   if (status === "PRESENT") return "P";
   if (status === "ABSENT") return "A";
   if (status === "LATE") return "L";
-  if (status === "EXCUSED") return "E";
+  if (status === "EXCUSED") return "PE"; // Excused: displays "P" with violet color
   return "—";
 }
 
@@ -293,6 +293,38 @@ export async function loadAttendanceGridData(batchId: string, subjectId: string)
       };
     });
 
+  // Fetch teachers assigned to this batch (via TeacherSubjectAssignment or TeacherProgram)
+  const assignedTeacherRows = await db.teacherSubjectAssignment.findMany({
+    where: { batchId },
+    select: {
+      teacherProfile: {
+        select: { user: { select: { id: true, firstName: true, lastName: true } } },
+      },
+    },
+  });
+  const assignedMap = new Map<string, { id: string; firstName: string; lastName: string }>();
+  for (const r of assignedTeacherRows) {
+    const u = r.teacherProfile.user;
+    assignedMap.set(u.id, u);
+  }
+  if (assignedMap.size === 0) {
+    const programTeachers = await db.teacherProgram.findMany({
+      where: { programId: batch.programId },
+      select: {
+        teacherProfile: {
+          select: { user: { select: { id: true, firstName: true, lastName: true } } },
+        },
+      },
+    });
+    for (const r of programTeachers) {
+      const u = r.teacherProfile.user;
+      assignedMap.set(u.id, u);
+    }
+  }
+  const assignedTeachers = [...assignedMap.values()].sort(
+    (a, b) => a.firstName.localeCompare(b.firstName) || a.lastName.localeCompare(b.lastName),
+  );
+
   return {
     batch: {
       id: batch.id,
@@ -313,6 +345,7 @@ export async function loadAttendanceGridData(batchId: string, subjectId: string)
     subjectName: subject?.name ?? "",
     gridTruncated,
     teacherFooterRows,
+    assignedTeachers,
   };
 }
 
@@ -321,9 +354,19 @@ export async function saveAttendanceGridCells(params: {
   subjectId: string;
   createdById: string;
   changes: { date: string; studentId: string; letter: string }[];
+  /**
+   * When a teacher saves attendance via the program sheet, pass their userId
+   * so the system auto-marks them PRESENT for each touched session.
+   * Leave undefined for principal edits (principal is not the class teacher).
+   */
+  autoMarkTeacherId?: string;
+  /** Default start/end time for newly-created sessions (from the grid UI). */
+  defaultStartTime?: string;
+  defaultEndTime?: string;
 }) {
-  const { batchId, subjectId, createdById, changes } = params;
+  const { batchId, subjectId, createdById, changes, autoMarkTeacherId, defaultStartTime, defaultEndTime } = params;
   const studentIds = new Set<string>();
+  const touchedSessionIds = new Set<string>();
 
   for (const ch of changes) {
     const d = new Date(ch.date + "T12:00:00");
@@ -345,19 +388,65 @@ export async function saveAttendanceGridCells(params: {
           where: { attendanceSessionId: session.id, studentId: ch.studentId },
         });
         studentIds.add(ch.studentId);
+        touchedSessionIds.add(session.id);
       }
       continue;
     }
 
     if (!session) {
+      // Try to pick up startTime/endTime from a ProgramCalendarSlot for this date
+      let slotStart = defaultStartTime || null;
+      let slotEnd = defaultEndTime || null;
+      const calSlot = await db.programCalendarSlot.findFirst({
+        where: {
+          batchId,
+          slotDate: { gte: start, lte: end },
+          slotType: "SESSION",
+          OR: [{ subjectId }, { subjectId: null }],
+        },
+        select: { startTime: true, endTime: true },
+        orderBy: { startTime: "asc" },
+      });
+      if (calSlot) {
+        slotStart = calSlot.startTime;
+        slotEnd = calSlot.endTime;
+      }
+
       session = await db.attendanceSession.create({
         data: {
           subjectId,
           batchId,
           sessionDate: start,
           createdById,
+          startTime: slotStart,
+          endTime: slotEnd,
         },
       });
+    } else if (!session.startTime || !session.endTime) {
+      // Existing session missing times — backfill from calendar slot or defaults
+      let slotStart = defaultStartTime || null;
+      let slotEnd = defaultEndTime || null;
+      const calSlot = await db.programCalendarSlot.findFirst({
+        where: {
+          batchId,
+          slotDate: { gte: start, lte: end },
+          slotType: "SESSION",
+          OR: [{ subjectId }, { subjectId: null }],
+        },
+        select: { startTime: true, endTime: true },
+        orderBy: { startTime: "asc" },
+      });
+      if (calSlot) {
+        slotStart = calSlot.startTime;
+        slotEnd = calSlot.endTime;
+      }
+      if (slotStart && slotEnd) {
+        await db.attendanceSession.update({
+          where: { id: session.id },
+          data: { startTime: slotStart, endTime: slotEnd },
+        });
+        session = { ...session, startTime: slotStart, endTime: slotEnd };
+      }
     }
 
     await db.attendanceRecord.upsert({
@@ -375,6 +464,28 @@ export async function saveAttendanceGridCells(params: {
       update: { status },
     });
     studentIds.add(ch.studentId);
+    touchedSessionIds.add(session.id);
+  }
+
+  // Auto-mark teacher attendance as PRESENT for every session they touched
+  // (only when a teacher is saving — not for principal edits).
+  if (autoMarkTeacherId) {
+    for (const sessionId of touchedSessionIds) {
+      const hasStudentRecords = await db.attendanceRecord.count({
+        where: { attendanceSessionId: sessionId },
+      });
+      if (hasStudentRecords === 0) continue;
+
+      await db.teacherAttendance.upsert({
+        where: { attendanceSessionId: sessionId },
+        create: {
+          attendanceSessionId: sessionId,
+          teacherUserId: autoMarkTeacherId,
+          status: "PRESENT",
+        },
+        update: {},
+      });
+    }
   }
 
   return { updatedStudents: [...studentIds] };

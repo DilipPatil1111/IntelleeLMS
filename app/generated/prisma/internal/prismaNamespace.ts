@@ -445,7 +445,9 @@ export const ModelName = {
   DocFolder: 'DocFolder',
   DocFile: 'DocFile',
   InspectionNote: 'InspectionNote',
-  SessionRecording: 'SessionRecording'
+  SessionRecording: 'SessionRecording',
+  AssessmentRetakeRequest: 'AssessmentRetakeRequest',
+  AttendanceExcuseRequest: 'AttendanceExcuseRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -461,7 +463,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "canvaAccount" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "programSyllabus" | "programChapter" | "programLesson" | "programLessonCompletion" | "programCertificateSend" | "certificateTemplate" | "certificateIssued" | "certificateCounter" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "programEnrollment" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote" | "sessionRecording"
+    modelProps: "user" | "canvaAccount" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "programSyllabus" | "programChapter" | "programLesson" | "programLessonCompletion" | "programCertificateSend" | "certificateTemplate" | "certificateIssued" | "certificateCounter" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "programEnrollment" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote" | "sessionRecording" | "assessmentRetakeRequest" | "attendanceExcuseRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -5053,6 +5055,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AssessmentRetakeRequest: {
+      payload: Prisma.$AssessmentRetakeRequestPayload<ExtArgs>
+      fields: Prisma.AssessmentRetakeRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AssessmentRetakeRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AssessmentRetakeRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.AssessmentRetakeRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AssessmentRetakeRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>
+        }
+        findMany: {
+          args: Prisma.AssessmentRetakeRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>[]
+        }
+        create: {
+          args: Prisma.AssessmentRetakeRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>
+        }
+        createMany: {
+          args: Prisma.AssessmentRetakeRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AssessmentRetakeRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.AssessmentRetakeRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>
+        }
+        update: {
+          args: Prisma.AssessmentRetakeRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.AssessmentRetakeRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AssessmentRetakeRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AssessmentRetakeRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.AssessmentRetakeRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentRetakeRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.AssessmentRetakeRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAssessmentRetakeRequest>
+        }
+        groupBy: {
+          args: Prisma.AssessmentRetakeRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentRetakeRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AssessmentRetakeRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentRetakeRequestCountAggregateOutputType> | number
+        }
+      }
+    }
+    AttendanceExcuseRequest: {
+      payload: Prisma.$AttendanceExcuseRequestPayload<ExtArgs>
+      fields: Prisma.AttendanceExcuseRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AttendanceExcuseRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AttendanceExcuseRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.AttendanceExcuseRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AttendanceExcuseRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>
+        }
+        findMany: {
+          args: Prisma.AttendanceExcuseRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>[]
+        }
+        create: {
+          args: Prisma.AttendanceExcuseRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>
+        }
+        createMany: {
+          args: Prisma.AttendanceExcuseRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AttendanceExcuseRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.AttendanceExcuseRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>
+        }
+        update: {
+          args: Prisma.AttendanceExcuseRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.AttendanceExcuseRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AttendanceExcuseRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AttendanceExcuseRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.AttendanceExcuseRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendanceExcuseRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.AttendanceExcuseRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAttendanceExcuseRequest>
+        }
+        groupBy: {
+          args: Prisma.AttendanceExcuseRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AttendanceExcuseRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AttendanceExcuseRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AttendanceExcuseRequestCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -6061,6 +6211,38 @@ export const SessionRecordingScalarFieldEnum = {
 export type SessionRecordingScalarFieldEnum = (typeof SessionRecordingScalarFieldEnum)[keyof typeof SessionRecordingScalarFieldEnum]
 
 
+export const AssessmentRetakeRequestScalarFieldEnum = {
+  id: 'id',
+  assessmentId: 'assessmentId',
+  studentUserId: 'studentUserId',
+  status: 'status',
+  studentMessage: 'studentMessage',
+  staffMessage: 'staffMessage',
+  resolvedById: 'resolvedById',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentRetakeRequestScalarFieldEnum = (typeof AssessmentRetakeRequestScalarFieldEnum)[keyof typeof AssessmentRetakeRequestScalarFieldEnum]
+
+
+export const AttendanceExcuseRequestScalarFieldEnum = {
+  id: 'id',
+  attendanceRecordId: 'attendanceRecordId',
+  studentUserId: 'studentUserId',
+  status: 'status',
+  studentMessage: 'studentMessage',
+  staffMessage: 'staffMessage',
+  resolvedById: 'resolvedById',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AttendanceExcuseRequestScalarFieldEnum = (typeof AttendanceExcuseRequestScalarFieldEnum)[keyof typeof AttendanceExcuseRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -6464,6 +6646,34 @@ export type EnumFolderScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 export type ListEnumFolderScopeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FolderScope[]'>
     
 
+
+/**
+ * Reference to a field of type 'RetakeRequestStatus'
+ */
+export type EnumRetakeRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RetakeRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RetakeRequestStatus[]'
+ */
+export type ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RetakeRequestStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AttendanceExcuseStatus'
+ */
+export type EnumAttendanceExcuseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceExcuseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AttendanceExcuseStatus[]'
+ */
+export type ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceExcuseStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -6621,6 +6831,8 @@ export type GlobalOmitConfig = {
   docFile?: Prisma.DocFileOmit
   inspectionNote?: Prisma.InspectionNoteOmit
   sessionRecording?: Prisma.SessionRecordingOmit
+  assessmentRetakeRequest?: Prisma.AssessmentRetakeRequestOmit
+  attendanceExcuseRequest?: Prisma.AttendanceExcuseRequestOmit
 }
 
 /* Types for Logging */

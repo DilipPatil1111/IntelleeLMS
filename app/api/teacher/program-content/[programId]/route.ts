@@ -11,7 +11,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ program
   if (!hasTeacherPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { programId } = await params;
-  const ok = await staffCanAccessProgram(session.user.id, "TEACHER", programId);
+  const ok = await staffCanAccessProgram(session.user.id, session, programId);
   if (!ok) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   await getOrCreateProgramSyllabus(programId);

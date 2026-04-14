@@ -66,6 +66,16 @@ export async function POST(req: Request) {
   });
   const sortOrder = body.sortOrder ?? (maxOrder._max.sortOrder ?? -1) + 1;
 
+  // Auto-publish if the program syllabus is already published
+  let defaultDraft = true;
+  if (body.isDraft === undefined) {
+    const syllabus = await db.programSyllabus.findUnique({
+      where: { programId: chapter.subject.programId },
+      select: { isPublished: true },
+    });
+    if (syllabus?.isPublished) defaultDraft = false;
+  }
+
   const lesson = await db.programLesson.create({
     data: {
       chapterId: body.chapterId,
@@ -74,7 +84,7 @@ export async function POST(req: Request) {
       sortOrder,
       content: body.content === undefined ? undefined : (body.content as object),
       assessmentId: body.assessmentId ?? null,
-      isDraft: body.isDraft ?? true,
+      isDraft: body.isDraft ?? defaultDraft,
     },
   });
 

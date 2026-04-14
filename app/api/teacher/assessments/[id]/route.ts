@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
@@ -45,8 +45,9 @@ async function teacherCanAccess(
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const { allowed } = await teacherCanAccess(session, id);
   if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
@@ -71,8 +72,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requireTeacherPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   const { allowed } = await teacherCanAccess(session, id);
   if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
@@ -100,6 +102,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       scheduledOpenAt: body.scheduledOpenAt ? new Date(body.scheduledOpenAt) : null,
       scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
       assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
+      createdAt: body.createdAt ? new Date(body.createdAt) : undefined,
       instructions: body.instructions || null,
       questions: {
         create: (body.questions || []).map((q: Record<string, unknown>, idx: number) => ({
@@ -136,8 +139,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate3 = await requireTeacherPortal();
+  if (!gate3.ok) return gate3.response;
+  const session = gate3.session;
 
   const { allowed } = await teacherCanAccess(session, id);
   if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });

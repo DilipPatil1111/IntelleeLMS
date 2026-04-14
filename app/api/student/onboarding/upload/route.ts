@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireStudentPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { ONBOARDING_ALLOWED_EXT, ONBOARDING_MAX_BYTES, uploadToBlob } from "@/lib/file-upload";
 import { notifyPrincipalsIfOnboardingChecklistJustCompleted } from "@/lib/notify-principals-onboarding-complete";
@@ -10,8 +10,9 @@ export const runtime = "nodejs";
 type Step = "contract" | "ids" | "fee";
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireStudentPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   let formData: FormData;
   try {
@@ -102,6 +103,32 @@ export async function POST(req: Request) {
   }
 
   const updated = await db.studentOnboarding.findUnique({ where: { userId: session.user.id } });
+
+  // Notify principals about this specific document submission
+  const student = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { firstName: true, lastName: true },
+  });
+  const studentName = student ? `${student.firstName} ${student.lastName}` : "A student";
+  const docLabel =
+    step === "contract" ? "Signed Student Agreement"
+      : step === "ids" ? "Government Photo ID"
+        : "Fee Payment Proof";
+  const principals = await db.user.findMany({
+    where: { role: "PRINCIPAL", isActive: true },
+    select: { id: true },
+  });
+  if (principals.length > 0) {
+    await db.notification.createMany({
+      data: principals.map((p) => ({
+        userId: p.id,
+        type: "GENERAL" as const,
+        title: "Document Submitted",
+        message: `${studentName} has uploaded "${docLabel}". You can view or download it from Onboarding Review.`,
+        link: "/principal/onboarding-review",
+      })),
+    });
+  }
 
   await notifyPrincipalsIfOnboardingChecklistJustCompleted(session.user.id, wasCompleteBefore);
 

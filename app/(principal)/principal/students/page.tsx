@@ -200,6 +200,7 @@ export default function PrincipalStudentsPage() {
   }, [refreshStudentPicker]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPage(1);
   }, [filterStudentId, filterProgramId, filterBatchId, filterStatus, filterTeacherId]);
 

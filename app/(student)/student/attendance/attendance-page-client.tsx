@@ -94,7 +94,7 @@ export function AttendancePageClient({ programs, defaultProgramId, globalRequire
   }, [records, selectedProgramId, subjects]);
 
   const total = filteredRecords.length;
-  const present = filteredRecords.filter((r) => r.status === "PRESENT").length;
+  const present = filteredRecords.filter((r) => r.status === "PRESENT" || r.status === "EXCUSED").length;
   const late = filteredRecords.filter((r) => r.status === "LATE").length;
   const rate = total > 0 ? Math.round(((present + late) / total) * 100) : 0;
   const totalPages = Math.ceil(total / PAGE_SIZE);
@@ -163,7 +163,7 @@ export function AttendancePageClient({ programs, defaultProgramId, globalRequire
             </p>
           </CardHeader>
           <CardContent>
-            <StudentAttendanceGridEmbed />
+            <StudentAttendanceGridEmbed programId={selectedProgramId || undefined} />
           </CardContent>
         </Card>
       )}
@@ -239,8 +239,11 @@ export function AttendancePageClient({ programs, defaultProgramId, globalRequire
                         <td className="px-4 py-3 text-sm text-gray-900">{record.session.subject?.name}</td>
                         <td className="px-4 py-3 text-sm text-gray-500">{record.session.startTime || "—"} - {record.session.endTime || "—"}</td>
                         <td className="px-4 py-3">
-                          <Badge variant={record.status === "PRESENT" ? "success" : record.status === "LATE" ? "warning" : record.status === "EXCUSED" ? "info" : "danger"}>
-                            {record.status}
+                          <Badge
+                            variant={record.status === "PRESENT" ? "success" : record.status === "LATE" ? "warning" : record.status === "EXCUSED" ? "default" : "danger"}
+                            className={record.status === "EXCUSED" ? "bg-violet-100 text-violet-700" : undefined}
+                          >
+                            {record.status === "EXCUSED" ? "PRESENT" : record.status}
                           </Badge>
                         </td>
                       </tr>

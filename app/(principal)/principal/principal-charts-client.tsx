@@ -10,6 +10,14 @@ interface ChartItem {
   count: number;
 }
 
+interface ProgramPassRate {
+  name: string;
+  passRate: number;
+  passed: number;
+  failed: number;
+  total: number;
+}
+
 function ChartSkeleton() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -24,6 +32,12 @@ const PrincipalChartsDynamic = dynamic(
   { loading: () => <ChartSkeleton />, ssr: false }
 );
 
-export function PrincipalChartsClient({ data }: { data: ChartItem[] }) {
-  return <PrincipalChartsDynamic data={data} />;
+export function PrincipalChartsClient({
+  data,
+  programPassRateData,
+}: {
+  data: ChartItem[];
+  programPassRateData: ProgramPassRate[];
+}) {
+  return <PrincipalChartsDynamic data={data} programPassRateData={programPassRateData} />;
 }

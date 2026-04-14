@@ -24,7 +24,7 @@ type ProgramOpt = { id: string; name: string };
 
 const PAGE_SIZE = 15;
 
-export default function StudentHolidaysViewPage() {
+export function HolidaysManager({ embedded = false }: { embedded?: boolean }) {
   const [allHolidays, setAllHolidays] = useState<Holiday[]>([]);
   const [programs, setPrograms] = useState<ProgramOpt[]>([]);
   const [selectedProgramId, setSelectedProgramId] = useState("all");
@@ -56,10 +56,12 @@ export default function StudentHolidaysViewPage() {
 
   return (
     <>
-      <PageHeader
-        title="Holidays"
-        description="Public holidays and program-specific holidays for your academic year."
-      />
+      {!embedded && (
+        <PageHeader
+          title="Holidays"
+          description="Public holidays and program-specific holidays for your academic year."
+        />
+      )}
 
       {loading ? (
         <div className="flex justify-center py-16 text-gray-500">
@@ -143,4 +145,8 @@ export default function StudentHolidaysViewPage() {
       )}
     </>
   );
+}
+
+export default function StudentHolidaysViewPage() {
+  return <HolidaysManager />;
 }

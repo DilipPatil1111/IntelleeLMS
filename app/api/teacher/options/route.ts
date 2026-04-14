@@ -19,7 +19,7 @@ export async function GET() {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { programRows, subjectRows, batchRows } = await getTeacherCatalogForOptions(session.user.id);
+  const { programRows, subjectRows, batchRows } = await getTeacherCatalogForOptions(session.user.id, session);
 
   const subjects: OptionRow[] = subjectRows.map((s) => ({
     value: s.id,

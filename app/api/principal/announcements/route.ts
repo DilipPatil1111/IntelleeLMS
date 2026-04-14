@@ -1,12 +1,13 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { sendEmailWithSignature } from "@/lib/email-signature";
 import { resolveStudentEmails } from "@/lib/mail-audience";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const list = await db.announcement.findMany({
     include: {
@@ -26,8 +27,9 @@ export async function GET() {
 type Target = { id: string; email: string; kind: "student" | "teacher" };
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requirePrincipalPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   const body = await req.json();
   const title = body.title as string;

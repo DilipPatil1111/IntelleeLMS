@@ -16,7 +16,7 @@ export async function GET(req: Request) {
   const to = searchParams.get("to");
   if (!batchId) return NextResponse.json({ error: "batchId required" }, { status: 400 });
 
-  const allowed = await getTeacherVisibleBatchIds(session.user.id);
+  const allowed = await getTeacherVisibleBatchIds(session.user.id, session);
   if (!allowed.includes(batchId)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }

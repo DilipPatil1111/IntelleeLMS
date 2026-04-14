@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { hasTeacherPortalAccess } from "@/lib/portal-access";
+import { hasTeacherPortalAccess, isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 /**
@@ -16,13 +16,25 @@ export async function GET(req: Request) {
   const years = parseInt(searchParams.get("years") || "2", 10) || 2;
   const programId = searchParams.get("programId") || undefined;
 
-  // Get teacher's programs
-  const teacherPrograms = await db.teacherProgram.findMany({
-    where: { userId: session.user.id },
-    include: { program: { select: { id: true, name: true } } },
-  });
-  const programs = teacherPrograms.map((tp) => ({ id: tp.program.id, name: tp.program.name }));
-  const teacherProgramIds = programs.map((p) => p.id);
+  let programs: { id: string; name: string }[];
+  let teacherProgramIds: string[];
+
+  if (!isTeacherOwnershipRestricted(session)) {
+    const allPrograms = await db.program.findMany({
+      where: { isActive: true },
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    });
+    programs = allPrograms;
+    teacherProgramIds = allPrograms.map((p) => p.id);
+  } else {
+    const teacherPrograms = await db.teacherProgram.findMany({
+      where: { teacherProfile: { userId: session.user.id } },
+      select: { programId: true, program: { select: { id: true, name: true } } },
+    });
+    programs = teacherPrograms.map((tp) => ({ id: tp.program.id, name: tp.program.name }));
+    teacherProgramIds = programs.map((p) => p.id);
+  }
 
   const whereFilter = programId
     ? { OR: [{ programId: null }, { programId }] }

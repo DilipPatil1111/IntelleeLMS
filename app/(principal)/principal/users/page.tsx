@@ -255,8 +255,10 @@ export default function UserManagementPage() {
     setLoading(false);
   }, [tab, q]);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setPage(1); }, [tab, q]);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { void load(); }, [load]);
 
   useEffect(() => {

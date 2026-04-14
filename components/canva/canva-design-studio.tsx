@@ -108,10 +108,12 @@ export function CanvaDesignStudio({ onDesignExported }: Props) {
     setDesignsLoading(false);
   }, [status?.connected]);
 
+  /* eslint-disable react-hooks/set-state-in-effect -- initial data fetch */
   useEffect(() => { void checkStatus(); }, [checkStatus]);
   useEffect(() => {
     if (status?.connected) void loadDesigns();
   }, [status?.connected, loadDesigns]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleConnect() {
     try {

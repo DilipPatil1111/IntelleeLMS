@@ -1,11 +1,12 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const body = await req.json();
   const doc = await db.sharedDocument.update({
@@ -27,8 +28,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requirePrincipalPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   await db.sharedDocument.delete({ where: { id } });
   return NextResponse.json({ success: true });

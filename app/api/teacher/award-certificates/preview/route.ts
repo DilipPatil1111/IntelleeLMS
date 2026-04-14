@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "programId and studentUserId required" }, { status: 400 });
   }
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", body.programId);
+  const can = await staffCanAccessProgram(session.user.id, session, body.programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const eligible = await isProgramContentCompleteForStudent(body.studentUserId, body.programId);
@@ -34,9 +34,9 @@ export async function POST(req: Request) {
     if (!response.ok) {
       return NextResponse.json({ error: "Could not load certificate template" }, { status: 502 });
     }
-    const buf = Buffer.from(await response.arrayBuffer());
+    const buf = new Uint8Array(await response.arrayBuffer());
     const fname = settings.certificateTemplateFileName || "certificate-preview.pdf";
-    return new NextResponse(buf, {
+    return new NextResponse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

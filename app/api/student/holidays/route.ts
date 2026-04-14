@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
  * Holidays for the student, organized program-wise.
  * Returns public holidays (no programId) + custom holidays for each enrolled program.
  */
-export async function GET(req: Request) {
+export async function GET(_req: Request) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!hasStudentPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });

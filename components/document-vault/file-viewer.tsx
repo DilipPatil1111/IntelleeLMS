@@ -283,6 +283,10 @@ export function FileViewer({
   );
 }
 
+function isPrivateStore(): boolean {
+  return process.env.NEXT_PUBLIC_BLOB_ACCESS === "private";
+}
+
 function FileContent({
   fileUrl,
   fileName,
@@ -315,6 +319,24 @@ function FileContent({
         </div>
       );
     case "office":
+      if (isPrivateStore()) {
+        return (
+          <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
+            <FileText className="h-16 w-16 text-indigo-200" />
+            <p className="text-sm text-gray-500">
+              Office document preview is not available with private storage.
+            </p>
+            <a
+              href={downloadUrl}
+              download={fileName}
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+            >
+              <Download className="h-4 w-4" />
+              Download to View
+            </a>
+          </div>
+        );
+      }
       return (
         <iframe
           src={`https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true`}

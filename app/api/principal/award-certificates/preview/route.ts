@@ -34,9 +34,9 @@ export async function POST(req: Request) {
     if (!response.ok) {
       return NextResponse.json({ error: "Could not load certificate template" }, { status: 502 });
     }
-    const buf = Buffer.from(await response.arrayBuffer());
+    const buf = new Uint8Array(await response.arrayBuffer());
     const fname = settings.certificateTemplateFileName || "certificate-preview.pdf";
-    return new NextResponse(buf, {
+    return new NextResponse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

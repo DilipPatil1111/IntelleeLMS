@@ -3,10 +3,11 @@ import { db } from "@/lib/db";
 import type { FeedbackCategory } from "@/app/generated/prisma/enums";
 import { hasTeacherPortalAccess } from "@/lib/portal-access";
 import { getTeacherVisibleBatchIds } from "@/lib/teacher-visible-batches";
+import type { Session } from "next-auth";
 import { NextResponse } from "next/server";
 
-async function teacherHasAccessToStudent(teacherUserId: string, studentUserId: string): Promise<boolean> {
-  const batchIds = await getTeacherVisibleBatchIds(teacherUserId);
+async function teacherHasAccessToStudent(teacherUserId: string, studentUserId: string, session: Session): Promise<boolean> {
+  const batchIds = await getTeacherVisibleBatchIds(teacherUserId, session);
   if (batchIds.length === 0) return false;
   const sp = await db.studentProfile.findUnique({ where: { userId: studentUserId } });
   return !!(sp?.batchId && batchIds.includes(sp.batchId));
@@ -15,6 +16,7 @@ async function teacherHasAccessToStudent(teacherUserId: string, studentUserId: s
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!hasTeacherPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const rows = await db.feedback.findMany({
     where: { authorId: session.user.id },
@@ -52,7 +54,7 @@ export async function POST(req: Request) {
   if (category === "STUDENT_CONCERN" && !aboutStudentId) {
     return NextResponse.json({ error: "Select a student for student concern feedback." }, { status: 400 });
   }
-  if (aboutStudentId && !(await teacherHasAccessToStudent(session.user.id, aboutStudentId))) {
+  if (aboutStudentId && !(await teacherHasAccessToStudent(session.user.id, aboutStudentId, session))) {
     return NextResponse.json(
       { error: "You can only submit student feedback for learners in your assigned batches." },
       { status: 403 }

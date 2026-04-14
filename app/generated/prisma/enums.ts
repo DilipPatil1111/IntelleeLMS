@@ -118,7 +118,11 @@ export const NotificationType = {
   FEEDBACK_REPLY: 'FEEDBACK_REPLY',
   LOW_ATTENDANCE_STUDENT: 'LOW_ATTENDANCE_STUDENT',
   LOW_ATTENDANCE_STAFF: 'LOW_ATTENDANCE_STAFF',
-  CALENDAR_HOURS_UPDATE_REQUEST: 'CALENDAR_HOURS_UPDATE_REQUEST'
+  CALENDAR_HOURS_UPDATE_REQUEST: 'CALENDAR_HOURS_UPDATE_REQUEST',
+  RETAKE_REQUEST: 'RETAKE_REQUEST',
+  RETAKE_REQUEST_RESOLVED: 'RETAKE_REQUEST_RESOLVED',
+  ATTENDANCE_EXCUSE_REQUEST: 'ATTENDANCE_EXCUSE_REQUEST',
+  ATTENDANCE_EXCUSE_RESOLVED: 'ATTENDANCE_EXCUSE_RESOLVED'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -158,6 +162,26 @@ export const PolicyType = {
 } as const
 
 export type PolicyType = (typeof PolicyType)[keyof typeof PolicyType]
+
+
+export const RetakeRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED_RETAKE: 'APPROVED_RETAKE',
+  EXCUSED: 'EXCUSED',
+  DENIED: 'DENIED'
+} as const
+
+export type RetakeRequestStatus = (typeof RetakeRequestStatus)[keyof typeof RetakeRequestStatus]
+
+
+export const AttendanceExcuseStatus = {
+  PENDING: 'PENDING',
+  EXCUSED: 'EXCUSED',
+  DENIED: 'DENIED',
+  KEPT_ABSENT: 'KEPT_ABSENT'
+} as const
+
+export type AttendanceExcuseStatus = (typeof AttendanceExcuseStatus)[keyof typeof AttendanceExcuseStatus]
 
 
 export const ApplicationStatus = {

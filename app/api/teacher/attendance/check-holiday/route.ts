@@ -1,7 +1,10 @@
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
   const { searchParams } = new URL(req.url);
   const dateStr = searchParams.get("date");
 

@@ -8,6 +8,8 @@ import { Modal } from "@/components/ui/modal";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Pencil, Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 interface AcademicYear {
   id: string;
@@ -35,6 +37,7 @@ export default function PrincipalAcademicYearsPage() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { toasts, toast, dismiss } = useToast();
 
   useEffect(() => {
     loadYears();
@@ -95,7 +98,7 @@ export default function PrincipalAcademicYearsPage() {
     const res = await fetch(`/api/principal/academic-years/${id}`, { method: "DELETE" });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
-      alert((data as { error?: string }).error || "Could not delete.");
+      toast((data as { error?: string }).error || "Could not delete.", "error");
       return;
     }
     loadYears();
@@ -122,6 +125,7 @@ export default function PrincipalAcademicYearsPage() {
 
   return (
     <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       <PageHeader
         title="Academic years"
         description="Define academic years so batches, holidays, and announcements can reference them."

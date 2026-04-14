@@ -16,6 +16,7 @@ export default function TeacherCertificateTemplatesPage() {
   const [tab, setTab] = useState<Tab>(canvaParam ? "canva" : "certificates");
   const [canvaToast, setCanvaToast] = useState<string | null>(null);
 
+  /* eslint-disable react-hooks/set-state-in-effect -- one-time sync from URL param */
   useEffect(() => {
     if (canvaParam === "connected") {
       setCanvaToast("Canva account connected successfully!");
@@ -26,6 +27,7 @@ export default function TeacherCertificateTemplatesPage() {
       setTab("canva");
     }
   }, [canvaParam, searchParams]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     if (!canvaToast) return;

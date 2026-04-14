@@ -65,6 +65,7 @@ export default function HolidaysPage() {
   }, [filterProgramId]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadHolidays();
   }, [loadHolidays]);
 

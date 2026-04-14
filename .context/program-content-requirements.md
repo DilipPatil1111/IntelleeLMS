@@ -196,12 +196,25 @@ Copy examples: “Pending assessment”, “Mandatory quiz”, “Complete manda
 
 ### 8.4 Completion & certificate (student-facing)
 
-- When **all chapters** (and related tasks: assessments, surveys, mandatory items) are **complete**:
-  - Student sees **Eligible for award** (or equivalent) for that program.
-- **Certificate PDF** is generated from **certificate template** uploaded in **Principal → Settings → Upload Certificate Template** (existing institution/program graduation flow to be **extended** to program-content completion).
-- **Staff** use the **Award Certificates** menu (§9) to **preview** and **release** certificates by email; students are not blocked from completion if staff has not yet sent the email (unless product decides otherwise — **TBD**).
+**Chapter-level completion by students:**
+- Students can mark chapters complete via "Mark Chapter Complete" button at the bottom of each expanded chapter
+- Marking a chapter complete automatically marks all lessons within that chapter as complete
+- The button is only shown when the chapter has incomplete lessons
+
+**Certificate eligibility:**
+- A student is eligible when ALL chapters are marked complete AND all assigned assessments have no pending items
+- Programs with no published lessons treat the lesson requirement as satisfied (no lesson barrier)
+- Eligible students show as "Eligible" in the Award Certificate menu
+
+**Certificate distribution:**
+- **Staff** use the **Award Certificates** menu (§9) to **preview** and **release** certificates by email
+- **Certificate PDF** is generated from **certificate template** uploaded in **Principal → Settings → Upload Certificate Template**
 - After the certificate email has been **sent** (released) for that student+program:
-  - Student sees **You are graduated for this program** (or agreed final copy).
+  - Student sees **You are graduated for this program** (or agreed final copy)
+
+**Mark Complete from Award Certificates (bulk):**
+- Principal/Administrator and Teacher can also bulk mark students as complete from the Award Certificates menu
+- Select Program → Batch → select students → "Mark Complete" marks all pending chapters/lessons as complete for those students
 
 ---
 

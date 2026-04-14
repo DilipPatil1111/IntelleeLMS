@@ -16,7 +16,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ subjec
   const subject = await db.subject.findUnique({ where: { id: subjectId } });
   if (!subject) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", subject.programId);
+  const can = await staffCanAccessProgram(session.user.id, session, subject.programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = (await req.json()) as { name?: string; code?: string };
@@ -45,7 +45,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ subj
   const subject = await db.subject.findUnique({ where: { id: subjectId } });
   if (!subject) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", subject.programId);
+  const can = await staffCanAccessProgram(session.user.id, session, subject.programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const syllabus = await db.programSyllabus.findUnique({ where: { programId: subject.programId } });

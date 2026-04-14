@@ -1,13 +1,12 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 /** GET /api/principal/settings/signature — return current user's signature fields */
 export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   try {
     const user = await db.user.findUnique({
@@ -20,17 +19,15 @@ export async function GET() {
       signatureTypedName: user?.signatureTypedName ?? null,
     });
   } catch {
-    // Migration not yet applied — return empty gracefully
     return NextResponse.json({ signatureImageUrl: null, signatureTypedName: null });
   }
 }
 
 /** PUT /api/principal/settings/signature — save signature fields */
 export async function PUT(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const body = await req.json().catch(() => ({})) as {
     signatureImageUrl?: string | null;

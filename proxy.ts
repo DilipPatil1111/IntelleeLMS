@@ -11,13 +11,12 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Only run auth proxy on routes that need portal / login enforcement.
-     * Do NOT match `/api` (especially `/api/auth/session`): SessionProvider expects JSON.
-     */
     "/student/:path*",
     "/teacher/:path*",
     "/principal/:path*",
+    "/api/student/:path*",
+    "/api/teacher/:path*",
+    "/api/principal/:path*",
     "/change-password",
   ],
 };

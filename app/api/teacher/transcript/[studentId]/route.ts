@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { generateTranscriptHTML } from "@/lib/pdf";
 import { formatDate } from "@/lib/utils";
@@ -6,8 +6,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ studentId: string }> }) {
   const { studentId } = await params;
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+
 
   const student = await db.user.findUnique({
     where: { id: studentId },

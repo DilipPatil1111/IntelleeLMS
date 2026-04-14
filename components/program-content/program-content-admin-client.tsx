@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import type { ProgramLessonKind } from "@/app/generated/prisma/enums";
 import { LessonEditorModal } from "./lesson-editor-modal";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -28,6 +30,7 @@ type ProgramOpt = {
   programCategory?: TaxRef | null;
   programType?: TaxRef | null;
   _count?: { subjects: number; batches: number; students: number };
+  isPublished?: boolean;
 };
 type SubjectOpt = { id: string; name: string; code: string };
 type LessonRow = {
@@ -115,18 +118,24 @@ function TaxonomyPanel({
   const [editing, setEditing] = useState<TaxItem | null>(null);
   const [form, setForm] = useState(TAX_EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+  const { toasts: taxToasts, toast: taxToast, dismiss: taxDismiss } = useToast();
 
   const loadAll = useCallback(async () => {
     setLoading(true);
-    const [d, c, t] = await Promise.all([
-      fetch(taxonomyUrls.domains).then((r) => r.json()),
-      fetch(taxonomyUrls.categories).then((r) => r.json()),
-      fetch(taxonomyUrls.types).then((r) => r.json()),
-    ]);
-    setDomains(d.domains || []);
-    setCategories(c.categories || []);
-    setTypes(t.types || []);
-    setLoading(false);
+    try {
+      const [d, c, t] = await Promise.all([
+        fetch(taxonomyUrls.domains).then((r) => r.json()),
+        fetch(taxonomyUrls.categories).then((r) => r.json()),
+        fetch(taxonomyUrls.types).then((r) => r.json()),
+      ]);
+      setDomains(d.domains || []);
+      setCategories(c.categories || []);
+      setTypes(t.types || []);
+    } catch (err) {
+      console.error("[taxonomy] load failed:", err);
+    } finally {
+      setLoading(false);
+    }
   }, [taxonomyUrls]);
 
   useEffect(() => {
@@ -165,19 +174,20 @@ function TaxonomyPanel({
     };
     const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     setSaving(false);
-    if (!res.ok) { const j = await res.json().catch(() => ({})); alert((j as { error?: string }).error || "Save failed"); return; }
+    if (!res.ok) { const j = await res.json().catch(() => ({})); taxToast((j as { error?: string }).error || "Save failed", "error"); return; }
     setModalOpen(false);
     void loadAll();
   }
   async function remove(x: TaxItem) {
     if (!confirm(`Delete "${x.name}"?`)) return;
     const res = await fetch(`${baseUrl}/${x.id}`, { method: "DELETE" });
-    if (!res.ok) { const j = await res.json().catch(() => ({})); alert((j as { error?: string }).error || "Delete failed"); return; }
+    if (!res.ok) { const j = await res.json().catch(() => ({})); taxToast((j as { error?: string }).error || "Delete failed", "error"); return; }
     void loadAll();
   }
 
   return (
     <div className="mb-6 rounded-xl border border-indigo-100 bg-indigo-50/40 overflow-hidden">
+      <ToastContainer toasts={taxToasts} dismiss={taxDismiss} />
       {/* Header toggle */}
       <button
         type="button"
@@ -299,6 +309,8 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
     programsApiUrl = "/api/principal/programs",
     programTaxonomyUrls,
   } = props;
+
+  const { toasts, toast, dismiss } = useToast();
 
   // ── Step navigation ──────────────────────────────────────────────────────
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -468,7 +480,7 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
         programTypeId: programForm.programTypeId || null,
       }),
     });
-    if (!res.ok) { alert("Failed to save program"); return; }
+    if (!res.ok) { toast("Failed to save program", "error"); return; }
     setShowProgramModal(false);
     await fetchPrograms();
   }
@@ -574,7 +586,7 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
     const res = await fetch(`${apiPrefix}/subjects/${sub.id}`, { method: "DELETE" });
     if (!res.ok) {
       const e = await res.json();
-      alert((e as { error?: string }).error || "Delete failed");
+      toast((e as { error?: string }).error || "Delete failed", "error");
       return;
     }
     await loadSubjectsAndTree(selectedProgram.id);
@@ -592,9 +604,9 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
         body: JSON.stringify({ programId: selectedProgram.id, subjectName: approvalModal.subjectName }),
       });
       setApprovalModal({ open: false, subjectId: "", subjectName: "" });
-      alert("Approval request sent to Principal/Administrator.");
+      toast("Approval request sent to Principal/Administrator.", "success");
     } catch {
-      alert("Failed to send request. Please contact your Principal directly.");
+      toast("Failed to send request. Please contact your Principal directly.", "error");
     } finally {
       setApprovalSending(false);
     }
@@ -724,6 +736,7 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
 
   return (
     <div className="flex flex-col h-full">
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       {/* ── Taxonomy panel (always visible at top, collapsible) ───────────── */}
       {programTaxonomyUrls && (
         <TaxonomyPanel taxonomyUrls={programTaxonomyUrls} />
@@ -847,18 +860,36 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
                         {p.programCategory.name}
                       </span>
                     )}
+                    {p.programType && (
+                      <span className="text-[10px] bg-blue-50 text-blue-700 rounded-full px-2 py-0.5">
+                        {p.programType.name}
+                      </span>
+                    )}
                   </div>
 
                   {p._count && (
                     <div className="mt-3 flex gap-3 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
-                        <Book className="h-3 w-3" /> {p._count.subjects} subjects
+                        <Book className="h-3 w-3" /> {p._count.subjects} subject{p._count.subjects !== 1 ? "s" : ""}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Layers className="h-3 w-3" /> {p._count.batches} batches
+                        <Layers className="h-3 w-3" /> {p._count.batches} batch{p._count.batches !== 1 ? "es" : ""}
                       </span>
                       <span className="flex items-center gap-1">
-                        <GraduationCap className="h-3 w-3" /> {p._count.students} students
+                        <GraduationCap className="h-3 w-3" /> {p._count.students} student{p._count.students !== 1 ? "s" : ""}
+                      </span>
+                    </div>
+                  )}
+
+                  {p.isPublished !== undefined && (
+                    <div className="mt-3">
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-medium rounded-full px-2 py-0.5 ${
+                        p.isPublished
+                          ? "bg-green-50 text-green-700 border border-green-200"
+                          : "bg-amber-50 text-amber-700 border border-amber-200"
+                      }`}>
+                        <BookOpen className="h-2.5 w-2.5" />
+                        {p.isPublished ? "Published" : "Not yet published"}
                       </span>
                     </div>
                   )}
@@ -1229,13 +1260,15 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
                                         })}
                                       </div>
                                     )}
-                                    <button
-                                      type="button"
-                                      className="w-full flex items-center gap-2 px-10 py-2 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50/60 transition-colors"
-                                      onClick={() => openAddLesson(ch.id)}
-                                    >
-                                      <Plus className="h-3.5 w-3.5" /> Add lesson
-                                    </button>
+                                    <div className="flex items-center gap-2 px-10 py-2">
+                                      <button
+                                        type="button"
+                                        className="flex items-center gap-2 text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50/60 transition-colors rounded px-2 py-1"
+                                        onClick={() => openAddLesson(ch.id)}
+                                      >
+                                        <Plus className="h-3.5 w-3.5" /> Add lesson
+                                      </button>
+                                    </div>
                                   </div>
                                 )}
                               </div>
@@ -1604,10 +1637,12 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
         }
         editing={lessonModal.editing}
         apiPrefix={apiPrefix}
+        programPublished={syllabus?.isPublished ?? false}
         onSaved={() => {
           if (selectedProgram) loadSubjectsAndTree(selectedProgram.id);
         }}
       />
+
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { Prisma } from "@/app/generated/prisma/client";
 import { buildPrincipalTeacherInviteEmail } from "@/lib/email";
@@ -10,8 +10,9 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q")?.trim();
@@ -51,7 +52,10 @@ export async function GET(req: Request) {
 
   const teachers = await db.user.findMany({
     where: { AND: and },
-    include: {
+    select: {
+      id: true, firstName: true, lastName: true, middleName: true,
+      email: true, phone: true, role: true, isActive: true,
+      profilePicture: true, createdAt: true, updatedAt: true,
       teacherProfile: {
         include: {
           subjectAssignments: { include: { subject: true, batch: true } },
@@ -83,8 +87,9 @@ function parseSubjectAssignments(raw: unknown): { subjectId: string; batchId: st
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requirePrincipalPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   const body = await req.json();
   const bcrypt = await import("bcryptjs");

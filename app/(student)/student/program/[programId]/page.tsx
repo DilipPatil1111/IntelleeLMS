@@ -3,6 +3,10 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import DOMPurify from "isomorphic-dompurify";
+import { blobFileUrl } from "@/lib/blob-url";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 import {
   BookOpen,
   Eye,
@@ -233,9 +237,11 @@ function LessonContentPanel({
   const str = (key: string) => (typeof content?.[key] === "string" ? (content[key] as string) : null);
   const files = (key: string): string[] => {
     const v = content?.[key];
-    if (Array.isArray(v)) return v.filter((x): x is string => typeof x === "string");
-    if (typeof v === "string" && v) return [v];
-    return [];
+    let urls: string[];
+    if (Array.isArray(v)) urls = v.filter((x): x is string => typeof x === "string");
+    else if (typeof v === "string" && v) urls = [v];
+    else urls = [];
+    return urls.map((u) => blobFileUrl(u, undefined, true));
   };
 
   async function markDone() {
@@ -273,7 +279,7 @@ function LessonContentPanel({
       <div className="px-6 py-6 space-y-5 max-h-[600px] overflow-y-auto">
         {lesson.kind === "TEXT" && (
           <div className="prose prose-gray max-w-none"
-            dangerouslySetInnerHTML={{ __html: str("html") || "<p>No content available.</p>" }} />
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(str("html") || "<p>No content available.</p>") }} />
         )}
 
         {lesson.kind === "VIDEO" && (
@@ -291,14 +297,14 @@ function LessonContentPanel({
             )}
             {str("notes") && (
               <div className="prose prose-gray max-w-none border-t pt-4"
-                dangerouslySetInnerHTML={{ __html: str("notes")! }} />
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(str("notes")!) }} />
             )}
           </>
         )}
 
         {lesson.kind === "AUDIO" && (
           <>
-            {str("body") && <div className="prose prose-gray max-w-none" dangerouslySetInnerHTML={{ __html: str("body")! }} />}
+            {str("body") && <div className="prose prose-gray max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(str("body")!) }} />}
             {files("audioUrls").length > 0
               ? files("audioUrls").map((url, i) => <audio key={i} controls className="w-full rounded-lg" src={url} />)
               : <div className="flex items-center justify-center h-32 rounded-xl bg-gray-100 text-gray-300"><Music className="h-10 w-10" /></div>
@@ -416,7 +422,7 @@ function LessonContentPanel({
       </div>
 
       {/* Footer */}
-      {lesson.kind !== "QUIZ" && lesson.kind !== "SURVEY" && (
+      {lesson.kind !== "QUIZ" && (
         <div className="border-t border-gray-200 bg-gray-50 px-6 py-4 flex items-center justify-between">
           <div>
             {lesson.isCompleted && (
@@ -425,11 +431,16 @@ function LessonContentPanel({
               </span>
             )}
           </div>
-          {!lesson.isCompleted && (
+          {!lesson.isCompleted && lesson.kind === "SURVEY" && (
             <button type="button" onClick={markDone} disabled={completing}
               className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 transition-colors">
-              {completing ? "Saving…" : "Mark Complete"}
+              {completing ? "Saving…" : "Submit Survey"}
             </button>
+          )}
+          {!lesson.isCompleted && lesson.kind !== "SURVEY" && (
+            <span className="text-sm text-gray-500 italic">
+              Use &ldquo;Mark Chapter Complete&rdquo; to complete all lessons in this chapter
+            </span>
           )}
         </div>
       )}
@@ -453,6 +464,8 @@ export default function StudentProgramDetailPage() {
   const [recordings, setRecordings] = useState<SessionRecording[]>([]);
   const [recordingsOpen, setRecordingsOpen] = useState(false);
   const [expandedRecording, setExpandedRecording] = useState<string | null>(null);
+  const [markingChapter, setMarkingChapter] = useState<string | null>(null);
+  const { toasts, toast, dismiss } = useToast();
 
   const loadData = useCallback(async () => {
     try {
@@ -466,7 +479,7 @@ export default function StudentProgramDetailPage() {
       if (data.program) {
         setProgram(data.program);
         const expanded: Record<string, boolean> = {};
-        for (const s of data.program.subjects) expanded[s.id] = true;
+        for (const s of (data.program.subjects ?? [])) expanded[s.id] = true;
         setExpandedSubjects(expanded);
       }
       setRecordings(recRes.recordings || []);
@@ -487,6 +500,21 @@ export default function StudentProgramDetailPage() {
         .flatMap((ch: ChapterData) => ch.lessons);
       const updated = updatedLessons.find((l: LessonData) => l.id === lessonId);
       if (updated) setActiveLesson(updated);
+    }
+  }
+
+  async function markChapterComplete(chapterId: string) {
+    setMarkingChapter(chapterId);
+    try {
+      const res = await fetch(`/api/student/program-content/chapters/${chapterId}/complete`, { method: "POST" });
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        toast(e.error || "Failed to mark chapter complete", "error");
+        return;
+      }
+      await loadData();
+    } finally {
+      setMarkingChapter(null);
     }
   }
 
@@ -535,6 +563,7 @@ export default function StudentProgramDetailPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       {/* Breadcrumb */}
       <div>
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
@@ -655,7 +684,7 @@ export default function StudentProgramDetailPage() {
                               <p className="text-xs text-gray-500 mt-0.5">
                                 {new Date(rec.sessionDate).toLocaleDateString()}
                                 {rec.durationMin ? ` · ${rec.durationMin} min` : ""}
-                                {` · by ${rec.uploadedBy.firstName} ${rec.uploadedBy.lastName}`}
+                                {rec.uploadedBy ? ` · by ${rec.uploadedBy.firstName} ${rec.uploadedBy.lastName}` : ""}
                               </p>
                             </div>
                             <Play className="h-4 w-4 text-indigo-500 shrink-0" />
@@ -666,7 +695,7 @@ export default function StudentProgramDetailPage() {
                             <video
                               controls
                               className="w-full rounded-lg bg-black max-h-[400px]"
-                              src={rec.videoUrl}
+                              src={blobFileUrl(rec.videoUrl, undefined, true)}
                             />
                           </div>
                         )}
@@ -803,38 +832,59 @@ export default function StudentProgramDetailPage() {
                                     No lessons available.
                                   </div>
                                 ) : (
-                                  <div className="divide-y divide-gray-100">
-                                    {ch.lessons.map((les) => {
-                                      const isActive = activeLesson?.id === les.id;
-                                      return (
+                                  <>
+                                    <div className="divide-y divide-gray-100">
+                                      {ch.lessons.map((les) => {
+                                        const isActive = activeLesson?.id === les.id;
+                                        return (
+                                          <button
+                                            key={les.id}
+                                            type="button"
+                                            onClick={() => setActiveLesson(isActive ? null : les)}
+                                            className={`w-full flex items-center gap-3 px-10 py-2.5 text-left transition-colors ${
+                                              isActive
+                                                ? "bg-indigo-50 border-l-2 border-indigo-500"
+                                                : "hover:bg-white"
+                                            }`}
+                                          >
+                                            {les.isCompleted
+                                              ? <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
+                                              : <Circle className="h-4 w-4 text-gray-300 shrink-0" />}
+                                            <span className="text-gray-400 shrink-0">{LESSON_ICONS[les.kind]}</span>
+                                            <span className="flex-1 text-sm text-gray-700">{les.title}</span>
+                                            {les.isCompleted ? (
+                                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-green-50 text-green-700">
+                                                Completed
+                                              </span>
+                                            ) : (
+                                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-gray-100 text-gray-500">
+                                                Pending
+                                              </span>
+                                            )}
+                                          </button>
+                                        );
+                                      })}
+                                    </div>
+                                    {/* Mark Chapter Complete button */}
+                                    {!ch.lessons.every((l) => l.isCompleted) && (
+                                      <div className="border-t border-gray-200 px-6 py-3 flex justify-end">
                                         <button
-                                          key={les.id}
                                           type="button"
-                                          onClick={() => setActiveLesson(isActive ? null : les)}
-                                          className={`w-full flex items-center gap-3 px-10 py-2.5 text-left transition-colors ${
-                                            isActive
-                                              ? "bg-indigo-50 border-l-2 border-indigo-500"
-                                              : "hover:bg-white"
-                                          }`}
+                                          disabled={markingChapter === ch.id}
+                                          onClick={(e) => { e.stopPropagation(); markChapterComplete(ch.id); }}
+                                          className="flex items-center gap-1.5 rounded-lg bg-green-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-green-700 active:bg-green-800 transition-colors disabled:opacity-50"
                                         >
-                                          {les.isCompleted
-                                            ? <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
-                                            : <Circle className="h-4 w-4 text-gray-300 shrink-0" />}
-                                          <span className="text-gray-400 shrink-0">{LESSON_ICONS[les.kind]}</span>
-                                          <span className="flex-1 text-sm text-gray-700">{les.title}</span>
-                                          {les.isCompleted ? (
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-green-50 text-green-700">
-                                              Completed
-                                            </span>
-                                          ) : (
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-gray-100 text-gray-500">
-                                              Pending
-                                            </span>
-                                          )}
+                                          <CheckCircle className="h-4 w-4" />
+                                          {markingChapter === ch.id ? "Marking…" : "Mark Chapter Complete"}
                                         </button>
-                                      );
-                                    })}
-                                  </div>
+                                      </div>
+                                    )}
+                                    {ch.lessons.every((l) => l.isCompleted) && (
+                                      <div className="border-t border-gray-200 px-6 py-3 flex items-center gap-2 text-green-700 text-sm font-semibold">
+                                        <CheckCircle className="h-4 w-4" /> Chapter completed
+                                      </div>
+                                    )}
+                                  </>
                                 )}
                               </div>
                             )}

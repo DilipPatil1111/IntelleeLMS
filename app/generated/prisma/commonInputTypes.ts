@@ -647,6 +647,40 @@ export type EnumFolderScopeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel>
 }
 
+export type EnumRetakeRequestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.RetakeRequestStatus | Prisma.EnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RetakeRequestStatus[] | Prisma.ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RetakeRequestStatus[] | Prisma.ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRetakeRequestStatusFilter<$PrismaModel> | $Enums.RetakeRequestStatus
+}
+
+export type EnumRetakeRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RetakeRequestStatus | Prisma.EnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RetakeRequestStatus[] | Prisma.ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RetakeRequestStatus[] | Prisma.ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRetakeRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.RetakeRequestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRetakeRequestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRetakeRequestStatusFilter<$PrismaModel>
+}
+
+export type EnumAttendanceExcuseStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AttendanceExcuseStatus | Prisma.EnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AttendanceExcuseStatus[] | Prisma.ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AttendanceExcuseStatus[] | Prisma.ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel> | $Enums.AttendanceExcuseStatus
+}
+
+export type EnumAttendanceExcuseStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AttendanceExcuseStatus | Prisma.EnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AttendanceExcuseStatus[] | Prisma.ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AttendanceExcuseStatus[] | Prisma.ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAttendanceExcuseStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceExcuseStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1242,6 +1276,40 @@ export type NestedEnumFolderScopeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumFolderScopeFilter<$PrismaModel>
+}
+
+export type NestedEnumRetakeRequestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.RetakeRequestStatus | Prisma.EnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RetakeRequestStatus[] | Prisma.ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RetakeRequestStatus[] | Prisma.ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRetakeRequestStatusFilter<$PrismaModel> | $Enums.RetakeRequestStatus
+}
+
+export type NestedEnumRetakeRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RetakeRequestStatus | Prisma.EnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RetakeRequestStatus[] | Prisma.ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RetakeRequestStatus[] | Prisma.ListEnumRetakeRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRetakeRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.RetakeRequestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRetakeRequestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRetakeRequestStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAttendanceExcuseStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AttendanceExcuseStatus | Prisma.EnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AttendanceExcuseStatus[] | Prisma.ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AttendanceExcuseStatus[] | Prisma.ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel> | $Enums.AttendanceExcuseStatus
+}
+
+export type NestedEnumAttendanceExcuseStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AttendanceExcuseStatus | Prisma.EnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AttendanceExcuseStatus[] | Prisma.ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AttendanceExcuseStatus[] | Prisma.ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAttendanceExcuseStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceExcuseStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel>
 }
 
 

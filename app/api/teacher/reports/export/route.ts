@@ -1,15 +1,20 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const { searchParams } = new URL(req.url);
   const assessmentId = searchParams.get("assessmentId");
 
-  const where: Record<string, unknown> = { assessment: { createdById: session.user.id }, status: "GRADED" };
+  const where: Record<string, unknown> = {
+    ...(isTeacherOwnershipRestricted(session) ? { assessment: { createdById: session.user.id } } : {}),
+    status: "GRADED",
+  };
   if (assessmentId) where.assessmentId = assessmentId;
 
   const attempts = await db.attempt.findMany({

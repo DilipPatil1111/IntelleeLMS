@@ -1,16 +1,31 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
 
-  const [totalStudents, totalTeachers, totalAssessments, totalPrograms] = await Promise.all([
+  const [
+    totalStudents,
+    totalTeachers,
+    totalPrograms,
+    totalBatches,
+    enrolledCount,
+    expelledCount,
+    transferredCount,
+    pendingCount,
+    feeAgg,
+  ] = await Promise.all([
     db.user.count({ where: { role: "STUDENT" } }),
     db.user.count({ where: { role: "TEACHER" } }),
-    db.assessment.count(),
     db.program.count(),
+    db.batch.count(),
+    db.studentProfile.count({ where: { status: "ENROLLED" } }),
+    db.studentProfile.count({ where: { status: "EXPELLED" } }),
+    db.studentProfile.count({ where: { status: "TRANSFERRED" } }),
+    db.studentProfile.count({ where: { status: { in: ["APPLIED", "ACCEPTED"] } } }),
+    db.feePayment.aggregate({ _sum: { amountPaid: true } }),
   ]);
 
   const gradedAttempts = await db.attempt.findMany({
@@ -19,7 +34,10 @@ export async function GET() {
   });
 
   const passCount = gradedAttempts.filter((a) => {
-    const threshold = a.assessment.passingMarks && a.assessment.totalMarks > 0 ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100 : 50;
+    const threshold =
+      a.assessment.passingMarks && a.assessment.totalMarks > 0
+        ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100
+        : 50;
     return (a.percentage || 0) >= threshold;
   }).length;
 
@@ -28,9 +46,16 @@ export async function GET() {
   return NextResponse.json({
     totalStudents,
     totalTeachers,
-    totalAssessments,
     totalPrograms,
+    totalBatches,
+    enrolledCount,
+    expelledCount,
+    transferredCount,
+    pendingCount,
+    totalFeesReceived: feeAgg._sum.amountPaid ?? 0,
     overallPassRate,
+    totalPassed: passCount,
+    totalFailed: gradedAttempts.length - passCount,
     totalGraded: gradedAttempts.length,
   });
 }

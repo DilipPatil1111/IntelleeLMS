@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
-type BadgeVariant = "default" | "success" | "warning" | "danger" | "info";
+export type BadgeVariant = "default" | "success" | "warning" | "danger" | "info" | "secondary";
 
 const variantStyles: Record<BadgeVariant, string> = {
   default: "bg-gray-100 text-gray-700",
@@ -9,6 +9,7 @@ const variantStyles: Record<BadgeVariant, string> = {
   warning: "bg-yellow-100 text-yellow-700",
   danger: "bg-red-100 text-red-700",
   info: "bg-blue-100 text-blue-700",
+  secondary: "bg-gray-200 text-gray-600",
 };
 
 const dotColors: Record<BadgeVariant, string> = {
@@ -17,6 +18,7 @@ const dotColors: Record<BadgeVariant, string> = {
   warning: "bg-yellow-500",
   danger: "bg-red-500",
   info: "bg-blue-500",
+  secondary: "bg-gray-400",
 };
 
 interface BadgeProps {

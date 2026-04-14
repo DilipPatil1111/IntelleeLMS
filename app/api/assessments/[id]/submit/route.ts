@@ -74,5 +74,14 @@ export async function POST(req: Request, _params: { params: Promise<{ id: string
     },
   });
 
+  // Clean up any APPROVED_RETAKE request so the student can request again in the future if needed
+  await db.assessmentRetakeRequest.deleteMany({
+    where: {
+      assessmentId: attempt.assessmentId,
+      studentUserId: session.user.id,
+      status: "APPROVED_RETAKE",
+    },
+  }).catch(() => {});
+
   return NextResponse.json({ success: true });
 }

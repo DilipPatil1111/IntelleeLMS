@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { ResultsListClient } from "./results-list-client";
+import { blobFileUrl } from "@/lib/blob-url";
 
 export default async function StudentResultsPage() {
   const session = await auth();
@@ -33,7 +34,7 @@ export default async function StudentResultsPage() {
         actions={
           <div className="flex items-center gap-3">
             {institution?.logoUrl && (
-              <img src={institution.logoUrl} alt={collegeName} className="h-10 w-auto object-contain" />
+              <img src={blobFileUrl(institution.logoUrl, "logo", true)} alt={collegeName} className="h-10 w-auto object-contain" />
             )}
             <span className="text-lg font-bold text-indigo-700">{collegeName}</span>
           </div>

@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { blobPut } from "@/lib/vercel-blob";
@@ -6,10 +6,9 @@ import { randomUUID } from "crypto";
 
 /** POST /api/principal/settings/signature/upload — upload a signature image */
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const form = await req.formData().catch(() => null);
   if (!form) {
@@ -21,10 +20,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "file field is required" }, { status: 400 });
   }
 
-  const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp", "image/svg+xml"];
+  const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"];
   if (!allowedTypes.includes(file.type)) {
     return NextResponse.json(
-      { error: "Only image files are accepted (png, jpg, gif, webp, svg)" },
+      { error: "Only image files are accepted (png, jpg, gif, webp)" },
       { status: 400 },
     );
   }

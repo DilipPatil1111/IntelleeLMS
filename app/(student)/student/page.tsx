@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, ClipboardList, Calendar, Award } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { slotDurationMinutes } from "@/lib/program-calendar-hours";
 import Link from "next/link";
 import { StudentJourneyProgress } from "@/components/student/student-journey-progress";
 import { countIncompleteProgramContentItems } from "@/lib/program-content";
@@ -27,7 +28,9 @@ export default async function StudentDashboard() {
         orderBy: { createdAt: "desc" },
         take: 5,
       },
-      attendanceRecords: true,
+      attendanceRecords: {
+        include: { session: { select: { sessionDate: true, startTime: true, endTime: true } } },
+      },
     },
   });
 
@@ -44,12 +47,25 @@ export default async function StudentDashboard() {
       : 0;
   const totalRecords = user.attendanceRecords.length;
   const presentRecords = user.attendanceRecords.filter(
-    (r) => r.status === "PRESENT" || r.status === "LATE"
+    (r) => r.status === "PRESENT" || r.status === "LATE" || r.status === "EXCUSED"
   ).length;
   const attendanceRate =
     totalRecords > 0
       ? Math.round((presentRecords / totalRecords) * 100)
       : 0;
+
+  let attendanceTotalMinutes = 0;
+  const attendanceDaySet = new Set<string>();
+  for (const rec of user.attendanceRecords) {
+    if (rec.status === "PRESENT" || rec.status === "LATE" || rec.status === "EXCUSED") {
+      const mins = slotDurationMinutes(rec.session.startTime, rec.session.endTime);
+      attendanceTotalMinutes += mins;
+      const d = rec.session.sessionDate;
+      attendanceDaySet.add(d instanceof Date ? d.toISOString().slice(0, 10) : String(d).slice(0, 10));
+    }
+  }
+  const attendanceTotalHours = Math.round((attendanceTotalMinutes / 60) * 10) / 10;
+  const attendanceTotalDays = attendanceDaySet.size;
 
   const pendingAssessments = await countPendingAssessmentsForStudent(
     user.id,
@@ -120,6 +136,7 @@ export default async function StudentDashboard() {
         <StatCard
           title="Attendance"
           value={`${attendanceRate}%`}
+          subtitle={`${attendanceTotalHours} hrs · ${attendanceTotalDays} day${attendanceTotalDays !== 1 ? "s" : ""}`}
           icon={<Calendar className="h-5 w-5" />}
           variant={attendanceRate >= 75 ? "emerald" : "rose"}
         />

@@ -54,7 +54,10 @@ export async function GET(req: Request) {
 
   const students = await db.user.findMany({
     where: { AND: and },
-    include: {
+    select: {
+      id: true, firstName: true, lastName: true, middleName: true,
+      email: true, phone: true, role: true, isActive: true,
+      profilePicture: true, createdAt: true, updatedAt: true,
       studentProfile: { include: { program: true, batch: true } },
       attempts: { where: { status: "GRADED" }, select: { percentage: true } },
       attendanceRecords: { select: { status: true } },

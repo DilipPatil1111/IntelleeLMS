@@ -18,8 +18,17 @@ if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status
 Role-based checks use helpers from `lib/api-auth.ts`:
 
 ```typescript
-const { session, error, status } = await requirePrincipalPortal(req);
-if (error) return NextResponse.json({ error }, { status });
+const gate = await requirePrincipalPortal();
+if (!gate.ok) return gate.response;
+const session = gate.session;
+```
+
+For GET routes that use `auth()` directly, always add the portal access check as defense-in-depth:
+
+```typescript
+const session = await auth();
+if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+if (!hasStudentPortalAccess(session)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 ```
 
 ### Error handling
@@ -121,6 +130,17 @@ useEffect(() => {
   // eslint-disable-next-line react-hooks/set-state-in-effect
   void load();
 }, [load]);
+```
+
+For effects with **multiple** `setState` calls in the body (where `eslint-disable-next-line` only covers one line), use block-level suppression:
+
+```tsx
+/* eslint-disable react-hooks/set-state-in-effect -- one-time sync from URL param */
+useEffect(() => {
+  setFoo("value");
+  setBar("value");
+}, [dep]);
+/* eslint-enable react-hooks/set-state-in-effect */
 ```
 
 **Never** define `async function load()` after the `useEffect` that calls it — this causes "cannot access variable before it is declared" hoisting errors.
@@ -228,4 +248,131 @@ const [form, setForm] = useState(() => ({
   title: subjectParam?.slice(0, 200) ?? "",
   ...
 }));
+```
+
+---
+
+## Toast notifications (no browser alerts)
+
+Never use `window.alert()`, `window.confirm()`, or `window.prompt()`. Use the toast system instead:
+
+```tsx
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
+
+function MyComponent() {
+  const { toasts, toast, dismiss } = useToast();
+
+  function handleAction() {
+    try {
+      // ... action ...
+      toast("Saved successfully!", "success");
+    } catch {
+      toast("Something went wrong", "error");
+    }
+  }
+
+  return (
+    <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
+      {/* ... rest of component ... */}
+    </>
+  );
+}
+```
+
+Tones: `"success"`, `"error"`, `"warning"`, `"info"` (default). Toasts auto-dismiss after 5 seconds.
+
+---
+
+## Embeddable component pattern
+
+When a feature needs to appear both as a standalone page and as a tab within another page, extract the content into a named export with an `embedded` prop:
+
+```tsx
+// page.tsx
+export function FeatureManager({ embedded = false }: { embedded?: boolean }) {
+  return (
+    <>
+      {!embedded && <PageHeader title="Feature" />}
+      {/* ... component content ... */}
+    </>
+  );
+}
+
+export default function FeaturePage() {
+  return <FeatureManager />;
+}
+```
+
+The standalone page calls `<FeatureManager />` (header shown). Tabbed pages call `<FeatureManager embedded />` (header hidden, parent provides framing). Used by: `SubjectsManager`, `HolidaysManager`, `RetakeRequestsClient`, `AttendanceExcusesClient`.
+
+---
+
+## Shared components across portals
+
+When a feature exists in both principal and teacher portals (e.g., certificate templates, program content, award certificates, session recordings), extract a shared client component under `components/`:
+
+```
+components/certificates/certificate-templates-client.tsx   → used by principal & teacher
+components/program-content/program-content-admin-client.tsx → used by principal & teacher
+components/program-content/award-certificates-client.tsx    → used by principal & teacher
+components/session-recordings/session-recordings-manager.tsx → used by principal & teacher
+```
+
+The page files pass role-specific API prefixes (e.g., `/api/principal/...` vs `/api/teacher/...`) to the shared component.
+
+---
+
+## Vercel Blob private access
+
+For private Vercel Blob files, use the three-layer architecture:
+
+- **Server-side reads:** Use `lib/blob-fetch.ts` (`fetchBlobAsBuffer`) for PDF generation, email attachments, etc.
+- **Server-side writes:** Use `lib/vercel-blob.ts` (`blobPut`/`blobDel`) which passes `BLOB_READ_WRITE_TOKEN`.
+- **Client-side display:** Use `lib/blob-url.ts` (`blobFileUrl`) which routes private URLs through `/api/blob-download`.
+
+```typescript
+// Client: display a private blob file
+import { blobFileUrl } from "@/lib/blob-url";
+<a href={blobFileUrl(file.fileUrl)}>Download</a>
+
+// Server: fetch blob content for PDF/email
+import { fetchBlobAsBuffer } from "@/lib/blob-fetch";
+const buffer = await fetchBlobAsBuffer(url);
+```
+
+---
+
+## Certificate PDF generation
+
+Two code paths depending on template background type:
+
+```typescript
+import { isPdfUrl } from "@/lib/certificate-generator";
+
+if (isPdfUrl(template.backgroundUrl, template.backgroundFileName)) {
+  // PDF template → pdf-lib overlay
+  buffer = await generateCertificateFromPdfTemplate({ pdfUrl, orientation, pageSize, fields, data });
+} else {
+  // Image template → @react-pdf/renderer
+  /* eslint-disable react-hooks/error-boundaries -- server-side PDF generation */
+  buffer = await renderToBuffer(<CertificatePdf ... />);
+  /* eslint-enable react-hooks/error-boundaries */
+}
+```
+
+The `react-hooks/error-boundaries` rule fires on JSX inside try/catch in route handlers; suppress with block-level disable since these are server-side, not React components.
+
+---
+
+## TeacherProgram queries
+
+`TeacherProgram` uses `teacherProfileId`, not `userId`. To query by the current user:
+
+```typescript
+const teacherPrograms = await db.teacherProgram.findMany({
+  where: { teacherProfile: { userId: session.user.id } },
+  select: { programId: true, program: { select: { id: true, name: true } } },
+});
 ```

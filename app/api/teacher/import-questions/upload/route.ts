@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { NextResponse } from "next/server";
 
 interface ParsedQuestion {
@@ -11,8 +11,9 @@ interface ParsedQuestion {
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   try {
     const formData = await req.formData();
@@ -20,6 +21,11 @@ export async function POST(req: Request) {
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+    }
+
+    const MAX_IMPORT_BYTES = 10 * 1024 * 1024; // 10 MB
+    if (file.size > MAX_IMPORT_BYTES) {
+      return NextResponse.json({ error: `File too large (max ${MAX_IMPORT_BYTES / 1024 / 1024} MB)` }, { status: 400 });
     }
 
     const fileName = file.name.toLowerCase();

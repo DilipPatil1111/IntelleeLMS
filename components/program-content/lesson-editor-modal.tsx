@@ -45,6 +45,7 @@ interface LessonEditorModalProps {
   editing: LessonRow | null;
   apiPrefix: string;
   onSaved: () => void;
+  programPublished?: boolean;
 }
 
 // ─── Lesson kind metadata ─────────────────────────────────────────────────────
@@ -100,6 +101,7 @@ export function LessonEditorModal({
   editing,
   apiPrefix,
   onSaved,
+  programPublished,
 }: LessonEditorModalProps) {
   const [title, setTitle]     = useState("");
   const [kind, setKind]       = useState<ProgramLessonKind>("TEXT");
@@ -156,7 +158,7 @@ export function LessonEditorModal({
       setSurveyQuestions(parsed.surveyQuestions);
       setQuizQuestions(parsed.quizQuestions);
     } else {
-      setTitle(""); setKind("TEXT"); setIsDraft(true); setTypePicked(false);
+      setTitle(""); setKind("TEXT"); setIsDraft(!programPublished); setTypePicked(false);
       setTextContent(""); setUploadedFiles([]); setPendingFiles([]);
       setMultimediaMode("url"); setMultimediaUrl("");
       setSurveyQuestions([]); setQuizQuestions([]);
@@ -171,7 +173,7 @@ export function LessonEditorModal({
       setIsPrerequisite(chapter.isPrerequisite);
       setEnableDiscussions(chapter.enableDiscussions);
     }
-  }, [isOpen, editing, chapter]);
+  }, [isOpen, editing, chapter, programPublished]);
 
   // ── Fetch existing assessments when QUIZ is selected ─────────────────────
   useEffect(() => {
@@ -321,6 +323,7 @@ export function LessonEditorModal({
   }, [
     title, kind, isDraft, textContent, uploadedFiles, pendingFiles,
     multimediaMode, multimediaUrl, surveyQuestions, quizQuestions,
+    linkedAssessmentId, quizMode, quizWarning,
     freePreview, isPrerequisite, enableDiscussions,
     editing, chapterId, chapter, apiPrefix, uploadPendingFiles, onSaved, onClose,
   ]);

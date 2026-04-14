@@ -1,23 +1,29 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { sendEmailWithSignature } from "@/lib/email-signature";
 import { resolveStudentEmails } from "@/lib/mail-audience";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
-  const profile = await db.teacherProfile.findUnique({
-    where: { userId: session.user.id },
-    include: { teacherPrograms: true },
-  });
+  let where: Record<string, unknown>;
 
-  const programIds = profile?.teacherPrograms.map((tp) => tp.programId) || [];
-
-  const where = {
-    OR: [{ programId: { in: programIds } }, { createdById: session.user.id }],
-  };
+  if (!isTeacherOwnershipRestricted(session)) {
+    where = {};
+  } else {
+    const profile = await db.teacherProfile.findUnique({
+      where: { userId: session.user.id },
+      include: { teacherPrograms: true },
+    });
+    const programIds = profile?.teacherPrograms.map((tp) => tp.programId) || [];
+    where = {
+      OR: [{ programId: { in: programIds } }, { createdById: session.user.id }],
+    };
+  }
 
   const { searchParams } = new URL(req.url);
   const page = Math.max(1, Number.parseInt(searchParams.get("page") || "1", 10) || 1);
@@ -43,8 +49,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requireTeacherPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   const body = await req.json();
   const {
@@ -60,17 +67,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Title and body required" }, { status: 400 });
   }
 
-  const profile = await db.teacherProfile.findUnique({
-    where: { userId: session.user.id },
-    include: { teacherPrograms: true },
-  });
-  if (!profile) return NextResponse.json({ error: "No teacher profile" }, { status: 400 });
-
   if (typeof programId !== "string" || !programId) {
     return NextResponse.json({ error: "Program is required" }, { status: 400 });
   }
-  if (!profile.teacherPrograms.some((tp) => tp.programId === programId)) {
-    return NextResponse.json({ error: "Program not assigned to you" }, { status: 403 });
+
+  if (isTeacherOwnershipRestricted(session)) {
+    const profile = await db.teacherProfile.findUnique({
+      where: { userId: session.user.id },
+      include: { teacherPrograms: true },
+    });
+    if (!profile) return NextResponse.json({ error: "No teacher profile" }, { status: 400 });
+    if (!profile.teacherPrograms.some((tp) => tp.programId === programId)) {
+      return NextResponse.json({ error: "Program not assigned to you" }, { status: 403 });
+    }
+  } else {
+    const prog = await db.program.findUnique({ where: { id: programId } });
+    if (!prog) return NextResponse.json({ error: "Program not found" }, { status: 404 });
   }
 
   const ann = await db.announcement.create({

@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { Plus, Pencil, Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 type TaxItem = {
   id: string;
@@ -29,6 +31,7 @@ export default function ProgramTaxonomyPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<TaxItem | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const { toasts, toast, dismiss } = useToast();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -44,6 +47,7 @@ export default function ProgramTaxonomyPage() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
   }, [load]);
 
@@ -92,7 +96,7 @@ export default function ProgramTaxonomyPage() {
     });
     if (!res.ok) {
       const j = await res.json().catch(() => ({}));
-      alert((j as { error?: string }).error || "Save failed");
+      toast((j as { error?: string }).error || "Save failed", "error");
       return;
     }
     setModalOpen(false);
@@ -110,7 +114,7 @@ export default function ProgramTaxonomyPage() {
     const res = await fetch(`${base}/${x.id}`, { method: "DELETE" });
     if (!res.ok) {
       const j = await res.json().catch(() => ({}));
-      alert((j as { error?: string }).error || "Delete failed");
+      toast((j as { error?: string }).error || "Delete failed", "error");
       return;
     }
     void load();
@@ -118,6 +122,7 @@ export default function ProgramTaxonomyPage() {
 
   return (
     <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       <PageHeader
         title="Program taxonomy"
         description="Define domains, categories, and types, then link them on each program. Optional Customer ID is unique per list when set."

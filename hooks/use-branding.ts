@@ -28,6 +28,7 @@ export function useBranding() {
 
   useEffect(() => {
     if (cachedBranding?.loaded) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBranding(cachedBranding);
       return;
     }

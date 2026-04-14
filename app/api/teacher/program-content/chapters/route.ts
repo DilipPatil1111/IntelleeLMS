@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   const subject = await db.subject.findUnique({ where: { id: body.subjectId } });
   if (!subject) return NextResponse.json({ error: "Subject not found" }, { status: 404 });
 
-  const can = await staffCanAccessProgram(session.user.id, "TEACHER", subject.programId);
+  const can = await staffCanAccessProgram(session.user.id, session, subject.programId);
   if (!can) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const maxOrder = await db.programChapter.aggregate({

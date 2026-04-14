@@ -1,11 +1,12 @@
-import { auth } from "@/lib/auth";
+import { requireStudentPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 /** Teachers assigned to the current student's batch (for optional "about this teacher" feedback). */
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireStudentPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const sp = await db.studentProfile.findUnique({
     where: { userId: session.user.id },

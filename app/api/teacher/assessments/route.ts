@@ -1,12 +1,14 @@
-import { auth } from "@/lib/auth";
+import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
+import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
 import { Prisma } from "@/app/generated/prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireTeacherPortal();
+  if (!gate.ok) return gate.response;
+  const session = gate.session;
 
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q")?.trim();
@@ -15,27 +17,30 @@ export async function GET(req: Request) {
   const status = searchParams.get("status") || undefined;
   const type = searchParams.get("type") || undefined;
 
-  // Fetch programs and subjects this teacher is assigned to, so they can see
-  // quizzes created by principals/others via Program Content for their programs.
-  const teacherProfile = await db.teacherProfile.findUnique({
-    where: { userId: session.user.id },
-    include: {
-      teacherPrograms: { select: { programId: true } },
-      subjectAssignments: { select: { subjectId: true } },
-    },
-  });
-  const teacherProgramIds = teacherProfile?.teacherPrograms.map((tp) => tp.programId) ?? [];
-  const teacherSubjectIds = teacherProfile?.subjectAssignments.map((sa) => sa.subjectId) ?? [];
+  let visibilityFilter: Prisma.AssessmentWhereInput;
 
-  // Build visibility: own creations + assessments for programs/subjects they teach
-  const orClauses: Prisma.AssessmentWhereInput[] = [{ createdById: session.user.id }];
-  if (teacherProgramIds.length > 0) {
-    orClauses.push({ subject: { programId: { in: teacherProgramIds } } });
+  if (!isTeacherOwnershipRestricted(session)) {
+    visibilityFilter = {};
+  } else {
+    const teacherProfile = await db.teacherProfile.findUnique({
+      where: { userId: session.user.id },
+      include: {
+        teacherPrograms: { select: { programId: true } },
+        subjectAssignments: { select: { subjectId: true } },
+      },
+    });
+    const teacherProgramIds = teacherProfile?.teacherPrograms.map((tp) => tp.programId) ?? [];
+    const teacherSubjectIds = teacherProfile?.subjectAssignments.map((sa) => sa.subjectId) ?? [];
+
+    const orClauses: Prisma.AssessmentWhereInput[] = [{ createdById: session.user.id }];
+    if (teacherProgramIds.length > 0) {
+      orClauses.push({ subject: { programId: { in: teacherProgramIds } } });
+    }
+    if (teacherSubjectIds.length > 0) {
+      orClauses.push({ subjectId: { in: teacherSubjectIds } });
+    }
+    visibilityFilter = { OR: orClauses };
   }
-  if (teacherSubjectIds.length > 0) {
-    orClauses.push({ subjectId: { in: teacherSubjectIds } });
-  }
-  const visibilityFilter: Prisma.AssessmentWhereInput = { OR: orClauses };
 
   const and: Prisma.AssessmentWhereInput[] = [visibilityFilter];
 
@@ -79,8 +84,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate2 = await requireTeacherPortal();
+  if (!gate2.ok) return gate2.response;
+  const session = gate2.session;
 
   try {
     const body = await req.json();
@@ -135,6 +141,11 @@ export async function POST(req: Request) {
         scheduledOpenAt: body.scheduledOpenAt ? new Date(body.scheduledOpenAt) : null,
         scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
         assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
+        createdAt: body.createdAt
+          ? new Date(body.createdAt)
+          : body.assessmentDate
+            ? new Date(body.assessmentDate)
+            : undefined,
         instructions: body.instructions || null,
         moduleId: body.moduleNameText?.trim() ? null : body.moduleId || null,
         topicId: body.topicNameText?.trim() ? null : body.topicId || null,

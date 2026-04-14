@@ -65,10 +65,10 @@ export async function POST(req: Request) {
       CUSTOM_TEXT: "Certificate of Completion",
     };
 
-    let buffer: Uint8Array | Buffer;
+    let pdfBytes: Uint8Array;
 
     if (isPdfUrl(template.backgroundUrl, template.backgroundFileName)) {
-      buffer = await generateCertificateFromPdfTemplate({
+      pdfBytes = await generateCertificateFromPdfTemplate({
         pdfUrl: template.backgroundUrl!,
         orientation: template.orientation as "LANDSCAPE" | "PORTRAIT",
         pageSize: template.pageSize as "A4" | "LETTER",
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
         data,
       });
     } else {
-      buffer = await renderToBuffer(
+      const rendered = await renderToBuffer(
         <CertificatePdf
           backgroundUrl={template.backgroundUrl}
           orientation={template.orientation as "LANDSCAPE" | "PORTRAIT"}
@@ -85,9 +85,10 @@ export async function POST(req: Request) {
           data={data}
         />
       );
+      pdfBytes = new Uint8Array(rendered);
     }
 
-    return new NextResponse(buffer, {
+    return new NextResponse(pdfBytes.buffer.slice(pdfBytes.byteOffset, pdfBytes.byteOffset + pdfBytes.byteLength) as ArrayBuffer, {
       status: 200,
       headers: { "Content-Type": "application/pdf", "Content-Disposition": `inline; filename="certificate-preview.pdf"` },
     });

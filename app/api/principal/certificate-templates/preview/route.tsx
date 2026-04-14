@@ -37,10 +37,10 @@ export async function POST(req: Request) {
       previewCertNumber: "INT000",
     });
 
-    let buffer: Uint8Array | Buffer;
+    let pdfBytes: Uint8Array;
 
     if (isPdfUrl(template.backgroundUrl, template.backgroundFileName)) {
-      buffer = await generateCertificateFromPdfTemplate({
+      pdfBytes = await generateCertificateFromPdfTemplate({
         pdfUrl: template.backgroundUrl!,
         orientation: template.orientation as "LANDSCAPE" | "PORTRAIT",
         pageSize: template.pageSize as "A4" | "LETTER",
@@ -48,7 +48,8 @@ export async function POST(req: Request) {
         data,
       });
     } else {
-      buffer = await renderToBuffer(
+      /* eslint-disable react-hooks/error-boundaries -- server-side PDF generation, not a React component */
+      const rendered = await renderToBuffer(
         <CertificatePdf
           backgroundUrl={template.backgroundUrl}
           orientation={template.orientation as "LANDSCAPE" | "PORTRAIT"}
@@ -57,9 +58,11 @@ export async function POST(req: Request) {
           data={data}
         />
       );
+      /* eslint-enable react-hooks/error-boundaries */
+      pdfBytes = new Uint8Array(rendered);
     }
 
-    return new NextResponse(buffer, {
+    return new NextResponse(pdfBytes.buffer.slice(pdfBytes.byteOffset, pdfBytes.byteOffset + pdfBytes.byteLength) as ArrayBuffer, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

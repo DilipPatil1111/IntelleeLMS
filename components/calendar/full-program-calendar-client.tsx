@@ -20,6 +20,8 @@ import {
   type CalendarSlotRun,
 } from "@/lib/program-calendar-slot-groups";
 import { Loader2, Trash2, Bell, Pencil } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 type Mode = "principal" | "teacher" | "student";
 
@@ -107,6 +109,7 @@ export function FullProgramCalendarClient({
   const [teacherPrograms, setTeacherPrograms] = useState<{ value: string; label: string }[]>([]);
   /** Batch/program names from API (used when student view has no local program list). */
   const [studentGridNames, setStudentGridNames] = useState<{ programName: string; batchName: string } | null>(null);
+  const { toasts, toast, dismiss } = useToast();
 
   const { data: session } = useSession();
 
@@ -328,7 +331,7 @@ export function FullProgramCalendarClient({
     if (!batchId || !programId || !newTeacher || !from || !to) return;
     const dates = ymdRange(from, to);
     if (dates.length === 0) {
-      alert("Invalid date range (From must be on or before To).");
+      toast("Invalid date range (From must be on or before To).", "warning");
       return;
     }
     setSaving(true);
@@ -350,7 +353,7 @@ export function FullProgramCalendarClient({
     setSaving(false);
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      alert(typeof err?.error === "string" ? err.error : "Could not save blocks.");
+      toast(typeof err?.error === "string" ? err.error : "Could not save blocks.", "error");
       return;
     }
     void loadSlots();
@@ -376,11 +379,11 @@ export function FullProgramCalendarClient({
   async function saveEditedRun() {
     if (!editingRun || !programId || !batchId) return;
     if (slotDurationMinutes(editStart, editEnd) <= 0) {
-      alert("Invalid time range.");
+      toast("Invalid time range.", "warning");
       return;
     }
     if (!editDateFrom || !editDateTo || editDateFrom > editDateTo) {
-      alert("Invalid date range (From must be on or before To).");
+      toast("Invalid date range (From must be on or before To).", "warning");
       return;
     }
     const hex = editUseCustom && /^#[0-9A-Fa-f]{6}$/.test(editColor.trim()) ? editColor.trim() : defaultTeacherSlotColor(editTeacher);
@@ -437,12 +440,12 @@ export function FullProgramCalendarClient({
         });
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
-          alert(typeof err?.error === "string" ? err.error : "Could not add days to block.");
+          toast(typeof err?.error === "string" ? err.error : "Could not add days to block.", "error");
           return;
         }
       }
     } catch {
-      alert("Could not update block.");
+      toast("Could not update block.", "error");
       setSavingEdit(false);
       return;
     }
@@ -468,13 +471,14 @@ export function FullProgramCalendarClient({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ batchId, slotDate: d }),
     });
-    alert("Notification sent to principal(s).");
+    toast("Notification sent to principal(s).", "success");
   }
 
   const readOnly = mode !== "principal";
 
   return (
     <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       <PageHeader
         title="Full Calendar"
         description={
