@@ -102,6 +102,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       scheduledOpenAt: body.scheduledOpenAt ? new Date(body.scheduledOpenAt) : null,
       scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
       assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
+      createdAt: body.createdAt ? new Date(body.createdAt) : undefined,
       instructions: body.instructions || null,
       questions: {
         create: (body.questions || []).map((q: Record<string, unknown>, idx: number) => ({

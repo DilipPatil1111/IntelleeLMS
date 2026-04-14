@@ -30,6 +30,7 @@ type ProgramOpt = {
   programCategory?: TaxRef | null;
   programType?: TaxRef | null;
   _count?: { subjects: number; batches: number; students: number };
+  isPublished?: boolean;
 };
 type SubjectOpt = { id: string; name: string; code: string };
 type LessonRow = {
@@ -859,18 +860,36 @@ export function ProgramContentAdminClient(props: ProgramContentAdminClientProps)
                         {p.programCategory.name}
                       </span>
                     )}
+                    {p.programType && (
+                      <span className="text-[10px] bg-blue-50 text-blue-700 rounded-full px-2 py-0.5">
+                        {p.programType.name}
+                      </span>
+                    )}
                   </div>
 
                   {p._count && (
                     <div className="mt-3 flex gap-3 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
-                        <Book className="h-3 w-3" /> {p._count.subjects} subjects
+                        <Book className="h-3 w-3" /> {p._count.subjects} subject{p._count.subjects !== 1 ? "s" : ""}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Layers className="h-3 w-3" /> {p._count.batches} batches
+                        <Layers className="h-3 w-3" /> {p._count.batches} batch{p._count.batches !== 1 ? "es" : ""}
                       </span>
                       <span className="flex items-center gap-1">
-                        <GraduationCap className="h-3 w-3" /> {p._count.students} students
+                        <GraduationCap className="h-3 w-3" /> {p._count.students} student{p._count.students !== 1 ? "s" : ""}
+                      </span>
+                    </div>
+                  )}
+
+                  {p.isPublished !== undefined && (
+                    <div className="mt-3">
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-medium rounded-full px-2 py-0.5 ${
+                        p.isPublished
+                          ? "bg-green-50 text-green-700 border border-green-200"
+                          : "bg-amber-50 text-amber-700 border border-amber-200"
+                      }`}>
+                        <BookOpen className="h-2.5 w-2.5" />
+                        {p.isPublished ? "Published" : "Not yet published"}
                       </span>
                     </div>
                   )}

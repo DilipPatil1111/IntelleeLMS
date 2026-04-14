@@ -31,6 +31,8 @@ export type StudentAttemptResult = {
   questions: QuestionResultRow[];
 };
 
+export type DropdownOption = { value: string; label: string };
+
 export type AssessmentResultsReportData = {
   collegeName: string;
   generatedAt: string;
@@ -43,11 +45,17 @@ export type AssessmentResultsReportData = {
     durationMinutes: number | null;
     assessmentDate: string | null;
     createdAt: string;
+    subjectId: string;
     subjectName: string;
-    programName: string;
+    batchId: string;
     batchName: string;
+    programId: string;
+    programName: string;
     creatorName: string;
   };
+  subjectOptions: DropdownOption[];
+  batchOptions: DropdownOption[];
+  programOptions: DropdownOption[];
   studentResults: StudentAttemptResult[];
 };
 
@@ -169,6 +177,15 @@ export async function getAssessmentResultsReportData(
   if (!assessment) return null;
   if (forStudentId && assessment.attempts.length === 0) return null;
 
+  const [subjects, batches, programs] = await Promise.all([
+    db.subject.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
+    db.batch.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true, program: { select: { id: true, name: true } } },
+    }),
+    db.program.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
+  ]);
+
   const thresholdMeta = {
     passingMarks: assessment.passingMarks,
     totalMarks: assessment.totalMarks,
@@ -217,11 +234,20 @@ export async function getAssessmentResultsReportData(
       durationMinutes: assessment.duration ?? null,
       assessmentDate: assessment.assessmentDate?.toISOString() ?? null,
       createdAt: assessment.createdAt.toISOString(),
+      subjectId: assessment.subjectId,
       subjectName: assessment.subject.name,
-      programName: assessment.batch.program.name,
+      batchId: assessment.batchId,
       batchName: assessment.batch.name,
+      programId: assessment.batch.program.id,
+      programName: assessment.batch.program.name,
       creatorName: `${assessment.creator.firstName} ${assessment.creator.lastName}`,
     },
+    subjectOptions: subjects.map((s) => ({ value: s.id, label: s.name })),
+    batchOptions: batches.map((b) => ({
+      value: b.id,
+      label: `${b.program.name} — ${b.name}`,
+    })),
+    programOptions: programs.map((p) => ({ value: p.id, label: p.name })),
     studentResults,
   };
 }

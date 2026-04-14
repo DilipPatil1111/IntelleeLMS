@@ -44,6 +44,7 @@ export default function EditAssessmentPage() {
     scheduledOpenAt: "",
     scheduledCloseAt: "",
     assessmentDate: "",
+    createdAt: "",
     instructions: "",
     status: "DRAFT",
   });
@@ -69,6 +70,7 @@ export default function EditAssessmentPage() {
         scheduledOpenAt: a.scheduledOpenAt ? new Date(a.scheduledOpenAt).toISOString().slice(0, 16) : "",
         scheduledCloseAt: a.scheduledCloseAt ? new Date(a.scheduledCloseAt).toISOString().slice(0, 16) : "",
         assessmentDate: a.assessmentDate ? new Date(a.assessmentDate).toISOString().slice(0, 10) : "",
+        createdAt: a.createdAt ? new Date(a.createdAt).toISOString().slice(0, 16) : "",
         instructions: a.instructions || "",
         status: a.status || "DRAFT",
       });
@@ -188,7 +190,18 @@ export default function EditAssessmentPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input label="Passing Marks" type="number" value={form.passingMarks || ""} onChange={(e) => setForm({ ...form, passingMarks: parseInt(e.target.value) || 0 })} />
-              <Input label="Assessment Date" type="date" value={form.assessmentDate} onChange={(e) => setForm({ ...form, assessmentDate: e.target.value })} />
+              <Input label="Assessment Date" type="date" value={form.assessmentDate} onChange={(e) => {
+                const newDate = e.target.value;
+                setForm((prev) => ({
+                  ...prev,
+                  assessmentDate: newDate,
+                  createdAt: prev.createdAt || (newDate ? `${newDate}T09:00` : ""),
+                }));
+              }} />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input label="Created Date" type="datetime-local" value={form.createdAt} onChange={(e) => setForm({ ...form, createdAt: e.target.value })} />
+              <div />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input label="Open At" type="datetime-local" value={form.scheduledOpenAt} onChange={(e) => setForm({ ...form, scheduledOpenAt: e.target.value })} />

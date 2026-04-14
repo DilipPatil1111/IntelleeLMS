@@ -50,8 +50,7 @@ export default function TeacherProgramContentPage() {
           loadPrograms={async () => {
             const res = await fetch("/api/teacher/programs");
             const data = await res.json();
-            const raw: Array<{ id: string; name: string }> = data.raw || [];
-            return raw.map((p) => ({ id: p.id, name: p.name }));
+            return data.raw || [];
           }}
           loadAllSubjects={async (programId: string) => {
             const res = await fetch(`/api/teacher/program-content/${encodeURIComponent(programId)}`);

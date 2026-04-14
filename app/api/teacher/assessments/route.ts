@@ -141,6 +141,11 @@ export async function POST(req: Request) {
         scheduledOpenAt: body.scheduledOpenAt ? new Date(body.scheduledOpenAt) : null,
         scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
         assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
+        createdAt: body.createdAt
+          ? new Date(body.createdAt)
+          : body.assessmentDate
+            ? new Date(body.assessmentDate)
+            : undefined,
         instructions: body.instructions || null,
         moduleId: body.moduleNameText?.trim() ? null : body.moduleId || null,
         topicId: body.topicNameText?.trim() ? null : body.topicId || null,

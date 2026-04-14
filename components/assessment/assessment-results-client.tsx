@@ -6,11 +6,51 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { AssessmentResultsReportData } from "@/lib/assessment-detailed-results";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { ToastContainer } from "@/components/ui/toast-container";
+import { useToast } from "@/hooks/use-toast";
+import type { AssessmentResultsReportData, DropdownOption } from "@/lib/assessment-detailed-results";
 import { formatDateTime } from "@/lib/utils";
-import { ArrowLeft, Download, Loader2 } from "lucide-react";
+import { ArrowLeft, Download, Loader2, Pencil, Save, X } from "lucide-react";
 
 type Role = "teacher" | "principal" | "student";
+
+const ASSESSMENT_TYPES: DropdownOption[] = [
+  { value: "QUIZ", label: "Quiz" },
+  { value: "TEST", label: "Test" },
+  { value: "ASSIGNMENT", label: "Assignment" },
+  { value: "PROJECT", label: "Project" },
+  { value: "HOMEWORK", label: "Homework" },
+];
+
+function toDateTimeLocal(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function toDateInput(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+type EditableFields = {
+  title: string;
+  type: string;
+  subjectId: string;
+  batchId: string;
+  totalMarks: string;
+  passingMarks: string;
+  durationMinutes: string;
+  assessmentDate: string;
+  createdAt: string;
+};
 
 export function AssessmentResultsClient({
   assessmentId,
@@ -23,7 +63,12 @@ export function AssessmentResultsClient({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [pdfLoading, setPdfLoading] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [editForm, setEditForm] = useState<EditableFields | null>(null);
+  const { toasts, toast, dismiss } = useToast();
 
+  const canEdit = role !== "student";
   const apiPrefix =
     role === "principal" ? "principal" : role === "student" ? "student" : "teacher";
   const backHref =
@@ -52,6 +97,83 @@ export function AssessmentResultsClient({
   useEffect(() => {
     void load();
   }, [load]);
+
+  function startEditing() {
+    if (!data) return;
+    const a = data.assessment;
+    setEditForm({
+      title: a.title,
+      type: a.type,
+      subjectId: a.subjectId,
+      batchId: a.batchId,
+      totalMarks: String(a.totalMarks),
+      passingMarks: a.passingMarks != null ? String(a.passingMarks) : "",
+      durationMinutes: a.durationMinutes != null ? String(a.durationMinutes) : "",
+      assessmentDate: toDateInput(a.assessmentDate),
+      createdAt: toDateTimeLocal(a.createdAt),
+    });
+    setEditing(true);
+  }
+
+  function cancelEditing() {
+    setEditing(false);
+    setEditForm(null);
+  }
+
+  async function saveEdits() {
+    if (!editForm || !data) return;
+    setSaving(true);
+
+    let assessmentDateISO: string | null = null;
+    if (editForm.assessmentDate) {
+      assessmentDateISO = new Date(editForm.assessmentDate + "T12:00:00").toISOString();
+    }
+
+    let createdAtISO: string | null = null;
+    if (editForm.createdAt) {
+      createdAtISO = new Date(editForm.createdAt).toISOString();
+    }
+
+    const payload: Record<string, unknown> = {
+      title: editForm.title,
+      type: editForm.type,
+      subjectId: editForm.subjectId,
+      batchId: editForm.batchId,
+      totalMarks: parseFloat(editForm.totalMarks) || 0,
+      passingMarks: editForm.passingMarks ? parseFloat(editForm.passingMarks) : null,
+      durationMinutes: editForm.durationMinutes ? parseInt(editForm.durationMinutes, 10) : null,
+      assessmentDate: assessmentDateISO,
+      createdAt: createdAtISO,
+    };
+
+    try {
+      const res = await fetch(`/api/${apiPrefix}/assessments/${assessmentId}/results-meta`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        toast((json as { error?: string }).error || "Failed to save changes", "error");
+        setSaving(false);
+        return;
+      }
+
+      toast("Assessment details updated successfully", "success");
+      setEditing(false);
+      setEditForm(null);
+      await load();
+    } catch {
+      toast("Network error — could not save", "error");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function updateField(field: keyof EditableFields, value: string) {
+    setEditForm((prev) => (prev ? { ...prev, [field]: value } : prev));
+  }
 
   async function downloadPdf() {
     setPdfLoading(true);
@@ -97,13 +219,16 @@ export function AssessmentResultsClient({
     );
   }
 
-  const { assessment, studentResults, collegeName } = data;
+  const { assessment, studentResults, collegeName, subjectOptions, batchOptions } = data;
   const resultsTitle = role === "student" ? "Your results" : "Student-wise results";
   const reportSubtitle =
     role === "student" ? "Your detailed assessment report" : "Detailed assessment report";
 
+  const selectedBatch = batchOptions.find((b) => b.value === (editForm?.batchId ?? assessment.batchId));
+
   return (
     <>
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
       <PageHeader
         title={resultsTitle}
         description={`${assessment.title} — ${assessment.programName} — ${assessment.batchName}`}
@@ -114,6 +239,11 @@ export function AssessmentResultsClient({
                 <ArrowLeft className="h-4 w-4 mr-1" /> Back
               </Button>
             </Link>
+            {canEdit && !editing && (
+              <Button variant="outline" onClick={startEditing}>
+                <Pencil className="h-4 w-4 mr-1" /> Edit Details
+              </Button>
+            )}
             {role === "principal" && (
               <Button onClick={() => void downloadPdf()} disabled={pdfLoading} isLoading={pdfLoading}>
                 <Download className="h-4 w-4 mr-1" /> Download PDF
@@ -129,54 +259,137 @@ export function AssessmentResultsClient({
       </div>
 
       <Card className="mb-8">
-        <CardHeader>
-          <CardTitle className="text-lg">{assessment.title}</CardTitle>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-lg">
+            {editing ? "Edit Assessment Details" : assessment.title}
+          </CardTitle>
+          {editing && (
+            <div className="flex gap-2">
+              <Button size="sm" onClick={() => void saveEdits()} disabled={saving} isLoading={saving}>
+                <Save className="h-4 w-4 mr-1" /> Save
+              </Button>
+              <Button size="sm" variant="outline" onClick={cancelEditing} disabled={saving}>
+                <X className="h-4 w-4 mr-1" /> Cancel
+              </Button>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Type</dt>
-              <dd>
-                <Badge>{assessment.type}</Badge>
-              </dd>
+          {editing && editForm ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Title"
+                value={editForm.title}
+                onChange={(e) => updateField("title", e.target.value)}
+              />
+              <Select
+                label="Type"
+                options={ASSESSMENT_TYPES}
+                value={editForm.type}
+                onChange={(e) => updateField("type", e.target.value)}
+              />
+              <Select
+                label="Subject"
+                options={subjectOptions}
+                value={editForm.subjectId}
+                onChange={(e) => updateField("subjectId", e.target.value)}
+              />
+              <Select
+                label="Batch"
+                options={batchOptions}
+                value={editForm.batchId}
+                onChange={(e) => updateField("batchId", e.target.value)}
+              />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Program</label>
+                <p className="block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600">
+                  {selectedBatch?.label?.split(" — ")[0] || assessment.programName}
+                </p>
+              </div>
+              <Input
+                label="Total Marks"
+                type="number"
+                min="0"
+                step="0.5"
+                value={editForm.totalMarks}
+                onChange={(e) => updateField("totalMarks", e.target.value)}
+              />
+              <Input
+                label="Passing Marks"
+                type="number"
+                min="0"
+                step="0.5"
+                value={editForm.passingMarks}
+                onChange={(e) => updateField("passingMarks", e.target.value)}
+                placeholder="Leave empty for default (50%)"
+              />
+              <Input
+                label="Time Allowed (minutes)"
+                type="number"
+                min="0"
+                value={editForm.durationMinutes}
+                onChange={(e) => updateField("durationMinutes", e.target.value)}
+                placeholder="Leave empty for unlimited"
+              />
+              <Input
+                label="Assessment Date"
+                type="date"
+                value={editForm.assessmentDate}
+                onChange={(e) => updateField("assessmentDate", e.target.value)}
+              />
+              <Input
+                label="Created Date"
+                type="datetime-local"
+                value={editForm.createdAt}
+                onChange={(e) => updateField("createdAt", e.target.value)}
+              />
             </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Subject</dt>
-              <dd className="font-medium">{assessment.subjectName}</dd>
-            </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Program</dt>
-              <dd className="font-medium">{assessment.programName}</dd>
-            </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Batch</dt>
-              <dd className="font-medium">{assessment.batchName}</dd>
-            </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Total marks</dt>
-              <dd className="font-medium">{assessment.totalMarks}</dd>
-            </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Passing marks</dt>
-              <dd className="font-medium">{assessment.passingMarks ?? "—"}</dd>
-            </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Time allowed</dt>
-              <dd>{assessment.durationMinutes != null ? `${assessment.durationMinutes} min` : "Unlimited"}</dd>
-            </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Assessment date</dt>
-              <dd>{assessment.assessmentDate ? formatDateTime(assessment.assessmentDate) : "—"}</dd>
-            </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Created</dt>
-              <dd>{formatDateTime(assessment.createdAt)}</dd>
-            </div>
-            <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-              <dt className="text-gray-500">Teacher</dt>
-              <dd className="font-medium">{assessment.creatorName}</dd>
-            </div>
-          </dl>
+          ) : (
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Type</dt>
+                <dd>
+                  <Badge>{assessment.type}</Badge>
+                </dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Subject</dt>
+                <dd className="font-medium">{assessment.subjectName}</dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Program</dt>
+                <dd className="font-medium">{assessment.programName}</dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Batch</dt>
+                <dd className="font-medium">{assessment.batchName}</dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Total marks</dt>
+                <dd className="font-medium">{assessment.totalMarks}</dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Passing marks</dt>
+                <dd className="font-medium">{assessment.passingMarks ?? "—"}</dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Time allowed</dt>
+                <dd>{assessment.durationMinutes != null ? `${assessment.durationMinutes} min` : "Unlimited"}</dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Assessment date</dt>
+                <dd>{assessment.assessmentDate ? formatDateTime(assessment.assessmentDate) : "—"}</dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Created</dt>
+                <dd>{formatDateTime(assessment.createdAt)}</dd>
+              </div>
+              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
+                <dt className="text-gray-500">Teacher</dt>
+                <dd className="font-medium">{assessment.creatorName}</dd>
+              </div>
+            </dl>
+          )}
         </CardContent>
       </Card>
 

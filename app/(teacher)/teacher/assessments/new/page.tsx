@@ -92,6 +92,7 @@ function CreateAssessmentPageInner() {
     scheduledOpenAt: "",
     scheduledCloseAt: "",
     assessmentDate: "",
+    createdAt: "",
     instructions: "",
   });
 
@@ -213,6 +214,7 @@ function CreateAssessmentPageInner() {
             scheduledOpenAt: toDateTimeLocal(a.scheduledOpenAt),
             scheduledCloseAt: toDateTimeLocal(a.scheduledCloseAt),
             assessmentDate: toDateInput(a.assessmentDate),
+            createdAt: "",
             instructions: a.instructions || "",
           });
 
@@ -609,7 +611,18 @@ function CreateAssessmentPageInner() {
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Input label="Passing Marks" type="number" value={form.passingMarks || ""} onChange={(e) => setForm({ ...form, passingMarks: parseInt(e.target.value) || 0 })} />
-                <Input label="Assessment Date" type="date" value={form.assessmentDate} onChange={(e) => setForm({ ...form, assessmentDate: e.target.value })} />
+                <Input label="Assessment Date" type="date" value={form.assessmentDate} onChange={(e) => {
+                  const newDate = e.target.value;
+                  setForm((prev) => ({
+                    ...prev,
+                    assessmentDate: newDate,
+                    createdAt: prev.createdAt || (newDate ? `${newDate}T09:00` : ""),
+                  }));
+                }} />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input label="Created Date" type="datetime-local" value={form.createdAt} onChange={(e) => setForm({ ...form, createdAt: e.target.value })} />
+                <div />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Input label="Open At" type="datetime-local" value={form.scheduledOpenAt} onChange={(e) => setForm({ ...form, scheduledOpenAt: e.target.value })} />
