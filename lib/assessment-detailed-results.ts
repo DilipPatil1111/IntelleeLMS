@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { studentVisibleAssessmentFilter } from "@/lib/assessment-assigned-students";
-import type { Answer, Question, QuestionOption } from "@/app/generated/prisma/client";
+import type { Answer, Prisma, Question, QuestionOption } from "@/app/generated/prisma/client";
 
 export type PassFail = "PASS" | "FAIL" | "PENDING";
 
@@ -263,31 +263,63 @@ export async function canViewAssessmentResults(
 ): Promise<boolean> {
   const a = await db.assessment.findUnique({
     where: { id: assessmentId },
-    select: { createdById: true },
+    select: { createdById: true, subjectId: true, batch: { select: { programId: true } } },
   });
   if (!a) return false;
   const role = session.user.role;
   const granted = session.user.grantedPortals ?? [];
   if (role === "PRINCIPAL" || granted.includes("PRINCIPAL")) return true;
-  if ((role === "TEACHER" || granted.includes("TEACHER")) && a.createdById === userId) return true;
+
+  const isTeacher = role === "TEACHER" || granted.includes("TEACHER");
+  if (!isTeacher) return false;
+
+  if (a.createdById === userId) return true;
+
+  const tp = await db.teacherProfile.findUnique({
+    where: { userId },
+    select: {
+      teacherPrograms: { where: { programId: a.batch.programId }, select: { id: true } },
+      subjectAssignments: { where: { subjectId: a.subjectId ?? "__none__" }, select: { id: true } },
+    },
+  });
+  if ((tp?.teacherPrograms.length ?? 0) > 0) return true;
+  if ((tp?.subjectAssignments.length ?? 0) > 0) return true;
+
   return false;
 }
 
 /**
  * Student may load their own detailed results if the assessment is visible to them and they have an attempt.
+ * Checks both the primary studentProfile.batchId AND any batches from ProgramEnrollment.
  */
 export async function canStudentViewOwnAssessmentResults(studentUserId: string, assessmentId: string): Promise<boolean> {
-  const user = await db.user.findUnique({
-    where: { id: studentUserId },
-    select: { studentProfile: { select: { batchId: true } } },
-  });
-  const batchId = user?.studentProfile?.batchId;
-  if (!batchId) return false;
+  const [user, enrollments] = await Promise.all([
+    db.user.findUnique({
+      where: { id: studentUserId },
+      select: { studentProfile: { select: { batchId: true } } },
+    }),
+    db.programEnrollment.findMany({
+      where: { userId: studentUserId, status: { in: ["ENROLLED", "COMPLETED", "GRADUATED"] } },
+      select: { batchId: true },
+    }),
+  ]);
+
+  const batchIds = new Set<string>();
+  if (user?.studentProfile?.batchId) batchIds.add(user.studentProfile.batchId);
+  for (const e of enrollments) {
+    if (e.batchId) batchIds.add(e.batchId);
+  }
+
+  if (batchIds.size === 0) return false;
+
+  const filters: Prisma.AssessmentWhereInput[] = [...batchIds].map((bid) =>
+    studentVisibleAssessmentFilter(studentUserId, bid)
+  );
 
   const row = await db.assessment.findFirst({
     where: {
       id: assessmentId,
-      AND: [studentVisibleAssessmentFilter(studentUserId, batchId)],
+      OR: filters,
       attempts: { some: { studentId: studentUserId } },
     },
     select: { id: true },
