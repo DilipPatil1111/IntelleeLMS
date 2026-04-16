@@ -30,6 +30,7 @@ const studentNav: NavItem[] = [
   { label: "Assessments", href: "/student/assessments", icon: FileText },
   { label: "Results", href: "/student/results", icon: Award },
   { label: "Attendance", href: "/student/attendance", icon: Calendar },
+  { label: "Reports", href: "/student/reports", icon: BarChart3 },
   { label: "Full Calendar", href: "/student/full-calendar", icon: CalendarRange },
   { label: "Fees", href: "/student/fees", icon: DollarSign },
   { label: "Pending Actions", href: "/student/pending-actions", icon: AlertCircle },
