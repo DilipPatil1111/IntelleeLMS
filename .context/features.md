@@ -291,6 +291,22 @@ Complete inventory of implemented features, their locations, and key files.
 - **Attendance Excuse API:** `app/api/principal/attendance-excuses/route.ts`, `[id]/route.ts` (excuse/deny/keep-absent)
 - Standalone pages at `/principal/retake-requests` and `/principal/attendance-excuses` still exist for backward compatibility
 
+### Attendance — Single Session (Teacher & Principal)
+- **Teacher page:** `app/(teacher)/teacher/attendance/page.tsx`
+- **Principal dashboard component:** `components/attendance/principal-attendance-dashboard.tsx`
+- **Teacher API:** `app/api/teacher/attendance/route.ts`
+- **Principal API:** `app/api/principal/attendance/session/route.ts`
+- **Duplicate detection:** On every form POST (`force` omitted or `false`), the server calls `deduplicateSessions()` which:
+  1. Finds all `AttendanceSession` rows for the same `subjectId + batchId + date` (UTC day bounds).
+  2. If more than one exists, deletes extras (keeps the oldest) to clean up pre-existing duplicates.
+  3. If any session survives, returns HTTP **409** with `{ duplicate: true, message }`.
+- **UI confirmation:** On receiving 409, an inline amber alert banner is shown (no browser `alert()`/`confirm()`):
+  - Message: *"Attendance has already been submitted for this subject on [date]. Do you want to add it again?"*
+  - **Yes, add again** → re-POSTs with `force: true`, bypassing the guard.
+  - **No, cancel** → dismisses the banner.
+- **Backward compatible:** Grid-based attendance (program sheet) uses `upsert`; no change there.
+- **Delete confirmations** on the principal dashboard now use inline modal dialogs instead of `window.confirm()`.
+
 ### Other Principal Features
 - Feedback (with pagination), Onboarding Review, All Assessments (detailed results + PDF export), Teachers, User Management (paginated, search via `app/api/principal/users-search/route.ts`), Attendance (consolidated + grid), Batches, Reports, Holidays, Email Templates, Announcements, Policies, Shared Documents, My Profile
 - **Teacher Attendance:** `app/api/principal/teacher-attendance/route.ts`, `[id]/route.ts`

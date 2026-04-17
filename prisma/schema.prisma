@@ -266,6 +266,8 @@ model User {
   retakeRequestsResolved      AssessmentRetakeRequest[] @relation("RetakeRequestResolver")
   attendanceExcuseRequestsAsStudent  AttendanceExcuseRequest[] @relation("AttendanceExcuseStudent")
   attendanceExcuseRequestsResolved   AttendanceExcuseRequest[] @relation("AttendanceExcuseResolver")
+  transcriptsAsStudent               Transcript[] @relation("TranscriptStudent")
+  transcriptsCreated                 Transcript[] @relation("TranscriptCreator")
 }
 
 /** Stores Canva OAuth tokens for a user so they can design in Canva and import results. */
@@ -398,6 +400,7 @@ model Program {
   programEnrollments      ProgramEnrollment[]
   sessionRecordings       SessionRecording[]
   holidays                Holiday[]
+  transcripts             Transcript[]
 
   @@index([programDomainId])
   @@index([programCategoryId])
@@ -672,6 +675,7 @@ model Batch {
   programApplications ProgramApplication[]
   programCalendarSlots ProgramCalendarSlot[]
   programEnrollments   ProgramEnrollment[]
+  transcripts          Transcript[]
 }
 
 model Subject {
@@ -1467,4 +1471,75 @@ model AttendanceExcuseRequest {
   @@unique([attendanceRecordId, studentUserId])
   @@index([studentUserId])
   @@index([status])
+}
+
+// ─── Grade Bands ─────────────────────────────────────────────────────
+
+/** Configurable grade bands (A+, A, B+, …) set by the principal in Settings. */
+model GradeBand {
+  id         String   @id @default(cuid())
+  label      String
+  minPercent Float
+  maxPercent Float
+  gradePoint Float?
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// ─── Transcripts ─────────────────────────────────────────────────────
+
+enum TranscriptStatus {
+  DRAFT
+  PUBLISHED
+}
+
+/** A student transcript (academic record) created by teacher/principal; published to student Reports. */
+model Transcript {
+  id            String           @id @default(cuid())
+  studentId     String
+  programId     String
+  batchId       String?
+  status        TranscriptStatus @default(DRAFT)
+  totalHours    Float?
+  startDate     DateTime?
+  endDate       DateTime?
+  standing      String?
+  credential    String?
+  overallAvgPct Float?
+  remarks       String?          @db.Text
+  createdById   String
+  publishedAt   DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  student    User      @relation("TranscriptStudent", fields: [studentId], references: [id], onDelete: Cascade)
+  program    Program   @relation(fields: [programId], references: [id])
+  batch      Batch?    @relation(fields: [batchId], references: [id])
+  createdBy  User      @relation("TranscriptCreator", fields: [createdById], references: [id])
+  subjects   TranscriptSubjectRow[]
+
+  @@index([studentId])
+  @@index([status])
+  @@index([programId])
+}
+
+/** One subject/course row in a transcript. */
+model TranscriptSubjectRow {
+  id             String   @id @default(cuid())
+  transcriptId   String
+  subjectCode    String?
+  subjectName    String
+  description    String?
+  autoMarksPct   Float?
+  manualMarksPct Float?
+  finalMarksPct  Float?
+  grade          String?
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  transcript Transcript @relation(fields: [transcriptId], references: [id], onDelete: Cascade)
+
+  @@index([transcriptId])
 }

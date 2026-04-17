@@ -447,7 +447,10 @@ export const ModelName = {
   InspectionNote: 'InspectionNote',
   SessionRecording: 'SessionRecording',
   AssessmentRetakeRequest: 'AssessmentRetakeRequest',
-  AttendanceExcuseRequest: 'AttendanceExcuseRequest'
+  AttendanceExcuseRequest: 'AttendanceExcuseRequest',
+  GradeBand: 'GradeBand',
+  Transcript: 'Transcript',
+  TranscriptSubjectRow: 'TranscriptSubjectRow'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -463,7 +466,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "canvaAccount" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "programSyllabus" | "programChapter" | "programLesson" | "programLessonCompletion" | "programCertificateSend" | "certificateTemplate" | "certificateIssued" | "certificateCounter" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "programEnrollment" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote" | "sessionRecording" | "assessmentRetakeRequest" | "attendanceExcuseRequest"
+    modelProps: "user" | "canvaAccount" | "userPortalGrant" | "feedback" | "account" | "session" | "verificationToken" | "program" | "programSyllabus" | "programChapter" | "programLesson" | "programLessonCompletion" | "programCertificateSend" | "certificateTemplate" | "certificateIssued" | "certificateCounter" | "institutionProfile" | "programDomain" | "programCategory" | "programType" | "institutionSettings" | "academicYear" | "batch" | "subject" | "module" | "topic" | "topicContent" | "topicProgress" | "studentProfile" | "programEnrollment" | "studentOnboarding" | "teacherProfile" | "teacherProgram" | "teacherSubjectAssignment" | "feeStructure" | "feePayment" | "studentSubmissionLog" | "assessment" | "assessmentAssignedStudent" | "question" | "questionOption" | "attempt" | "answer" | "assessmentShare" | "attendanceSession" | "teacherAttendance" | "attendanceRecord" | "holiday" | "programCalendarSlot" | "scheduledEmail" | "notification" | "programApplication" | "policy" | "sharedDocument" | "emailTemplate" | "announcement" | "announcementRecipient" | "auditLog" | "docFolder" | "docFile" | "inspectionNote" | "sessionRecording" | "assessmentRetakeRequest" | "attendanceExcuseRequest" | "gradeBand" | "transcript" | "transcriptSubjectRow"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -5203,6 +5206,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GradeBand: {
+      payload: Prisma.$GradeBandPayload<ExtArgs>
+      fields: Prisma.GradeBandFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GradeBandFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GradeBandFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>
+        }
+        findFirst: {
+          args: Prisma.GradeBandFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GradeBandFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>
+        }
+        findMany: {
+          args: Prisma.GradeBandFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>[]
+        }
+        create: {
+          args: Prisma.GradeBandCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>
+        }
+        createMany: {
+          args: Prisma.GradeBandCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GradeBandCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>[]
+        }
+        delete: {
+          args: Prisma.GradeBandDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>
+        }
+        update: {
+          args: Prisma.GradeBandUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>
+        }
+        deleteMany: {
+          args: Prisma.GradeBandDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GradeBandUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GradeBandUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>[]
+        }
+        upsert: {
+          args: Prisma.GradeBandUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GradeBandPayload>
+        }
+        aggregate: {
+          args: Prisma.GradeBandAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGradeBand>
+        }
+        groupBy: {
+          args: Prisma.GradeBandGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GradeBandGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GradeBandCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GradeBandCountAggregateOutputType> | number
+        }
+      }
+    }
+    Transcript: {
+      payload: Prisma.$TranscriptPayload<ExtArgs>
+      fields: Prisma.TranscriptFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TranscriptFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TranscriptFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>
+        }
+        findFirst: {
+          args: Prisma.TranscriptFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TranscriptFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>
+        }
+        findMany: {
+          args: Prisma.TranscriptFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>[]
+        }
+        create: {
+          args: Prisma.TranscriptCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>
+        }
+        createMany: {
+          args: Prisma.TranscriptCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TranscriptCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>[]
+        }
+        delete: {
+          args: Prisma.TranscriptDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>
+        }
+        update: {
+          args: Prisma.TranscriptUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>
+        }
+        deleteMany: {
+          args: Prisma.TranscriptDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TranscriptUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TranscriptUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>[]
+        }
+        upsert: {
+          args: Prisma.TranscriptUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptPayload>
+        }
+        aggregate: {
+          args: Prisma.TranscriptAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTranscript>
+        }
+        groupBy: {
+          args: Prisma.TranscriptGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TranscriptGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TranscriptCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TranscriptCountAggregateOutputType> | number
+        }
+      }
+    }
+    TranscriptSubjectRow: {
+      payload: Prisma.$TranscriptSubjectRowPayload<ExtArgs>
+      fields: Prisma.TranscriptSubjectRowFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TranscriptSubjectRowFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TranscriptSubjectRowFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>
+        }
+        findFirst: {
+          args: Prisma.TranscriptSubjectRowFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TranscriptSubjectRowFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>
+        }
+        findMany: {
+          args: Prisma.TranscriptSubjectRowFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>[]
+        }
+        create: {
+          args: Prisma.TranscriptSubjectRowCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>
+        }
+        createMany: {
+          args: Prisma.TranscriptSubjectRowCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TranscriptSubjectRowCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>[]
+        }
+        delete: {
+          args: Prisma.TranscriptSubjectRowDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>
+        }
+        update: {
+          args: Prisma.TranscriptSubjectRowUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>
+        }
+        deleteMany: {
+          args: Prisma.TranscriptSubjectRowDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TranscriptSubjectRowUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TranscriptSubjectRowUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>[]
+        }
+        upsert: {
+          args: Prisma.TranscriptSubjectRowUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TranscriptSubjectRowPayload>
+        }
+        aggregate: {
+          args: Prisma.TranscriptSubjectRowAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTranscriptSubjectRow>
+        }
+        groupBy: {
+          args: Prisma.TranscriptSubjectRowGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TranscriptSubjectRowGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TranscriptSubjectRowCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TranscriptSubjectRowCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -6243,6 +6468,60 @@ export const AttendanceExcuseRequestScalarFieldEnum = {
 export type AttendanceExcuseRequestScalarFieldEnum = (typeof AttendanceExcuseRequestScalarFieldEnum)[keyof typeof AttendanceExcuseRequestScalarFieldEnum]
 
 
+export const GradeBandScalarFieldEnum = {
+  id: 'id',
+  label: 'label',
+  minPercent: 'minPercent',
+  maxPercent: 'maxPercent',
+  gradePoint: 'gradePoint',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GradeBandScalarFieldEnum = (typeof GradeBandScalarFieldEnum)[keyof typeof GradeBandScalarFieldEnum]
+
+
+export const TranscriptScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  programId: 'programId',
+  batchId: 'batchId',
+  status: 'status',
+  totalHours: 'totalHours',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  standing: 'standing',
+  credential: 'credential',
+  overallAvgPct: 'overallAvgPct',
+  remarks: 'remarks',
+  createdById: 'createdById',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TranscriptScalarFieldEnum = (typeof TranscriptScalarFieldEnum)[keyof typeof TranscriptScalarFieldEnum]
+
+
+export const TranscriptSubjectRowScalarFieldEnum = {
+  id: 'id',
+  transcriptId: 'transcriptId',
+  subjectCode: 'subjectCode',
+  subjectName: 'subjectName',
+  description: 'description',
+  autoMarksPct: 'autoMarksPct',
+  manualMarksPct: 'manualMarksPct',
+  finalMarksPct: 'finalMarksPct',
+  grade: 'grade',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TranscriptSubjectRowScalarFieldEnum = (typeof TranscriptSubjectRowScalarFieldEnum)[keyof typeof TranscriptSubjectRowScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -6674,6 +6953,20 @@ export type EnumAttendanceExcuseStatusFieldRefInput<$PrismaModel> = FieldRefInpu
 export type ListEnumAttendanceExcuseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceExcuseStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'TranscriptStatus'
+ */
+export type EnumTranscriptStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TranscriptStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TranscriptStatus[]'
+ */
+export type ListEnumTranscriptStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TranscriptStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -6833,6 +7126,9 @@ export type GlobalOmitConfig = {
   sessionRecording?: Prisma.SessionRecordingOmit
   assessmentRetakeRequest?: Prisma.AssessmentRetakeRequestOmit
   attendanceExcuseRequest?: Prisma.AttendanceExcuseRequestOmit
+  gradeBand?: Prisma.GradeBandOmit
+  transcript?: Prisma.TranscriptOmit
+  transcriptSubjectRow?: Prisma.TranscriptSubjectRowOmit
 }
 
 /* Types for Logging */

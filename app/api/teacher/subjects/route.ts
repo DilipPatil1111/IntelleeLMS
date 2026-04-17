@@ -2,12 +2,16 @@ import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   const gate = await requireTeacherPortal();
   if (!gate.ok) return gate.response;
   const session = gate.session;
 
+  const { searchParams } = new URL(req.url);
+  const programId = searchParams.get("programId") || undefined;
+
   const subjects = await db.subject.findMany({
+    where: programId ? { programId } : undefined,
     include: { program: true, modules: { orderBy: { orderIndex: "asc" } } },
     orderBy: { name: "asc" },
   });

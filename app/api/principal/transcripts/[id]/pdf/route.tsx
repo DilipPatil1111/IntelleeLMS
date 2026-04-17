@@ -1,0 +1,55 @@
+import { requirePrincipalPortal } from "@/lib/api-auth";
+import { db } from "@/lib/db";
+import { getTranscriptById } from "@/lib/transcript";
+import { getOrCreateInstitutionProfile } from "@/lib/institution-profile";
+import { TranscriptPdf } from "@/components/pdf/transcript-pdf";
+import { renderToBuffer } from "@react-pdf/renderer";
+import { NextResponse } from "next/server";
+import React from "react";
+
+export const runtime = "nodejs";
+
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const gate = await requirePrincipalPortal();
+  if (!gate.ok) return gate.response;
+  const { id } = await params;
+
+  const [transcript, bands, profile] = await Promise.all([
+    getTranscriptById(id),
+    db.gradeBand.findMany({ orderBy: { sortOrder: "asc" } }),
+    getOrCreateInstitutionProfile(),
+  ]);
+
+  if (!transcript) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  const institution = {
+    name: profile.legalName ?? null,
+    address: profile.permanentAddress ?? profile.mailingAddress ?? null,
+    website: profile.website ?? null,
+    logoUrl: profile.logoUrl ?? null,
+    phone: profile.phone ?? null,
+    email: profile.email ?? null,
+  };
+
+  const rendered = await renderToBuffer(
+    <TranscriptPdf transcript={transcript} bands={bands} institution={institution} />
+  );
+  const pdfBytes = new Uint8Array(rendered);
+  const safeName = `${transcript.student.firstName}-${transcript.student.lastName}-transcript`
+    .replace(/[^\w\-]+/g, "_")
+    .slice(0, 60);
+
+  return new NextResponse(
+    pdfBytes.buffer.slice(
+      pdfBytes.byteOffset,
+      pdfBytes.byteOffset + pdfBytes.byteLength
+    ) as ArrayBuffer,
+    {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${safeName}.pdf"`,
+        "Cache-Control": "no-store",
+      },
+    }
+  );
+}

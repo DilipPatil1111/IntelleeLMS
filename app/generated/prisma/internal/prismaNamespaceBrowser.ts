@@ -114,7 +114,10 @@ export const ModelName = {
   InspectionNote: 'InspectionNote',
   SessionRecording: 'SessionRecording',
   AssessmentRetakeRequest: 'AssessmentRetakeRequest',
-  AttendanceExcuseRequest: 'AttendanceExcuseRequest'
+  AttendanceExcuseRequest: 'AttendanceExcuseRequest',
+  GradeBand: 'GradeBand',
+  Transcript: 'Transcript',
+  TranscriptSubjectRow: 'TranscriptSubjectRow'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1132,6 +1135,60 @@ export const AttendanceExcuseRequestScalarFieldEnum = {
 } as const
 
 export type AttendanceExcuseRequestScalarFieldEnum = (typeof AttendanceExcuseRequestScalarFieldEnum)[keyof typeof AttendanceExcuseRequestScalarFieldEnum]
+
+
+export const GradeBandScalarFieldEnum = {
+  id: 'id',
+  label: 'label',
+  minPercent: 'minPercent',
+  maxPercent: 'maxPercent',
+  gradePoint: 'gradePoint',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GradeBandScalarFieldEnum = (typeof GradeBandScalarFieldEnum)[keyof typeof GradeBandScalarFieldEnum]
+
+
+export const TranscriptScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  programId: 'programId',
+  batchId: 'batchId',
+  status: 'status',
+  totalHours: 'totalHours',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  standing: 'standing',
+  credential: 'credential',
+  overallAvgPct: 'overallAvgPct',
+  remarks: 'remarks',
+  createdById: 'createdById',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TranscriptScalarFieldEnum = (typeof TranscriptScalarFieldEnum)[keyof typeof TranscriptScalarFieldEnum]
+
+
+export const TranscriptSubjectRowScalarFieldEnum = {
+  id: 'id',
+  transcriptId: 'transcriptId',
+  subjectCode: 'subjectCode',
+  subjectName: 'subjectName',
+  description: 'description',
+  autoMarksPct: 'autoMarksPct',
+  manualMarksPct: 'manualMarksPct',
+  finalMarksPct: 'finalMarksPct',
+  grade: 'grade',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TranscriptSubjectRowScalarFieldEnum = (typeof TranscriptSubjectRowScalarFieldEnum)[keyof typeof TranscriptSubjectRowScalarFieldEnum]
 
 
 export const SortOrder = {

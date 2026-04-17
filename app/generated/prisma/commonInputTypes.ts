@@ -681,6 +681,23 @@ export type EnumAttendanceExcuseStatusWithAggregatesFilter<$PrismaModel = never>
   _max?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel>
 }
 
+export type EnumTranscriptStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TranscriptStatus | Prisma.EnumTranscriptStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TranscriptStatus[] | Prisma.ListEnumTranscriptStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TranscriptStatus[] | Prisma.ListEnumTranscriptStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTranscriptStatusFilter<$PrismaModel> | $Enums.TranscriptStatus
+}
+
+export type EnumTranscriptStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TranscriptStatus | Prisma.EnumTranscriptStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TranscriptStatus[] | Prisma.ListEnumTranscriptStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TranscriptStatus[] | Prisma.ListEnumTranscriptStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTranscriptStatusWithAggregatesFilter<$PrismaModel> | $Enums.TranscriptStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTranscriptStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTranscriptStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1310,6 +1327,23 @@ export type NestedEnumAttendanceExcuseStatusWithAggregatesFilter<$PrismaModel = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumAttendanceExcuseStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumTranscriptStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TranscriptStatus | Prisma.EnumTranscriptStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TranscriptStatus[] | Prisma.ListEnumTranscriptStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TranscriptStatus[] | Prisma.ListEnumTranscriptStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTranscriptStatusFilter<$PrismaModel> | $Enums.TranscriptStatus
+}
+
+export type NestedEnumTranscriptStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TranscriptStatus | Prisma.EnumTranscriptStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TranscriptStatus[] | Prisma.ListEnumTranscriptStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TranscriptStatus[] | Prisma.ListEnumTranscriptStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTranscriptStatusWithAggregatesFilter<$PrismaModel> | $Enums.TranscriptStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTranscriptStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTranscriptStatusFilter<$PrismaModel>
 }
 
 

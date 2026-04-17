@@ -367,6 +367,8 @@ export type UserWhereInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestListRelationFilter
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestListRelationFilter
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestListRelationFilter
+  transcriptsAsStudent?: Prisma.TranscriptListRelationFilter
+  transcriptsCreated?: Prisma.TranscriptListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -434,6 +436,8 @@ export type UserOrderByWithRelationInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestOrderByRelationAggregateInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestOrderByRelationAggregateInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestOrderByRelationAggregateInput
+  transcriptsAsStudent?: Prisma.TranscriptOrderByRelationAggregateInput
+  transcriptsCreated?: Prisma.TranscriptOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -504,6 +508,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestListRelationFilter
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestListRelationFilter
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestListRelationFilter
+  transcriptsAsStudent?: Prisma.TranscriptListRelationFilter
+  transcriptsCreated?: Prisma.TranscriptListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -629,6 +635,8 @@ export type UserCreateInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -696,6 +704,8 @@ export type UserUncheckedCreateInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUpdateInput = {
@@ -763,6 +773,8 @@ export type UserUpdateInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -830,6 +842,8 @@ export type UserUncheckedUpdateInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1644,6 +1658,34 @@ export type UserUpdateOneWithoutAttendanceExcuseRequestsResolvedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAttendanceExcuseRequestsResolvedInput, Prisma.UserUpdateWithoutAttendanceExcuseRequestsResolvedInput>, Prisma.UserUncheckedUpdateWithoutAttendanceExcuseRequestsResolvedInput>
 }
 
+export type UserCreateNestedOneWithoutTranscriptsAsStudentInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTranscriptsAsStudentInput, Prisma.UserUncheckedCreateWithoutTranscriptsAsStudentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTranscriptsAsStudentInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutTranscriptsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTranscriptsCreatedInput, Prisma.UserUncheckedCreateWithoutTranscriptsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTranscriptsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTranscriptsAsStudentNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTranscriptsAsStudentInput, Prisma.UserUncheckedCreateWithoutTranscriptsAsStudentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTranscriptsAsStudentInput
+  upsert?: Prisma.UserUpsertWithoutTranscriptsAsStudentInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTranscriptsAsStudentInput, Prisma.UserUpdateWithoutTranscriptsAsStudentInput>, Prisma.UserUncheckedUpdateWithoutTranscriptsAsStudentInput>
+}
+
+export type UserUpdateOneRequiredWithoutTranscriptsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTranscriptsCreatedInput, Prisma.UserUncheckedCreateWithoutTranscriptsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTranscriptsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutTranscriptsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTranscriptsCreatedInput, Prisma.UserUpdateWithoutTranscriptsCreatedInput>, Prisma.UserUncheckedUpdateWithoutTranscriptsCreatedInput>
+}
+
 export type UserCreateWithoutCanvaAccountInput = {
   id?: string
   email: string
@@ -1708,6 +1750,8 @@ export type UserCreateWithoutCanvaAccountInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCanvaAccountInput = {
@@ -1774,6 +1818,8 @@ export type UserUncheckedCreateWithoutCanvaAccountInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCanvaAccountInput = {
@@ -1856,6 +1902,8 @@ export type UserUpdateWithoutCanvaAccountInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCanvaAccountInput = {
@@ -1922,6 +1970,8 @@ export type UserUncheckedUpdateWithoutCanvaAccountInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPortalGrantsReceivedInput = {
@@ -1988,6 +2038,8 @@ export type UserCreateWithoutPortalGrantsReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPortalGrantsReceivedInput = {
@@ -2054,6 +2106,8 @@ export type UserUncheckedCreateWithoutPortalGrantsReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPortalGrantsReceivedInput = {
@@ -2125,6 +2179,8 @@ export type UserCreateWithoutPortalGrantsCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPortalGrantsCreatedInput = {
@@ -2191,6 +2247,8 @@ export type UserUncheckedCreateWithoutPortalGrantsCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPortalGrantsCreatedInput = {
@@ -2273,6 +2331,8 @@ export type UserUpdateWithoutPortalGrantsReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPortalGrantsReceivedInput = {
@@ -2339,6 +2399,8 @@ export type UserUncheckedUpdateWithoutPortalGrantsReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutPortalGrantsCreatedInput = {
@@ -2416,6 +2478,8 @@ export type UserUpdateWithoutPortalGrantsCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPortalGrantsCreatedInput = {
@@ -2482,6 +2546,8 @@ export type UserUncheckedUpdateWithoutPortalGrantsCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutFeedbackAuthoredInput = {
@@ -2548,6 +2614,8 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
@@ -2614,6 +2682,8 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAuthoredInput = {
@@ -2685,6 +2755,8 @@ export type UserCreateWithoutFeedbackAboutStudentInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
@@ -2751,6 +2823,8 @@ export type UserUncheckedCreateWithoutFeedbackAboutStudentInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAboutStudentInput = {
@@ -2822,6 +2896,8 @@ export type UserCreateWithoutFeedbackAboutTeacherInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
@@ -2888,6 +2964,8 @@ export type UserUncheckedCreateWithoutFeedbackAboutTeacherInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackAboutTeacherInput = {
@@ -2959,6 +3037,8 @@ export type UserCreateWithoutFeedbackRepliesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
@@ -3025,6 +3105,8 @@ export type UserUncheckedCreateWithoutFeedbackRepliesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackRepliesInput = {
@@ -3107,6 +3189,8 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
@@ -3173,6 +3257,8 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackAboutStudentInput = {
@@ -3250,6 +3336,8 @@ export type UserUpdateWithoutFeedbackAboutStudentInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
@@ -3316,6 +3404,8 @@ export type UserUncheckedUpdateWithoutFeedbackAboutStudentInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackAboutTeacherInput = {
@@ -3393,6 +3483,8 @@ export type UserUpdateWithoutFeedbackAboutTeacherInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
@@ -3459,6 +3551,8 @@ export type UserUncheckedUpdateWithoutFeedbackAboutTeacherInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutFeedbackRepliesInput = {
@@ -3536,6 +3630,8 @@ export type UserUpdateWithoutFeedbackRepliesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
@@ -3602,6 +3698,8 @@ export type UserUncheckedUpdateWithoutFeedbackRepliesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -3668,6 +3766,8 @@ export type UserCreateWithoutAccountsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -3734,6 +3834,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -3816,6 +3918,8 @@ export type UserUpdateWithoutAccountsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -3882,6 +3986,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -3948,6 +4054,8 @@ export type UserCreateWithoutSessionsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -4014,6 +4122,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -4096,6 +4206,8 @@ export type UserUpdateWithoutSessionsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -4162,6 +4274,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutProgramLessonCompletionsInput = {
@@ -4228,6 +4342,8 @@ export type UserCreateWithoutProgramLessonCompletionsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutProgramLessonCompletionsInput = {
@@ -4294,6 +4410,8 @@ export type UserUncheckedCreateWithoutProgramLessonCompletionsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutProgramLessonCompletionsInput = {
@@ -4376,6 +4494,8 @@ export type UserUpdateWithoutProgramLessonCompletionsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramLessonCompletionsInput = {
@@ -4442,6 +4562,8 @@ export type UserUncheckedUpdateWithoutProgramLessonCompletionsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutProgramCertificatesReceivedInput = {
@@ -4508,6 +4630,8 @@ export type UserCreateWithoutProgramCertificatesReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutProgramCertificatesReceivedInput = {
@@ -4574,6 +4698,8 @@ export type UserUncheckedCreateWithoutProgramCertificatesReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutProgramCertificatesReceivedInput = {
@@ -4645,6 +4771,8 @@ export type UserCreateWithoutProgramCertificatesSentByInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutProgramCertificatesSentByInput = {
@@ -4711,6 +4839,8 @@ export type UserUncheckedCreateWithoutProgramCertificatesSentByInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutProgramCertificatesSentByInput = {
@@ -4793,6 +4923,8 @@ export type UserUpdateWithoutProgramCertificatesReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramCertificatesReceivedInput = {
@@ -4859,6 +4991,8 @@ export type UserUncheckedUpdateWithoutProgramCertificatesReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutProgramCertificatesSentByInput = {
@@ -4936,6 +5070,8 @@ export type UserUpdateWithoutProgramCertificatesSentByInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramCertificatesSentByInput = {
@@ -5002,6 +5138,8 @@ export type UserUncheckedUpdateWithoutProgramCertificatesSentByInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCertTemplatesCreatedInput = {
@@ -5068,6 +5206,8 @@ export type UserCreateWithoutCertTemplatesCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCertTemplatesCreatedInput = {
@@ -5134,6 +5274,8 @@ export type UserUncheckedCreateWithoutCertTemplatesCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCertTemplatesCreatedInput = {
@@ -5216,6 +5358,8 @@ export type UserUpdateWithoutCertTemplatesCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCertTemplatesCreatedInput = {
@@ -5282,6 +5426,8 @@ export type UserUncheckedUpdateWithoutCertTemplatesCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCertificatesReceivedInput = {
@@ -5348,6 +5494,8 @@ export type UserCreateWithoutCertificatesReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCertificatesReceivedInput = {
@@ -5414,6 +5562,8 @@ export type UserUncheckedCreateWithoutCertificatesReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCertificatesReceivedInput = {
@@ -5485,6 +5635,8 @@ export type UserCreateWithoutCertificatesSentByInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCertificatesSentByInput = {
@@ -5551,6 +5703,8 @@ export type UserUncheckedCreateWithoutCertificatesSentByInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCertificatesSentByInput = {
@@ -5633,6 +5787,8 @@ export type UserUpdateWithoutCertificatesReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCertificatesReceivedInput = {
@@ -5699,6 +5855,8 @@ export type UserUncheckedUpdateWithoutCertificatesReceivedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutCertificatesSentByInput = {
@@ -5776,6 +5934,8 @@ export type UserUpdateWithoutCertificatesSentByInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCertificatesSentByInput = {
@@ -5842,6 +6002,8 @@ export type UserUncheckedUpdateWithoutCertificatesSentByInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTopicProgressInput = {
@@ -5908,6 +6070,8 @@ export type UserCreateWithoutTopicProgressInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTopicProgressInput = {
@@ -5974,6 +6138,8 @@ export type UserUncheckedCreateWithoutTopicProgressInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTopicProgressInput = {
@@ -6056,6 +6222,8 @@ export type UserUpdateWithoutTopicProgressInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTopicProgressInput = {
@@ -6122,6 +6290,8 @@ export type UserUncheckedUpdateWithoutTopicProgressInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutStudentProfileInput = {
@@ -6188,6 +6358,8 @@ export type UserCreateWithoutStudentProfileInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -6254,6 +6426,8 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -6336,6 +6510,8 @@ export type UserUpdateWithoutStudentProfileInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -6402,6 +6578,8 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutProgramEnrollmentsInput = {
@@ -6468,6 +6646,8 @@ export type UserCreateWithoutProgramEnrollmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutProgramEnrollmentsInput = {
@@ -6534,6 +6714,8 @@ export type UserUncheckedCreateWithoutProgramEnrollmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutProgramEnrollmentsInput = {
@@ -6616,6 +6798,8 @@ export type UserUpdateWithoutProgramEnrollmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramEnrollmentsInput = {
@@ -6682,6 +6866,8 @@ export type UserUncheckedUpdateWithoutProgramEnrollmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutStudentOnboardingInput = {
@@ -6748,6 +6934,8 @@ export type UserCreateWithoutStudentOnboardingInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutStudentOnboardingInput = {
@@ -6814,6 +7002,8 @@ export type UserUncheckedCreateWithoutStudentOnboardingInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutStudentOnboardingInput = {
@@ -6896,6 +7086,8 @@ export type UserUpdateWithoutStudentOnboardingInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
@@ -6962,6 +7154,8 @@ export type UserUncheckedUpdateWithoutStudentOnboardingInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTeacherProfileInput = {
@@ -7028,6 +7222,8 @@ export type UserCreateWithoutTeacherProfileInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTeacherProfileInput = {
@@ -7094,6 +7290,8 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTeacherProfileInput = {
@@ -7176,6 +7374,8 @@ export type UserUpdateWithoutTeacherProfileInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherProfileInput = {
@@ -7242,6 +7442,8 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCreatedAssessmentsInput = {
@@ -7308,6 +7510,8 @@ export type UserCreateWithoutCreatedAssessmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -7374,6 +7578,8 @@ export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -7456,6 +7662,8 @@ export type UserUpdateWithoutCreatedAssessmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -7522,6 +7730,8 @@ export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAssessmentAssignmentsInput = {
@@ -7588,6 +7798,8 @@ export type UserCreateWithoutAssessmentAssignmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
@@ -7654,6 +7866,8 @@ export type UserUncheckedCreateWithoutAssessmentAssignmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentAssignmentsInput = {
@@ -7736,6 +7950,8 @@ export type UserUpdateWithoutAssessmentAssignmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
@@ -7802,6 +8018,8 @@ export type UserUncheckedUpdateWithoutAssessmentAssignmentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAttemptsInput = {
@@ -7868,6 +8086,8 @@ export type UserCreateWithoutAttemptsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAttemptsInput = {
@@ -7934,6 +8154,8 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAttemptsInput = {
@@ -8016,6 +8238,8 @@ export type UserUpdateWithoutAttemptsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttemptsInput = {
@@ -8082,6 +8306,8 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAnswersInput = {
@@ -8148,6 +8374,8 @@ export type UserCreateWithoutAnswersInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAnswersInput = {
@@ -8214,6 +8442,8 @@ export type UserUncheckedCreateWithoutAnswersInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAnswersInput = {
@@ -8296,6 +8526,8 @@ export type UserUpdateWithoutAnswersInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnswersInput = {
@@ -8362,6 +8594,8 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAssessmentSharesInput = {
@@ -8428,6 +8662,8 @@ export type UserCreateWithoutAssessmentSharesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAssessmentSharesInput = {
@@ -8494,6 +8730,8 @@ export type UserUncheckedCreateWithoutAssessmentSharesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAssessmentSharesInput = {
@@ -8565,6 +8803,8 @@ export type UserCreateWithoutCreatedSharesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSharesInput = {
@@ -8631,6 +8871,8 @@ export type UserUncheckedCreateWithoutCreatedSharesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSharesInput = {
@@ -8713,6 +8955,8 @@ export type UserUpdateWithoutAssessmentSharesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
@@ -8779,6 +9023,8 @@ export type UserUncheckedUpdateWithoutAssessmentSharesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutCreatedSharesInput = {
@@ -8856,6 +9102,8 @@ export type UserUpdateWithoutCreatedSharesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSharesInput = {
@@ -8922,6 +9170,8 @@ export type UserUncheckedUpdateWithoutCreatedSharesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTeacherAttendancesInput = {
@@ -8988,6 +9238,8 @@ export type UserCreateWithoutTeacherAttendancesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
@@ -9054,6 +9306,8 @@ export type UserUncheckedCreateWithoutTeacherAttendancesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTeacherAttendancesInput = {
@@ -9136,6 +9390,8 @@ export type UserUpdateWithoutTeacherAttendancesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
@@ -9202,6 +9458,8 @@ export type UserUncheckedUpdateWithoutTeacherAttendancesInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAttendanceRecordsInput = {
@@ -9268,6 +9526,8 @@ export type UserCreateWithoutAttendanceRecordsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -9334,6 +9594,8 @@ export type UserUncheckedCreateWithoutAttendanceRecordsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -9416,6 +9678,8 @@ export type UserUpdateWithoutAttendanceRecordsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -9482,6 +9746,8 @@ export type UserUncheckedUpdateWithoutAttendanceRecordsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutProgramCalendarSlotsAsTeacherInput = {
@@ -9548,6 +9814,8 @@ export type UserCreateWithoutProgramCalendarSlotsAsTeacherInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput = {
@@ -9614,6 +9882,8 @@ export type UserUncheckedCreateWithoutProgramCalendarSlotsAsTeacherInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutProgramCalendarSlotsAsTeacherInput = {
@@ -9696,6 +9966,8 @@ export type UserUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
@@ -9762,6 +10034,8 @@ export type UserUncheckedUpdateWithoutProgramCalendarSlotsAsTeacherInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -9828,6 +10102,8 @@ export type UserCreateWithoutNotificationsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -9894,6 +10170,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -9976,6 +10254,8 @@ export type UserUpdateWithoutNotificationsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -10042,6 +10322,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutApplicationsInput = {
@@ -10108,6 +10390,8 @@ export type UserCreateWithoutApplicationsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -10174,6 +10458,8 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -10256,6 +10542,8 @@ export type UserUpdateWithoutApplicationsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -10322,6 +10610,8 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutCreatedDocumentsInput = {
@@ -10388,6 +10678,8 @@ export type UserCreateWithoutCreatedDocumentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
@@ -10454,6 +10746,8 @@ export type UserUncheckedCreateWithoutCreatedDocumentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDocumentsInput = {
@@ -10525,6 +10819,8 @@ export type UserCreateWithoutSharedDocumentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSharedDocumentsInput = {
@@ -10591,6 +10887,8 @@ export type UserUncheckedCreateWithoutSharedDocumentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSharedDocumentsInput = {
@@ -10673,6 +10971,8 @@ export type UserUpdateWithoutCreatedDocumentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
@@ -10739,6 +11039,8 @@ export type UserUncheckedUpdateWithoutCreatedDocumentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutSharedDocumentsInput = {
@@ -10850,6 +11152,8 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
@@ -10916,6 +11220,8 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementsCreatedInput = {
@@ -10998,6 +11304,8 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
@@ -11064,6 +11372,8 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAnnouncementRecipientsInput = {
@@ -11130,6 +11440,8 @@ export type UserCreateWithoutAnnouncementRecipientsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
@@ -11196,6 +11508,8 @@ export type UserUncheckedCreateWithoutAnnouncementRecipientsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementRecipientsInput = {
@@ -11278,6 +11592,8 @@ export type UserUpdateWithoutAnnouncementRecipientsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
@@ -11344,6 +11660,8 @@ export type UserUncheckedUpdateWithoutAnnouncementRecipientsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -11410,6 +11728,8 @@ export type UserCreateWithoutAuditLogsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -11476,6 +11796,8 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -11558,6 +11880,8 @@ export type UserUpdateWithoutAuditLogsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -11624,6 +11948,8 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSessionRecordingsUploadedInput = {
@@ -11690,6 +12016,8 @@ export type UserCreateWithoutSessionRecordingsUploadedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSessionRecordingsUploadedInput = {
@@ -11756,6 +12084,8 @@ export type UserUncheckedCreateWithoutSessionRecordingsUploadedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSessionRecordingsUploadedInput = {
@@ -11838,6 +12168,8 @@ export type UserUpdateWithoutSessionRecordingsUploadedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionRecordingsUploadedInput = {
@@ -11904,6 +12236,8 @@ export type UserUncheckedUpdateWithoutSessionRecordingsUploadedInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutRetakeRequestsAsStudentInput = {
@@ -11970,6 +12304,8 @@ export type UserCreateWithoutRetakeRequestsAsStudentInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutRetakeRequestsAsStudentInput = {
@@ -12036,6 +12372,8 @@ export type UserUncheckedCreateWithoutRetakeRequestsAsStudentInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutRetakeRequestsAsStudentInput = {
@@ -12107,6 +12445,8 @@ export type UserCreateWithoutRetakeRequestsResolvedInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutRetakeRequestsResolvedInput = {
@@ -12173,6 +12513,8 @@ export type UserUncheckedCreateWithoutRetakeRequestsResolvedInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutRetakeRequestsResolvedInput = {
@@ -12255,6 +12597,8 @@ export type UserUpdateWithoutRetakeRequestsAsStudentInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRetakeRequestsAsStudentInput = {
@@ -12321,6 +12665,8 @@ export type UserUncheckedUpdateWithoutRetakeRequestsAsStudentInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutRetakeRequestsResolvedInput = {
@@ -12398,6 +12744,8 @@ export type UserUpdateWithoutRetakeRequestsResolvedInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRetakeRequestsResolvedInput = {
@@ -12464,6 +12812,8 @@ export type UserUncheckedUpdateWithoutRetakeRequestsResolvedInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAttendanceExcuseRequestsAsStudentInput = {
@@ -12530,6 +12880,8 @@ export type UserCreateWithoutAttendanceExcuseRequestsAsStudentInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutStudentInput
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAttendanceExcuseRequestsAsStudentInput = {
@@ -12596,6 +12948,8 @@ export type UserUncheckedCreateWithoutAttendanceExcuseRequestsAsStudentInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutStudentInput
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAttendanceExcuseRequestsAsStudentInput = {
@@ -12667,6 +13021,8 @@ export type UserCreateWithoutAttendanceExcuseRequestsResolvedInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutStudentInput
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAttendanceExcuseRequestsResolvedInput = {
@@ -12733,6 +13089,8 @@ export type UserUncheckedCreateWithoutAttendanceExcuseRequestsResolvedInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutStudentInput
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAttendanceExcuseRequestsResolvedInput = {
@@ -12815,6 +13173,8 @@ export type UserUpdateWithoutAttendanceExcuseRequestsAsStudentInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUpdateManyWithoutStudentNestedInput
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttendanceExcuseRequestsAsStudentInput = {
@@ -12881,6 +13241,8 @@ export type UserUncheckedUpdateWithoutAttendanceExcuseRequestsAsStudentInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutStudentNestedInput
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutAttendanceExcuseRequestsResolvedInput = {
@@ -12958,6 +13320,8 @@ export type UserUpdateWithoutAttendanceExcuseRequestsResolvedInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUpdateManyWithoutStudentNestedInput
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttendanceExcuseRequestsResolvedInput = {
@@ -13024,6 +13388,584 @@ export type UserUncheckedUpdateWithoutAttendanceExcuseRequestsResolvedInput = {
   retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutStudentNestedInput
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutTranscriptsAsStudentInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
+  retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutStudentInput
+  retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
+  attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
+  attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsCreated?: Prisma.TranscriptCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutTranscriptsAsStudentInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
+  retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutStudentInput
+  retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
+  attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutTranscriptsAsStudentInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTranscriptsAsStudentInput, Prisma.UserUncheckedCreateWithoutTranscriptsAsStudentInput>
+}
+
+export type UserCreateWithoutTranscriptsCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountCreateNestedOneWithoutUserInput
+  retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutStudentInput
+  retakeRequestsResolved?: Prisma.AssessmentRetakeRequestCreateNestedManyWithoutResolvedByInput
+  attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutStudentInput
+  attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptCreateNestedManyWithoutStudentInput
+}
+
+export type UserUncheckedCreateWithoutTranscriptsCreatedInput = {
+  id?: string
+  email: string
+  emailVerified?: Date | string | null
+  hashedPassword?: string | null
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  role?: $Enums.Role
+  image?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  postalCode?: string | null
+  visaStatus?: string | null
+  profilePicture?: string | null
+  mustChangePassword?: boolean
+  isActive?: boolean
+  signatureImageUrl?: string | null
+  signatureTypedName?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedCreateNestedOneWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutStudentInput
+  answers?: Prisma.AnswerUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedWithInput
+  createdShares?: Prisma.AssessmentShareUncheckedCreateNestedManyWithoutSharedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutApplicantInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedWithInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedCreateNestedManyWithoutSharedByInput
+  topicProgress?: Prisma.TopicProgressUncheckedCreateNestedManyWithoutStudentInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutTeacherInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedCreateNestedManyWithoutUserInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatorInput
+  createdAssessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutCreatorInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedCreateNestedOneWithoutUserInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutStudentInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAboutTeacherInput
+  feedbackReplies?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRepliedByInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedCreateNestedManyWithoutStudentInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutTeacherInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutUserInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedCreateNestedManyWithoutCreatedByInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutStudentInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedCreateNestedManyWithoutSentByInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutRecipientInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedCreateNestedManyWithoutSentByInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedCreateNestedManyWithoutUploadedByInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedCreateNestedOneWithoutUserInput
+  retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutStudentInput
+  retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutStudentInput
+  attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedCreateNestedManyWithoutResolvedByInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type UserCreateOrConnectWithoutTranscriptsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTranscriptsCreatedInput, Prisma.UserUncheckedCreateWithoutTranscriptsCreatedInput>
+}
+
+export type UserUpsertWithoutTranscriptsAsStudentInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTranscriptsAsStudentInput, Prisma.UserUncheckedUpdateWithoutTranscriptsAsStudentInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTranscriptsAsStudentInput, Prisma.UserUncheckedCreateWithoutTranscriptsAsStudentInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTranscriptsAsStudentInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTranscriptsAsStudentInput, Prisma.UserUncheckedUpdateWithoutTranscriptsAsStudentInput>
+}
+
+export type UserUpdateWithoutTranscriptsAsStudentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
+  retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUpdateManyWithoutStudentNestedInput
+  retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
+  attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
+  attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTranscriptsAsStudentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
+  retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutStudentNestedInput
+  retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUpsertWithoutTranscriptsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTranscriptsCreatedInput, Prisma.UserUncheckedUpdateWithoutTranscriptsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTranscriptsCreatedInput, Prisma.UserUncheckedCreateWithoutTranscriptsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTranscriptsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTranscriptsCreatedInput, Prisma.UserUncheckedUpdateWithoutTranscriptsCreatedInput>
+}
+
+export type UserUpdateWithoutTranscriptsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUpdateOneWithoutUserNestedInput
+  retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUpdateManyWithoutStudentNestedInput
+  retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
+  attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
+  attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTranscriptsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hashedPassword?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visaStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureTypedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  teacherProfile?: Prisma.TeacherProfileUncheckedUpdateOneWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutStudentNestedInput
+  answers?: Prisma.AnswerUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  assessmentShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdShares?: Prisma.AssessmentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutApplicantNestedInput
+  sharedDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedWithNestedInput
+  createdDocuments?: Prisma.SharedDocumentUncheckedUpdateManyWithoutSharedByNestedInput
+  topicProgress?: Prisma.TopicProgressUncheckedUpdateManyWithoutStudentNestedInput
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutTeacherNestedInput
+  announcementRecipients?: Prisma.AnnouncementRecipientUncheckedUpdateManyWithoutUserNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatorNestedInput
+  createdAssessments?: Prisma.AssessmentUncheckedUpdateManyWithoutCreatorNestedInput
+  studentOnboarding?: Prisma.StudentOnboardingUncheckedUpdateOneWithoutUserNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackAboutStudent?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutStudentNestedInput
+  feedbackAboutTeacher?: Prisma.FeedbackUncheckedUpdateManyWithoutAboutTeacherNestedInput
+  feedbackReplies?: Prisma.FeedbackUncheckedUpdateManyWithoutRepliedByNestedInput
+  assessmentAssignments?: Prisma.AssessmentAssignedStudentUncheckedUpdateManyWithoutStudentNestedInput
+  programCalendarSlotsAsTeacher?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutTeacherNestedInput
+  portalGrantsReceived?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutUserNestedInput
+  portalGrantsCreated?: Prisma.UserPortalGrantUncheckedUpdateManyWithoutCreatedByNestedInput
+  programLessonCompletions?: Prisma.ProgramLessonCompletionUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesReceived?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutStudentNestedInput
+  programCertificatesSentBy?: Prisma.ProgramCertificateSendUncheckedUpdateManyWithoutSentByNestedInput
+  certTemplatesCreated?: Prisma.CertificateTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+  certificatesReceived?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutRecipientNestedInput
+  certificatesSentBy?: Prisma.CertificateIssuedUncheckedUpdateManyWithoutSentByNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  sessionRecordingsUploaded?: Prisma.SessionRecordingUncheckedUpdateManyWithoutUploadedByNestedInput
+  canvaAccount?: Prisma.CanvaAccountUncheckedUpdateOneWithoutUserNestedInput
+  retakeRequestsAsStudent?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutStudentNestedInput
+  retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type UserUpdateWithoutSharedDocumentsInput = {
@@ -13090,6 +14032,8 @@ export type UserUpdateWithoutSharedDocumentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
@@ -13156,6 +14100,8 @@ export type UserUncheckedUpdateWithoutSharedDocumentsInput = {
   retakeRequestsResolved?: Prisma.AssessmentRetakeRequestUncheckedUpdateManyWithoutResolvedByNestedInput
   attendanceExcuseRequestsAsStudent?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutStudentNestedInput
   attendanceExcuseRequestsResolved?: Prisma.AttendanceExcuseRequestUncheckedUpdateManyWithoutResolvedByNestedInput
+  transcriptsAsStudent?: Prisma.TranscriptUncheckedUpdateManyWithoutStudentNestedInput
+  transcriptsCreated?: Prisma.TranscriptUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutSharedDocumentsInput = {
@@ -13227,6 +14173,8 @@ export type UserCountOutputType = {
   retakeRequestsResolved: number
   attendanceExcuseRequestsAsStudent: number
   attendanceExcuseRequestsResolved: number
+  transcriptsAsStudent: number
+  transcriptsCreated: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -13267,6 +14215,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   retakeRequestsResolved?: boolean | UserCountOutputTypeCountRetakeRequestsResolvedArgs
   attendanceExcuseRequestsAsStudent?: boolean | UserCountOutputTypeCountAttendanceExcuseRequestsAsStudentArgs
   attendanceExcuseRequestsResolved?: boolean | UserCountOutputTypeCountAttendanceExcuseRequestsResolvedArgs
+  transcriptsAsStudent?: boolean | UserCountOutputTypeCountTranscriptsAsStudentArgs
+  transcriptsCreated?: boolean | UserCountOutputTypeCountTranscriptsCreatedArgs
 }
 
 /**
@@ -13538,6 +14488,20 @@ export type UserCountOutputTypeCountAttendanceExcuseRequestsResolvedArgs<ExtArgs
   where?: Prisma.AttendanceExcuseRequestWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTranscriptsAsStudentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TranscriptWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTranscriptsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TranscriptWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -13604,6 +14568,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   retakeRequestsResolved?: boolean | Prisma.User$retakeRequestsResolvedArgs<ExtArgs>
   attendanceExcuseRequestsAsStudent?: boolean | Prisma.User$attendanceExcuseRequestsAsStudentArgs<ExtArgs>
   attendanceExcuseRequestsResolved?: boolean | Prisma.User$attendanceExcuseRequestsResolvedArgs<ExtArgs>
+  transcriptsAsStudent?: boolean | Prisma.User$transcriptsAsStudentArgs<ExtArgs>
+  transcriptsCreated?: boolean | Prisma.User$transcriptsCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -13728,6 +14694,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   retakeRequestsResolved?: boolean | Prisma.User$retakeRequestsResolvedArgs<ExtArgs>
   attendanceExcuseRequestsAsStudent?: boolean | Prisma.User$attendanceExcuseRequestsAsStudentArgs<ExtArgs>
   attendanceExcuseRequestsResolved?: boolean | Prisma.User$attendanceExcuseRequestsResolvedArgs<ExtArgs>
+  transcriptsAsStudent?: boolean | Prisma.User$transcriptsAsStudentArgs<ExtArgs>
+  transcriptsCreated?: boolean | Prisma.User$transcriptsCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -13777,6 +14745,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     retakeRequestsResolved: Prisma.$AssessmentRetakeRequestPayload<ExtArgs>[]
     attendanceExcuseRequestsAsStudent: Prisma.$AttendanceExcuseRequestPayload<ExtArgs>[]
     attendanceExcuseRequestsResolved: Prisma.$AttendanceExcuseRequestPayload<ExtArgs>[]
+    transcriptsAsStudent: Prisma.$TranscriptPayload<ExtArgs>[]
+    transcriptsCreated: Prisma.$TranscriptPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -14237,6 +15207,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   retakeRequestsResolved<T extends Prisma.User$retakeRequestsResolvedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$retakeRequestsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentRetakeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceExcuseRequestsAsStudent<T extends Prisma.User$attendanceExcuseRequestsAsStudentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attendanceExcuseRequestsAsStudentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceExcuseRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceExcuseRequestsResolved<T extends Prisma.User$attendanceExcuseRequestsResolvedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attendanceExcuseRequestsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceExcuseRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transcriptsAsStudent<T extends Prisma.User$transcriptsAsStudentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transcriptsAsStudentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TranscriptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transcriptsCreated<T extends Prisma.User$transcriptsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transcriptsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TranscriptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15643,6 +16615,54 @@ export type User$attendanceExcuseRequestsResolvedArgs<ExtArgs extends runtime.Ty
   take?: number
   skip?: number
   distinct?: Prisma.AttendanceExcuseRequestScalarFieldEnum | Prisma.AttendanceExcuseRequestScalarFieldEnum[]
+}
+
+/**
+ * User.transcriptsAsStudent
+ */
+export type User$transcriptsAsStudentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Transcript
+   */
+  select?: Prisma.TranscriptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Transcript
+   */
+  omit?: Prisma.TranscriptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TranscriptInclude<ExtArgs> | null
+  where?: Prisma.TranscriptWhereInput
+  orderBy?: Prisma.TranscriptOrderByWithRelationInput | Prisma.TranscriptOrderByWithRelationInput[]
+  cursor?: Prisma.TranscriptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TranscriptScalarFieldEnum | Prisma.TranscriptScalarFieldEnum[]
+}
+
+/**
+ * User.transcriptsCreated
+ */
+export type User$transcriptsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Transcript
+   */
+  select?: Prisma.TranscriptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Transcript
+   */
+  omit?: Prisma.TranscriptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TranscriptInclude<ExtArgs> | null
+  where?: Prisma.TranscriptWhereInput
+  orderBy?: Prisma.TranscriptOrderByWithRelationInput | Prisma.TranscriptOrderByWithRelationInput[]
+  cursor?: Prisma.TranscriptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TranscriptScalarFieldEnum | Prisma.TranscriptScalarFieldEnum[]
 }
 
 /**

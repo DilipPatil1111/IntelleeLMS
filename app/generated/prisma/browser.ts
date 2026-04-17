@@ -337,3 +337,18 @@ export type AssessmentRetakeRequest = Prisma.AssessmentRetakeRequestModel
  * * Student requests an excuse for an ABSENT attendance record; staff can excuse, deny, or keep absent.
  */
 export type AttendanceExcuseRequest = Prisma.AttendanceExcuseRequestModel
+/**
+ * Model GradeBand
+ * * Configurable grade bands (A+, A, B+, …) set by the principal in Settings.
+ */
+export type GradeBand = Prisma.GradeBandModel
+/**
+ * Model Transcript
+ * * A student transcript (academic record) created by teacher/principal; published to student Reports.
+ */
+export type Transcript = Prisma.TranscriptModel
+/**
+ * Model TranscriptSubjectRow
+ * * One subject/course row in a transcript.
+ */
+export type TranscriptSubjectRow = Prisma.TranscriptSubjectRowModel
