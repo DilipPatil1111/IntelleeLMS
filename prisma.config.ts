@@ -4,7 +4,7 @@ import "dotenv/config";
 import { defineConfig } from "prisma/config";
 import { normalizePgConnectionString } from "./lib/pg-connection-url";
 
-const rawUrl = process.env["DATABASE_URL"];
+const rawUrl = process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"];
 const datasourceUrl = rawUrl ? normalizePgConnectionString(rawUrl) : rawUrl;
 
 export default defineConfig({
