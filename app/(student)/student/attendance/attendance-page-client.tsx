@@ -100,6 +100,32 @@ export function AttendancePageClient({ programs, defaultProgramId, globalRequire
   const totalPages = Math.ceil(total / PAGE_SIZE);
   const paginated = filteredRecords.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
+  const { totalDaysAttended, totalHoursAttended } = useMemo(() => {
+    const presentRecords = filteredRecords.filter(
+      (r) => r.status === "PRESENT" || r.status === "LATE" || r.status === "EXCUSED"
+    );
+    const uniqueDates = new Set(presentRecords.map((r) => r.session.sessionDate?.slice(0, 10)));
+    let totalMinutes = 0;
+    for (const r of presentRecords) {
+      const start = r.session.startTime;
+      const end = r.session.endTime;
+      if (start && end) {
+        const toMin = (t: string) => {
+          const parts = t.match(/(\d{1,2}):(\d{2})/);
+          if (!parts) return null;
+          return parseInt(parts[1], 10) * 60 + parseInt(parts[2], 10);
+        };
+        const a = toMin(start);
+        const b = toMin(end);
+        if (a != null && b != null && b > a) totalMinutes += b - a;
+      }
+    }
+    return {
+      totalDaysAttended: uniqueDates.size,
+      totalHoursAttended: Math.round((totalMinutes / 60) * 10) / 10,
+    };
+  }, [filteredRecords]);
+
   function resetFilters() {
     setSubjectFilter("all");
     setDateFrom("");
@@ -147,6 +173,14 @@ export function AttendancePageClient({ programs, defaultProgramId, globalRequire
                 )}
               </>
             )}
+          </p>
+          <p className="mt-1 flex flex-wrap gap-4 text-indigo-900">
+            <span>
+              Total days attended: <strong>{totalDaysAttended}</strong>
+            </span>
+            <span>
+              Total hours attended: <strong>{totalHoursAttended} hrs</strong>
+            </span>
           </p>
           <Link href="/student/full-calendar" className="mt-2 inline-block text-indigo-700 underline font-medium">
             View Full Calendar

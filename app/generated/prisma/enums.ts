@@ -258,3 +258,11 @@ export const FolderScope = {
 } as const
 
 export type FolderScope = (typeof FolderScope)[keyof typeof FolderScope]
+
+
+export const TranscriptStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED'
+} as const
+
+export type TranscriptStatus = (typeof TranscriptStatus)[keyof typeof TranscriptStatus]

@@ -67,13 +67,21 @@ export default async function TeacherReportsPage() {
         title="Reports"
         description="View assessment performance analytics"
       />
-      <p className="mb-6 text-sm text-gray-600">
-        For attendance by program dates and batch, use the{" "}
-        <Link href="/teacher/attendance?view=grid" className="font-medium text-indigo-600 hover:underline">
-          attendance grid
+      <div className="mb-6 flex flex-wrap gap-4">
+        <Link
+          href="/teacher/reports/attendance"
+          className="inline-flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors"
+        >
+          📊 Attendance Report
+          <span className="text-xs text-indigo-500">Student-wise PDF</span>
         </Link>
-        .
-      </p>
+        <Link
+          href="/teacher/attendance?view=grid"
+          className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+        >
+          Attendance Grid
+        </Link>
+      </div>
       <Suspense
         fallback={
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
-import { Loader2 } from "lucide-react";
+import { Loader2, ShieldAlert, X } from "lucide-react";
 
 type DateColumnMeta = {
   teachersLabel: string;
@@ -75,6 +75,10 @@ export function AttendanceProgramGridClient({
       : apiRole === "teacher"
         ? "/api/teacher/attendance/grid"
         : "/api/student/attendance/grid";
+  const cleanupBase =
+    apiRole === "principal"
+      ? "/api/principal/attendance"
+      : "/api/teacher/attendance";
   const [programs, setPrograms] = useState<
     { id: string; name: string; subjects: { id: string; name: string }[]; batches: { id: string; name: string }[] }[]
   >([]);
@@ -92,6 +96,33 @@ export function AttendanceProgramGridClient({
   const [defaultStartTime, setDefaultStartTime] = useState("09:00");
   const [defaultEndTime, setDefaultEndTime] = useState("17:00");
   const [teacherId, setTeacherId] = useState("");
+
+  /** Orphaned teacher-attendance rows — student records were deleted while the
+   * teacher hours stayed behind.  Surfaced as a cleanup banner at the top of
+   * the grid. */
+  type OrphanItem = {
+    sessionId: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    subject: { id: string; name: string };
+    batch: { id: string; name: string; programName: string };
+    teacher: { id: string; name: string; status: string };
+  };
+  const [orphans, setOrphans] = useState<OrphanItem[]>([]);
+  const [loadingOrphans, setLoadingOrphans] = useState(false);
+  const [cleaningOrphans, setCleaningOrphans] = useState(false);
+
+  /** Teacher-hours delete confirmation modal. */
+  const [pendingHoursDelete, setPendingHoursDelete] = useState<
+    | {
+        ymd: string;
+        teacherId: string;
+        teacherName: string;
+      }
+    | null
+  >(null);
+  const [deletingHours, setDeletingHours] = useState(false);
 
   useEffect(() => {
     if (apiRole === "student") {
@@ -171,6 +202,69 @@ export function AttendanceProgramGridClient({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadGrid();
   }, [loadGrid]);
+
+  /** Fetch the orphaned teacher-attendance list scoped to the current
+   * batch/subject so the cleanup banner only surfaces relevant entries. */
+  const loadOrphans = useCallback(async () => {
+    if (readOnly || !batchId || !subjectId) {
+      setOrphans([]);
+      return;
+    }
+    setLoadingOrphans(true);
+    try {
+      const qs = new URLSearchParams({ batchId, subjectId });
+      const res = await fetch(`${cleanupBase}/cleanup-orphans?${qs}`, { cache: "no-store" });
+      if (!res.ok) {
+        setOrphans([]);
+        return;
+      }
+      const j = (await res.json().catch(() => null)) as { orphans?: OrphanItem[] } | null;
+      setOrphans(j?.orphans ?? []);
+    } finally {
+      setLoadingOrphans(false);
+    }
+  }, [readOnly, batchId, subjectId, cleanupBase]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadOrphans();
+  }, [loadOrphans]);
+
+  async function cleanupAllOrphans() {
+    if (orphans.length === 0) return;
+    setCleaningOrphans(true);
+    const res = await fetch(`${cleanupBase}/cleanup-orphans`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: orphans.map((o) => o.sessionId) }),
+    }).catch(() => null);
+    setCleaningOrphans(false);
+    if (res?.ok) {
+      await loadOrphans();
+      await loadGrid();
+    }
+  }
+
+  async function confirmDeleteTeacherHours() {
+    if (!pendingHoursDelete || !batchId || !subjectId) return;
+    setDeletingHours(true);
+    const res = await fetch(`${cleanupBase}/teacher-hours`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        batchId,
+        subjectId,
+        ymd: pendingHoursDelete.ymd,
+        teacherId: pendingHoursDelete.teacherId,
+      }),
+    }).catch(() => null);
+    setDeletingHours(false);
+    setPendingHoursDelete(null);
+    if (res?.ok) {
+      await loadGrid();
+      await loadOrphans();
+    }
+  }
 
   const teacherOptions = useMemo((): Opt[] => {
     if (!data?.assignedTeachers) return [];
@@ -395,6 +489,78 @@ export function AttendanceProgramGridClient({
         )}
       </div>
 
+      {!readOnly && (orphans.length > 0 || loadingOrphans) && (
+        <Card className={`mb-4 border-2 ${orphans.length > 0 ? "border-amber-300 bg-amber-50" : "border-gray-200"}`}>
+          <CardContent className="pt-4">
+            <div className="flex items-start gap-3">
+              {loadingOrphans ? (
+                <Loader2 className="h-5 w-5 text-gray-400 animate-spin shrink-0 mt-0.5" />
+              ) : (
+                <ShieldAlert className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+              )}
+              <div className="flex-1 min-w-0">
+                {loadingOrphans ? (
+                  <p className="text-sm text-gray-500">Checking for orphaned teacher attendance…</p>
+                ) : (
+                  <>
+                    <p className="text-sm font-bold text-amber-900 mb-1">
+                      {orphans.length} session{orphans.length !== 1 ? "s" : ""} have teacher attendance but no student attendance
+                    </p>
+                    <p className="text-xs text-amber-800 mb-3">
+                      Student attendance was deleted but the teacher&apos;s hours are still recorded on
+                      {orphans.length !== 1 ? " these sessions" : " this session"}. Do you want to clean
+                      {orphans.length !== 1 ? " them" : " it"} up? Cleaning up removes the teacher
+                      attendance and the now-empty session{orphans.length !== 1 ? "s" : ""}.
+                    </p>
+                    <div className="mb-3 rounded border border-amber-200 overflow-hidden bg-white">
+                      <table className="w-full text-xs">
+                        <thead className="bg-amber-100">
+                          <tr>
+                            <th className="px-3 py-2 text-left font-semibold text-amber-900">Date</th>
+                            <th className="px-3 py-2 text-left font-semibold text-amber-900">Time</th>
+                            <th className="px-3 py-2 text-left font-semibold text-amber-900">Teacher</th>
+                            <th className="px-3 py-2 text-left font-semibold text-amber-900">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-amber-100">
+                          {orphans.map((o) => (
+                            <tr key={o.sessionId}>
+                              <td className="px-3 py-1.5 text-gray-700">
+                                {new Date(o.sessionDate).toLocaleDateString()}
+                              </td>
+                              <td className="px-3 py-1.5 text-gray-600">
+                                {o.startTime && o.endTime ? `${o.startTime}–${o.endTime}` : "—"}
+                              </td>
+                              <td className="px-3 py-1.5 text-gray-800">{o.teacher.name}</td>
+                              <td className="px-3 py-1.5 text-gray-700">{o.teacher.status}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => void cleanupAllOrphans()}
+                        disabled={cleaningOrphans}
+                      >
+                        {cleaningOrphans
+                          ? "Cleaning up…"
+                          : `Yes, clean up ${orphans.length} session${orphans.length !== 1 ? "s" : ""}`}
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => void loadOrphans()} disabled={loadingOrphans}>
+                        Refresh
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {data && (
         <Card className="border border-gray-300 shadow-md overflow-hidden">
           <CardContent className="p-0">
@@ -601,8 +767,10 @@ export function AttendanceProgramGridClient({
                           </td>
                           {data.dateKeys.map((ymd) => {
                             const cell = row.byDate[ymd];
+                            const hasAttendance =
+                              cell?.attendance && cell.attendance !== "—";
                             return (
-                              <td key={ymd} className="border border-indigo-100 px-0.5 py-1 text-center align-top">
+                              <td key={ymd} className="border border-indigo-100 px-0.5 py-1 text-center align-top group relative">
                                 <div className="text-[10px] text-indigo-900">{cell?.hours ?? 0}h</div>
                                 <div
                                   className={`text-[10px] font-bold ${
@@ -619,6 +787,23 @@ export function AttendanceProgramGridClient({
                                 >
                                   {cell?.attendance === "PE" ? "P" : (cell?.attendance ?? "—")}
                                 </div>
+                                {!readOnly && hasAttendance && (
+                                  <button
+                                    type="button"
+                                    aria-label="Delete teacher attendance for this date"
+                                    title="Delete teacher attendance for this date"
+                                    onClick={() =>
+                                      setPendingHoursDelete({
+                                        ymd,
+                                        teacherId: row.teacherId,
+                                        teacherName: `${row.firstName} ${row.lastName}`.trim(),
+                                      })
+                                    }
+                                    className="absolute top-0 right-0 hidden group-hover:flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-white hover:bg-red-700"
+                                  >
+                                    <X className="h-2.5 w-2.5" />
+                                  </button>
+                                )}
                               </td>
                             );
                           })}
@@ -641,6 +826,45 @@ export function AttendanceProgramGridClient({
       )}
       {!loading && apiRole === "student" && batchId && studentSubjects.length === 0 && (
         <p className="text-sm text-gray-500">No subjects are set up for your program yet.</p>
+      )}
+
+      {pendingHoursDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          role="dialog"
+          aria-modal="true"
+        >
+          <Card className="w-full max-w-sm shadow-xl">
+            <CardContent className="space-y-3 pt-5">
+              <p className="text-base font-semibold text-red-900">Delete teacher attendance?</p>
+              <p className="text-sm text-gray-700">
+                This removes <strong>{pendingHoursDelete.teacherName || "the teacher"}</strong>&apos;s
+                attendance (hours) for{" "}
+                <strong>{new Date(pendingHoursDelete.ymd + "T12:00:00").toLocaleDateString()}</strong>
+                {" "}on this subject and batch. If the session has no student attendance, it will be
+                removed entirely.
+              </p>
+              <div className="flex justify-end gap-2 pt-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPendingHoursDelete(null)}
+                  disabled={deletingHours}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => void confirmDeleteTeacherHours()}
+                  disabled={deletingHours}
+                >
+                  {deletingHours ? "Deleting…" : "Delete"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       )}
     </div>
   );

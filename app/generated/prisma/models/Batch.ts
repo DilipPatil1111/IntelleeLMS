@@ -224,6 +224,7 @@ export type BatchWhereInput = {
   programApplications?: Prisma.ProgramApplicationListRelationFilter
   programCalendarSlots?: Prisma.ProgramCalendarSlotListRelationFilter
   programEnrollments?: Prisma.ProgramEnrollmentListRelationFilter
+  transcripts?: Prisma.TranscriptListRelationFilter
 }
 
 export type BatchOrderByWithRelationInput = {
@@ -246,6 +247,7 @@ export type BatchOrderByWithRelationInput = {
   programApplications?: Prisma.ProgramApplicationOrderByRelationAggregateInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotOrderByRelationAggregateInput
   programEnrollments?: Prisma.ProgramEnrollmentOrderByRelationAggregateInput
+  transcripts?: Prisma.TranscriptOrderByRelationAggregateInput
 }
 
 export type BatchWhereUniqueInput = Prisma.AtLeast<{
@@ -271,6 +273,7 @@ export type BatchWhereUniqueInput = Prisma.AtLeast<{
   programApplications?: Prisma.ProgramApplicationListRelationFilter
   programCalendarSlots?: Prisma.ProgramCalendarSlotListRelationFilter
   programEnrollments?: Prisma.ProgramEnrollmentListRelationFilter
+  transcripts?: Prisma.TranscriptListRelationFilter
 }, "id">
 
 export type BatchOrderByWithAggregationInput = {
@@ -321,6 +324,7 @@ export type BatchCreateInput = {
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateInput = {
@@ -341,6 +345,7 @@ export type BatchUncheckedCreateInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUpdateInput = {
@@ -361,6 +366,7 @@ export type BatchUpdateInput = {
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateInput = {
@@ -381,6 +387,7 @@ export type BatchUncheckedUpdateInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateManyInput = {
@@ -677,6 +684,22 @@ export type BatchUpdateOneWithoutAnnouncementsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutAnnouncementsInput, Prisma.BatchUpdateWithoutAnnouncementsInput>, Prisma.BatchUncheckedUpdateWithoutAnnouncementsInput>
 }
 
+export type BatchCreateNestedOneWithoutTranscriptsInput = {
+  create?: Prisma.XOR<Prisma.BatchCreateWithoutTranscriptsInput, Prisma.BatchUncheckedCreateWithoutTranscriptsInput>
+  connectOrCreate?: Prisma.BatchCreateOrConnectWithoutTranscriptsInput
+  connect?: Prisma.BatchWhereUniqueInput
+}
+
+export type BatchUpdateOneWithoutTranscriptsNestedInput = {
+  create?: Prisma.XOR<Prisma.BatchCreateWithoutTranscriptsInput, Prisma.BatchUncheckedCreateWithoutTranscriptsInput>
+  connectOrCreate?: Prisma.BatchCreateOrConnectWithoutTranscriptsInput
+  upsert?: Prisma.BatchUpsertWithoutTranscriptsInput
+  disconnect?: Prisma.BatchWhereInput | boolean
+  delete?: Prisma.BatchWhereInput | boolean
+  connect?: Prisma.BatchWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BatchUpdateToOneWithWhereWithoutTranscriptsInput, Prisma.BatchUpdateWithoutTranscriptsInput>, Prisma.BatchUncheckedUpdateWithoutTranscriptsInput>
+}
+
 export type BatchCreateWithoutProgramInput = {
   id?: string
   name: string
@@ -694,6 +717,7 @@ export type BatchCreateWithoutProgramInput = {
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutProgramInput = {
@@ -713,6 +737,7 @@ export type BatchUncheckedCreateWithoutProgramInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutProgramInput = {
@@ -773,6 +798,7 @@ export type BatchCreateWithoutAcademicYearInput = {
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutAcademicYearInput = {
@@ -792,6 +818,7 @@ export type BatchUncheckedCreateWithoutAcademicYearInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutAcademicYearInput = {
@@ -837,6 +864,7 @@ export type BatchCreateWithoutStudentsInput = {
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutStudentsInput = {
@@ -856,6 +884,7 @@ export type BatchUncheckedCreateWithoutStudentsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutStudentsInput = {
@@ -891,6 +920,7 @@ export type BatchUpdateWithoutStudentsInput = {
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutStudentsInput = {
@@ -910,6 +940,7 @@ export type BatchUncheckedUpdateWithoutStudentsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutProgramEnrollmentsInput = {
@@ -929,6 +960,7 @@ export type BatchCreateWithoutProgramEnrollmentsInput = {
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutProgramEnrollmentsInput = {
@@ -948,6 +980,7 @@ export type BatchUncheckedCreateWithoutProgramEnrollmentsInput = {
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutProgramEnrollmentsInput = {
@@ -983,6 +1016,7 @@ export type BatchUpdateWithoutProgramEnrollmentsInput = {
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutProgramEnrollmentsInput = {
@@ -1002,6 +1036,7 @@ export type BatchUncheckedUpdateWithoutProgramEnrollmentsInput = {
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutTeacherAssignmentsInput = {
@@ -1021,6 +1056,7 @@ export type BatchCreateWithoutTeacherAssignmentsInput = {
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutTeacherAssignmentsInput = {
@@ -1040,6 +1076,7 @@ export type BatchUncheckedCreateWithoutTeacherAssignmentsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutTeacherAssignmentsInput = {
@@ -1075,6 +1112,7 @@ export type BatchUpdateWithoutTeacherAssignmentsInput = {
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutTeacherAssignmentsInput = {
@@ -1094,6 +1132,7 @@ export type BatchUncheckedUpdateWithoutTeacherAssignmentsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutAssessmentsInput = {
@@ -1113,6 +1152,7 @@ export type BatchCreateWithoutAssessmentsInput = {
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutAssessmentsInput = {
@@ -1132,6 +1172,7 @@ export type BatchUncheckedCreateWithoutAssessmentsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutAssessmentsInput = {
@@ -1167,6 +1208,7 @@ export type BatchUpdateWithoutAssessmentsInput = {
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutAssessmentsInput = {
@@ -1186,6 +1228,7 @@ export type BatchUncheckedUpdateWithoutAssessmentsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutAttendanceSessionsInput = {
@@ -1205,6 +1248,7 @@ export type BatchCreateWithoutAttendanceSessionsInput = {
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutAttendanceSessionsInput = {
@@ -1224,6 +1268,7 @@ export type BatchUncheckedCreateWithoutAttendanceSessionsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutAttendanceSessionsInput = {
@@ -1259,6 +1304,7 @@ export type BatchUpdateWithoutAttendanceSessionsInput = {
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutAttendanceSessionsInput = {
@@ -1278,6 +1324,7 @@ export type BatchUncheckedUpdateWithoutAttendanceSessionsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutProgramCalendarSlotsInput = {
@@ -1297,6 +1344,7 @@ export type BatchCreateWithoutProgramCalendarSlotsInput = {
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutProgramCalendarSlotsInput = {
@@ -1316,6 +1364,7 @@ export type BatchUncheckedCreateWithoutProgramCalendarSlotsInput = {
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutProgramCalendarSlotsInput = {
@@ -1351,6 +1400,7 @@ export type BatchUpdateWithoutProgramCalendarSlotsInput = {
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutProgramCalendarSlotsInput = {
@@ -1370,6 +1420,7 @@ export type BatchUncheckedUpdateWithoutProgramCalendarSlotsInput = {
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutProgramApplicationsInput = {
@@ -1389,6 +1440,7 @@ export type BatchCreateWithoutProgramApplicationsInput = {
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutProgramApplicationsInput = {
@@ -1408,6 +1460,7 @@ export type BatchUncheckedCreateWithoutProgramApplicationsInput = {
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutProgramApplicationsInput = {
@@ -1443,6 +1496,7 @@ export type BatchUpdateWithoutProgramApplicationsInput = {
   announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutProgramApplicationsInput = {
@@ -1462,6 +1516,7 @@ export type BatchUncheckedUpdateWithoutProgramApplicationsInput = {
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchCreateWithoutAnnouncementsInput = {
@@ -1481,6 +1536,7 @@ export type BatchCreateWithoutAnnouncementsInput = {
   programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptCreateNestedManyWithoutBatchInput
 }
 
 export type BatchUncheckedCreateWithoutAnnouncementsInput = {
@@ -1500,6 +1556,7 @@ export type BatchUncheckedCreateWithoutAnnouncementsInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+  transcripts?: Prisma.TranscriptUncheckedCreateNestedManyWithoutBatchInput
 }
 
 export type BatchCreateOrConnectWithoutAnnouncementsInput = {
@@ -1535,6 +1592,7 @@ export type BatchUpdateWithoutAnnouncementsInput = {
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutAnnouncementsInput = {
@@ -1551,6 +1609,103 @@ export type BatchUncheckedUpdateWithoutAnnouncementsInput = {
   teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutBatchNestedInput
   assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
   attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
+}
+
+export type BatchCreateWithoutTranscriptsInput = {
+  id?: string
+  name: string
+  startDate: Date | string
+  endDate: Date | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  program: Prisma.ProgramCreateNestedOneWithoutBatchesInput
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutBatchesInput
+  students?: Prisma.StudentProfileCreateNestedManyWithoutBatchInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentCreateNestedManyWithoutBatchInput
+  assessments?: Prisma.AssessmentCreateNestedManyWithoutBatchInput
+  attendanceSessions?: Prisma.AttendanceSessionCreateNestedManyWithoutBatchInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationCreateNestedManyWithoutBatchInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotCreateNestedManyWithoutBatchInput
+  programEnrollments?: Prisma.ProgramEnrollmentCreateNestedManyWithoutBatchInput
+}
+
+export type BatchUncheckedCreateWithoutTranscriptsInput = {
+  id?: string
+  name: string
+  programId: string
+  academicYearId: string
+  startDate: Date | string
+  endDate: Date | string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutBatchInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedCreateNestedManyWithoutBatchInput
+  assessments?: Prisma.AssessmentUncheckedCreateNestedManyWithoutBatchInput
+  attendanceSessions?: Prisma.AttendanceSessionUncheckedCreateNestedManyWithoutBatchInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutBatchInput
+  programApplications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutBatchInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedCreateNestedManyWithoutBatchInput
+  programEnrollments?: Prisma.ProgramEnrollmentUncheckedCreateNestedManyWithoutBatchInput
+}
+
+export type BatchCreateOrConnectWithoutTranscriptsInput = {
+  where: Prisma.BatchWhereUniqueInput
+  create: Prisma.XOR<Prisma.BatchCreateWithoutTranscriptsInput, Prisma.BatchUncheckedCreateWithoutTranscriptsInput>
+}
+
+export type BatchUpsertWithoutTranscriptsInput = {
+  update: Prisma.XOR<Prisma.BatchUpdateWithoutTranscriptsInput, Prisma.BatchUncheckedUpdateWithoutTranscriptsInput>
+  create: Prisma.XOR<Prisma.BatchCreateWithoutTranscriptsInput, Prisma.BatchUncheckedCreateWithoutTranscriptsInput>
+  where?: Prisma.BatchWhereInput
+}
+
+export type BatchUpdateToOneWithWhereWithoutTranscriptsInput = {
+  where?: Prisma.BatchWhereInput
+  data: Prisma.XOR<Prisma.BatchUpdateWithoutTranscriptsInput, Prisma.BatchUncheckedUpdateWithoutTranscriptsInput>
+}
+
+export type BatchUpdateWithoutTranscriptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  program?: Prisma.ProgramUpdateOneRequiredWithoutBatchesNestedInput
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutBatchesNestedInput
+  students?: Prisma.StudentProfileUpdateManyWithoutBatchNestedInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUpdateManyWithoutBatchNestedInput
+  assessments?: Prisma.AssessmentUpdateManyWithoutBatchNestedInput
+  attendanceSessions?: Prisma.AttendanceSessionUpdateManyWithoutBatchNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutBatchNestedInput
+  programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
+  programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
+  programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+}
+
+export type BatchUncheckedUpdateWithoutTranscriptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  programId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentProfileUncheckedUpdateManyWithoutBatchNestedInput
+  teacherAssignments?: Prisma.TeacherSubjectAssignmentUncheckedUpdateManyWithoutBatchNestedInput
+  assessments?: Prisma.AssessmentUncheckedUpdateManyWithoutBatchNestedInput
+  attendanceSessions?: Prisma.AttendanceSessionUncheckedUpdateManyWithoutBatchNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutBatchNestedInput
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
@@ -1584,6 +1739,7 @@ export type BatchUpdateWithoutProgramInput = {
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutProgramInput = {
@@ -1603,6 +1759,7 @@ export type BatchUncheckedUpdateWithoutProgramInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateManyWithoutProgramInput = {
@@ -1644,6 +1801,7 @@ export type BatchUpdateWithoutAcademicYearInput = {
   programApplications?: Prisma.ProgramApplicationUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateWithoutAcademicYearInput = {
@@ -1663,6 +1821,7 @@ export type BatchUncheckedUpdateWithoutAcademicYearInput = {
   programApplications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutBatchNestedInput
   programCalendarSlots?: Prisma.ProgramCalendarSlotUncheckedUpdateManyWithoutBatchNestedInput
   programEnrollments?: Prisma.ProgramEnrollmentUncheckedUpdateManyWithoutBatchNestedInput
+  transcripts?: Prisma.TranscriptUncheckedUpdateManyWithoutBatchNestedInput
 }
 
 export type BatchUncheckedUpdateManyWithoutAcademicYearInput = {
@@ -1690,6 +1849,7 @@ export type BatchCountOutputType = {
   programApplications: number
   programCalendarSlots: number
   programEnrollments: number
+  transcripts: number
 }
 
 export type BatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1701,6 +1861,7 @@ export type BatchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   programApplications?: boolean | BatchCountOutputTypeCountProgramApplicationsArgs
   programCalendarSlots?: boolean | BatchCountOutputTypeCountProgramCalendarSlotsArgs
   programEnrollments?: boolean | BatchCountOutputTypeCountProgramEnrollmentsArgs
+  transcripts?: boolean | BatchCountOutputTypeCountTranscriptsArgs
 }
 
 /**
@@ -1769,6 +1930,13 @@ export type BatchCountOutputTypeCountProgramEnrollmentsArgs<ExtArgs extends runt
   where?: Prisma.ProgramEnrollmentWhereInput
 }
 
+/**
+ * BatchCountOutputType without action
+ */
+export type BatchCountOutputTypeCountTranscriptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TranscriptWhereInput
+}
+
 
 export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1790,6 +1958,7 @@ export type BatchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   programApplications?: boolean | Prisma.Batch$programApplicationsArgs<ExtArgs>
   programCalendarSlots?: boolean | Prisma.Batch$programCalendarSlotsArgs<ExtArgs>
   programEnrollments?: boolean | Prisma.Batch$programEnrollmentsArgs<ExtArgs>
+  transcripts?: boolean | Prisma.Batch$transcriptsArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["batch"]>
 
@@ -1845,6 +2014,7 @@ export type BatchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   programApplications?: boolean | Prisma.Batch$programApplicationsArgs<ExtArgs>
   programCalendarSlots?: boolean | Prisma.Batch$programCalendarSlotsArgs<ExtArgs>
   programEnrollments?: boolean | Prisma.Batch$programEnrollmentsArgs<ExtArgs>
+  transcripts?: boolean | Prisma.Batch$transcriptsArgs<ExtArgs>
   _count?: boolean | Prisma.BatchCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BatchIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1869,6 +2039,7 @@ export type $BatchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     programApplications: Prisma.$ProgramApplicationPayload<ExtArgs>[]
     programCalendarSlots: Prisma.$ProgramCalendarSlotPayload<ExtArgs>[]
     programEnrollments: Prisma.$ProgramEnrollmentPayload<ExtArgs>[]
+    transcripts: Prisma.$TranscriptPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2284,6 +2455,7 @@ export interface Prisma__BatchClient<T, Null = never, ExtArgs extends runtime.Ty
   programApplications<T extends Prisma.Batch$programApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$programApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   programCalendarSlots<T extends Prisma.Batch$programCalendarSlotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$programCalendarSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramCalendarSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   programEnrollments<T extends Prisma.Batch$programEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$programEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transcripts<T extends Prisma.Batch$transcriptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Batch$transcriptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TranscriptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2912,6 +3084,30 @@ export type Batch$programEnrollmentsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.ProgramEnrollmentScalarFieldEnum | Prisma.ProgramEnrollmentScalarFieldEnum[]
+}
+
+/**
+ * Batch.transcripts
+ */
+export type Batch$transcriptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Transcript
+   */
+  select?: Prisma.TranscriptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Transcript
+   */
+  omit?: Prisma.TranscriptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TranscriptInclude<ExtArgs> | null
+  where?: Prisma.TranscriptWhereInput
+  orderBy?: Prisma.TranscriptOrderByWithRelationInput | Prisma.TranscriptOrderByWithRelationInput[]
+  cursor?: Prisma.TranscriptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TranscriptScalarFieldEnum | Prisma.TranscriptScalarFieldEnum[]
 }
 
 /**

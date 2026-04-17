@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, Pencil, Trash2, LayoutGrid } from "lucide-react";
+import { AlertCircle, Loader2, Plus, Pencil, Trash2, LayoutGrid, ShieldAlert } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ToastContainer } from "@/components/ui/toast-container";
 
@@ -123,9 +123,69 @@ export function PrincipalAttendanceDashboard({
   const [subjects, setSubjects] = useState<{ value: string; label: string }[]>([]);
   const [savingAdd, setSavingAdd] = useState(false);
 
+  type StudentDuplicateInfo = {
+    studentId: string;
+    studentName: string;
+    existingStatus: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    submittedAt: string;
+  };
+  type AddDuplicateState = {
+    message: string;
+    students: StudentDuplicateInfo[];
+    /** true = exact same session time already exists; false = specific student records clash */
+    sessionDuplicate: boolean;
+  } | null;
+  const [addDuplicate, setAddDuplicate] = useState<AddDuplicateState>(null);
+  const [pendingDeleteSession, setPendingDeleteSession] = useState<string | null>(null);
+  const [pendingDeleteTeacher, setPendingDeleteTeacher] = useState<string | null>(null);
+
   const [sessTeacher, setSessTeacher] = useState("");
   const [sessProgram, setSessProgram] = useState("");
   const [sessBatch, setSessBatch] = useState("");
+
+  type DuplicateSessionItem = {
+    id: string;
+    subjectName: string;
+    batchName: string;
+    programName: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    recordCount: number;
+    createdAt: string;
+    suggested: boolean;
+  };
+  type DupGroup = {
+    key: string;
+    subjectName: string;
+    programName: string;
+    batchName: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    sessions: DuplicateSessionItem[];
+  };
+  const [dupGroups, setDupGroups] = useState<DupGroup[]>([]);
+  const [loadingDups, setLoadingDups] = useState(false);
+  const [deletingDupIds, setDeletingDupIds] = useState<Set<string>>(new Set());
+  const [dupPanelOpen, setDupPanelOpen] = useState(true);
+
+  type OrphanItem = {
+    sessionId: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    subject: { id: string; name: string };
+    batch: { id: string; name: string; programId: string; programName: string };
+    teacher: { id: string; name: string; status: string };
+  };
+  const [orphans, setOrphans] = useState<OrphanItem[]>([]);
+  const [loadingOrphans, setLoadingOrphans] = useState(false);
+  const [cleaningOrphans, setCleaningOrphans] = useState(false);
+  const [confirmCleanup, setConfirmCleanup] = useState(false);
 
   const batchesFiltered = useMemo(() => {
     if (!programId) return batches;
@@ -158,10 +218,55 @@ export function PrincipalAttendanceDashboard({
     else setData(null);
   }, [programId, batchId, from, to]);
 
+  const loadDuplicates = useCallback(async () => {
+    setLoadingDups(true);
+    const q = new URLSearchParams();
+    if (programId) q.set("programId", programId);
+    if (batchId) q.set("batchId", batchId);
+    const res = await fetch(`/api/principal/attendance/sessions/duplicates?${q}`);
+    const j = await res.json().catch(() => null) as { duplicateGroups?: DupGroup[] } | null;
+    setLoadingDups(false);
+    setDupGroups(j?.duplicateGroups ?? []);
+    if ((j?.duplicateGroups?.length ?? 0) > 0) setDupPanelOpen(true);
+  }, [programId, batchId]);
+
+  const loadOrphans = useCallback(async () => {
+    setLoadingOrphans(true);
+    const q = new URLSearchParams();
+    if (programId) q.set("programId", programId);
+    if (batchId) q.set("batchId", batchId);
+    const res = await fetch(`/api/principal/attendance/cleanup-orphans?${q}`);
+    const j = (await res.json().catch(() => null)) as { orphans?: OrphanItem[] } | null;
+    setLoadingOrphans(false);
+    setOrphans(j?.orphans ?? []);
+  }, [programId, batchId]);
+
+  async function doCleanupOrphans() {
+    if (orphans.length === 0) return;
+    setCleaningOrphans(true);
+    const res = await fetch("/api/principal/attendance/cleanup-orphans", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: orphans.map((o) => o.sessionId) }),
+    }).catch(() => null);
+    setCleaningOrphans(false);
+    setConfirmCleanup(false);
+    if (res?.ok) {
+      toast("Orphaned teacher attendance cleaned up.", "success");
+      void loadOrphans();
+      void load();
+      void loadDuplicates();
+    } else {
+      toast("Failed to clean up.", "error");
+    }
+  }
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
-  }, [load]);
+    void loadDuplicates();
+    void loadOrphans();
+  }, [load, loadDuplicates, loadOrphans]);
 
   useEffect(() => {
     if (!addBatchId || !programId) {
@@ -227,21 +332,94 @@ export function PrincipalAttendanceDashboard({
     }
   }
 
-  async function deleteTeacherAttendanceRow(id: string) {
-    if (!confirm("Remove teacher attendance for this session?")) return;
+  async function confirmDeleteTeacher() {
+    if (!pendingDeleteTeacher) return;
+    const id = pendingDeleteTeacher;
+    setPendingDeleteTeacher(null);
     const res = await fetch(`/api/principal/teacher-attendance/${id}`, { method: "DELETE" });
     if (res.ok) void load();
   }
 
-  async function deleteSession(id: string) {
-    if (!confirm("Delete this entire attendance session (all student and teacher attendance records)?")) return;
+  async function confirmDeleteSession() {
+    if (!pendingDeleteSession) return;
+    const id = pendingDeleteSession;
+    setPendingDeleteSession(null);
     const res = await fetch(`/api/principal/attendance/session/${id}`, { method: "DELETE" });
-    if (res.ok) void load();
+    if (res.ok) { void load(); void loadDuplicates(); }
   }
 
-  async function submitAddSession() {
+  /** Deletes a single extra duplicate session by ID. */
+  async function deleteSingleDuplicate(sessionId: string) {
+    setDeletingDupIds((prev) => new Set(prev).add(sessionId));
+    const res = await fetch("/api/principal/attendance/sessions/duplicates", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: [sessionId] }),
+    });
+    setDeletingDupIds((prev) => { const n = new Set(prev); n.delete(sessionId); return n; });
+    if (res.ok) {
+      toast("Duplicate session deleted.", "success");
+      void load();
+      void loadDuplicates();
+    } else {
+      toast("Failed to delete session.", "error");
+    }
+  }
+
+  /** Deletes all extra sessions in a group (keeps the suggested one). */
+  async function deleteGroupExtras(group: DupGroup) {
+    const extras = group.sessions.filter((s) => !s.suggested).map((s) => s.id);
+    if (extras.length === 0) return;
+    extras.forEach((id) =>
+      setDeletingDupIds((prev) => new Set(prev).add(id))
+    );
+    const res = await fetch("/api/principal/attendance/sessions/duplicates", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: extras }),
+    });
+    extras.forEach((id) =>
+      setDeletingDupIds((prev) => { const n = new Set(prev); n.delete(id); return n; })
+    );
+    if (res.ok) {
+      toast(`Deleted ${extras.length} duplicate session${extras.length !== 1 ? "s" : ""}.`, "success");
+      void load();
+      void loadDuplicates();
+    } else {
+      toast("Failed to delete duplicates.", "error");
+    }
+  }
+
+  /** Deletes all extras across every duplicate group at once. */
+  async function deleteAllExtras() {
+    const allExtras = dupGroups.flatMap((g) =>
+      g.sessions.filter((s) => !s.suggested).map((s) => s.id)
+    );
+    if (allExtras.length === 0) return;
+    allExtras.forEach((id) =>
+      setDeletingDupIds((prev) => new Set(prev).add(id))
+    );
+    const res = await fetch("/api/principal/attendance/sessions/duplicates", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: allExtras }),
+    });
+    allExtras.forEach((id) =>
+      setDeletingDupIds((prev) => { const n = new Set(prev); n.delete(id); return n; })
+    );
+    if (res.ok) {
+      toast(`Deleted ${allExtras.length} duplicate session${allExtras.length !== 1 ? "s" : ""}.`, "success");
+      void load();
+      void loadDuplicates();
+    } else {
+      toast("Failed to delete duplicates.", "error");
+    }
+  }
+
+  async function submitAddSession(force = false) {
     if (!addSubjectId || !addBatchId || !addDate || !programId) return;
     setSavingAdd(true);
+    setAddDuplicate(null);
     const res = await fetch("/api/principal/attendance/session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -255,14 +433,34 @@ export function PrincipalAttendanceDashboard({
         overrideHoliday: false,
         teacherUserId: addTeacherId || undefined,
         teacherStatus: addTeacherId ? addTeacherStatus : undefined,
+        force,
       }),
     });
     setSavingAdd(false);
+    if (res.status === 409) {
+      const data = await res.json().catch(() => ({})) as {
+        duplicate?: boolean;
+        sessionDuplicate?: boolean;
+        message?: string;
+        students?: StudentDuplicateInfo[];
+      };
+      if (data.duplicate) {
+        setAddDuplicate({
+          message:
+            data.message ||
+            "Duplicate attendance detected for this subject and date.",
+          students: data.students || [],
+          sessionDuplicate: data.sessionDuplicate ?? false,
+        });
+        return;
+      }
+    }
     if (res.ok) {
       setAddOpen(false);
+      setAddDuplicate(null);
       void load();
-    } else {
-      const err = await res.json().catch(() => ({}));
+    } else if (res.status !== 409) {
+      const err = await res.json().catch(() => ({})) as { error?: string };
       toast(typeof err?.error === "string" ? err.error : "Could not create session", "error");
     }
   }
@@ -506,6 +704,225 @@ export function PrincipalAttendanceDashboard({
             </Card>
           </div>
 
+          {/* ── Orphaned teacher-attendance cleanup panel ── */}
+          {(orphans.length > 0 || loadingOrphans) && (
+            <div
+              className={`rounded-xl border-2 ${
+                orphans.length > 0 ? "border-amber-300 bg-amber-50" : "border-gray-200 bg-gray-50"
+              } p-4 mb-2`}
+            >
+              <div className="flex items-start gap-3">
+                {loadingOrphans ? (
+                  <Loader2 className="h-5 w-5 text-gray-400 animate-spin shrink-0 mt-0.5" />
+                ) : (
+                  <ShieldAlert className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                )}
+                <div className="flex-1 min-w-0">
+                  {loadingOrphans ? (
+                    <p className="text-sm text-gray-500">
+                      Checking for orphaned teacher attendance…
+                    </p>
+                  ) : (
+                    <>
+                      <div className="flex flex-wrap items-center gap-3 mb-1">
+                        <p className="text-sm font-bold text-amber-900">
+                          {orphans.length} session{orphans.length !== 1 ? "s" : ""} have teacher
+                          attendance but no student attendance
+                        </p>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => setConfirmCleanup(true)}
+                          disabled={cleaningOrphans}
+                        >
+                          {cleaningOrphans
+                            ? "Cleaning up…"
+                            : `Clean up ${orphans.length} session${orphans.length !== 1 ? "s" : ""}`}
+                        </Button>
+                      </div>
+                      <p className="text-xs text-amber-800 mb-3">
+                        There is no student attendance for
+                        {orphans.length !== 1 ? " these sessions" : " this session"} but teacher
+                        attendance is still recorded. Cleaning up removes the teacher attendance
+                        and the now-empty session{orphans.length !== 1 ? "s" : ""}.
+                      </p>
+                      <div className="rounded border border-amber-200 overflow-hidden bg-white">
+                        <table className="w-full text-xs">
+                          <thead className="bg-amber-100">
+                            <tr>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Date
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Program / Batch
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Subject
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Time
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Teacher
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Status
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-amber-100">
+                            {orphans.map((o) => (
+                              <tr key={o.sessionId}>
+                                <td className="px-3 py-1.5 text-gray-700">
+                                  {new Date(o.sessionDate).toLocaleDateString()}
+                                </td>
+                                <td className="px-3 py-1.5 text-gray-700">
+                                  {o.batch.programName}
+                                  <span className="text-gray-500"> · {o.batch.name}</span>
+                                </td>
+                                <td className="px-3 py-1.5 text-gray-700">{o.subject.name}</td>
+                                <td className="px-3 py-1.5 text-gray-600">
+                                  {o.startTime && o.endTime
+                                    ? `${o.startTime}–${o.endTime}`
+                                    : "—"}
+                                </td>
+                                <td className="px-3 py-1.5 text-gray-800">{o.teacher.name}</td>
+                                <td className="px-3 py-1.5 text-gray-700">{o.teacher.status}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Duplicate Sessions Warning Panel ── */}
+          {(dupGroups.length > 0 || loadingDups) && (
+            <div className={`rounded-xl border-2 ${dupGroups.length > 0 ? "border-red-300 bg-red-50" : "border-gray-200 bg-gray-50"} p-4 mb-2`}>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3 flex-1 min-w-0">
+                  {loadingDups ? (
+                    <Loader2 className="h-5 w-5 text-gray-400 animate-spin shrink-0 mt-0.5" />
+                  ) : (
+                    <ShieldAlert className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    {loadingDups ? (
+                      <p className="text-sm text-gray-500">Checking for duplicate sessions…</p>
+                    ) : (
+                      <>
+                        <div className="flex flex-wrap items-center gap-3 mb-1">
+                          <p className="text-sm font-bold text-red-900">
+                            {dupGroups.length} duplicate group{dupGroups.length !== 1 ? "s" : ""} found
+                            {" "}({dupGroups.reduce((a, g) => a + g.sessions.length - 1, 0)} extra session{dupGroups.reduce((a, g) => a + g.sessions.length - 1, 0) !== 1 ? "s" : ""})
+                          </p>
+                          <Button
+                            size="sm"
+                            variant="danger"
+                            onClick={() => void deleteAllExtras()}
+                            isLoading={deletingDupIds.size > 0}
+                          >
+                            Delete all extras
+                          </Button>
+                          <button
+                            type="button"
+                            className="text-xs text-red-600 underline"
+                            onClick={() => setDupPanelOpen((v) => !v)}
+                          >
+                            {dupPanelOpen ? "Collapse" : "Expand"}
+                          </button>
+                        </div>
+                        <p className="text-xs text-red-700 mb-3">
+                          The sessions highlighted below have the same Subject, Date, Start and End time.
+                          The <span className="font-semibold text-green-800 bg-green-100 px-1 rounded">Keep</span> badge marks the session with the most student records (recommended to keep).
+                          Delete the extra sessions to clean up.
+                        </p>
+
+                        {dupPanelOpen && dupGroups.map((group) => {
+                          const extraCount = group.sessions.filter((s) => !s.suggested).length;
+                          return (
+                            <div key={group.key} className="mb-4 rounded-lg border border-red-200 overflow-hidden bg-white">
+                              <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 bg-red-100 border-b border-red-200">
+                                <div className="text-xs font-semibold text-red-900">
+                                  {group.subjectName} · {group.programName} — {group.batchName} · {group.sessionDate}
+                                  {group.startTime && group.endTime ? ` · ${group.startTime}–${group.endTime}` : ""}
+                                </div>
+                                <Button
+                                  size="sm"
+                                  variant="danger"
+                                  onClick={() => void deleteGroupExtras(group)}
+                                  isLoading={group.sessions.some((s) => !s.suggested && deletingDupIds.has(s.id))}
+                                >
+                                  Delete {extraCount} extra{extraCount !== 1 ? "s" : ""}
+                                </Button>
+                              </div>
+                              <table className="w-full text-xs">
+                                <thead className="bg-gray-50 border-b border-gray-100">
+                                  <tr>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Session</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Time</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Students</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Created</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Status</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100">
+                                  {group.sessions.map((s, idx) => (
+                                    <tr key={s.id} className={s.suggested ? "bg-green-50" : "bg-red-50/40"}>
+                                      <td className="px-3 py-2 text-gray-600 font-mono">
+                                        #{idx + 1} {s.id.slice(-6)}
+                                      </td>
+                                      <td className="px-3 py-2 text-gray-700">
+                                        {s.startTime && s.endTime ? `${s.startTime}–${s.endTime}` : s.startTime ?? "—"}
+                                      </td>
+                                      <td className="px-3 py-2 text-gray-700 text-center">{s.recordCount}</td>
+                                      <td className="px-3 py-2 text-gray-500">
+                                        {new Date(s.createdAt).toLocaleString("en-US", {
+                                          month: "short",
+                                          day: "2-digit",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}
+                                      </td>
+                                      <td className="px-3 py-2">
+                                        {s.suggested ? (
+                                          <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-green-100 text-green-800">Keep</span>
+                                        ) : (
+                                          <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-800">Duplicate</span>
+                                        )}
+                                      </td>
+                                      <td className="px-3 py-2">
+                                        {!s.suggested && (
+                                          <Button
+                                            size="sm"
+                                            variant="danger"
+                                            isLoading={deletingDupIds.has(s.id)}
+                                            onClick={() => void deleteSingleDuplicate(s.id)}
+                                          >
+                                            Delete
+                                          </Button>
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <Card>
             <CardHeader className="space-y-3">
               <div className="flex flex-row flex-wrap items-center justify-between gap-2">
@@ -612,7 +1029,7 @@ export function PrincipalAttendanceDashboard({
                               variant="ghost"
                               size="sm"
                               className="h-7 px-1 text-red-600"
-                              onClick={() => void deleteTeacherAttendanceRow(s.teacherAttendance!.id)}
+                              onClick={() => setPendingDeleteTeacher(s.teacherAttendance!.id)}
                             >
                               <Trash2 className="h-3.5 w-3.5" />
                             </Button>
@@ -622,7 +1039,7 @@ export function PrincipalAttendanceDashboard({
                         )}
                       </td>
                       <td className={td}>
-                        <Button variant="outline" size="sm" onClick={() => void deleteSession(s.id)}>
+                        <Button variant="outline" size="sm" onClick={() => setPendingDeleteSession(s.id)}>
                           Delete session
                         </Button>
                       </td>
@@ -740,12 +1157,203 @@ export function PrincipalAttendanceDashboard({
                   ))}
                 </div>
               </div>
+              {/* Duplicate student-attendance warning */}
+              {addDuplicate && (
+                <div className="rounded-lg border-2 border-red-300 bg-red-50 p-3">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="h-4 w-4 text-red-600 shrink-0 mt-0.5" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-red-900 mb-1">
+                        Duplicate Attendance Detected
+                      </p>
+                      <p className="text-sm text-red-800 mb-2">{addDuplicate.message}</p>
+
+                      {addDuplicate.students.length > 0 && (
+                        <div className="mb-3 rounded border border-red-200 overflow-hidden">
+                          <table className="w-full text-xs">
+                            <thead className="bg-red-100">
+                              <tr>
+                                <th className="px-2 py-1.5 text-left font-semibold text-red-900">#</th>
+                                <th className="px-2 py-1.5 text-left font-semibold text-red-900">Student</th>
+                                <th className="px-2 py-1.5 text-left font-semibold text-red-900">Status</th>
+                                <th className="px-2 py-1.5 text-left font-semibold text-red-900">Time</th>
+                                <th className="px-2 py-1.5 text-left font-semibold text-red-900">Submitted At</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-red-100 bg-white">
+                              {addDuplicate.students.map((s, idx) => (
+                                <tr key={s.studentId}>
+                                  <td className="px-2 py-1.5 text-red-700 font-medium">{idx + 1}</td>
+                                  <td className="px-2 py-1.5 font-medium text-gray-900">{s.studentName}</td>
+                                  <td className="px-2 py-1.5">
+                                    <span className={`inline-block px-1.5 py-0.5 rounded text-xs font-semibold ${
+                                      s.existingStatus === "PRESENT"
+                                        ? "bg-green-100 text-green-800"
+                                        : s.existingStatus === "ABSENT"
+                                          ? "bg-red-100 text-red-800"
+                                          : s.existingStatus === "LATE"
+                                            ? "bg-yellow-100 text-yellow-800"
+                                            : "bg-violet-100 text-violet-800"
+                                    }`}>
+                                      {s.existingStatus}
+                                    </span>
+                                  </td>
+                                  <td className="px-2 py-1.5 text-gray-600">
+                                    {s.startTime && s.endTime
+                                      ? `${s.startTime} – ${s.endTime}`
+                                      : s.startTime || "—"}
+                                  </td>
+                                  <td className="px-2 py-1.5 text-gray-500">
+                                    {new Date(s.submittedAt).toLocaleString("en-US", {
+                                      month: "short",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+
+                      {addDuplicate.sessionDuplicate ? (
+                        <p className="text-xs text-red-700 mb-2 font-medium">
+                          Clicking <strong>Create Anyway</strong> will add another session
+                          alongside the existing one. Click <strong>Cancel</strong> if this
+                          was an accidental duplicate submission.
+                        </p>
+                      ) : (
+                        <p className="text-xs text-red-700 mb-2 font-medium">
+                          Clicking <strong>Delete &amp; Save New</strong> will remove the
+                          existing attendance record{addDuplicate.students.length !== 1 ? "s" : ""} for
+                          the above student{addDuplicate.students.length !== 1 ? "s" : ""} and replace
+                          them with the new attendance you are submitting.
+                        </p>
+                      )}
+
+                      <div className="flex flex-wrap gap-2">
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => void submitAddSession(true)}
+                          isLoading={savingAdd}
+                        >
+                          {addDuplicate.sessionDuplicate ? "Create Anyway" : "Delete & Save New"}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setAddDuplicate(null)}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex justify-end gap-2 pt-2">
-                <Button variant="outline" onClick={() => setAddOpen(false)}>
+                <Button variant="outline" onClick={() => { setAddOpen(false); setAddDuplicate(null); }} >
                   Cancel
                 </Button>
-                <Button onClick={() => void submitAddSession()} disabled={savingAdd || !addSubjectId || !addBatchId || !addDate}>
+                <Button
+                  onClick={() => void submitAddSession(false)}
+                  disabled={savingAdd || !addSubjectId || !addBatchId || !addDate}
+                >
                   {savingAdd ? "Saving…" : "Create session"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* ── Delete teacher attendance confirmation ── */}
+      {pendingDeleteTeacher && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true">
+          <Card className="w-full max-w-sm shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-base text-red-700">Remove teacher attendance?</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-gray-700">
+                This will remove the teacher self-attendance record for this session. The session and student records
+                will remain.
+              </p>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setPendingDeleteTeacher(null)}>
+                  Cancel
+                </Button>
+                <Button variant="danger" onClick={() => void confirmDeleteTeacher()}>
+                  Remove
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {confirmCleanup && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          role="dialog"
+          aria-modal="true"
+        >
+          <Card className="w-full max-w-sm shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-base text-amber-900">Clean up orphaned attendance?</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-gray-700">
+                There is no student attendance for <strong>{orphans.length}</strong> session
+                {orphans.length !== 1 ? "s" : ""} but teacher attendance is still recorded. Do you
+                want to clean {orphans.length !== 1 ? "them" : "it"} up? This removes the teacher
+                attendance and the now-empty session{orphans.length !== 1 ? "s" : ""}.
+              </p>
+              <div className="flex justify-end gap-2 pt-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setConfirmCleanup(false)}
+                  disabled={cleaningOrphans}
+                >
+                  No, keep
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => void doCleanupOrphans()}
+                  disabled={cleaningOrphans}
+                >
+                  {cleaningOrphans ? "Cleaning up…" : "Yes, clean up"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* ── Delete session confirmation ── */}
+      {pendingDeleteSession && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true">
+          <Card className="w-full max-w-sm shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-base text-red-700">Delete attendance session?</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-gray-700">
+                This will permanently delete the entire session including all student attendance records and teacher
+                self-attendance. This cannot be undone.
+              </p>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setPendingDeleteSession(null)}>
+                  Cancel
+                </Button>
+                <Button variant="danger" onClick={() => void confirmDeleteSession()}>
+                  Delete session
                 </Button>
               </div>
             </CardContent>

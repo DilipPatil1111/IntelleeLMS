@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar, CalendarRange,
+  LayoutDashboard, BookOpen, FileText, FileCheck, ClipboardList, Calendar, CalendarRange, ScrollText,
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
   Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive, Building2, ShieldCheck,
@@ -30,6 +30,8 @@ const studentNav: NavItem[] = [
   { label: "Assessments", href: "/student/assessments", icon: FileText },
   { label: "Results", href: "/student/results", icon: Award },
   { label: "Attendance", href: "/student/attendance", icon: Calendar },
+  { label: "Reports", href: "/student/reports", icon: BarChart3 },
+  { label: "My Transcripts", href: "/student/reports/transcript", icon: ScrollText },
   { label: "Full Calendar", href: "/student/full-calendar", icon: CalendarRange },
   { label: "Fees", href: "/student/fees", icon: DollarSign },
   { label: "Pending Actions", href: "/student/pending-actions", icon: AlertCircle },
@@ -49,6 +51,7 @@ const teacherNav: NavItem[] = [
   { label: "Holidays", href: "/teacher/holidays", icon: Calendar },
   { label: "Students", href: "/teacher/students", icon: GraduationCap },
   { label: "Reports", href: "/teacher/reports", icon: BarChart3 },
+  { label: "Transcripts", href: "/teacher/transcripts", icon: ScrollText },
   { label: "Program Content", href: "/teacher/program-content", icon: Layers },
   { label: "Award Certificates", href: "/teacher/award-certificates", icon: Award },
   { label: "Pending Actions", href: "/teacher/pending-actions", icon: AlertCircle },
@@ -75,6 +78,7 @@ const principalNav: NavItem[] = [
   { label: "Academic years", href: "/principal/academic-years", icon: CalendarRange },
   { label: "Batches", href: "/principal/batches", icon: Layers },
   { label: "Reports", href: "/principal/reports", icon: BarChart3 },
+  { label: "Transcripts", href: "/principal/transcripts", icon: ScrollText },
   { label: "Holidays", href: "/principal/holidays", icon: Calendar },
   { label: "Email Templates", href: "/principal/email-templates", icon: Bell },
   { label: "Announcements", href: "/principal/announcements", icon: Megaphone },

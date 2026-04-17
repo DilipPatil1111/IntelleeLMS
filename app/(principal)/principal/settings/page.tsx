@@ -663,9 +663,178 @@ export default function PrincipalSettingsPage() {
         </CardContent>
       </Card>
 
+      {/* Grade Bands */}
+      <GradeBandsManager />
+
       <Button onClick={() => void save()} isLoading={saving}>
         Save settings
       </Button>
     </>
+  );
+}
+
+// ─── Grade Bands Manager ─────────────────────────────────────────────
+
+type GradeBandRow = { id: string; label: string; minPercent: number; maxPercent: number; gradePoint: number | null; sortOrder: number };
+type BandForm = { label: string; minPercent: string; maxPercent: string; gradePoint: string; sortOrder: string };
+
+const DEFAULT_BANDS: BandForm[] = [
+  { label: "A+", minPercent: "95", maxPercent: "100", gradePoint: "4.0", sortOrder: "0" },
+  { label: "A",  minPercent: "87", maxPercent: "94",  gradePoint: "4.0", sortOrder: "1" },
+  { label: "A-", minPercent: "80", maxPercent: "86",  gradePoint: "3.7", sortOrder: "2" },
+  { label: "B+", minPercent: "77", maxPercent: "79",  gradePoint: "3.3", sortOrder: "3" },
+  { label: "B",  minPercent: "73", maxPercent: "76",  gradePoint: "3.0", sortOrder: "4" },
+  { label: "B-", minPercent: "70", maxPercent: "72",  gradePoint: "2.7", sortOrder: "5" },
+  { label: "C+", minPercent: "67", maxPercent: "69",  gradePoint: "2.3", sortOrder: "6" },
+  { label: "C",  minPercent: "63", maxPercent: "66",  gradePoint: "2.0", sortOrder: "7" },
+  { label: "C-", minPercent: "60", maxPercent: "62",  gradePoint: "1.7", sortOrder: "8" },
+  { label: "D+", minPercent: "57", maxPercent: "59",  gradePoint: "1.3", sortOrder: "9" },
+  { label: "D",  minPercent: "53", maxPercent: "56",  gradePoint: "1.0", sortOrder: "10" },
+  { label: "D-", minPercent: "50", maxPercent: "52",  gradePoint: "0.7", sortOrder: "11" },
+  { label: "F",  minPercent: "0",  maxPercent: "49",  gradePoint: "0.0", sortOrder: "12" },
+  { label: "WD", minPercent: "0",  maxPercent: "0",   gradePoint: "",    sortOrder: "13" },
+];
+
+function GradeBandsManager() {
+  const [bands, setBands] = useState<GradeBandRow[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [addForm, setAddForm] = useState<BandForm>({ label: "", minPercent: "", maxPercent: "", gradePoint: "", sortOrder: "" });
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<BandForm>({ label: "", minPercent: "", maxPercent: "", gradePoint: "", sortOrder: "" });
+  const [msg, setMsg] = useState<{ tone: "success" | "error"; text: string } | null>(null);
+
+  const loadBands = useCallback(async () => {
+    const res = await fetch("/api/principal/grade-bands");
+    const d = await res.json();
+    setBands(d.bands || []);
+  }, []);
+
+  useEffect(() => { void loadBands(); }, [loadBands]);
+
+  async function handleAdd() {
+    setSaving(true);
+    const res = await fetch("/api/principal/grade-bands", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ label: addForm.label, minPercent: parseFloat(addForm.minPercent), maxPercent: parseFloat(addForm.maxPercent), gradePoint: addForm.gradePoint ? parseFloat(addForm.gradePoint) : null, sortOrder: parseInt(addForm.sortOrder || "0", 10) }),
+    });
+    setSaving(false);
+    if (res.ok) { setAddForm({ label: "", minPercent: "", maxPercent: "", gradePoint: "", sortOrder: "" }); void loadBands(); setMsg({ tone: "success", text: "Grade band added" }); }
+    else { setMsg({ tone: "error", text: "Failed to add" }); }
+  }
+
+  async function handleSeedDefaults() {
+    setSaving(true);
+    for (const b of DEFAULT_BANDS) {
+      await fetch("/api/principal/grade-bands", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ label: b.label, minPercent: parseFloat(b.minPercent), maxPercent: parseFloat(b.maxPercent), gradePoint: b.gradePoint ? parseFloat(b.gradePoint) : null, sortOrder: parseInt(b.sortOrder, 10) }) });
+    }
+    setSaving(false);
+    void loadBands();
+    setMsg({ tone: "success", text: "Default grade bands loaded" });
+  }
+
+  async function handleUpdate() {
+    if (!editId) return;
+    setSaving(true);
+    const res = await fetch(`/api/principal/grade-bands/${editId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ label: editForm.label, minPercent: parseFloat(editForm.minPercent), maxPercent: parseFloat(editForm.maxPercent), gradePoint: editForm.gradePoint ? parseFloat(editForm.gradePoint) : null, sortOrder: parseInt(editForm.sortOrder || "0", 10) }),
+    });
+    setSaving(false);
+    if (res.ok) { setEditId(null); void loadBands(); setMsg({ tone: "success", text: "Updated" }); }
+    else setMsg({ tone: "error", text: "Failed to update" });
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm("Delete this grade band?")) return;
+    await fetch(`/api/principal/grade-bands/${id}`, { method: "DELETE" });
+    void loadBands();
+    setMsg({ tone: "success", text: "Deleted" });
+  }
+
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle>Grade Bands</CardTitle>
+        <CardDescription>Configure grade labels, percentage ranges, and grade points used in transcripts.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {msg && <div className={`mb-3 rounded-lg px-4 py-2 text-sm ${msg.tone === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>{msg.text}</div>}
+
+        {bands.length === 0 && (
+          <div className="mb-4 flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            <span>No grade bands configured.</span>
+            <Button size="sm" variant="outline" onClick={() => void handleSeedDefaults()} isLoading={saving}>Load Defaults</Button>
+          </div>
+        )}
+
+        {/* Existing bands table */}
+        {bands.length > 0 && (
+          <div className="overflow-x-auto mb-5">
+            <table className="min-w-full text-sm divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-3 py-2 text-left text-xs font-medium uppercase text-gray-500">Label</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium uppercase text-gray-500">Min %</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium uppercase text-gray-500">Max %</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium uppercase text-gray-500">Grade Point</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium uppercase text-gray-500">Sort</th>
+                  <th className="px-3 py-2 text-right text-xs font-medium uppercase text-gray-500">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-white">
+                {bands.map((b) => (
+                  <tr key={b.id}>
+                    {editId === b.id ? (
+                      <>
+                        <td className="px-2 py-1"><input value={editForm.label} onChange={(e) => setEditForm((f) => ({ ...f, label: e.target.value }))} className="w-16 rounded border border-gray-300 px-2 py-1 text-xs" /></td>
+                        <td className="px-2 py-1"><input value={editForm.minPercent} onChange={(e) => setEditForm((f) => ({ ...f, minPercent: e.target.value }))} type="number" className="w-16 rounded border border-gray-300 px-2 py-1 text-xs" /></td>
+                        <td className="px-2 py-1"><input value={editForm.maxPercent} onChange={(e) => setEditForm((f) => ({ ...f, maxPercent: e.target.value }))} type="number" className="w-16 rounded border border-gray-300 px-2 py-1 text-xs" /></td>
+                        <td className="px-2 py-1"><input value={editForm.gradePoint} onChange={(e) => setEditForm((f) => ({ ...f, gradePoint: e.target.value }))} type="number" step="0.1" className="w-16 rounded border border-gray-300 px-2 py-1 text-xs" /></td>
+                        <td className="px-2 py-1"><input value={editForm.sortOrder} onChange={(e) => setEditForm((f) => ({ ...f, sortOrder: e.target.value }))} type="number" className="w-12 rounded border border-gray-300 px-2 py-1 text-xs" /></td>
+                        <td className="px-2 py-1 text-right flex gap-1 justify-end">
+                          <Button size="sm" onClick={() => void handleUpdate()} isLoading={saving}>Save</Button>
+                          <Button size="sm" variant="outline" onClick={() => setEditId(null)}>Cancel</Button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td className="px-3 py-2 font-bold text-indigo-700">{b.label}</td>
+                        <td className="px-3 py-2">{b.minPercent}</td>
+                        <td className="px-3 py-2">{b.maxPercent}</td>
+                        <td className="px-3 py-2">{b.gradePoint ?? "—"}</td>
+                        <td className="px-3 py-2 text-gray-400">{b.sortOrder}</td>
+                        <td className="px-3 py-2 text-right">
+                          <div className="flex gap-1 justify-end">
+                            <button onClick={() => { setEditId(b.id); setEditForm({ label: b.label, minPercent: String(b.minPercent), maxPercent: String(b.maxPercent), gradePoint: b.gradePoint != null ? String(b.gradePoint) : "", sortOrder: String(b.sortOrder) }); }} className="p-1 text-amber-600 hover:bg-amber-50 rounded text-xs">Edit</button>
+                            <button onClick={() => void handleDelete(b.id)} className="p-1 text-red-500 hover:bg-red-50 rounded text-xs">Del</button>
+                          </div>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Add new band */}
+        <details className="group">
+          <summary className="cursor-pointer text-sm font-medium text-indigo-600 hover:text-indigo-800 list-none flex items-center gap-1">
+            <span className="group-open:rotate-90 transition-transform inline-block">▶</span> Add Grade Band
+          </summary>
+          <div className="mt-3 grid grid-cols-2 sm:grid-cols-6 gap-3">
+            <Input label="Label" value={addForm.label} onChange={(e) => setAddForm((f) => ({ ...f, label: e.target.value }))} placeholder="A+" />
+            <Input label="Min %" type="number" value={addForm.minPercent} onChange={(e) => setAddForm((f) => ({ ...f, minPercent: e.target.value }))} placeholder="87" />
+            <Input label="Max %" type="number" value={addForm.maxPercent} onChange={(e) => setAddForm((f) => ({ ...f, maxPercent: e.target.value }))} placeholder="94" />
+            <Input label="Grade Pt" type="number" step="0.1" value={addForm.gradePoint} onChange={(e) => setAddForm((f) => ({ ...f, gradePoint: e.target.value }))} placeholder="4.0" />
+            <Input label="Sort" type="number" value={addForm.sortOrder} onChange={(e) => setAddForm((f) => ({ ...f, sortOrder: e.target.value }))} placeholder="0" />
+            <div className="flex items-end"><Button onClick={() => void handleAdd()} isLoading={saving} disabled={!addForm.label}>Add</Button></div>
+          </div>
+        </details>
+      </CardContent>
+    </Card>
   );
 }

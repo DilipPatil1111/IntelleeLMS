@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback, Suspense } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef, Suspense, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,9 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { AttendanceProgramGridClient } from "@/components/attendance/attendance-program-grid-client";
-import { LayoutGrid, CalendarDays } from "lucide-react";
+import { LayoutGrid, CalendarDays, AlertCircle, ShieldAlert, Loader2, Pencil, Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastContainer } from "@/components/ui/toast-container";
 
 interface Student {
   id: string;
@@ -38,38 +40,41 @@ const STATUS_LABEL: Record<string, string> = {
   EXCUSED: "Present (Excused)",
 };
 
-/** Sorted roster for Recent Sessions — shows each student so names are visible (not only counts). */
-function sessionRecordsRoster(
-  records: SessionData["records"]
-): { label: string; title: string } {
+/** Sorted roster for Recent Sessions — shows each student so names are visible. */
+function sessionRecordsRoster(records: SessionData["records"]): {
+  label: string;
+  title: string;
+} {
   const sorted = [...records].sort((a, b) => {
-    const ln = (a.student?.lastName || "").localeCompare(b.student?.lastName || "", undefined, {
-      sensitivity: "base",
-    });
+    const ln = (a.student?.lastName || "").localeCompare(
+      b.student?.lastName || "",
+      undefined,
+      { sensitivity: "base" }
+    );
     if (ln !== 0) return ln;
-    return (a.student?.firstName || "").localeCompare(b.student?.firstName || "", undefined, {
-      sensitivity: "base",
-    });
+    return (a.student?.firstName || "").localeCompare(
+      b.student?.firstName || "",
+      undefined,
+      { sensitivity: "base" }
+    );
   });
-  if (sorted.length === 0) {
+  if (sorted.length === 0)
     return { label: "—", title: "No student rows on this session" };
-  }
   const lines = sorted.map((r) => {
     const name =
-      [r.student?.firstName, r.student?.lastName].filter(Boolean).join(" ").trim() ||
-      `Student ${r.studentId.slice(0, 8)}…`;
+      [r.student?.firstName, r.student?.lastName]
+        .filter(Boolean)
+        .join(" ")
+        .trim() || `Student ${r.studentId.slice(0, 8)}…`;
     const st = STATUS_LABEL[r.status] || r.status;
     return `${name} (${st})`;
   });
-  const title = lines.join("\n");
-  const label = lines.join(" · ");
-  return { label, title };
+  return { label: lines.join(" · "), title: lines.join("\n") };
 }
 
-/** Avoid UTC date-only strings shifting the calendar day in local `toLocaleDateString`. */
+/** Avoid UTC date-only strings shifting the calendar day in local toLocaleDateString. */
 function formatSessionDate(isoDate: string): string {
-  const s = typeof isoDate === "string" ? isoDate : String(isoDate);
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(isoDate);
   if (m) {
     const [, y, mo, d] = m;
     return `${Number(mo)}/${Number(d)}/${y}`;
@@ -83,9 +88,13 @@ function studentAttendanceStats(records: { status: string }[]) {
     (r) => r.status === "PRESENT" || r.status === "LATE" || r.status === "EXCUSED"
   ).length;
   const absent = records.filter((r) => r.status === "ABSENT").length;
-  const pctPres = n ? Math.round((100 * present) / n) : 0;
-  const pctAbs = n ? Math.round((100 * absent) / n) : 0;
-  return { n, present, absent, pctPres, pctAbs };
+  return {
+    n,
+    present,
+    absent,
+    pctPres: n ? Math.round((100 * present) / n) : 0,
+    pctAbs: n ? Math.round((100 * absent) / n) : 0,
+  };
 }
 
 interface SessionsSummary {
@@ -99,25 +108,40 @@ interface SessionsSummary {
 /** Matches /api/teacher/options — includes programId to filter batch list by subject. */
 type TeacherCatalogOption = { value: string; label: string; programId: string };
 
+type StudentDuplicateInfo = {
+  studentId: string;
+  studentName: string;
+  existingStatus: string;
+  sessionDate: string;
+  startTime: string | null;
+  endTime: string | null;
+  submittedAt: string;
+};
+
+type DuplicateInfo = {
+  message: string;
+  students: StudentDuplicateInfo[];
+  /** true = exact same session time already exists; false = specific student records clash */
+  sessionDuplicate: boolean;
+};
+
 function TeacherAttendanceInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pendingSessionId = searchParams.get("pendingSession");
   const viewGrid = searchParams.get("view") === "grid";
+
   const [subjects, setSubjects] = useState<TeacherCatalogOption[]>([]);
   const [batches, setBatches] = useState<TeacherCatalogOption[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
   const [sessions, setSessions] = useState<SessionData[]>([]);
   const [sessionsTotal, setSessionsTotal] = useState(0);
-  const [sessionsSummary, setSessionsSummary] = useState<SessionsSummary | null>(
-    null
-  );
+  const [sessionsSummary, setSessionsSummary] = useState<SessionsSummary | null>(null);
   const [sessionsPage, setSessionsPage] = useState(1);
+
   const [subjectId, setSubjectId] = useState("");
   const [batchId, setBatchId] = useState("");
-  const [sessionDate, setSessionDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [sessionDate, setSessionDate] = useState(new Date().toISOString().split("T")[0]);
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("10:00");
   const [attendance, setAttendance] = useState<Record<string, string>>({});
@@ -128,12 +152,80 @@ function TeacherAttendanceInner() {
   const [includeTeacherSelf, setIncludeTeacherSelf] = useState(true);
   const [resolvingSession, setResolvingSession] = useState(false);
 
-  const applySessionsFetchResult = useCallback(
-    (data: {
-      sessions?: SessionData[];
-      total?: number;
-      summary?: SessionsSummary;
-    }) => {
+  /** Set when the server responds with 409 (duplicate session for same day). */
+  const [duplicateInfo, setDuplicateInfo] = useState<DuplicateInfo | null>(null);
+
+  /** Ref used to scroll the duplicate warning into view automatically. */
+  const duplicateWarningRef = useRef<HTMLDivElement>(null);
+
+  type TeacherDupItem = {
+    id: string;
+    subjectName: string;
+    batchName: string;
+    programName: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    recordCount: number;
+    createdAt: string;
+    suggested: boolean;
+  };
+  type TeacherDupGroup = {
+    key: string;
+    subjectName: string;
+    programName: string;
+    batchName: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    sessions: TeacherDupItem[];
+  };
+  const [dupGroups, setDupGroups] = useState<TeacherDupGroup[]>([]);
+  const [loadingDups, setLoadingDups] = useState(false);
+  const [deletingDupIds, setDeletingDupIds] = useState<Set<string>>(new Set());
+  const [dupPanelOpen, setDupPanelOpen] = useState(true);
+  const [, startDupTransition] = useTransition();
+
+  type OrphanItem = {
+    sessionId: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    subject: { id: string; name: string };
+    batch: { id: string; name: string; programName: string };
+    teacher: { id: string; name: string; status: string };
+  };
+  const [orphans, setOrphans] = useState<OrphanItem[]>([]);
+  const [loadingOrphans, setLoadingOrphans] = useState(false);
+  const [cleaningOrphans, setCleaningOrphans] = useState(false);
+  const [confirmCleanup, setConfirmCleanup] = useState(false);
+
+  const { toasts, toast, dismiss } = useToast();
+
+  /** Delete confirmation modal — stores the session ID pending deletion. */
+  const [pendingDeleteSessionId, setPendingDeleteSessionId] = useState<string | null>(null);
+  const [deletingSession, setDeletingSession] = useState(false);
+
+  /** Edit modal state: selected session + editable roster + times + teacher self status. */
+  type EditRecord = { studentId: string; studentName: string; status: string };
+  type EditSessionState = {
+    id: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    subject: { id: string; name: string };
+    batch: { id: string; name: string };
+    records: EditRecord[];
+    teacherAttendance: { status: string } | null;
+  };
+  const [editingSession, setEditingSession] = useState<EditSessionState | null>(null);
+  const [loadingEdit, setLoadingEdit] = useState(false);
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  /* ─────────────────────── helpers ─────────────────────── */
+
+  const applySessionsFetch = useCallback(
+    (data: { sessions?: SessionData[]; total?: number; summary?: SessionsSummary }) => {
       setSessions(data.sessions || []);
       setSessionsTotal(typeof data.total === "number" ? data.total : 0);
       const s = data.summary;
@@ -153,16 +245,184 @@ function TeacherAttendanceInner() {
     []
   );
 
+  const fetchSessions = useCallback(
+    (page: number) => {
+      if (!subjectId || !batchId) return;
+      const qs = new URLSearchParams({
+        subjectId,
+        batchId,
+        page: String(page),
+        pageSize: "12",
+      });
+      fetch(`/api/teacher/attendance/sessions?${qs}`)
+        .then((r) => r.json())
+        .then((data: { sessions?: SessionData[]; total?: number; summary?: SessionsSummary }) =>
+          applySessionsFetch(data)
+        )
+        .catch(() => {/* network error — ignore */});
+    },
+    [subjectId, batchId, applySessionsFetch]
+  );
+
+  const loadDuplicates = useCallback(() => {
+    setLoadingDups(true);
+    const q = new URLSearchParams();
+    if (subjectId) q.set("subjectId", subjectId);
+    if (batchId) q.set("batchId", batchId);
+    fetch(`/api/teacher/attendance/sessions/duplicates?${q}`)
+      .then((r) => r.json())
+      .then((d: { duplicateGroups?: TeacherDupGroup[] }) => {
+        setDupGroups(d.duplicateGroups ?? []);
+        if ((d.duplicateGroups?.length ?? 0) > 0) setDupPanelOpen(true);
+      })
+      .catch(() => {/* ignore */})
+      .finally(() => setLoadingDups(false));
+  }, [subjectId, batchId]);
+
+  /** Load orphaned teacher attendance (teacher rows left behind after all
+   * student records were deleted from a session). */
+  const loadOrphans = useCallback(() => {
+    setLoadingOrphans(true);
+    const q = new URLSearchParams();
+    if (subjectId) q.set("subjectId", subjectId);
+    if (batchId) q.set("batchId", batchId);
+    fetch(`/api/teacher/attendance/cleanup-orphans?${q}`)
+      .then((r) => r.json())
+      .then((d: { orphans?: OrphanItem[] }) => setOrphans(d.orphans ?? []))
+      .catch(() => setOrphans([]))
+      .finally(() => setLoadingOrphans(false));
+  }, [subjectId, batchId]);
+
+  async function doCleanupOrphans() {
+    if (orphans.length === 0) return;
+    setCleaningOrphans(true);
+    const res = await fetch("/api/teacher/attendance/cleanup-orphans", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: orphans.map((o) => o.sessionId) }),
+    }).catch(() => null);
+    setCleaningOrphans(false);
+    setConfirmCleanup(false);
+    if (res?.ok) {
+      toast("Orphaned teacher attendance cleaned up.", "success");
+      loadOrphans();
+      fetchSessions(sessionsPage);
+      loadDuplicates();
+    } else {
+      toast("Failed to clean up.", "error");
+    }
+  }
+
+  function deleteSingleDup(sessionId: string) {
+    setDeletingDupIds((p) => new Set(p).add(sessionId));
+    fetch("/api/teacher/attendance/sessions/duplicates", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: [sessionId] }),
+    })
+      .then((r) => {
+        if (r.ok) { fetchSessions(1); startDupTransition(() => loadDuplicates()); }
+      })
+      .catch(() => {/* ignore */})
+      .finally(() => setDeletingDupIds((p) => { const n = new Set(p); n.delete(sessionId); return n; }));
+  }
+
+  /** Open the edit modal for a recent session — fetches fresh data. */
+  async function openEditSession(sessionId: string) {
+    setLoadingEdit(true);
+    setEditingSession(null);
+    try {
+      const res = await fetch(`/api/teacher/attendance/session/${sessionId}`);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        toast(typeof err?.error === "string" ? err.error : "Could not open session", "error");
+        return;
+      }
+      const data = await res.json() as EditSessionState;
+      setEditingSession(data);
+    } catch {
+      toast("Network error while loading session.", "error");
+    } finally {
+      setLoadingEdit(false);
+    }
+  }
+
+  /** Persist edits to the open session. */
+  async function saveEditSession() {
+    if (!editingSession) return;
+    setSavingEdit(true);
+    const attendance: Record<string, string> = {};
+    for (const r of editingSession.records) attendance[r.studentId] = r.status;
+    const res = await fetch(`/api/teacher/attendance/session/${editingSession.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        startTime: editingSession.startTime,
+        endTime: editingSession.endTime,
+        attendance,
+        teacherSelfStatus: editingSession.teacherAttendance?.status ?? null,
+      }),
+    }).catch(() => null);
+    setSavingEdit(false);
+    if (!res) { toast("Network error while saving.", "error"); return; }
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      toast(typeof err?.error === "string" ? err.error : "Could not save session", "error");
+      return;
+    }
+    toast("Session updated.", "success");
+    setEditingSession(null);
+    fetchSessions(sessionsPage);
+    loadDuplicates();
+  }
+
+  /** Confirm deletion of a session (records + teacher self-attendance cascade). */
+  async function confirmDeleteSession() {
+    if (!pendingDeleteSessionId) return;
+    const id = pendingDeleteSessionId;
+    setDeletingSession(true);
+    const res = await fetch(`/api/teacher/attendance/session/${id}`, { method: "DELETE" }).catch(() => null);
+    setDeletingSession(false);
+    setPendingDeleteSessionId(null);
+    if (!res || !res.ok) {
+      const err = res ? await res.json().catch(() => ({})) : {};
+      toast(typeof (err as { error?: string })?.error === "string" ? (err as { error: string }).error : "Could not delete session", "error");
+      return;
+    }
+    toast("Session deleted — teacher and student attendance removed.", "success");
+    fetchSessions(sessionsPage);
+    loadDuplicates();
+  }
+
+  function deleteGroupExtras(group: TeacherDupGroup) {
+    const extras = group.sessions.filter((s) => !s.suggested).map((s) => s.id);
+    if (!extras.length) return;
+    extras.forEach((id) => setDeletingDupIds((p) => new Set(p).add(id)));
+    fetch("/api/teacher/attendance/sessions/duplicates", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: extras }),
+    })
+      .then((r) => {
+        if (r.ok) { fetchSessions(1); startDupTransition(() => loadDuplicates()); }
+      })
+      .catch(() => {/* ignore */})
+      .finally(() => extras.forEach((id) => setDeletingDupIds((p) => { const n = new Set(p); n.delete(id); return n; })));
+  }
+
+  /* ─────────────────────── data loading ─────────────────────── */
+
+  // Load teacher's subjects + batches once on mount
   useEffect(() => {
     fetch("/api/teacher/options")
       .then((r) => r.json())
       .then((data: { subjects?: TeacherCatalogOption[]; batches?: TeacherCatalogOption[] }) => {
         setSubjects(data.subjects || []);
         setBatches(data.batches || []);
-      });
+      })
+      .catch(() => {/* ignore */});
   }, []);
 
-  /** Only batches in the same program as the selected subject (valid subject + batch pairs). */
   const batchOptionsForSubject = useMemo(() => {
     if (!subjectId) return [];
     const sub = subjects.find((s) => s.value === subjectId);
@@ -170,58 +430,78 @@ function TeacherAttendanceInner() {
     return batches.filter((b) => b.programId === sub.programId);
   }, [subjectId, subjects, batches]);
 
+  // Clear batch when it no longer belongs to the selected subject's program
   useEffect(() => {
-    if (!batchId || !subjectId) return;
-    const ok = batchOptionsForSubject.some((b) => b.value === batchId);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (!ok) setBatchId("");
-  }, [batchOptionsForSubject, batchId, subjectId]);
+    if (!batchId) return;
+    const stillValid = batchOptionsForSubject.some((b) => b.value === batchId);
+    if (!stillValid) setBatchId("");
+  }, [batchOptionsForSubject, batchId]);
 
+  // Load students when batch changes
   useEffect(() => {
-    if (batchId) {
-      fetch(`/api/teacher/students?batchId=${batchId}`)
-        .then((r) => r.json())
-        .then((data) => {
-          setStudents(data.students || []);
-          const defaultAtt: Record<string, string> = {};
-          (data.students || []).forEach((s: Student) => {
-            defaultAtt[s.id] = "PRESENT";
-          });
-          setAttendance(defaultAtt);
-        });
+    if (!batchId) {
+      setStudents([]);
+      setAttendance({});
+      return;
     }
+    fetch(`/api/teacher/students?batchId=${batchId}`)
+      .then((r) => r.json())
+      .then((data: { students?: Student[] }) => {
+        const list = data.students || [];
+        setStudents(list);
+        const defaults: Record<string, string> = {};
+        list.forEach((s) => { defaults[s.id] = "PRESENT"; });
+        setAttendance(defaults);
+      })
+      .catch(() => {/* ignore */});
   }, [batchId]);
 
+  // Reset sessions list when filters change
   useEffect(() => {
-    if (subjectId && batchId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSessionsPage(1);
-    } else {
-       
+    if (!subjectId || !batchId) {
       setSessions([]);
-       
       setSessionsTotal(0);
-       
       setSessionsSummary(null);
+      return;
     }
+    setSessionsPage(1);
   }, [subjectId, batchId]);
 
+  // Fetch sessions when page / filters change
   useEffect(() => {
-    if (!subjectId || !batchId) return;
-    const qs = new URLSearchParams({
-      subjectId,
-      batchId,
-      page: String(sessionsPage),
-      pageSize: "12",
-    });
-    fetch(`/api/teacher/attendance/sessions?${qs.toString()}`)
+    fetchSessions(sessionsPage);
+  }, [fetchSessions, sessionsPage]);
+
+  // Load duplicate detection whenever subject/batch filter changes
+  useEffect(() => {
+    loadDuplicates();
+  }, [loadDuplicates]);
+
+  useEffect(() => {
+    loadOrphans();
+  }, [loadOrphans]);
+
+  // Check holiday when date changes
+  useEffect(() => {
+    if (!sessionDate) return;
+    fetch(`/api/teacher/attendance/check-holiday?date=${sessionDate}`)
       .then((r) => r.json())
-      .then((data) => applySessionsFetchResult(data));
-  }, [subjectId, batchId, sessionsPage, applySessionsFetchResult]);
+      .then((data: { isHoliday?: boolean }) => setIsHoliday(data.isHoliday ?? false))
+      .catch(() => setIsHoliday(false));
+  }, [sessionDate]);
+
+  // Scroll duplicate warning into view whenever it appears
+  useEffect(() => {
+    if (duplicateInfo) {
+      duplicateWarningRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [duplicateInfo]);
+
+  /* ─────────────────────── computed ─────────────────────── */
 
   const recentSessionsFooter = useMemo(() => {
     if (sessions.length === 0) return null;
-    const pageTotals = sessions.reduce(
+    const totals = sessions.reduce(
       (acc, s) => {
         const st = studentAttendanceStats(s.records);
         acc.records += st.n;
@@ -231,24 +511,14 @@ function TeacherAttendanceInner() {
       },
       { records: 0, present: 0, absent: 0 }
     );
-    const footerPctPres = pageTotals.records
-      ? Math.round((100 * pageTotals.present) / pageTotals.records)
-      : 0;
-    const footerPctAbs = pageTotals.records
-      ? Math.round((100 * pageTotals.absent) / pageTotals.records)
-      : 0;
-    return { pageTotals, footerPctPres, footerPctAbs };
+    return {
+      pageTotals: totals,
+      footerPctPres: totals.records ? Math.round((100 * totals.present) / totals.records) : 0,
+      footerPctAbs: totals.records ? Math.round((100 * totals.absent) / totals.records) : 0,
+    };
   }, [sessions]);
 
-  useEffect(() => {
-    if (sessionDate) {
-      fetch(`/api/teacher/attendance/check-holiday?date=${sessionDate}`)
-        .then((r) => r.json())
-        .then((data) => {
-          setIsHoliday(data.isHoliday || false);
-        });
-    }
-  }, [sessionDate]);
+  /* ─────────────────────── actions ─────────────────────── */
 
   async function resolvePendingTeacherAttendance() {
     if (!pendingSessionId) return;
@@ -256,22 +526,26 @@ function TeacherAttendanceInner() {
     await fetch("/api/teacher/attendance/record-teacher", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ attendanceSessionId: pendingSessionId, status: teacherSelfStatus }),
-    });
+      body: JSON.stringify({
+        attendanceSessionId: pendingSessionId,
+        status: teacherSelfStatus,
+      }),
+    }).catch(() => {/* ignore */});
     setResolvingSession(false);
     window.history.replaceState({}, "", "/teacher/attendance");
-    if (subjectId && batchId) {
-      setSessionsPage(1);
-      const qs = new URLSearchParams({ subjectId, batchId, page: "1", pageSize: "12" });
-      fetch(`/api/teacher/attendance/sessions?${qs.toString()}`)
-        .then((r) => r.json())
-        .then((data) => applySessionsFetchResult(data));
-    }
+    fetchSessions(1);
   }
 
-  async function handleSave() {
+  /**
+   * Submits attendance.  When force=true the server skips the duplicate guard
+   * (the user already confirmed they want to add the session anyway).
+   */
+  async function handleSave(force = false) {
+    if (!subjectId || !batchId || !sessionDate) return;
     setSaving(true);
-    await fetch("/api/teacher/attendance", {
+    setDuplicateInfo(null);
+
+    const res = await fetch("/api/teacher/attendance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -283,17 +557,46 @@ function TeacherAttendanceInner() {
         attendance,
         overrideHoliday,
         teacherSelfStatus: includeTeacherSelf ? teacherSelfStatus : undefined,
+        force,
       }),
-    });
+    }).catch(() => null);
+
     setSaving(false);
-    if (subjectId && batchId) {
+
+    if (!res) return; // network error
+
+    if (res.status === 409) {
+      const data = await res.json().catch(() => ({})) as {
+        duplicate?: boolean;
+        sessionDuplicate?: boolean;
+        message?: string;
+        students?: StudentDuplicateInfo[];
+      };
+      if (data.duplicate) {
+        setDuplicateInfo({
+          message:
+            data.message ||
+            "Duplicate attendance detected for this subject and date.",
+          students: data.students || [],
+          sessionDuplicate: data.sessionDuplicate ?? false,
+        });
+      }
+      return;
+    }
+
+    if (res.ok) {
       setSessionsPage(1);
-      const qs = new URLSearchParams({ subjectId, batchId, page: "1", pageSize: "12" });
-      fetch(`/api/teacher/attendance/sessions?${qs.toString()}`)
-        .then((r) => r.json())
-        .then((data) => applySessionsFetchResult(data));
+      fetchSessions(1);
     }
   }
+
+  /** User clicked "Yes" on the duplicate confirmation. */
+  function confirmDuplicateAdd() {
+    setDuplicateInfo(null);
+    void handleSave(true);
+  }
+
+  /* ─────────────────────── render ─────────────────────── */
 
   return (
     <>
@@ -301,12 +604,15 @@ function TeacherAttendanceInner() {
         title="Attendance"
         description="Mark and manage student attendance — single session or full program sheet."
       />
+
       <div className="mb-6 flex flex-wrap gap-2">
         <button
           type="button"
           onClick={() => router.push("/teacher/attendance")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
-            !viewGrid ? "bg-indigo-600 text-white shadow" : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+            !viewGrid
+              ? "bg-indigo-600 text-white shadow"
+              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
           }`}
         >
           <CalendarDays className="h-4 w-4" />
@@ -316,7 +622,9 @@ function TeacherAttendanceInner() {
           type="button"
           onClick={() => router.push("/teacher/attendance?view=grid")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
-            viewGrid ? "bg-indigo-600 text-white shadow" : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+            viewGrid
+              ? "bg-indigo-600 text-white shadow"
+              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
           }`}
         >
           <LayoutGrid className="h-4 w-4" />
@@ -328,166 +636,160 @@ function TeacherAttendanceInner() {
         <AttendanceProgramGridClient apiRole="teacher" embedded />
       ) : (
         <>
-      <Card className="mb-6">
-        <CardContent>
-          {subjects.length === 0 && (
-            <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-              No subjects or batches are linked to your profile yet. Ask a principal to assign you to programs or
-              subjects (Teacher settings / roster) so you can load students and record attendance.
-            </div>
-          )}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <Select
-              label="Subject"
-              value={subjectId}
-              onChange={(e) => {
-                setSubjectId(e.target.value);
-                setBatchId("");
-              }}
-              options={subjects}
-              placeholder="Select subject"
-            />
-            <Select
-              label="Batch"
-              value={batchId}
-              onChange={(e) => setBatchId(e.target.value)}
-              options={batchOptionsForSubject}
-              placeholder={subjectId ? "Select batch" : "Select subject first"}
-            />
-            <Input
-              label="Date"
-              type="date"
-              value={sessionDate}
-              onChange={(e) => setSessionDate(e.target.value)}
-            />
-            <div className="grid grid-cols-2 gap-2">
-              <Input
-                label="Start"
-                type="time"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-              />
-              <Input
-                label="End"
-                type="time"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-              />
-            </div>
-          </div>
+          <Card className="mb-6">
+            <CardContent>
+              {subjects.length === 0 && (
+                <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                  No subjects or batches are linked to your profile yet. Ask a principal to assign
+                  you to programs or subjects so you can load students and record attendance.
+                </div>
+              )}
 
-          {pendingSessionId && (
-            <div className="rounded-lg bg-red-50 border-2 border-red-300 p-4 mb-4">
-              <p className="text-sm font-bold text-red-800 mb-2">Your attendance is still required for a saved session.</p>
-              <div className="flex flex-wrap items-end gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <Select
-                  label="Your status for that class"
-                  value={teacherSelfStatus}
-                  onChange={(e) => setTeacherSelfStatus(e.target.value)}
-                  options={[
-                    { value: "PRESENT", label: "Present" },
-                    { value: "LATE", label: "Late" },
-                    { value: "ABSENT", label: "Absent" },
-                  ]}
+                  label="Subject"
+                  value={subjectId}
+                  onChange={(e) => {
+                    setSubjectId(e.target.value);
+                    setBatchId("");
+                  }}
+                  options={subjects}
+                  placeholder="Select subject"
                 />
-                <Button onClick={resolvePendingTeacherAttendance} isLoading={resolvingSession}>
-                  Confirm my attendance
-                </Button>
+                <Select
+                  label="Batch"
+                  value={batchId}
+                  onChange={(e) => setBatchId(e.target.value)}
+                  options={batchOptionsForSubject}
+                  placeholder={subjectId ? "Select batch" : "Select subject first"}
+                />
+                <Input
+                  label="Date"
+                  type="date"
+                  value={sessionDate}
+                  onChange={(e) => setSessionDate(e.target.value)}
+                />
+                <div className="grid grid-cols-2 gap-2">
+                  <Input
+                    label="Start"
+                    type="time"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                  />
+                  <Input
+                    label="End"
+                    type="time"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-          )}
 
-          {isHoliday && (
-            <div className="rounded-lg bg-red-50 border border-red-200 p-3 mb-4 flex items-center justify-between">
-              <p className="text-sm text-red-600">
-                This date is a holiday. Attendance recording requires an
-                override.
-              </p>
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={overrideHoliday}
-                  onChange={(e) => setOverrideHoliday(e.target.checked)}
-                  className="text-indigo-600"
-                />
-                Override Holiday
-              </label>
-            </div>
-          )}
-
-          {students.length > 0 &&
-            subjectId &&
-            (!isHoliday || overrideHoliday) && (
-              <>
-                <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-4 mb-4">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-800 mb-2">
-                    <input
-                      type="checkbox"
-                      checked={includeTeacherSelf}
-                      onChange={(e) => setIncludeTeacherSelf(e.target.checked)}
-                      className="rounded border-gray-300"
+              {pendingSessionId && (
+                <div className="rounded-lg bg-red-50 border-2 border-red-300 p-4 mb-4">
+                  <p className="text-sm font-bold text-red-800 mb-2">
+                    Your attendance is still required for a saved session.
+                  </p>
+                  <div className="flex flex-wrap items-end gap-3">
+                    <Select
+                      label="Your status for that class"
+                      value={teacherSelfStatus}
+                      onChange={(e) => setTeacherSelfStatus(e.target.value)}
+                      options={[
+                        { value: "PRESENT", label: "Present" },
+                        { value: "LATE", label: "Late" },
+                        { value: "ABSENT", label: "Absent" },
+                      ]}
                     />
-                    Record my attendance for this class session (recommended)
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {["PRESENT", "LATE", "ABSENT"].map((status) => (
-                      <button
-                        key={status}
-                        type="button"
-                        onClick={() => setTeacherSelfStatus(status)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
-                          (teacherSelfStatus === status || (status === "PRESENT" && teacherSelfStatus === "EXCUSED"))
-                            ? "bg-indigo-600 text-white"
-                            : "bg-white border border-gray-200 text-gray-600"
-                        }`}
-                      >
-                        {STATUS_LABEL[status] ?? status}
-                      </button>
-                    ))}
+                    <Button onClick={() => void resolvePendingTeacherAttendance()} isLoading={resolvingSession}>
+                      Confirm my attendance
+                    </Button>
                   </div>
                 </div>
+              )}
 
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                          Student
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                          Status
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {students.map((s) => (
-                        <tr
-                          key={s.id}
-                          className={
-                            attendance[s.id] === "ABSENT"
-                              ? "bg-red-100/90"
-                              : undefined
-                          }
+              {isHoliday && (
+                <div className="rounded-lg bg-red-50 border border-red-200 p-3 mb-4 flex items-center justify-between">
+                  <p className="text-sm text-red-600">
+                    This date is a holiday. Attendance recording requires an override.
+                  </p>
+                  <label className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={overrideHoliday}
+                      onChange={(e) => setOverrideHoliday(e.target.checked)}
+                      className="text-indigo-600"
+                    />
+                    Override Holiday
+                  </label>
+                </div>
+              )}
+
+              {students.length > 0 && subjectId && (!isHoliday || overrideHoliday) && (
+                <>
+                  <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-4 mb-4">
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-800 mb-2">
+                      <input
+                        type="checkbox"
+                        checked={includeTeacherSelf}
+                        onChange={(e) => setIncludeTeacherSelf(e.target.checked)}
+                        className="rounded border-gray-300"
+                      />
+                      Record my attendance for this class session (recommended)
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {["PRESENT", "LATE", "ABSENT"].map((status) => (
+                        <button
+                          key={status}
+                          type="button"
+                          onClick={() => setTeacherSelfStatus(status)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
+                            teacherSelfStatus === status ||
+                            (status === "PRESENT" && teacherSelfStatus === "EXCUSED")
+                              ? "bg-indigo-600 text-white"
+                              : "bg-white border border-gray-200 text-gray-600"
+                          }`}
                         >
-                          <td className="px-4 py-3 text-sm text-gray-900">
-                            {s.firstName} {s.lastName}
-                          </td>
-                          <td className="px-4 py-3">
-                            <div className="flex gap-2">
-                              {attendance[s.id] === "EXCUSED" ? (
-                                <span className="px-3 py-1 rounded text-xs font-medium bg-violet-600 text-white">
-                                  Present (Excused)
-                                </span>
-                              ) : (
-                                ["PRESENT", "ABSENT", "LATE"].map(
-                                  (status) => (
+                          {STATUS_LABEL[status] ?? status}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                            Student
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                            Status
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200">
+                        {students.map((s) => (
+                          <tr
+                            key={s.id}
+                            className={attendance[s.id] === "ABSENT" ? "bg-red-100/90" : undefined}
+                          >
+                            <td className="px-4 py-3 text-sm text-gray-900">
+                              {s.firstName} {s.lastName}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex gap-2">
+                                {attendance[s.id] === "EXCUSED" ? (
+                                  <span className="px-3 py-1 rounded text-xs font-medium bg-violet-600 text-white">
+                                    Present (Excused)
+                                  </span>
+                                ) : (
+                                  ["PRESENT", "ABSENT", "LATE"].map((status) => (
                                     <button
                                       key={status}
+                                      type="button"
                                       onClick={() =>
-                                        setAttendance({
-                                          ...attendance,
-                                          [s.id]: status,
-                                        })
+                                        setAttendance((prev) => ({ ...prev, [s.id]: status }))
                                       }
                                       className={`px-3 py-1 rounded text-xs font-medium ${
                                         attendance[s.id] === status
@@ -501,255 +803,777 @@ function TeacherAttendanceInner() {
                                     >
                                       {STATUS_LABEL[status] ?? status}
                                     </button>
-                                  )
-                                )
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="flex justify-end mt-4">
-                  <Button onClick={handleSave} isLoading={saving}>
-                    Save Attendance
-                  </Button>
-                </div>
-              </>
-            )}
-        </CardContent>
-      </Card>
+                                  ))
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
-      <Card>
-        <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <CardTitle>Recent Sessions Attendance</CardTitle>
-          {sessionsTotal > 0 && (
-            <p className="text-sm text-gray-500">
-              {sessionsTotal} session{sessionsTotal === 1 ? "" : "s"} total · 12 per page
-            </p>
-          )}
-        </CardHeader>
-        <CardContent>
-          {sessions.length === 0 && sessionsTotal === 0 ? (
-            <p className="text-center text-gray-500 py-4">
-              No sessions recorded yet.
-            </p>
-          ) : (
-            <>
-              <div className="max-h-[min(28rem,55vh)] overflow-y-auto overflow-x-auto rounded-lg border border-gray-200">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50 sticky top-0 z-10">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                        Date
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                        Subject
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                        Time
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500 min-w-[12rem]">
-                        Students
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                        Present
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                        Absent
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                        You
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
-                        Override
-                      </th>
-                      <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">
-                        % Present
-                      </th>
-                      <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">
-                        % Absent
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
-                    {sessions.map((s) => {
-                      const st = studentAttendanceStats(s.records);
-                      const roster = sessionRecordsRoster(s.records);
-                      return (
-                      <tr key={s.id}>
-                        <td className="px-4 py-3 text-sm text-gray-900">
-                          {formatSessionDate(s.sessionDate)}
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-900">
-                          {s.subject?.name}
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-500">
-                          {s.startTime} - {s.endTime}
-                        </td>
-                        <td className="px-4 py-3 text-xs text-gray-800 max-w-[20rem] align-top">
-                          <div
-                            className="max-h-28 overflow-y-auto pr-1 whitespace-normal break-words"
-                            title={roster.title}
-                          >
-                            {roster.label}
-                          </div>
-                        </td>
-                        <td
-                          className={`px-4 py-3 text-sm tabular-nums ${
-                            st.present > 0
-                              ? "bg-emerald-100 text-emerald-950"
-                              : ""
-                          }`}
-                        >
-                          {st.present}/{st.n}
-                        </td>
-                        <td
-                          className={`px-4 py-3 text-sm tabular-nums ${
-                            st.absent > 0
-                              ? "bg-red-100 text-red-950"
-                              : ""
-                          }`}
-                        >
-                          {st.absent}/{st.n}
-                        </td>
-                        <td className="px-4 py-3 text-sm">
-                          {s.teacherAttendance ? (
-                            <Badge variant="success">{s.teacherAttendance.status}</Badge>
+                  {/* ── Duplicate student-attendance warning ── shown just above Save button ── */}
+                  {duplicateInfo && (
+                    <div
+                      ref={duplicateWarningRef}
+                      className="mt-4 rounded-lg border-2 border-red-300 bg-red-50 p-4"
+                    >
+                      <div className="flex items-start gap-3">
+                        <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-bold text-red-900 mb-1">
+                            Duplicate Attendance Detected
+                          </p>
+                          <p className="text-sm text-red-800 mb-3">{duplicateInfo.message}</p>
+
+                          {duplicateInfo.students.length > 0 && (
+                            <div className="mb-4 rounded border border-red-200 overflow-hidden">
+                              <table className="w-full text-xs">
+                                <thead className="bg-red-100">
+                                  <tr>
+                                    <th className="px-3 py-2 text-left font-semibold text-red-900">#</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-red-900">Student</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-red-900">Existing Status</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-red-900">Session Time</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-red-900">Submitted At</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-red-100 bg-white">
+                                  {duplicateInfo.students.map((s, idx) => (
+                                    <tr key={s.studentId}>
+                                      <td className="px-3 py-2 text-red-700 font-medium">{idx + 1}</td>
+                                      <td className="px-3 py-2 font-medium text-gray-900">{s.studentName}</td>
+                                      <td className="px-3 py-2">
+                                        <span className={`inline-block px-2 py-0.5 rounded text-xs font-semibold ${
+                                          s.existingStatus === "PRESENT"
+                                            ? "bg-green-100 text-green-800"
+                                            : s.existingStatus === "ABSENT"
+                                              ? "bg-red-100 text-red-800"
+                                              : s.existingStatus === "LATE"
+                                                ? "bg-yellow-100 text-yellow-800"
+                                                : "bg-violet-100 text-violet-800"
+                                        }`}>
+                                          {s.existingStatus}
+                                        </span>
+                                      </td>
+                                      <td className="px-3 py-2 text-gray-600">
+                                        {s.startTime && s.endTime
+                                          ? `${s.startTime} – ${s.endTime}`
+                                          : s.startTime || "—"}
+                                      </td>
+                                      <td className="px-3 py-2 text-gray-500">
+                                        {new Date(s.submittedAt).toLocaleString("en-US", {
+                                          month: "short",
+                                          day: "2-digit",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+
+                          {duplicateInfo.sessionDuplicate ? (
+                            <p className="text-xs text-red-700 mb-3 font-medium">
+                              Clicking <strong>Create Anyway</strong> will create an additional
+                              session alongside the existing one. Click <strong>Cancel</strong> if
+                              you did not intend to add a duplicate session.
+                            </p>
                           ) : (
-                            <Badge variant="danger">Pending</Badge>
+                            <p className="text-xs text-red-700 mb-3 font-medium">
+                              Clicking <strong>Delete &amp; Save New</strong> will remove the
+                              existing attendance records for the above student
+                              {duplicateInfo.students.length !== 1 ? "s" : ""} and replace them
+                              with the new attendance you are submitting.
+                            </p>
                           )}
-                        </td>
-                        <td className="px-4 py-3">
-                          {s.overrideHoliday && (
-                            <Badge variant="warning">Holiday Override</Badge>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-sm text-right tabular-nums text-gray-900">
-                          {st.pctPres}%
-                        </td>
-                        <td className="px-4 py-3 text-sm text-right tabular-nums text-gray-900">
-                          {st.pctAbs}%
-                        </td>
-                      </tr>
-                    );})}
-                  </tbody>
-                  {(recentSessionsFooter || sessionsSummary) && (
-                  <tfoot className="bg-gray-50 border-t-2 border-gray-200">
-                    {recentSessionsFooter && (
-                    <tr>
-                      <td
-                        colSpan={4}
-                        className="px-4 py-3 text-sm font-medium text-gray-700"
-                      >
-                        Totals (this page)
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm tabular-nums ${
-                          recentSessionsFooter.pageTotals.present > 0
-                            ? "bg-emerald-100 text-emerald-950"
-                            : "text-gray-900"
-                        }`}
-                      >
-                        {recentSessionsFooter.pageTotals.present}/{recentSessionsFooter.pageTotals.records}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm tabular-nums ${
-                          recentSessionsFooter.pageTotals.absent > 0
-                            ? "bg-red-100 text-red-950"
-                            : "text-gray-900"
-                        }`}
-                      >
-                        {recentSessionsFooter.pageTotals.absent}/{recentSessionsFooter.pageTotals.records}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-400">—</td>
-                      <td className="px-4 py-3 text-sm text-gray-400">—</td>
-                      <td className="px-4 py-3 text-sm text-right font-medium tabular-nums text-gray-900">
-                        {recentSessionsFooter.footerPctPres}%
-                      </td>
-                      <td className="px-4 py-3 text-sm text-right font-medium tabular-nums text-gray-900">
-                        {recentSessionsFooter.footerPctAbs}%
-                      </td>
-                    </tr>
-                    )}
-                    {sessionsSummary && sessionsTotal > 0 && (
-                    <tr className="border-t border-gray-200">
-                      <td
-                        colSpan={4}
-                        className="px-4 py-3 text-sm font-medium text-gray-700"
-                      >
-                        Totals (all sessions, this subject and batch)
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm tabular-nums ${
-                          sessionsSummary.presentCount > 0
-                            ? "bg-emerald-100 text-emerald-950"
-                            : "text-gray-900"
-                        }`}
-                      >
-                        {sessionsSummary.presentCount}/{sessionsSummary.recordCount}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm tabular-nums ${
-                          sessionsSummary.absentCount > 0
-                            ? "bg-red-100 text-red-950"
-                            : "text-gray-900"
-                        }`}
-                      >
-                        {sessionsSummary.absentCount}/{sessionsSummary.recordCount}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-400">—</td>
-                      <td className="px-4 py-3 text-sm text-gray-400">—</td>
-                      <td className="px-4 py-3 text-sm text-right font-medium tabular-nums text-gray-900">
-                        {sessionsSummary.pctPresent}%
-                      </td>
-                      <td className="px-4 py-3 text-sm text-right font-medium tabular-nums text-gray-900">
-                        {sessionsSummary.pctAbsent}%
-                      </td>
-                    </tr>
-                    )}
-                  </tfoot>
+
+                          <div className="flex flex-wrap gap-2">
+                            <Button size="sm" variant="danger" onClick={confirmDuplicateAdd} isLoading={saving}>
+                              {duplicateInfo.sessionDuplicate ? "Create Anyway" : "Delete & Save New"}
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={() => setDuplicateInfo(null)}>
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   )}
-                </table>
-              </div>
-              {sessionsTotal > 0 && (
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-4">
-                  <p className="text-sm text-gray-600">
-                    Page {sessionsPage} of {Math.max(1, Math.ceil(sessionsTotal / 12))}
-                  </p>
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      disabled={sessionsPage <= 1}
-                      onClick={() => setSessionsPage((p) => Math.max(1, p - 1))}
-                    >
-                      Previous
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      disabled={sessionsPage >= Math.max(1, Math.ceil(sessionsTotal / 12))}
-                      onClick={() =>
-                        setSessionsPage((p) =>
-                          p < Math.ceil(sessionsTotal / 12) ? p + 1 : p
-                        )
-                      }
-                    >
-                      Next
+
+                  <div className="flex justify-end mt-4">
+                    <Button onClick={() => void handleSave(false)} isLoading={saving}>
+                      Save Attendance
                     </Button>
                   </div>
-                </div>
+                </>
               )}
-            </>
+            </CardContent>
+          </Card>
+
+          {/* ── Orphaned teacher-attendance warning ── */}
+          {(orphans.length > 0 || loadingOrphans) && (
+            <Card
+              className={`mb-4 border-2 ${
+                orphans.length > 0 ? "border-amber-300 bg-amber-50" : "border-gray-200"
+              }`}
+            >
+              <CardContent className="pt-4">
+                <div className="flex items-start gap-3">
+                  {loadingOrphans ? (
+                    <Loader2 className="h-5 w-5 text-gray-400 animate-spin shrink-0 mt-0.5" />
+                  ) : (
+                    <ShieldAlert className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    {loadingOrphans ? (
+                      <p className="text-sm text-gray-500">
+                        Checking for orphaned teacher attendance…
+                      </p>
+                    ) : (
+                      <>
+                        <p className="text-sm font-bold text-amber-900 mb-1">
+                          {orphans.length} session{orphans.length !== 1 ? "s" : ""} with teacher
+                          attendance but no student attendance
+                        </p>
+                        <p className="text-xs text-amber-800 mb-3">
+                          There is no student attendance for
+                          {orphans.length !== 1 ? " these sessions" : " this session"} but teacher
+                          attendance is still recorded. Do you want to clean
+                          {orphans.length !== 1 ? " them" : " it"} up?
+                        </p>
+                        <div className="mb-3 rounded border border-amber-200 overflow-hidden bg-white">
+                          <table className="w-full text-xs">
+                            <thead className="bg-amber-100">
+                              <tr>
+                                <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                  Date
+                                </th>
+                                <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                  Subject / Batch
+                                </th>
+                                <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                  Time
+                                </th>
+                                <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                  Teacher
+                                </th>
+                                <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                  Status
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-amber-100">
+                              {orphans.map((o) => (
+                                <tr key={o.sessionId}>
+                                  <td className="px-3 py-1.5 text-gray-700">
+                                    {formatSessionDate(o.sessionDate)}
+                                  </td>
+                                  <td className="px-3 py-1.5 text-gray-700">
+                                    {o.subject.name}
+                                    <span className="text-gray-500"> · {o.batch.name}</span>
+                                  </td>
+                                  <td className="px-3 py-1.5 text-gray-600">
+                                    {o.startTime && o.endTime
+                                      ? `${o.startTime}–${o.endTime}`
+                                      : "—"}
+                                  </td>
+                                  <td className="px-3 py-1.5 text-gray-800">{o.teacher.name}</td>
+                                  <td className="px-3 py-1.5 text-gray-700">{o.teacher.status}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Button
+                            size="sm"
+                            variant="danger"
+                            onClick={() => setConfirmCleanup(true)}
+                            disabled={cleaningOrphans}
+                          >
+                            {cleaningOrphans
+                              ? "Cleaning up…"
+                              : `Yes, clean up ${orphans.length} session${orphans.length !== 1 ? "s" : ""}`}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => loadOrphans()}
+                            disabled={loadingOrphans}
+                          >
+                            Refresh
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           )}
-        </CardContent>
-      </Card>
+
+          {/* ── Duplicate Sessions Warning Panel ── */}
+          {(dupGroups.length > 0 || loadingDups) && (
+            <Card className={`mb-0 border-2 ${dupGroups.length > 0 ? "border-red-300 bg-red-50" : "border-gray-200"}`}>
+              <CardContent className="pt-4">
+                <div className="flex items-start gap-3">
+                  {loadingDups ? (
+                    <Loader2 className="h-5 w-5 text-gray-400 animate-spin shrink-0 mt-0.5" />
+                  ) : (
+                    <ShieldAlert className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    {loadingDups ? (
+                      <p className="text-sm text-gray-500">Checking for duplicate sessions…</p>
+                    ) : (
+                      <>
+                        <div className="flex flex-wrap items-center gap-3 mb-1">
+                          <p className="text-sm font-bold text-red-900">
+                            {dupGroups.length} duplicate group{dupGroups.length !== 1 ? "s" : ""} found
+                            {" "}({dupGroups.reduce((a, g) => a + g.sessions.length - 1, 0)} extra session{dupGroups.reduce((a, g) => a + g.sessions.length - 1, 0) !== 1 ? "s" : ""})
+                          </p>
+                          <button
+                            type="button"
+                            className="text-xs text-red-600 underline"
+                            onClick={() => setDupPanelOpen((v) => !v)}
+                          >
+                            {dupPanelOpen ? "Collapse" : "Expand"}
+                          </button>
+                        </div>
+                        <p className="text-xs text-red-700 mb-3">
+                          The sessions below share the same Subject, Date, and Time.
+                          The <span className="font-semibold text-green-800 bg-green-100 px-1 rounded">Keep</span> session has the most student records.
+                          Delete the extras to clean up.
+                        </p>
+
+                        {dupPanelOpen && dupGroups.map((group) => {
+                          const extras = group.sessions.filter((s) => !s.suggested);
+                          return (
+                            <div key={group.key} className="mb-3 rounded-lg border border-red-200 overflow-hidden bg-white">
+                              <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 bg-red-100 border-b border-red-200">
+                                <span className="text-xs font-semibold text-red-900">
+                                  {group.subjectName} · {group.batchName} · {group.sessionDate}
+                                  {group.startTime && group.endTime ? ` · ${group.startTime}–${group.endTime}` : ""}
+                                </span>
+                                <Button
+                                  size="sm"
+                                  variant="danger"
+                                  isLoading={extras.some((s) => deletingDupIds.has(s.id))}
+                                  onClick={() => deleteGroupExtras(group)}
+                                >
+                                  Delete {extras.length} extra{extras.length !== 1 ? "s" : ""}
+                                </Button>
+                              </div>
+                              <table className="w-full text-xs">
+                                <thead className="bg-gray-50 border-b border-gray-100">
+                                  <tr>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Session</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Time</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Students</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Created</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Status</th>
+                                    <th className="px-3 py-2 text-left font-semibold text-gray-700">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100">
+                                  {group.sessions.map((s, idx) => (
+                                    <tr key={s.id} className={s.suggested ? "bg-green-50" : "bg-red-50/40"}>
+                                      <td className="px-3 py-2 text-gray-600 font-mono">#{idx + 1} {s.id.slice(-6)}</td>
+                                      <td className="px-3 py-2 text-gray-700">
+                                        {s.startTime && s.endTime ? `${s.startTime}–${s.endTime}` : "—"}
+                                      </td>
+                                      <td className="px-3 py-2 text-center text-gray-700">{s.recordCount}</td>
+                                      <td className="px-3 py-2 text-gray-500">
+                                        {new Date(s.createdAt).toLocaleString("en-US", {
+                                          month: "short", day: "2-digit",
+                                          hour: "2-digit", minute: "2-digit",
+                                        })}
+                                      </td>
+                                      <td className="px-3 py-2">
+                                        {s.suggested
+                                          ? <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-green-100 text-green-800">Keep</span>
+                                          : <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-800">Duplicate</span>}
+                                      </td>
+                                      <td className="px-3 py-2">
+                                        {!s.suggested && (
+                                          <Button
+                                            size="sm"
+                                            variant="danger"
+                                            isLoading={deletingDupIds.has(s.id)}
+                                            onClick={() => deleteSingleDup(s.id)}
+                                          >
+                                            Delete
+                                          </Button>
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          <Card>
+            <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <CardTitle>Recent Sessions Attendance</CardTitle>
+              {sessionsTotal > 0 && (
+                <p className="text-sm text-gray-500">
+                  {sessionsTotal} session{sessionsTotal === 1 ? "" : "s"} total · 12 per page
+                </p>
+              )}
+            </CardHeader>
+            <CardContent>
+              {sessions.length === 0 && sessionsTotal === 0 ? (
+                <p className="text-center text-gray-500 py-4">No sessions recorded yet.</p>
+              ) : (
+                <>
+                  <div className="max-h-[min(28rem,55vh)] overflow-y-auto overflow-x-auto rounded-lg border border-gray-200">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50 sticky top-0 z-10">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Date</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Subject</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Time</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500 min-w-[12rem]">Students</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Present</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Absent</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">You</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Override</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">% Present</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">% Absent</th>
+                          <th className="px-4 py-3 text-center text-xs font-medium uppercase text-gray-500">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200 bg-white">
+                        {sessions.map((s) => {
+                          const st = studentAttendanceStats(s.records);
+                          const roster = sessionRecordsRoster(s.records);
+                          return (
+                            <tr key={s.id}>
+                              <td className="px-4 py-3 text-sm text-gray-900">
+                                {formatSessionDate(s.sessionDate)}
+                              </td>
+                              <td className="px-4 py-3 text-sm text-gray-900">{s.subject?.name}</td>
+                              <td className="px-4 py-3 text-sm text-gray-500">
+                                {s.startTime} - {s.endTime}
+                              </td>
+                              <td className="px-4 py-3 text-xs text-gray-800 max-w-[20rem] align-top">
+                                <div
+                                  className="max-h-28 overflow-y-auto pr-1 whitespace-normal break-words"
+                                  title={roster.title}
+                                >
+                                  {roster.label}
+                                </div>
+                              </td>
+                              <td
+                                className={`px-4 py-3 text-sm tabular-nums ${
+                                  st.present > 0 ? "bg-emerald-100 text-emerald-950" : ""
+                                }`}
+                              >
+                                {st.present}/{st.n}
+                              </td>
+                              <td
+                                className={`px-4 py-3 text-sm tabular-nums ${
+                                  st.absent > 0 ? "bg-red-100 text-red-950" : ""
+                                }`}
+                              >
+                                {st.absent}/{st.n}
+                              </td>
+                              <td className="px-4 py-3 text-sm">
+                                {s.teacherAttendance ? (
+                                  <Badge variant="success">{s.teacherAttendance.status}</Badge>
+                                ) : (
+                                  <Badge variant="danger">Pending</Badge>
+                                )}
+                              </td>
+                              <td className="px-4 py-3">
+                                {s.overrideHoliday && (
+                                  <Badge variant="warning">Holiday Override</Badge>
+                                )}
+                              </td>
+                              <td className="px-4 py-3 text-sm text-right tabular-nums text-gray-900">
+                                {st.pctPres}%
+                              </td>
+                              <td className="px-4 py-3 text-sm text-right tabular-nums text-gray-900">
+                                {st.pctAbs}%
+                              </td>
+                              <td className="px-4 py-3">
+                                <div className="flex items-center justify-center gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => void openEditSession(s.id)}
+                                    className="p-1.5 rounded hover:bg-indigo-50 text-indigo-600"
+                                    title="Edit session"
+                                  >
+                                    <Pencil className="h-4 w-4" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setPendingDeleteSessionId(s.id)}
+                                    className="p-1.5 rounded hover:bg-red-50 text-red-600"
+                                    title="Delete session"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+
+                      {(recentSessionsFooter || sessionsSummary) && (
+                        <tfoot className="bg-gray-50 border-t-2 border-gray-200">
+                          {recentSessionsFooter && (
+                            <tr>
+                              <td colSpan={4} className="px-4 py-3 text-sm font-medium text-gray-700">
+                                Totals (this page)
+                              </td>
+                              <td
+                                className={`px-4 py-3 text-sm tabular-nums ${
+                                  recentSessionsFooter.pageTotals.present > 0
+                                    ? "bg-emerald-100 text-emerald-950"
+                                    : "text-gray-900"
+                                }`}
+                              >
+                                {recentSessionsFooter.pageTotals.present}/
+                                {recentSessionsFooter.pageTotals.records}
+                              </td>
+                              <td
+                                className={`px-4 py-3 text-sm tabular-nums ${
+                                  recentSessionsFooter.pageTotals.absent > 0
+                                    ? "bg-red-100 text-red-950"
+                                    : "text-gray-900"
+                                }`}
+                              >
+                                {recentSessionsFooter.pageTotals.absent}/
+                                {recentSessionsFooter.pageTotals.records}
+                              </td>
+                              <td className="px-4 py-3 text-sm text-gray-400">—</td>
+                              <td className="px-4 py-3 text-sm text-gray-400">—</td>
+                              <td className="px-4 py-3 text-sm text-right font-medium tabular-nums text-gray-900">
+                                {recentSessionsFooter.footerPctPres}%
+                              </td>
+                              <td className="px-4 py-3 text-sm text-right font-medium tabular-nums text-gray-900">
+                                {recentSessionsFooter.footerPctAbs}%
+                              </td>
+                            </tr>
+                          )}
+                          {sessionsSummary && sessionsTotal > 0 && (
+                            <tr className="border-t border-gray-200">
+                              <td colSpan={4} className="px-4 py-3 text-sm font-medium text-gray-700">
+                                Totals (all sessions, this subject and batch)
+                              </td>
+                              <td
+                                className={`px-4 py-3 text-sm tabular-nums ${
+                                  sessionsSummary.presentCount > 0
+                                    ? "bg-emerald-100 text-emerald-950"
+                                    : "text-gray-900"
+                                }`}
+                              >
+                                {sessionsSummary.presentCount}/{sessionsSummary.recordCount}
+                              </td>
+                              <td
+                                className={`px-4 py-3 text-sm tabular-nums ${
+                                  sessionsSummary.absentCount > 0
+                                    ? "bg-red-100 text-red-950"
+                                    : "text-gray-900"
+                                }`}
+                              >
+                                {sessionsSummary.absentCount}/{sessionsSummary.recordCount}
+                              </td>
+                              <td className="px-4 py-3 text-sm text-gray-400">—</td>
+                              <td className="px-4 py-3 text-sm text-gray-400">—</td>
+                              <td className="px-4 py-3 text-sm text-right font-medium tabular-nums text-gray-900">
+                                {sessionsSummary.pctPresent}%
+                              </td>
+                              <td className="px-4 py-3 text-sm text-right font-medium tabular-nums text-gray-900">
+                                {sessionsSummary.pctAbsent}%
+                              </td>
+                            </tr>
+                          )}
+                        </tfoot>
+                      )}
+                    </table>
+                  </div>
+
+                  {sessionsTotal > 0 && (
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-4">
+                      <p className="text-sm text-gray-600">
+                        Page {sessionsPage} of {Math.max(1, Math.ceil(sessionsTotal / 12))}
+                      </p>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={sessionsPage <= 1}
+                          onClick={() => setSessionsPage((p) => Math.max(1, p - 1))}
+                        >
+                          Previous
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={sessionsPage >= Math.ceil(sessionsTotal / 12)}
+                          onClick={() =>
+                            setSessionsPage((p) => (p < Math.ceil(sessionsTotal / 12) ? p + 1 : p))
+                          }
+                        >
+                          Next
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </CardContent>
+          </Card>
         </>
       )}
+
+      {/* ── Edit Session Modal ── */}
+      {loadingEdit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true">
+          <Card className="w-full max-w-sm shadow-xl">
+            <CardContent className="flex items-center gap-3 py-8">
+              <Loader2 className="h-5 w-5 animate-spin text-indigo-600" />
+              <span className="text-sm text-gray-700">Loading session…</span>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {editingSession && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-4 overflow-y-auto" role="dialog" aria-modal="true">
+          <Card className="w-full max-w-2xl my-8 shadow-xl">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-base">Edit Session</CardTitle>
+              <p className="text-xs text-gray-500">
+                {editingSession.subject.name} · {editingSession.batch.name} · {formatSessionDate(editingSession.sessionDate)}
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-4">
+              <div className="grid grid-cols-2 gap-3">
+                <Input
+                  label="Start time"
+                  type="time"
+                  value={editingSession.startTime || ""}
+                  onChange={(e) =>
+                    setEditingSession((prev) =>
+                      prev ? { ...prev, startTime: e.target.value || null } : prev
+                    )
+                  }
+                />
+                <Input
+                  label="End time"
+                  type="time"
+                  value={editingSession.endTime || ""}
+                  onChange={(e) =>
+                    setEditingSession((prev) =>
+                      prev ? { ...prev, endTime: e.target.value || null } : prev
+                    )
+                  }
+                />
+              </div>
+
+              <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-3">
+                <p className="text-sm font-medium text-gray-800 mb-2">Your attendance for this session</p>
+                <div className="flex flex-wrap gap-2">
+                  {["PRESENT", "LATE", "ABSENT"].map((status) => {
+                    const current = editingSession.teacherAttendance?.status ?? "";
+                    const active = current === status || (status === "PRESENT" && current === "EXCUSED");
+                    return (
+                      <button
+                        key={status}
+                        type="button"
+                        onClick={() =>
+                          setEditingSession((prev) =>
+                            prev ? { ...prev, teacherAttendance: { status } } : prev
+                          )
+                        }
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium ${
+                          active ? "bg-indigo-600 text-white" : "bg-white border border-gray-200 text-gray-600"
+                        }`}
+                      >
+                        {STATUS_LABEL[status] ?? status}
+                      </button>
+                    );
+                  })}
+                  {editingSession.teacherAttendance && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setEditingSession((prev) => prev ? { ...prev, teacherAttendance: null } : prev)
+                      }
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium bg-white border border-gray-200 text-gray-500 hover:bg-gray-50"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-medium text-gray-800 mb-2">
+                  Students ({editingSession.records.length})
+                </p>
+                {editingSession.records.length === 0 ? (
+                  <p className="text-xs text-gray-500 italic">No student records on this session.</p>
+                ) : (
+                  <div className="max-h-72 overflow-y-auto rounded border border-gray-200 divide-y divide-gray-100">
+                    {editingSession.records.map((r) => (
+                      <div
+                        key={r.studentId}
+                        className={`flex flex-wrap items-center justify-between gap-2 px-3 py-2 ${
+                          r.status === "ABSENT" ? "bg-red-50" : ""
+                        }`}
+                      >
+                        <span className="text-sm text-gray-900">{r.studentName}</span>
+                        <div className="flex gap-1">
+                          {r.status === "EXCUSED" ? (
+                            <span className="px-2 py-1 rounded text-xs font-medium bg-violet-600 text-white">
+                              Present (Excused)
+                            </span>
+                          ) : (
+                            ["PRESENT", "ABSENT", "LATE"].map((status) => (
+                              <button
+                                key={status}
+                                type="button"
+                                onClick={() =>
+                                  setEditingSession((prev) => {
+                                    if (!prev) return prev;
+                                    return {
+                                      ...prev,
+                                      records: prev.records.map((rec) =>
+                                        rec.studentId === r.studentId ? { ...rec, status } : rec
+                                      ),
+                                    };
+                                  })
+                                }
+                                className={`px-2.5 py-1 rounded text-xs font-medium ${
+                                  r.status === status
+                                    ? status === "PRESENT"
+                                      ? "bg-green-600 text-white"
+                                      : status === "ABSENT"
+                                        ? "bg-red-600 text-white"
+                                        : "bg-yellow-500 text-white"
+                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                }`}
+                              >
+                                {STATUS_LABEL[status] ?? status}
+                              </button>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-gray-100">
+                <Button variant="outline" onClick={() => setEditingSession(null)} disabled={savingEdit}>
+                  Cancel
+                </Button>
+                <Button onClick={() => void saveEditSession()} isLoading={savingEdit}>
+                  Save Changes
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {confirmCleanup && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          role="dialog"
+          aria-modal="true"
+        >
+          <Card className="w-full max-w-sm shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-base text-amber-900">Clean up orphaned attendance?</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-gray-700">
+                There is no student attendance for <strong>{orphans.length}</strong> session
+                {orphans.length !== 1 ? "s" : ""} but teacher attendance is still recorded. Do you
+                want to clean {orphans.length !== 1 ? "them" : "it"} up? This removes the teacher
+                attendance and the now-empty session{orphans.length !== 1 ? "s" : ""}.
+              </p>
+              <div className="flex justify-end gap-2 pt-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setConfirmCleanup(false)}
+                  disabled={cleaningOrphans}
+                >
+                  No, keep
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => void doCleanupOrphans()}
+                  disabled={cleaningOrphans}
+                >
+                  {cleaningOrphans ? "Cleaning up…" : "Yes, clean up"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* ── Delete Session Confirmation ── */}
+      {pendingDeleteSessionId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true">
+          <Card className="w-full max-w-sm shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-base text-red-900">Delete session?</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-gray-700">
+                This will permanently delete the session along with <strong>all student attendance records</strong> and your <strong>teacher self-attendance</strong> for it. This action cannot be undone.
+              </p>
+              <div className="flex justify-end gap-2 pt-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPendingDeleteSessionId(null)}
+                  disabled={deletingSession}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => void confirmDeleteSession()}
+                  isLoading={deletingSession}
+                >
+                  Delete session
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
     </>
   );
 }
