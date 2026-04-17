@@ -488,5 +488,26 @@ export async function saveAttendanceGridCells(params: {
     }
   }
 
+  // ── Cleanup — if a session has no students AND no teacher attendance, it's
+  // entirely empty: drop the session row so the grid stays tidy. Sessions that
+  // still carry a TeacherAttendance row but no students are intentionally left
+  // as "orphans" — they are surfaced via the cleanup-orphans endpoint so the
+  // user (teacher / principal) can decide whether to keep or remove them.
+  for (const sessionId of touchedSessionIds) {
+    const remaining = await db.attendanceRecord.count({
+      where: { attendanceSessionId: sessionId },
+    });
+    if (remaining > 0) continue;
+    const teacherRow = await db.teacherAttendance.findUnique({
+      where: { attendanceSessionId: sessionId },
+      select: { id: true },
+    });
+    if (!teacherRow) {
+      await db.attendanceSession
+        .delete({ where: { id: sessionId } })
+        .catch(() => {/* already gone */});
+    }
+  }
+
   return { updatedStudents: [...studentIds] };
 }

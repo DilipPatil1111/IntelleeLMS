@@ -173,6 +173,20 @@ export function PrincipalAttendanceDashboard({
   const [deletingDupIds, setDeletingDupIds] = useState<Set<string>>(new Set());
   const [dupPanelOpen, setDupPanelOpen] = useState(true);
 
+  type OrphanItem = {
+    sessionId: string;
+    sessionDate: string;
+    startTime: string | null;
+    endTime: string | null;
+    subject: { id: string; name: string };
+    batch: { id: string; name: string; programId: string; programName: string };
+    teacher: { id: string; name: string; status: string };
+  };
+  const [orphans, setOrphans] = useState<OrphanItem[]>([]);
+  const [loadingOrphans, setLoadingOrphans] = useState(false);
+  const [cleaningOrphans, setCleaningOrphans] = useState(false);
+  const [confirmCleanup, setConfirmCleanup] = useState(false);
+
   const batchesFiltered = useMemo(() => {
     if (!programId) return batches;
     return batches.filter((b) => b.programId === programId);
@@ -216,11 +230,43 @@ export function PrincipalAttendanceDashboard({
     if ((j?.duplicateGroups?.length ?? 0) > 0) setDupPanelOpen(true);
   }, [programId, batchId]);
 
+  const loadOrphans = useCallback(async () => {
+    setLoadingOrphans(true);
+    const q = new URLSearchParams();
+    if (programId) q.set("programId", programId);
+    if (batchId) q.set("batchId", batchId);
+    const res = await fetch(`/api/principal/attendance/cleanup-orphans?${q}`);
+    const j = (await res.json().catch(() => null)) as { orphans?: OrphanItem[] } | null;
+    setLoadingOrphans(false);
+    setOrphans(j?.orphans ?? []);
+  }, [programId, batchId]);
+
+  async function doCleanupOrphans() {
+    if (orphans.length === 0) return;
+    setCleaningOrphans(true);
+    const res = await fetch("/api/principal/attendance/cleanup-orphans", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionIds: orphans.map((o) => o.sessionId) }),
+    }).catch(() => null);
+    setCleaningOrphans(false);
+    setConfirmCleanup(false);
+    if (res?.ok) {
+      toast("Orphaned teacher attendance cleaned up.", "success");
+      void loadOrphans();
+      void load();
+      void loadDuplicates();
+    } else {
+      toast("Failed to clean up.", "error");
+    }
+  }
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
     void loadDuplicates();
-  }, [load, loadDuplicates]);
+    void loadOrphans();
+  }, [load, loadDuplicates, loadOrphans]);
 
   useEffect(() => {
     if (!addBatchId || !programId) {
@@ -657,6 +703,102 @@ export function PrincipalAttendanceDashboard({
               </CardContent>
             </Card>
           </div>
+
+          {/* ── Orphaned teacher-attendance cleanup panel ── */}
+          {(orphans.length > 0 || loadingOrphans) && (
+            <div
+              className={`rounded-xl border-2 ${
+                orphans.length > 0 ? "border-amber-300 bg-amber-50" : "border-gray-200 bg-gray-50"
+              } p-4 mb-2`}
+            >
+              <div className="flex items-start gap-3">
+                {loadingOrphans ? (
+                  <Loader2 className="h-5 w-5 text-gray-400 animate-spin shrink-0 mt-0.5" />
+                ) : (
+                  <ShieldAlert className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                )}
+                <div className="flex-1 min-w-0">
+                  {loadingOrphans ? (
+                    <p className="text-sm text-gray-500">
+                      Checking for orphaned teacher attendance…
+                    </p>
+                  ) : (
+                    <>
+                      <div className="flex flex-wrap items-center gap-3 mb-1">
+                        <p className="text-sm font-bold text-amber-900">
+                          {orphans.length} session{orphans.length !== 1 ? "s" : ""} have teacher
+                          attendance but no student attendance
+                        </p>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => setConfirmCleanup(true)}
+                          disabled={cleaningOrphans}
+                        >
+                          {cleaningOrphans
+                            ? "Cleaning up…"
+                            : `Clean up ${orphans.length} session${orphans.length !== 1 ? "s" : ""}`}
+                        </Button>
+                      </div>
+                      <p className="text-xs text-amber-800 mb-3">
+                        There is no student attendance for
+                        {orphans.length !== 1 ? " these sessions" : " this session"} but teacher
+                        attendance is still recorded. Cleaning up removes the teacher attendance
+                        and the now-empty session{orphans.length !== 1 ? "s" : ""}.
+                      </p>
+                      <div className="rounded border border-amber-200 overflow-hidden bg-white">
+                        <table className="w-full text-xs">
+                          <thead className="bg-amber-100">
+                            <tr>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Date
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Program / Batch
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Subject
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Time
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Teacher
+                              </th>
+                              <th className="px-3 py-2 text-left font-semibold text-amber-900">
+                                Status
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-amber-100">
+                            {orphans.map((o) => (
+                              <tr key={o.sessionId}>
+                                <td className="px-3 py-1.5 text-gray-700">
+                                  {new Date(o.sessionDate).toLocaleDateString()}
+                                </td>
+                                <td className="px-3 py-1.5 text-gray-700">
+                                  {o.batch.programName}
+                                  <span className="text-gray-500"> · {o.batch.name}</span>
+                                </td>
+                                <td className="px-3 py-1.5 text-gray-700">{o.subject.name}</td>
+                                <td className="px-3 py-1.5 text-gray-600">
+                                  {o.startTime && o.endTime
+                                    ? `${o.startTime}–${o.endTime}`
+                                    : "—"}
+                                </td>
+                                <td className="px-3 py-1.5 text-gray-800">{o.teacher.name}</td>
+                                <td className="px-3 py-1.5 text-gray-700">{o.teacher.status}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ── Duplicate Sessions Warning Panel ── */}
           {(dupGroups.length > 0 || loadingDups) && (
@@ -1147,6 +1289,46 @@ export function PrincipalAttendanceDashboard({
                 </Button>
                 <Button variant="danger" onClick={() => void confirmDeleteTeacher()}>
                   Remove
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {confirmCleanup && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          role="dialog"
+          aria-modal="true"
+        >
+          <Card className="w-full max-w-sm shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-base text-amber-900">Clean up orphaned attendance?</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-gray-700">
+                There is no student attendance for <strong>{orphans.length}</strong> session
+                {orphans.length !== 1 ? "s" : ""} but teacher attendance is still recorded. Do you
+                want to clean {orphans.length !== 1 ? "them" : "it"} up? This removes the teacher
+                attendance and the now-empty session{orphans.length !== 1 ? "s" : ""}.
+              </p>
+              <div className="flex justify-end gap-2 pt-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setConfirmCleanup(false)}
+                  disabled={cleaningOrphans}
+                >
+                  No, keep
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => void doCleanupOrphans()}
+                  disabled={cleaningOrphans}
+                >
+                  {cleaningOrphans ? "Cleaning up…" : "Yes, clean up"}
                 </Button>
               </div>
             </CardContent>
