@@ -53,7 +53,7 @@ function collegeName(): string {
   return process.env.NEXT_PUBLIC_COLLEGE_NAME?.trim() || "Intellee College";
 }
 
-/** YYYY-MM-DD (UTC) for a Date value — timezone safe. */
+/** YYYY-MM-DD (UTC) — timezone safe. */
 function toYmdUtc(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
@@ -62,9 +62,18 @@ function todayYmdUtc(): string {
   return toYmdUtc(new Date());
 }
 
-/** Pick the later of two YYYY-MM-DD strings. */
+/** Pick the later of two YYYY-MM-DD strings ("" treated as empty). */
 function maxYmd(a: string, b: string): string {
+  if (!a) return b;
+  if (!b) return a;
   return a >= b ? a : b;
+}
+
+/** Pick the earlier of two YYYY-MM-DD strings ("" treated as empty). */
+function minYmd(a: string, b: string): string {
+  if (!a) return b;
+  if (!b) return a;
+  return a <= b ? a : b;
 }
 
 export async function getAttendanceReportData(opts: {
@@ -104,9 +113,9 @@ export async function getAttendanceReportData(opts: {
     },
   });
 
-  // Fallback to the profile's primary batch (same as attendance grid) when
-  // there is no ProgramEnrollment row, so recently-added students are still
-  // reportable.
+  // Batch fallback: when there is no ProgramEnrollment row but the student's
+  // profile batch belongs to the same program, use it so the header + default
+  // period are still populated (matches the attendance recording path).
   let batchName = enrollment?.batch?.name ?? null;
   let batchStartDate: Date | null = enrollment?.batch?.startDate ?? null;
   let batchEndDate: Date | null = enrollment?.batch?.endDate ?? null;
@@ -116,7 +125,6 @@ export async function getAttendanceReportData(opts: {
       where: { id: user.studentProfile.batchId },
       select: { name: true, startDate: true, endDate: true, programId: true },
     });
-    // Only use the profile batch if it belongs to the same program.
     if (fallbackBatch && fallbackBatch.programId === programId) {
       batchName = batchName ?? fallbackBatch.name;
       batchStartDate = fallbackBatch.startDate;
@@ -124,20 +132,19 @@ export async function getAttendanceReportData(opts: {
     }
   }
 
-  const today = todayYmdUtc();
   const batchStartYmd = batchStartDate ? toYmdUtc(batchStartDate) : "";
   const batchEndYmd = batchEndDate ? toYmdUtc(batchEndDate) : "";
 
-  const periodStart = startDate || batchStartYmd || "";
-  // Default end date never hides records added after the planned batch end:
-  // include attendance up to today even when batch.endDate is older.
-  const periodEnd =
-    endDate ||
-    (batchEndYmd ? maxYmd(batchEndYmd, today) : today);
-
+  // Build the Prisma date filter:
+  //   - If the caller passed an explicit startDate / endDate, honor it.
+  //   - Otherwise DO NOT clamp to batch.endDate / today. Historical production
+  //     bug: attendance sessions are allowed to be recorded for dates outside
+  //     the planned batch window (e.g. make-up or future-dated sessions), and
+  //     clamping here silently hid those rows from the report even though the
+  //     student's own attendance page (which does not clamp) listed them.
   const dateFilter: { gte?: Date; lte?: Date } = {};
-  if (periodStart) dateFilter.gte = new Date(`${periodStart}T00:00:00.000Z`);
-  if (periodEnd) dateFilter.lte = new Date(`${periodEnd}T23:59:59.999Z`);
+  if (startDate) dateFilter.gte = new Date(`${startDate}T00:00:00.000Z`);
+  if (endDate) dateFilter.lte = new Date(`${endDate}T23:59:59.999Z`);
 
   const records = await db.attendanceRecord.findMany({
     where: {
@@ -171,6 +178,22 @@ export async function getAttendanceReportData(opts: {
     status: r.status as AttendanceDayRow["status"],
     durationMinutes: slotMinutes(r.session.startTime, r.session.endTime),
   }));
+
+  // Compute the effective period for display:
+  //   - Explicit user input wins.
+  //   - Otherwise use batch dates if available, and widen to actual record
+  //     range so the header reflects what the user sees in the table (e.g.
+  //     attendance posted beyond the planned batch end).
+  const recordMinYmd = rows.length ? rows[0].date : "";
+  const recordMaxYmd = rows.length ? rows[rows.length - 1].date : "";
+  const today = todayYmdUtc();
+
+  const periodStart =
+    startDate || minYmd(batchStartYmd, recordMinYmd) || "";
+  const periodEnd =
+    endDate ||
+    maxYmd(maxYmd(batchEndYmd, today), recordMaxYmd) ||
+    today;
 
   const totalSessions = rows.length;
   const present = rows.filter((r) => r.status === "PRESENT" || r.status === "EXCUSED").length;
