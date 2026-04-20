@@ -84,7 +84,12 @@ export function AdminAttendanceReportClient({ apiPrefix, programsUrl }: Props) {
     }
     const batch = batches.find((b) => b.value === batchId);
     if (batch?.startDate) setStartDate(batch.startDate.slice(0, 10));
-    if (batch?.endDate) setEndDate(batch.endDate.slice(0, 10));
+    if (batch?.endDate) {
+      const batchEnd = batch.endDate.slice(0, 10);
+      const today = new Date().toISOString().slice(0, 10);
+      // Prevent batch.endDate in the past from hiding recent attendance.
+      setEndDate(batchEnd >= today ? batchEnd : today);
+    }
 
     fetch(`${apiPrefix}/attendance-report/students?batchId=${batchId}`)
       .then((r) => r.json())

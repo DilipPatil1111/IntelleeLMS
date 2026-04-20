@@ -53,6 +53,20 @@ function collegeName(): string {
   return process.env.NEXT_PUBLIC_COLLEGE_NAME?.trim() || "Intellee College";
 }
 
+/** YYYY-MM-DD (UTC) for a Date value — timezone safe. */
+function toYmdUtc(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+function todayYmdUtc(): string {
+  return toYmdUtc(new Date());
+}
+
+/** Pick the later of two YYYY-MM-DD strings. */
+function maxYmd(a: string, b: string): string {
+  return a >= b ? a : b;
+}
+
 export async function getAttendanceReportData(opts: {
   studentUserId: string;
   programId: string;
@@ -90,26 +104,47 @@ export async function getAttendanceReportData(opts: {
     },
   });
 
-  const batchId = enrollment?.batchId ?? user.studentProfile?.batchId ?? null;
-  const batchName = enrollment?.batch?.name ?? null;
+  // Fallback to the profile's primary batch (same as attendance grid) when
+  // there is no ProgramEnrollment row, so recently-added students are still
+  // reportable.
+  let batchName = enrollment?.batch?.name ?? null;
+  let batchStartDate: Date | null = enrollment?.batch?.startDate ?? null;
+  let batchEndDate: Date | null = enrollment?.batch?.endDate ?? null;
 
-  const periodStart = startDate || enrollment?.batch?.startDate?.toISOString().slice(0, 10) || "";
-  const periodEnd = endDate || enrollment?.batch?.endDate?.toISOString().slice(0, 10) || new Date().toISOString().slice(0, 10);
-
-  const dateFilter: Record<string, unknown> = {};
-  if (periodStart) dateFilter.gte = new Date(periodStart);
-  if (periodEnd) {
-    const end = new Date(periodEnd);
-    end.setHours(23, 59, 59, 999);
-    dateFilter.lte = end;
+  if (!batchStartDate && !batchEndDate && user.studentProfile?.batchId) {
+    const fallbackBatch = await db.batch.findUnique({
+      where: { id: user.studentProfile.batchId },
+      select: { name: true, startDate: true, endDate: true, programId: true },
+    });
+    // Only use the profile batch if it belongs to the same program.
+    if (fallbackBatch && fallbackBatch.programId === programId) {
+      batchName = batchName ?? fallbackBatch.name;
+      batchStartDate = fallbackBatch.startDate;
+      batchEndDate = fallbackBatch.endDate;
+    }
   }
+
+  const today = todayYmdUtc();
+  const batchStartYmd = batchStartDate ? toYmdUtc(batchStartDate) : "";
+  const batchEndYmd = batchEndDate ? toYmdUtc(batchEndDate) : "";
+
+  const periodStart = startDate || batchStartYmd || "";
+  // Default end date never hides records added after the planned batch end:
+  // include attendance up to today even when batch.endDate is older.
+  const periodEnd =
+    endDate ||
+    (batchEndYmd ? maxYmd(batchEndYmd, today) : today);
+
+  const dateFilter: { gte?: Date; lte?: Date } = {};
+  if (periodStart) dateFilter.gte = new Date(`${periodStart}T00:00:00.000Z`);
+  if (periodEnd) dateFilter.lte = new Date(`${periodEnd}T23:59:59.999Z`);
 
   const records = await db.attendanceRecord.findMany({
     where: {
       studentId: studentUserId,
       session: {
         subject: { programId },
-        ...(Object.keys(dateFilter).length > 0 ? { sessionDate: dateFilter } : {}),
+        ...(dateFilter.gte || dateFilter.lte ? { sessionDate: dateFilter } : {}),
       },
     },
     include: {
@@ -122,11 +157,14 @@ export async function getAttendanceReportData(opts: {
         },
       },
     },
-    orderBy: { session: { sessionDate: "asc" } },
+    orderBy: [
+      { session: { sessionDate: "asc" } },
+      { session: { startTime: "asc" } },
+    ],
   });
 
   const rows: AttendanceDayRow[] = records.map((r) => ({
-    date: r.session.sessionDate.toISOString().slice(0, 10),
+    date: toYmdUtc(r.session.sessionDate),
     subject: r.session.subject?.name ?? "—",
     startTime: r.session.startTime,
     endTime: r.session.endTime,
