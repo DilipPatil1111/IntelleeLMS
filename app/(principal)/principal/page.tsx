@@ -74,6 +74,9 @@ export default async function PrincipalDashboard() {
           },
         },
       },
+      // Newest first so the per-(student, assessment) dedup below keeps the
+      // most recent graded attempt (retakes supersede earlier attempts).
+      orderBy: [{ submittedAt: "desc" }, { updatedAt: "desc" }],
     }),
   ]);
 
@@ -91,14 +94,51 @@ export default async function PrincipalDashboard() {
   const totalFeesExpected = feeTotalAgg._sum.totalAmount ?? 0;
   const pendingFees = Math.max(0, totalFeesExpected - totalFeesReceived);
 
-  const passCount = gradedAttempts.filter((a) => {
+  /**
+   * Per-attempt pass check.
+   * Threshold derives from the assessment's own passingMarks / totalMarks,
+   * falling back to 50% when those aren't configured.
+   */
+  function attemptPassed(a: (typeof gradedAttempts)[number]): boolean {
     const threshold =
       a.assessment.passingMarks && a.assessment.totalMarks > 0
         ? (a.assessment.passingMarks / a.assessment.totalMarks) * 100
         : 50;
     return (a.percentage || 0) >= threshold;
-  }).length;
-  const failCount = gradedAttempts.length - passCount;
+  }
+
+  // ── Student-level pass / fail ────────────────────────────────────────────
+  // A student is "passed" when every assessment they've taken is at or above
+  // its pass threshold on their latest graded attempt. A student is "failed"
+  // when any of their latest attempts is below threshold. Students who have
+  // never been graded are excluded from both counts (and from the denominator
+  // of the pass rate) so the number reflects actual academic standing.
+  //
+  // Retakes: gradedAttempts is ordered newest-first above, so the first row
+  // we see for each (studentId, assessmentId) pair is the current attempt.
+  const latestPerStudentAssessment = new Map<string, boolean>();
+  const studentsSeen = new Set<string>();
+  for (const a of gradedAttempts) {
+    studentsSeen.add(a.studentId);
+    const key = `${a.studentId}|${a.assessmentId}`;
+    if (latestPerStudentAssessment.has(key)) continue;
+    latestPerStudentAssessment.set(key, attemptPassed(a));
+  }
+
+  const perStudentStatus = new Map<string, { allPassed: boolean; anyFailed: boolean }>();
+  for (const [key, passed] of latestPerStudentAssessment.entries()) {
+    const studentId = key.split("|")[0];
+    const existing = perStudentStatus.get(studentId) ?? { allPassed: true, anyFailed: false };
+    if (!passed) {
+      existing.allPassed = false;
+      existing.anyFailed = true;
+    }
+    perStudentStatus.set(studentId, existing);
+  }
+
+  const studentsWithAttempts = studentsSeen.size;
+  const studentsPassed = [...perStudentStatus.values()].filter((s) => s.allPassed).length;
+  const studentsFailed = [...perStudentStatus.values()].filter((s) => s.anyFailed).length;
 
   const subjectStats: Record<
     string,
@@ -149,9 +189,12 @@ export default async function PrincipalDashboard() {
     total: p.total,
   }));
 
+  // Student-level pass rate: share of graded students whose latest attempts
+  // all meet the pass threshold. Denominator excludes students with no
+  // graded attempts so the rate reflects academic standing, not coverage.
   const overallPassRate =
-    gradedAttempts.length > 0
-      ? Math.round((passCount / gradedAttempts.length) * 100)
+    studentsWithAttempts > 0
+      ? Math.round((studentsPassed / studentsWithAttempts) * 100)
       : 0;
 
   const fmtCurrency = (n: number) =>
@@ -242,14 +285,23 @@ export default async function PrincipalDashboard() {
         />
         <StatCard
           title="Total Passed"
-          value={passCount}
-          subtitle={`${overallPassRate}% pass rate`}
+          value={studentsPassed}
+          subtitle={
+            studentsWithAttempts > 0
+              ? `${studentsPassed} of ${studentsWithAttempts} students`
+              : "No graded students yet"
+          }
           icon={<CheckCircle className="h-5 w-5" />}
           variant="emerald"
         />
         <StatCard
           title="Total Failed"
-          value={failCount}
+          value={studentsFailed}
+          subtitle={
+            studentsWithAttempts > 0
+              ? `${studentsFailed} of ${studentsWithAttempts} students`
+              : undefined
+          }
           icon={<XCircle className="h-5 w-5" />}
           variant="rose"
         />
@@ -278,7 +330,11 @@ export default async function PrincipalDashboard() {
         <StatCard
           title="Overall Pass Rate"
           value={`${overallPassRate}%`}
-          subtitle={`${gradedAttempts.length} graded`}
+          subtitle={
+            studentsWithAttempts > 0
+              ? `${studentsPassed}/${studentsWithAttempts} students`
+              : "No graded students yet"
+          }
           icon={<TrendingUp className="h-5 w-5" />}
           variant="indigo"
         />
