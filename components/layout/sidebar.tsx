@@ -14,7 +14,7 @@ import {
   RefreshCcw,
   type LucideIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 interface NavItem {
   label: string;
@@ -113,6 +113,31 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
   const allNavItems = navMap[role.toLowerCase()] || [];
   const navItems = allowedPaths ? allNavItems.filter((item) => allowedPaths.includes(item.href)) : allNavItems;
 
+  // Pick the single most specific nav item that matches the current URL.
+  // Without this, a nested route like "/student/reports/transcript" would
+  // highlight both "My Transcripts" AND its parent "Reports".
+  //
+  // Rules:
+  //  - Exact match beats prefix match.
+  //  - Among prefix matches, the longest href wins.
+  //  - Sub-paths require a trailing "/" so "/student/program" does not match
+  //    "/student/program-content".
+  const activeHref = useMemo(() => {
+    const rootPath = `/${role.toLowerCase()}`;
+    let bestHref: string | null = null;
+    let bestLength = -1;
+    for (const item of navItems) {
+      const matches =
+        pathname === item.href ||
+        (item.href !== rootPath && pathname.startsWith(item.href + "/"));
+      if (matches && item.href.length > bestLength) {
+        bestHref = item.href;
+        bestLength = item.href.length;
+      }
+    }
+    return bestHref;
+  }, [navItems, pathname, role]);
+
   return (
     <aside
       className={cn(
@@ -164,11 +189,7 @@ export function Sidebar({ role, userName, userInitials, profilePicture, allowedP
 
       <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
         {navItems.map((item) => {
-          // Use exact match for root dashboards; for sub-paths require a "/" separator to avoid
-          // "/student/program" matching "/student/program-content" etc.
-          const isActive =
-            pathname === item.href ||
-            (item.href !== `/${role.toLowerCase()}` && pathname.startsWith(item.href + "/"));
+          const isActive = item.href === activeHref;
           return (
             <Link
               key={item.href}
