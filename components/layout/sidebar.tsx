@@ -11,6 +11,7 @@ import {
   Users, Settings, BarChart3, GraduationCap, DollarSign,
   Bell, LogOut, ChevronLeft, ChevronRight, Award, BookMarked, Layers,
   Shield, FolderOpen, Megaphone, MessageSquare, AlertCircle, Archive, Building2, ShieldCheck,
+  RefreshCcw,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -70,6 +71,7 @@ const principalNav: NavItem[] = [
   { label: "Teachers", href: "/principal/teachers", icon: Users },
   { label: "User Management", href: "/principal/users", icon: ShieldCheck },
   { label: "Attendance", href: "/principal/attendance", icon: Calendar },
+  { label: "Attendance Sync", href: "/principal/attendance-sync", icon: RefreshCcw },
   { label: "Full Calendar", href: "/principal/full-calendar", icon: CalendarRange },
   { label: "Program Content", href: "/principal/program-content", icon: Layers },
   { label: "Award Certificates", href: "/principal/award-certificates", icon: Award },
