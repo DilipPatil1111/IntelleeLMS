@@ -75,16 +75,20 @@ export function AdminAttendanceReportClient({ apiPrefix, programsUrl }: Props) {
       .catch(() => setBatches([]));
   }, [programId, apiPrefix]);
 
-  // When batch changes, auto-populate dates from batch start/end
+  // When batch changes, reset the date inputs and the student list. We no
+  // longer pre-populate dates from batch.startDate / batch.endDate — doing so
+  // silently excluded attendance rows whose sessionDate fell outside the
+  // planned batch window (make-up classes, future-dated sessions, etc.).
+  // Leaving dates blank lets the backend return every record for the student +
+  // program, and fills the inputs from the result's actual period range.
   useEffect(() => {
     if (!batchId) {
       setStudents([]);
       setStudentUserId("");
       return;
     }
-    const batch = batches.find((b) => b.value === batchId);
-    if (batch?.startDate) setStartDate(batch.startDate.slice(0, 10));
-    if (batch?.endDate) setEndDate(batch.endDate.slice(0, 10));
+    setStartDate("");
+    setEndDate("");
 
     fetch(`${apiPrefix}/attendance-report/students?batchId=${batchId}`)
       .then((r) => r.json())
