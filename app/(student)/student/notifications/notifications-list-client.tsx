@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Pagination } from "@/components/ui/pagination";
-import { formatDateTime } from "@/lib/utils";
 
 const PAGE_SIZE = 15;
 
@@ -44,20 +43,13 @@ export function NotificationsListClient({ notifications }: Props) {
         {paginated.map((n) => (
           <Card key={n.id} className={n.isRead ? "opacity-60" : ""}>
             <CardContent>
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-gray-900">
-                      {n.title}
-                    </h3>
-                    {!n.isRead && <Badge variant="info">New</Badge>}
-                  </div>
-                  <p className="text-sm text-gray-500 mt-1">{n.message}</p>
-                </div>
-                <p className="text-xs text-gray-400 whitespace-nowrap">
-                  {formatDateTime(n.createdAt)}
-                </p>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-gray-900">
+                  {n.title}
+                </h3>
+                {!n.isRead && <Badge variant="info">New</Badge>}
               </div>
+              <p className="text-sm text-gray-500 mt-1">{n.message}</p>
             </CardContent>
           </Card>
         ))}
