@@ -1,6 +1,7 @@
 import { requireTeacherPortal } from "@/lib/api-auth";
 import { canViewAssessmentResults } from "@/lib/assessment-detailed-results";
 import { db } from "@/lib/db";
+import { parseDateFields } from "@/lib/parse-date";
 import { NextResponse } from "next/server";
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -27,8 +28,32 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (typeof body.totalMarks === "number") data.totalMarks = body.totalMarks;
   if (body.passingMarks !== undefined) data.passingMarks = body.passingMarks === null ? null : Number(body.passingMarks);
   if (body.durationMinutes !== undefined) data.duration = body.durationMinutes === null ? null : Number(body.durationMinutes);
-  if (body.assessmentDate !== undefined) data.assessmentDate = body.assessmentDate ? new Date(body.assessmentDate) : null;
-  if (body.createdAt !== undefined) data.createdAt = body.createdAt ? new Date(body.createdAt) : undefined;
+  // Validate client-supplied dates. Only check fields the caller sent
+  // (PATCH semantics: missing keys aren't modified). A truthy-but-bad value
+  // returns 400 instead of crashing Prisma with "Invalid Date".
+  const dateFields = (["assessmentDate", "createdAt"] as const).filter(
+    (f) => body[f] !== undefined
+  );
+  if (dateFields.length > 0) {
+    const check = parseDateFields(body, dateFields);
+    if (!check.ok) {
+      return NextResponse.json(
+        {
+          error: `The "${check.label}" field has an invalid date. Please pick a valid date and time and try again.`,
+          field: check.field,
+        },
+        { status: 400 }
+      );
+    }
+    if ("assessmentDate" in check.values) {
+      data.assessmentDate = check.values.assessmentDate;
+    }
+    if ("createdAt" in check.values) {
+      // undefined skips the write so an explicit null (clear) isn't mistaken
+      // for "no change"; a null createdAt would violate the required column.
+      data.createdAt = check.values.createdAt ?? undefined;
+    }
+  }
   if (typeof body.subjectId === "string") data.subjectId = body.subjectId;
   if (typeof body.batchId === "string") data.batchId = body.batchId;
 

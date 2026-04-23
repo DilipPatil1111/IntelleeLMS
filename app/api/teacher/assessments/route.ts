@@ -2,6 +2,7 @@ import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
+import { parseDateFields } from "@/lib/parse-date";
 import { Prisma } from "@/app/generated/prisma/client";
 import { NextResponse } from "next/server";
 
@@ -126,6 +127,33 @@ export async function POST(req: Request) {
       }
     }
 
+    // Validate every client-supplied date up front. A truthy-but-unparseable
+    // value (e.g. "2025-8-28T9:0" from older Safari, a half-typed
+    // datetime-local) would otherwise crash Prisma with
+    //   "Provided Date object is invalid. Expected Date."
+    // Return a clear 400 instead so the UI can surface a helpful toast.
+    const dateCheck = parseDateFields(body, [
+      "scheduledOpenAt",
+      "scheduledCloseAt",
+      "assessmentDate",
+      "createdAt",
+    ]);
+    if (!dateCheck.ok) {
+      return NextResponse.json(
+        {
+          error: `The "${dateCheck.label}" field has an invalid date. Please pick a valid date and time and try again.`,
+          field: dateCheck.field,
+        },
+        { status: 400 }
+      );
+    }
+    const {
+      scheduledOpenAt,
+      scheduledCloseAt,
+      assessmentDate,
+      createdAt: createdAtOverride,
+    } = dateCheck.values;
+
     const assessment = await db.assessment.create({
       data: {
         title: body.title,
@@ -138,14 +166,14 @@ export async function POST(req: Request) {
         totalMarks: body.totalMarks || 0,
         passingMarks: body.passingMarks ?? null,
         duration: body.duration ?? null,
-        scheduledOpenAt: body.scheduledOpenAt ? new Date(body.scheduledOpenAt) : null,
-        scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
-        assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
-        createdAt: body.createdAt
-          ? new Date(body.createdAt)
-          : body.assessmentDate
-            ? new Date(body.assessmentDate)
-            : undefined,
+        scheduledOpenAt,
+        scheduledCloseAt,
+        assessmentDate,
+        // If the teacher didn't override createdAt, fall back to
+        // assessmentDate so the quiz appears dated when it was held.
+        // undefined → Prisma uses the schema default (now()); null is not
+        // allowed because createdAt is a required column.
+        createdAt: createdAtOverride ?? assessmentDate ?? undefined,
         instructions: body.instructions || null,
         moduleId: body.moduleNameText?.trim() ? null : body.moduleId || null,
         topicId: body.topicNameText?.trim() ? null : body.topicId || null,
