@@ -2,6 +2,7 @@ import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { syncAssessmentAssignedStudents } from "@/lib/assessment-assigned-students";
 import { isTeacherOwnershipRestricted } from "@/lib/portal-access";
+import { parseDateFields } from "@/lib/parse-date";
 import { NextResponse } from "next/server";
 import type { Session } from "next-auth";
 
@@ -84,6 +85,26 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
   const body = await req.json();
 
+  // Validate every client-supplied date up front — see lib/parse-date.ts.
+  // A truthy-but-unparseable value would otherwise crash Prisma with
+  //   "Provided Date object is invalid. Expected Date."
+  const dateCheck = parseDateFields(body, [
+    "scheduledOpenAt",
+    "scheduledCloseAt",
+    "assessmentDate",
+    "createdAt",
+  ]);
+  if (!dateCheck.ok) {
+    return NextResponse.json(
+      {
+        error: `The "${dateCheck.label}" field has an invalid date. Please pick a valid date and time and try again.`,
+        field: dateCheck.field,
+      },
+      { status: 400 }
+    );
+  }
+  const dates = dateCheck.values;
+
   // Delete existing questions + options, recreate from body
   await db.question.deleteMany({ where: { assessmentId: id } });
 
@@ -99,10 +120,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       duration: body.duration || null,
       subjectId: body.subjectId || undefined,
       batchId: body.batchId || undefined,
-      scheduledOpenAt: body.scheduledOpenAt ? new Date(body.scheduledOpenAt) : null,
-      scheduledCloseAt: body.scheduledCloseAt ? new Date(body.scheduledCloseAt) : null,
-      assessmentDate: body.assessmentDate ? new Date(body.assessmentDate) : null,
-      createdAt: body.createdAt ? new Date(body.createdAt) : undefined,
+      scheduledOpenAt: dates.scheduledOpenAt,
+      scheduledCloseAt: dates.scheduledCloseAt,
+      assessmentDate: dates.assessmentDate,
+      // undefined keeps the existing createdAt column as-is.
+      createdAt: dates.createdAt ?? undefined,
       instructions: body.instructions || null,
       questions: {
         create: (body.questions || []).map((q: Record<string, unknown>, idx: number) => ({

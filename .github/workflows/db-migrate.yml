@@ -1,0 +1,103 @@
+name: DB migrate
+
+# Runs `prisma migrate deploy` against Neon without coupling it to the
+# Vercel build. This keeps deploys resilient when Neon is waking from
+# scale-to-zero (the P1001 issue we hit in Washington iad1) and lets you
+# deploy frontend-only changes even when the DB is unreachable.
+#
+# ── Required GitHub setup ───────────────────────────────────────────────
+# 1. Create two GitHub Environments under  Repo → Settings → Environments:
+#      - "production"   (optional: require reviewer approval)
+#      - "preview"
+# 2. In EACH environment, add a secret named:
+#      MIGRATE_DATABASE_URL
+#    with the *direct* (non-pooled) Postgres URL, e.g.:
+#      postgres://USER:PASS@ep-xxxxx.us-east-1.aws.neon.tech/neondb
+#        ?sslmode=require&connect_timeout=30
+#    Use the direct URL (port 5432), NOT the pgbouncer pooled one — Prisma
+#    migrations require a real Postgres connection.
+#
+# ── When this runs ──────────────────────────────────────────────────────
+#   - Push to `main` that touches prisma/migrations/ or schema.prisma
+#       → migrates the "production" environment.
+#   - Push to `dev` that touches prisma/migrations/ or schema.prisma
+#       → migrates the "preview" environment.
+#   - Manually via  Actions → DB migrate → Run workflow  (pick env + branch).
+#
+# ── Safety properties ───────────────────────────────────────────────────
+#   - Path-filtered: frontend-only commits don't run migrations at all.
+#   - Concurrency-gated: only one migration job per environment at a time.
+#   - `prisma migrate deploy` is idempotent — re-running is safe; already
+#     applied migrations are skipped.
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - "prisma/migrations/**"
+      - "prisma/schema.prisma"
+      - ".github/workflows/db-migrate.yml"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        type: environment
+        required: true
+
+jobs:
+  migrate:
+    name: Apply migrations
+    runs-on: ubuntu-latest
+    # Picks the GitHub Environment:
+    #   - workflow_dispatch → whichever env the user chose
+    #   - push to main     → "production"
+    #   - push to dev      → "preview"
+    environment:
+      name: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'preview') }}
+    concurrency:
+      # Serialize per target environment so two pushes can't race on the
+      # same database (Prisma acquires a table-level lock, but this makes
+      # failures clearer when they do happen).
+      group: db-migrate-${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+      cancel-in-progress: false
+    env:
+      # Prisma reads DATABASE_URL at runtime. Feeding it the *direct* URL
+      # here is intentional; migrations must not go through pgbouncer.
+      DATABASE_URL: ${{ secrets.MIGRATE_DATABASE_URL }}
+      DIRECT_URL: ${{ secrets.MIGRATE_DATABASE_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify DB secret is present
+        run: |
+          if [ -z "${DATABASE_URL}" ]; then
+            echo "::error::MIGRATE_DATABASE_URL is not set for this environment."
+            echo "Add it under: Repo → Settings → Environments → <env> → Secrets."
+            exit 1
+          fi
+
+      - name: Prisma generate
+        run: npx prisma generate
+
+      - name: Prisma migrate deploy
+        run: npx prisma migrate deploy
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### DB migrate: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Ref: \`${{ github.ref }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
