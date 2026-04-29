@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDateTime } from "@/lib/utils";
+import { effectiveAssessmentDateForDisplay, formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 const PAGE_SIZE = 10;
@@ -14,11 +14,16 @@ const PAGE_SIZE = 10;
 type AttemptRow = {
   id: string;
   status: string;
-  submittedAt: Date | string | null;
   totalScore: number | null;
   percentage: number | null;
   student: { firstName: string; lastName: string };
-  assessment: { title: string; totalMarks: number; subject: { name: string } | null };
+  assessment: {
+    title: string;
+    totalMarks: number;
+    subject: { name: string } | null;
+    assessmentDate: string | null;
+    createdAt: string;
+  };
 };
 
 export function TeacherGradingQueueClient() {
@@ -77,8 +82,13 @@ export function TeacherGradingQueueClient() {
                         <Badge variant={attempt.status === "GRADED" ? "success" : "warning"}>{attempt.status}</Badge>
                       </div>
                       <p className="text-xs text-gray-500">
-                        {attempt.assessment.title} — {attempt.assessment.subject?.name}
-                        {attempt.submittedAt && ` — Submitted ${formatDateTime(attempt.submittedAt)}`}
+                        {attempt.assessment.title} — {attempt.assessment.subject?.name} — Assessment date{" "}
+                        {formatDate(
+                          effectiveAssessmentDateForDisplay(
+                            attempt.assessment.assessmentDate,
+                            attempt.assessment.createdAt
+                          )
+                        )}
                       </p>
                       {attempt.totalScore !== null && (
                         <p className="mt-1 text-xs text-gray-500">

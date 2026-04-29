@@ -27,8 +27,16 @@ name: DB migrate
 # ── Safety properties ───────────────────────────────────────────────────
 #   - Path-filtered: frontend-only commits don't run migrations at all.
 #   - Concurrency-gated: only one migration job per environment at a time.
-#   - `prisma migrate deploy` is idempotent — re-running is safe; already
-#     applied migrations are skipped.
+#   - `prisma migrate deploy` applies pending migrations only. It does NOT
+#     reset the database, drop all data, or run seed scripts — unlike
+#     `prisma migrate reset` (never use reset against production).
+#   - Production-only: before deploy to production, a script fails the job
+#     if any migration.sql contains DROP DATABASE, TRUNCATE, or DROP SCHEMA …
+#     CASCADE. Normal production work uses UPDATE / ALTER ADD / CREATE INDEX,
+#     etc. Review PRs for DROP TABLE or DELETE without WHERE — those are not
+#     auto-blocked but remove data; avoid unless explicitly intended.
+#   - Idempotent: re-running deploy is safe; already-applied migrations are
+#     skipped.
 
 on:
   push:
@@ -72,10 +80,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Prisma 7 pulls @prisma/streams-local, which declares node >= 22.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -91,6 +100,12 @@ jobs:
 
       - name: Prisma generate
         run: npx prisma generate
+
+      - name: Verify migrations are non-destructive (production only)
+        if: |
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          (github.event_name == 'workflow_dispatch' && inputs.environment == 'production')
+        run: bash scripts/verify-migrations-non-destructive.sh
 
       - name: Prisma migrate deploy
         run: npx prisma migrate deploy

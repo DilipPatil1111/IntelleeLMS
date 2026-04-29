@@ -11,7 +11,7 @@ import { Select } from "@/components/ui/select";
 import { ToastContainer } from "@/components/ui/toast-container";
 import { useToast } from "@/hooks/use-toast";
 import type { AssessmentResultsReportData, DropdownOption } from "@/lib/assessment-detailed-results";
-import { formatDateTime } from "@/lib/utils";
+import { effectiveAssessmentDateForDisplay, formatDateTime } from "@/lib/utils";
 import { ArrowLeft, Download, Loader2, Pencil, Save, X } from "lucide-react";
 
 type Role = "teacher" | "principal" | "student";
@@ -32,14 +32,6 @@ function toDateTimeLocal(iso: string | null | undefined): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-function toDateInput(iso: string | null | undefined): string {
-  if (!iso) return "";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "";
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
-
 type EditableFields = {
   title: string;
   type: string;
@@ -48,8 +40,8 @@ type EditableFields = {
   totalMarks: string;
   passingMarks: string;
   durationMinutes: string;
-  assessmentDate: string;
-  createdAt: string;
+  /** Principal-only: datetime-local for assessment date (syncs createdAt on server). */
+  assessmentDateTime: string;
 };
 
 export function AssessmentResultsClient({
@@ -101,6 +93,8 @@ export function AssessmentResultsClient({
   function startEditing() {
     if (!data) return;
     const a = data.assessment;
+    const displayRaw = effectiveAssessmentDateForDisplay(a.assessmentDate, a.createdAt);
+    const displayIso = typeof displayRaw === "string" ? displayRaw : displayRaw.toISOString();
     setEditForm({
       title: a.title,
       type: a.type,
@@ -109,8 +103,7 @@ export function AssessmentResultsClient({
       totalMarks: String(a.totalMarks),
       passingMarks: a.passingMarks != null ? String(a.passingMarks) : "",
       durationMinutes: a.durationMinutes != null ? String(a.durationMinutes) : "",
-      assessmentDate: toDateInput(a.assessmentDate),
-      createdAt: toDateTimeLocal(a.createdAt),
+      assessmentDateTime: role === "principal" ? toDateTimeLocal(displayIso) : "",
     });
     setEditing(true);
   }
@@ -124,16 +117,6 @@ export function AssessmentResultsClient({
     if (!editForm || !data) return;
     setSaving(true);
 
-    let assessmentDateISO: string | null = null;
-    if (editForm.assessmentDate) {
-      assessmentDateISO = new Date(editForm.assessmentDate + "T12:00:00").toISOString();
-    }
-
-    let createdAtISO: string | null = null;
-    if (editForm.createdAt) {
-      createdAtISO = new Date(editForm.createdAt).toISOString();
-    }
-
     const payload: Record<string, unknown> = {
       title: editForm.title,
       type: editForm.type,
@@ -142,9 +125,10 @@ export function AssessmentResultsClient({
       totalMarks: parseFloat(editForm.totalMarks) || 0,
       passingMarks: editForm.passingMarks ? parseFloat(editForm.passingMarks) : null,
       durationMinutes: editForm.durationMinutes ? parseInt(editForm.durationMinutes, 10) : null,
-      assessmentDate: assessmentDateISO,
-      createdAt: createdAtISO,
     };
+    if (role === "principal" && editForm.assessmentDateTime) {
+      payload.assessmentDate = new Date(editForm.assessmentDateTime).toISOString();
+    }
 
     try {
       const res = await fetch(`/api/${apiPrefix}/assessments/${assessmentId}/results-meta`, {
@@ -331,18 +315,14 @@ export function AssessmentResultsClient({
                 onChange={(e) => updateField("durationMinutes", e.target.value)}
                 placeholder="Leave empty for unlimited"
               />
-              <Input
-                label="Assessment Date"
-                type="date"
-                value={editForm.assessmentDate}
-                onChange={(e) => updateField("assessmentDate", e.target.value)}
-              />
-              <Input
-                label="Created Date"
-                type="datetime-local"
-                value={editForm.createdAt}
-                onChange={(e) => updateField("createdAt", e.target.value)}
-              />
+              {role === "principal" && (
+                <Input
+                  label="Assessment date"
+                  type="datetime-local"
+                  value={editForm.assessmentDateTime}
+                  onChange={(e) => updateField("assessmentDateTime", e.target.value)}
+                />
+              )}
             </div>
           ) : (
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
@@ -378,11 +358,11 @@ export function AssessmentResultsClient({
               </div>
               <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
                 <dt className="text-gray-500">Assessment date</dt>
-                <dd>{assessment.assessmentDate ? formatDateTime(assessment.assessmentDate) : "—"}</dd>
-              </div>
-              <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
-                <dt className="text-gray-500">Created</dt>
-                <dd>{formatDateTime(assessment.createdAt)}</dd>
+                <dd>
+                  {formatDateTime(
+                    effectiveAssessmentDateForDisplay(assessment.assessmentDate, assessment.createdAt)
+                  )}
+                </dd>
               </div>
               <div className="flex justify-between gap-2 border-b border-gray-100 py-1">
                 <dt className="text-gray-500">Teacher</dt>
@@ -420,11 +400,6 @@ export function AssessmentResultsClient({
                     </span>
                   </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Started {formatDateTime(s.startedAt)}
-                  {s.submittedAt && <> — Submitted {formatDateTime(s.submittedAt)}</>}
-                  {s.durationMinutes != null && <> — Duration {s.durationMinutes} min</>}
-                </p>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">

@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDate, formatDateTime } from "@/lib/utils";
+import { formatDate, formatDateTime, effectiveAssessmentDateForDisplay } from "@/lib/utils";
 import Link from "next/link";
 import { CopyLinkButton } from "./copy-link-button";
 import { AssessmentActions } from "./assessment-actions";
@@ -94,7 +94,7 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
               <div className="flex justify-between"><dt className="text-gray-500">Duration</dt><dd>{assessment.duration ? `${assessment.duration} min` : "Unlimited"}</dd></div>
               <div className="flex justify-between"><dt className="text-gray-500">Questions</dt><dd>{assessment.questions.length}</dd></div>
               <div className="flex justify-between"><dt className="text-gray-500">Link Token</dt><dd className="text-xs font-mono truncate max-w-[120px]">{assessment.linkToken}</dd></div>
-              {assessment.assessmentDate && <div className="flex justify-between"><dt className="text-gray-500">Date</dt><dd>{formatDate(assessment.assessmentDate)}</dd></div>}
+              <div className="flex justify-between"><dt className="text-gray-500">Assessment date</dt><dd>{formatDate(effectiveAssessmentDateForDisplay(assessment.assessmentDate, assessment.createdAt))}</dd></div>
               {assessment.scheduledOpenAt && <div className="flex justify-between"><dt className="text-gray-500">Opens</dt><dd>{formatDateTime(assessment.scheduledOpenAt)}</dd></div>}
               {assessment.scheduledCloseAt && <div className="flex justify-between"><dt className="text-gray-500">Closes</dt><dd>{formatDateTime(assessment.scheduledCloseAt)}</dd></div>}
             </dl>
@@ -148,7 +148,6 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
               totalScore: a.totalScore,
               totalMarks: assessment.totalMarks,
               percentage: a.percentage,
-              submittedAt: a.submittedAt?.toISOString() ?? null,
             }))}
           />
         </CardContent>

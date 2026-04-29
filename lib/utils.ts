@@ -23,6 +23,21 @@ export function formatDateTime(date: Date | string) {
   });
 }
 
+/**
+ * Prefer explicit `assessmentDate` when set; otherwise use `createdAt` (legacy
+ * rows or records created before assessmentDate was captured).
+ */
+export function effectiveAssessmentDateForDisplay(
+  assessmentDate: Date | string | null | undefined,
+  createdAt: Date | string
+): Date | string {
+  if (assessmentDate != null && assessmentDate !== "") {
+    const d = assessmentDate instanceof Date ? assessmentDate : new Date(assessmentDate);
+    if (Number.isFinite(d.getTime())) return assessmentDate;
+  }
+  return createdAt;
+}
+
 export function generateToken() {
   return crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
 }

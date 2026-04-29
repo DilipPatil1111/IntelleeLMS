@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Pagination } from "@/components/ui/pagination";
-import { formatDate } from "@/lib/utils";
+import { effectiveAssessmentDateForDisplay, formatDate } from "@/lib/utils";
 
 const PAGE_SIZE = 10;
 
@@ -14,14 +14,14 @@ type Attempt = {
   totalScore: number | null;
   percentage: number | null;
   feedback: string | null;
-  submittedAt: string | null;
-  createdAt: string;
   assessment: {
     title: string;
     type: string;
     totalMarks: number;
     passingMarks: number | null;
     subject: { name: string } | null;
+    assessmentDate: string | null;
+    createdAt: string;
   };
 };
 
@@ -57,9 +57,13 @@ export function ResultsListClient({ attempts }: Props) {
                     {attempt.assessment.title}
                   </h3>
                   <p className="text-sm text-gray-500">
-                    {attempt.assessment.subject?.name} —{" "}
-                    {attempt.assessment.type} —{" "}
-                    {formatDate(attempt.submittedAt || attempt.createdAt)}
+                    {attempt.assessment.subject?.name} — {attempt.assessment.type} — Assessment date{" "}
+                    {formatDate(
+                      effectiveAssessmentDateForDisplay(
+                        attempt.assessment.assessmentDate,
+                        attempt.assessment.createdAt
+                      )
+                    )}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
