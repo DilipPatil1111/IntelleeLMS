@@ -40,13 +40,19 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         { status: 400 }
       );
     }
-    if ("assessmentDate" in check.values) {
-      data.assessmentDate = check.values.assessmentDate;
-    }
-    if ("createdAt" in check.values) {
-      // undefined skips the write; a null createdAt would violate the
-      // required column, so treat "cleared" the same as "unchanged".
-      data.createdAt = check.values.createdAt ?? undefined;
+    // One logical "assessment date" for reports: keep both columns in sync so
+    // listings and PDFs stay consistent when the principal backdates or moves
+    // the date forward.
+    const fromAssessment =
+      "assessmentDate" in check.values && check.values.assessmentDate != null
+        ? check.values.assessmentDate
+        : null;
+    const fromCreated =
+      "createdAt" in check.values && check.values.createdAt != null ? check.values.createdAt : null;
+    const sync = fromAssessment ?? fromCreated;
+    if (sync != null) {
+      data.assessmentDate = sync;
+      data.createdAt = sync;
     }
   }
   if (typeof body.subjectId === "string") data.subjectId = body.subjectId;

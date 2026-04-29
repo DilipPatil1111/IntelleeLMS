@@ -1,5 +1,6 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { AssessmentResultsReportData } from "@/lib/assessment-detailed-results";
+import { effectiveAssessmentDateForDisplay } from "@/lib/utils";
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 9, fontFamily: "Helvetica" },
@@ -90,12 +91,12 @@ export function AssessmentResultsPdf({ data }: { data: AssessmentResultsReportDa
           <View style={styles.metaRow}>
             <Text style={styles.metaLabel}>Assessment date</Text>
             <Text style={styles.metaValue}>
-              {assessment.assessmentDate ? fmt(assessment.assessmentDate) : "—"}
+              {fmt(
+                String(
+                  effectiveAssessmentDateForDisplay(assessment.assessmentDate, assessment.createdAt)
+                )
+              )}
             </Text>
-          </View>
-          <View style={styles.metaRow}>
-            <Text style={styles.metaLabel}>Created</Text>
-            <Text style={styles.metaValue}>{fmt(assessment.createdAt)}</Text>
           </View>
           <View style={styles.metaRow}>
             <Text style={styles.metaLabel}>Teacher (creator)</Text>

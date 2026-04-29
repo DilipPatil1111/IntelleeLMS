@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { formatDate } from "@/lib/utils";
+import { effectiveAssessmentDateForDisplay, formatDate } from "@/lib/utils";
 import Link from "next/link";
 import { FileBarChart } from "lucide-react";
 
@@ -21,6 +21,7 @@ interface AssessmentRow {
   status: AssessmentStatus;
   totalMarks: number;
   createdAt: string;
+  assessmentDate: string | null;
   subject: { name: string };
   batch: { name: string; program: { name: string }; programId: string };
   _count: { questions: number; attempts: number };
@@ -223,7 +224,8 @@ export function TeacherAssessmentsClient() {
                       {a.totalMarks} marks
                     </p>
                     <p className="mt-1 text-xs text-gray-400">
-                      Created {formatDate(a.createdAt)} — {a._count.attempts} submissions
+                      Assessment date {formatDate(effectiveAssessmentDateForDisplay(a.assessmentDate, a.createdAt))} —{" "}
+                      {a._count.attempts} submissions
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">

@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { formatDate } from "@/lib/utils";
+import { effectiveAssessmentDateForDisplay, formatDate } from "@/lib/utils";
 import { FileBarChart } from "lucide-react";
 
 type AssessmentType = "QUIZ" | "TEST" | "ASSIGNMENT" | "PROJECT" | "HOMEWORK";
@@ -21,6 +21,7 @@ interface AssessmentRow {
   status: AssessmentStatus;
   totalMarks: number;
   createdAt: string;
+  assessmentDate: string | null;
   subject: { name: string };
   batch: { name: string; program: { name: string } };
   creator: { id: string; firstName: string; lastName: string; email: string };
@@ -193,8 +194,8 @@ export function PrincipalAssessmentsClient() {
                       {a.subject?.name} — {a.batch?.program?.name} — {a.batch?.name}
                     </p>
                     <p className="text-xs text-gray-400">
-                      {a._count.questions} questions — {a.totalMarks} marks — {a._count.attempts} submissions — Created{" "}
-                      {formatDate(a.createdAt)}
+                      {a._count.questions} questions — {a.totalMarks} marks — {a._count.attempts} submissions — Assessment date{" "}
+                      {formatDate(effectiveAssessmentDateForDisplay(a.assessmentDate, a.createdAt))}
                       {a.creator && (
                         <>
                           {" "}

@@ -92,7 +92,6 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     "scheduledOpenAt",
     "scheduledCloseAt",
     "assessmentDate",
-    "createdAt",
   ]);
   if (!dateCheck.ok) {
     return NextResponse.json(
@@ -123,8 +122,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       scheduledOpenAt: dates.scheduledOpenAt,
       scheduledCloseAt: dates.scheduledCloseAt,
       assessmentDate: dates.assessmentDate,
-      // undefined keeps the existing createdAt column as-is.
-      createdAt: dates.createdAt ?? undefined,
+      // Keep record date aligned with the assessment calendar date when set.
+      ...(dates.assessmentDate != null ? { createdAt: dates.assessmentDate } : {}),
       instructions: body.instructions || null,
       questions: {
         create: (body.questions || []).map((q: Record<string, unknown>, idx: number) => ({
