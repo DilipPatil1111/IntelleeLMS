@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
-import { formatDate } from "@/lib/utils";
+import { effectiveAssessmentDateForDisplay, formatDate } from "@/lib/utils";
 import Link from "next/link";
 import {
   CheckCircle, Clock, BookOpen, TrendingUp, FileText,
@@ -24,6 +24,8 @@ type Assessment = {
   totalMarks: number;
   passingMarks: number | null;
   scheduledCloseAt: Date | null;
+  assessmentDate: string | Date | null;
+  createdAt: string | Date;
   subject: { name: string } | null;
   batch: { program: { id: string; name: string } | null } | null;
   attempts: { id: string; status: string; submittedAt: Date | null; totalScore: number | null; percentage: number | null }[];
@@ -121,7 +123,8 @@ export function AssessmentsListClient({ pending, historyByProgram, retakeStatuse
                           <p className="text-sm text-gray-500">
                             {assessment.subject?.name}
                             {assessment.batch?.program && <> · {assessment.batch.program.name}</>}
-                            {" "}— {assessment._count.questions} questions — {assessment.totalMarks} marks
+                            {" "}— {assessment._count.questions} questions — {assessment.totalMarks} marks — Assessment date{" "}
+                            {formatDate(effectiveAssessmentDateForDisplay(assessment.assessmentDate, assessment.createdAt))}
                           </p>
                           {assessment.scheduledCloseAt && (
                             <p className="text-xs text-amber-600 mt-1 flex items-center gap-1">
@@ -215,8 +218,8 @@ export function AssessmentsListClient({ pending, historyByProgram, retakeStatuse
                                 )}
                               </div>
                               <p className="text-xs text-gray-500">
-                                {assessment.subject?.name} — {assessment._count.questions} questions — {assessment.totalMarks} marks
-                                {attempt?.submittedAt && <> · Submitted {formatDate(attempt.submittedAt)}</>}
+                                {assessment.subject?.name} — {assessment._count.questions} questions — {assessment.totalMarks} marks — Assessment date{" "}
+                                {formatDate(effectiveAssessmentDateForDisplay(assessment.assessmentDate, assessment.createdAt))}
                               </p>
                             </div>
                             <div className="flex items-center gap-3 flex-shrink-0">

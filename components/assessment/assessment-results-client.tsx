@@ -400,11 +400,6 @@ export function AssessmentResultsClient({
                     </span>
                   </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Started {formatDateTime(s.startedAt)}
-                  {s.submittedAt && <> — Submitted {formatDateTime(s.submittedAt)}</>}
-                  {s.durationMinutes != null && <> — Duration {s.durationMinutes} min</>}
-                </p>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">

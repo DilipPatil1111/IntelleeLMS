@@ -13,7 +13,6 @@ interface Attempt {
   totalScore: number | null;
   totalMarks: number;
   percentage: number | null;
-  submittedAt: string | null;
 }
 
 export function SubmissionsTableClient({ attempts }: { attempts: Attempt[] }) {
@@ -34,7 +33,6 @@ export function SubmissionsTableClient({ attempts }: { attempts: Attempt[] }) {
               <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Student</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Status</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Score</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Submitted</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -49,11 +47,6 @@ export function SubmissionsTableClient({ attempts }: { attempts: Attempt[] }) {
                 <td className="px-4 py-3 text-sm">
                   {attempt.totalScore !== null
                     ? `${attempt.totalScore}/${attempt.totalMarks} (${attempt.percentage}%)`
-                    : "\u2014"}
-                </td>
-                <td className="px-4 py-3 text-sm text-gray-500">
-                  {attempt.submittedAt
-                    ? new Date(attempt.submittedAt).toLocaleString()
                     : "\u2014"}
                 </td>
               </tr>

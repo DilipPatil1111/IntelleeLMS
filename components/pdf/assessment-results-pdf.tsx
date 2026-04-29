@@ -146,8 +146,12 @@ export function AssessmentResultsPdf({ data }: { data: AssessmentResultsReportDa
           <View style={styles.studentBlock}>
             <Text style={styles.studentName}>{s.studentName}</Text>
             <Text style={{ marginBottom: 2 }}>
-              Enrollment: {s.enrollmentNo || "—"} | Started: {fmt(s.startedAt)} | Submitted:{" "}
-              {s.submittedAt ? fmt(s.submittedAt) : "—"}
+              Enrollment: {s.enrollmentNo || "—"} | Assessment date:{" "}
+              {fmt(
+                String(
+                  effectiveAssessmentDateForDisplay(assessment.assessmentDate, assessment.createdAt)
+                )
+              )}
             </Text>
             <Text style={{ marginBottom: 2 }}>
               Time spent: {s.durationMinutes != null ? `${s.durationMinutes} min` : "—"} | Status: {s.attemptStatus}

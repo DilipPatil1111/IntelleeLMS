@@ -7,7 +7,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, ClipboardList, Calendar, Award } from "lucide-react";
-import { formatDate } from "@/lib/utils";
+import { effectiveAssessmentDateForDisplay, formatDate } from "@/lib/utils";
 import { slotDurationMinutes } from "@/lib/program-calendar-hours";
 import Link from "next/link";
 import { StudentJourneyProgress } from "@/components/student/student-journey-progress";
@@ -193,8 +193,13 @@ export default async function StudentDashboard() {
                         {attempt.assessment.title}
                       </p>
                       <p className="text-xs text-gray-500">
-                        {attempt.assessment.subject?.name} —{" "}
-                        {formatDate(attempt.createdAt)}
+                        {attempt.assessment.subject?.name} — Assessment date{" "}
+                        {formatDate(
+                          effectiveAssessmentDateForDisplay(
+                            attempt.assessment.assessmentDate,
+                            attempt.assessment.createdAt
+                          )
+                        )}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">

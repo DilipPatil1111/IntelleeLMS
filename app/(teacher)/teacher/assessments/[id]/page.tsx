@@ -148,7 +148,6 @@ export default async function AssessmentDetailPage({ params }: { params: Promise
               totalScore: a.totalScore,
               totalMarks: assessment.totalMarks,
               percentage: a.percentage,
-              submittedAt: a.submittedAt?.toISOString() ?? null,
             }))}
           />
         </CardContent>
