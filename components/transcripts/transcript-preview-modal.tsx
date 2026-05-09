@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { X, Download } from "lucide-react";
-import Image from "next/image";
 import type { TranscriptInstitutionBranding } from "@/lib/transcript-institution";
 import { transcriptInstitutionFromProfile } from "@/lib/transcript-institution";
 import {
@@ -179,31 +178,17 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
         ) : (
           /* ── Printable transcript body ── */
           <div className="px-10 py-8 font-sans text-gray-900">
-            {/* ── HEADER: logo left, college name center, address right ── */}
-            <div className="flex items-center justify-between gap-4 mb-1">
-              {/* Logo — height matches the college name text block (~56px) */}
-              <div className="flex-shrink-0 flex items-center">
-                {inst.logoUrl ? (
-                  <Image
-                    src={inst.logoUrl}
-                    alt={collegeName}
-                    width={240}
-                    height={56}
-                    style={{ height: "56px", width: "auto", objectFit: "contain" }}
-                    unoptimized
-                  />
-                ) : (
-                  <div className="h-14 w-14 rounded-full bg-indigo-100 flex items-center justify-center">
-                    <span className="text-indigo-700 font-extrabold text-2xl">
-                      {collegeName.charAt(0)}
-                    </span>
-                  </div>
-                )}
-              </div>
+            {/* ── HEADER: college name + title center, address right ── */}
+            <div className="flex items-start justify-between gap-4 mb-1">
+              {/* Spacer to keep title centered against the right address block */}
+              <div className="flex-shrink-0 w-[220px]" aria-hidden />
 
-              {/* Report title */}
+              {/* College name + report title */}
               <div className="flex-1 text-center">
-                <p className="text-lg font-extrabold text-indigo-900 uppercase tracking-widest leading-tight">
+                <p className="text-3xl font-extrabold text-indigo-900 leading-tight">
+                  {collegeName}
+                </p>
+                <p className="text-sm font-bold text-indigo-900 uppercase tracking-widest mt-1">
                   Transcript of Academic Record
                 </p>
               </div>

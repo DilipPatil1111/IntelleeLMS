@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { TranscriptWithDetails } from "@/lib/transcript";
 import type { TranscriptInstitutionBranding } from "@/lib/transcript-institution";
 import { transcriptInstitutionFromProfile } from "@/lib/transcript-institution";
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   logoPlaceholder: { width: 40, height: 40, backgroundColor: "#e0e7ff", borderRadius: 20, alignItems: "center", justifyContent: "center" },
   logoInitial: { fontSize: 20, fontWeight: "bold", color: INDIGO },
   headerCenter: { flex: 1, alignItems: "center" },
-  collegeName: { fontSize: 16, fontWeight: "bold", color: INDIGO, textAlign: "center" },
+  collegeName: { fontSize: 22, fontWeight: "bold", color: INDIGO, textAlign: "center", marginBottom: 2 },
   reportTitle: { fontSize: 11, color: INDIGO, fontWeight: "bold", letterSpacing: 1.2, textAlign: "center", textTransform: "uppercase" },
   headerRight: { flexShrink: 0, alignItems: "flex-end", maxWidth: 160 },
   addressLine: { fontSize: 7, color: GRAY_MED, textAlign: "right", lineHeight: 1.6 },
@@ -143,7 +143,6 @@ export function TranscriptPdf({
 
   const inst = institution;
   const collegeName = inst.name || process.env.NEXT_PUBLIC_COLLEGE_NAME || "Intellee College";
-  const collegeInitial = collegeName.charAt(0).toUpperCase();
 
   const dateOfIssue = transcript.publishedAt
     ? fmt(transcript.publishedAt)
@@ -160,22 +159,9 @@ export function TranscriptPdf({
       <Page size="A4" style={styles.page}>
         {/* ── HEADER ── */}
         <View style={styles.headerRow}>
-          {/* Logo */}
-          <View style={styles.logoBox}>
-            {inst.logoUrl ? (
-              <Image
-                src={inst.logoUrl}
-                style={{ width: 120, height: 40, objectFit: "contain" }}
-              />
-            ) : (
-              <View style={styles.logoPlaceholder}>
-                <Text style={styles.logoInitial}>{collegeInitial}</Text>
-              </View>
-            )}
-          </View>
-
-          {/* Centre: report title */}
+          {/* Centre: college name + report title */}
           <View style={styles.headerCenter}>
+            <Text style={styles.collegeName}>{collegeName}</Text>
             <Text style={styles.reportTitle}>Transcript of Academic Record</Text>
           </View>
 
