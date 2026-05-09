@@ -1,13 +1,13 @@
 import { db } from "@/lib/db";
+import { finalPct } from "@/lib/transcript-grade";
 
-export type GradeBandRow = {
-  id: string;
-  label: string;
-  minPercent: number;
-  maxPercent: number;
-  gradePoint: number | null;
-  sortOrder: number;
-};
+export type { GradeBandRow } from "@/lib/transcript-grade";
+export {
+  DEFAULT_TRANSCRIPT_GRADE_BANDS,
+  resolveGrade,
+  finalPct,
+  transcriptSubjectGrade,
+} from "@/lib/transcript-grade";
 
 export type TranscriptSubjectInput = {
   id?: string;
@@ -18,20 +18,6 @@ export type TranscriptSubjectInput = {
   manualMarksPct?: number | null;
   sortOrder?: number;
 };
-
-/** Resolve grade label from configured bands for a given percentage. */
-export function resolveGrade(pct: number | null | undefined, bands: GradeBandRow[]): string {
-  if (pct == null) return "—";
-  const sorted = [...bands].sort((a, b) => b.minPercent - a.minPercent);
-  const match = sorted.find((b) => pct >= b.minPercent && pct <= b.maxPercent);
-  return match?.label ?? "—";
-}
-
-/** Compute final % for a subject row: manualMarksPct takes precedence over autoMarksPct. */
-export function finalPct(row: { autoMarksPct?: number | null; manualMarksPct?: number | null }): number | null {
-  if (row.manualMarksPct != null) return row.manualMarksPct;
-  return row.autoMarksPct ?? null;
-}
 
 export type TranscriptWithDetails = Awaited<ReturnType<typeof getTranscriptById>>;
 
@@ -80,8 +66,10 @@ export async function computeAutoMarks(studentId: string, programId: string): Pr
 }
 
 /** Compute overall average from subject rows that have a final %. */
-export function computeOverallAvg(subjects: { finalMarksPct?: number | null }[]): number | null {
-  const valid = subjects.map((s) => s.finalMarksPct).filter((v): v is number => v != null);
+export function computeOverallAvg(
+  subjects: { finalMarksPct?: number | null; autoMarksPct?: number | null; manualMarksPct?: number | null }[]
+): number | null {
+  const valid = subjects.map((s) => s.finalMarksPct ?? finalPct(s)).filter((v): v is number => v != null);
   if (valid.length === 0) return null;
   return Math.round((valid.reduce((s, v) => s + v, 0) / valid.length) * 10) / 10;
 }

@@ -5,6 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { X, Download } from "lucide-react";
 import Image from "next/image";
+import type { TranscriptInstitutionBranding } from "@/lib/transcript-institution";
+import { transcriptInstitutionFromProfile } from "@/lib/transcript-institution";
+import {
+  DEFAULT_TRANSCRIPT_GRADE_BANDS,
+  type GradeBandRow,
+  finalPct,
+  resolveGrade,
+  transcriptSubjectGrade,
+} from "@/lib/transcript-grade";
 
 type SubjectRow = {
   id: string;
@@ -49,22 +58,7 @@ type TranscriptDetail = {
   subjects: SubjectRow[];
 };
 
-type GradeBand = {
-  id: string;
-  label: string;
-  minPercent: number;
-  maxPercent: number;
-  gradePoint: number | null;
-};
-
-type InstitutionInfo = {
-  name: string | null;
-  address: string | null;
-  website: string | null;
-  logoUrl: string | null;
-  phone: string | null;
-  email: string | null;
-};
+type InstitutionBranding = TranscriptInstitutionBranding;
 
 function fmtDate(s: string | null | undefined) {
   if (!s) return "—";
@@ -94,8 +88,8 @@ interface Props {
 
 export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Props) {
   const [transcript, setTranscript] = useState<TranscriptDetail | null>(null);
-  const [bands, setBands] = useState<GradeBand[]>([]);
-  const [institution, setInstitution] = useState<InstitutionInfo | null>(null);
+  const [bands, setBands] = useState<GradeBandRow[]>([]);
+  const [institution, setInstitution] = useState<InstitutionBranding | null>(null);
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -111,7 +105,7 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
         ),
       ]);
       setTranscript((tdRes.transcript as TranscriptDetail) || null);
-      setBands((bdRes.bands as GradeBand[]) || []);
+      setBands((bdRes.bands as GradeBandRow[]) || []);
     } catch {
       // silent
     } finally {
@@ -122,7 +116,7 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
       const instRes = await fetch("/api/institution-info").then((r) =>
         r.ok ? r.json() : ({} as Record<string, unknown>)
       );
-      setInstitution(instRes as InstitutionInfo);
+      setInstitution((instRes as InstitutionBranding) || null);
     } catch {
       // optional — transcript still renders without institution branding
     }
@@ -132,8 +126,9 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
     void load();
   }, [load]);
 
-  const collegeName =
-    institution?.name || process.env.NEXT_PUBLIC_COLLEGE_NAME || "Intellee College";
+  const inst = institution ?? transcriptInstitutionFromProfile({});
+
+  const collegeName = inst.name || process.env.NEXT_PUBLIC_COLLEGE_NAME || "Intellee College";
   const studentAddress = transcript
     ? [
         transcript.student.address,
@@ -188,9 +183,9 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
             <div className="flex items-center justify-between gap-4 mb-1">
               {/* Logo — height matches the college name text block (~56px) */}
               <div className="flex-shrink-0 flex items-center">
-                {institution?.logoUrl ? (
+                {inst.logoUrl ? (
                   <Image
-                    src={institution.logoUrl}
+                    src={inst.logoUrl}
                     alt={collegeName}
                     width={240}
                     height={56}
@@ -206,23 +201,20 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
                 )}
               </div>
 
-              {/* College name + subtitle */}
+              {/* Report title */}
               <div className="flex-1 text-center">
-                <p className="text-2xl font-extrabold text-indigo-900 leading-tight">
-                  {collegeName}
-                </p>
-                <p className="text-xs text-gray-500 mt-0.5 uppercase tracking-widest">
+                <p className="text-lg font-extrabold text-indigo-900 uppercase tracking-widest leading-tight">
                   Transcript of Academic Record
                 </p>
               </div>
 
               {/* Institution address top-right */}
-              <div className="flex-shrink-0 text-right text-xs text-gray-500 max-w-[200px] leading-relaxed">
-                {institution?.address && (
-                  <p className="whitespace-pre-line">{institution.address}</p>
-                )}
-                {institution?.phone && <p>{institution.phone}</p>}
-                {institution?.email && <p>{institution.email}</p>}
+              <div className="flex-shrink-0 text-right text-xs text-gray-500 max-w-[220px] leading-relaxed space-y-0.5">
+                {inst.phone ? <p>{inst.phone}</p> : null}
+                {[inst.email, inst.website].filter(Boolean).length > 0 ? (
+                  <p>{[inst.email, inst.website].filter(Boolean).join(" | ")}</p>
+                ) : null}
+                {inst.address ? <p className="whitespace-pre-line">{inst.address}</p> : null}
               </div>
             </div>
 
@@ -308,7 +300,8 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
               </thead>
               <tbody>
                 {transcript.subjects.map((s, i) => {
-                  const displayGrade = s.grade && s.grade !== "" ? s.grade : "—";
+                  const markPct = s.finalMarksPct ?? finalPct(s);
+                  const displayGrade = transcriptSubjectGrade(s, bands);
                   return (
                     <tr
                       key={s.id}
@@ -328,8 +321,8 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
                         )}
                       </td>
                       <td className="px-3 py-2.5 text-right font-semibold align-top">
-                        {s.finalMarksPct != null ? (
-                          `${s.finalMarksPct}%`
+                        {markPct != null ? (
+                          `${markPct}%`
                         ) : (
                           <span className="text-gray-400 font-normal">WD</span>
                         )}
@@ -347,9 +340,9 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
 
             {/* ── SUMMARY + GRADE BANDS SIDE BY SIDE ── */}
             {(() => {
-              // FAIL if any subject has F grade (regardless of overall avg)
+              const legendBands = bands.length > 0 ? bands : DEFAULT_TRANSCRIPT_GRADE_BANDS;
               const hasAnyFail = transcript.subjects.some((s) =>
-                isFailGrade(s.grade || "")
+                isFailGrade(transcriptSubjectGrade(s, bands))
               );
               const isPassing =
                 !hasAnyFail &&
@@ -383,22 +376,29 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
                   label="Credential Awarded"
                   value={transcript.credential || "Not Awarded"}
                 />
-                {transcript.remarks && (
-                  <p className="text-xs text-gray-400 italic pt-1 border-t border-gray-200 mt-2">
-                    {transcript.remarks}
-                  </p>
-                )}
+                {transcript.overallAvgPct != null && (() => {
+                  const awardedGrade = resolveGrade(transcript.overallAvgPct, bands);
+                  if (!awardedGrade || awardedGrade === "—") return null;
+                  return (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-500 w-40 shrink-0">Grade</span>
+                      <span className={`font-bold ${gradeColor(awardedGrade)}`}>
+                        {awardedGrade}
+                      </span>
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Grade bands legend */}
-              {bands.length > 0 && (
+              {legendBands.length > 0 && (
                 <div className="border border-gray-200 rounded-xl p-4 min-w-[180px]">
                   <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">
                     Grade Scale
                   </p>
                   <table className="text-xs w-full">
                     <tbody>
-                      {bands.map((b) => (
+                      {legendBands.map((b) => (
                         <tr key={b.id} className="border-b border-gray-50 last:border-0">
                           <td
                             className={`font-bold py-0.5 pr-3 w-10 ${gradeColor(b.label)}`}
@@ -423,7 +423,7 @@ export function TranscriptPreviewModal({ apiPrefix, transcriptId, onClose }: Pro
               <span className="font-semibold text-gray-500 tracking-wide uppercase">
                 Confidential
               </span>
-              <span>{institution?.website || ""}</span>
+              <span>{inst.website}</span>
             </div>
           </div>
         )}

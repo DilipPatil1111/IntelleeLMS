@@ -1,6 +1,6 @@
 import { requireTeacherPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
-import { computeOverallAvg, finalPct, getTranscriptById, resolveGrade } from "@/lib/transcript";
+import { computeOverallAvg, finalPct, getTranscriptById, resolveGrade, transcriptSubjectGrade } from "@/lib/transcript";
 import { NextResponse } from "next/server";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -20,7 +20,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     ...transcript,
     subjects: transcript.subjects.map((s) => ({
       ...s,
-      grade: resolveGrade(s.finalMarksPct, bands),
+      grade: transcriptSubjectGrade(s, bands),
     })),
   };
   return NextResponse.json({ transcript: fresh });

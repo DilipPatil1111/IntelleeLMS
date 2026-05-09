@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { hasStudentPortalAccess } from "@/lib/portal-access";
 import { db } from "@/lib/db";
-import { resolveGrade } from "@/lib/transcript";
+import { transcriptSubjectGrade } from "@/lib/transcript";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -28,7 +28,7 @@ export async function GET() {
     ...t,
     subjects: t.subjects.map((s) => ({
       ...s,
-      grade: resolveGrade(s.finalMarksPct, bands),
+      grade: transcriptSubjectGrade(s, bands),
     })),
   }));
 

@@ -1,15 +1,14 @@
 import { Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 import type { TranscriptWithDetails } from "@/lib/transcript";
-import type { GradeBandRow } from "@/lib/transcript";
-
-export type TranscriptInstitutionInfo = {
-  name: string | null;
-  address: string | null;
-  website: string | null;
-  logoUrl: string | null;
-  phone: string | null;
-  email: string | null;
-};
+import type { TranscriptInstitutionBranding } from "@/lib/transcript-institution";
+import { transcriptInstitutionFromProfile } from "@/lib/transcript-institution";
+import {
+  DEFAULT_TRANSCRIPT_GRADE_BANDS,
+  type GradeBandRow,
+  finalPct,
+  resolveGrade,
+  transcriptSubjectGrade,
+} from "@/lib/transcript-grade";
 
 const INDIGO = "#312e81";
 const INDIGO_MID = "#4f46e5";
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
   logoInitial: { fontSize: 20, fontWeight: "bold", color: INDIGO },
   headerCenter: { flex: 1, alignItems: "center" },
   collegeName: { fontSize: 16, fontWeight: "bold", color: INDIGO, textAlign: "center" },
-  reportTitle: { fontSize: 7.5, color: GRAY_MED, marginTop: 2, letterSpacing: 1, textAlign: "center", textTransform: "uppercase" },
+  reportTitle: { fontSize: 11, color: INDIGO, fontWeight: "bold", letterSpacing: 1.2, textAlign: "center", textTransform: "uppercase" },
   headerRight: { flexShrink: 0, alignItems: "flex-end", maxWidth: 160 },
   addressLine: { fontSize: 7, color: GRAY_MED, textAlign: "right", lineHeight: 1.6 },
 
@@ -110,14 +109,6 @@ function fmt(d: Date | string | null | undefined) {
   }
 }
 
-/** Resolve grade from bands at render time (doesn't rely on stored grade). */
-function liveGrade(pct: number | null | undefined, bands: GradeBandRow[]): string {
-  if (pct == null) return "—";
-  const sorted = [...bands].sort((a, b) => b.minPercent - a.minPercent);
-  const match = sorted.find((b) => pct >= b.minPercent && pct <= b.maxPercent);
-  return match?.label ?? "—";
-}
-
 function isFailGrade(g: string): boolean {
   const u = g.trim().toUpperCase();
   return u.startsWith("F") || u === "WD";
@@ -132,11 +123,11 @@ function gradeTextStyle(g: string) {
 export function TranscriptPdf({
   transcript,
   bands,
-  institution,
+  institution = transcriptInstitutionFromProfile({}),
 }: {
   transcript: NonNullable<TranscriptWithDetails>;
   bands: GradeBandRow[];
-  institution?: TranscriptInstitutionInfo | null;
+  institution?: TranscriptInstitutionBranding;
 }) {
   const { student, program, batch, subjects } = transcript;
   const studentName = `${student.firstName} ${student.lastName}`;
@@ -150,23 +141,19 @@ export function TranscriptPdf({
     .filter(Boolean)
     .join(", ");
 
-  const collegeName =
-    institution?.name || process.env.NEXT_PUBLIC_COLLEGE_NAME || "Intellee College";
+  const inst = institution;
+  const collegeName = inst.name || process.env.NEXT_PUBLIC_COLLEGE_NAME || "Intellee College";
   const collegeInitial = collegeName.charAt(0).toUpperCase();
 
   const dateOfIssue = transcript.publishedAt
     ? fmt(transcript.publishedAt)
     : "Not yet issued";
 
-  const instAddressLines = [
-    institution?.address,
-    institution?.phone,
-    institution?.email,
-  ]
-    .filter(Boolean)
-    .join("\n");
+  const emailBar = [inst.email, inst.website].filter((x) => x?.trim()).join(" | ");
+  const instHeaderRight = [inst.phone, emailBar, inst.address].filter(Boolean).join("\n");
 
-  const websiteText = institution?.website || process.env.NEXT_PUBLIC_COLLEGE_WEBSITE || "";
+  const websiteText = inst.website || process.env.NEXT_PUBLIC_COLLEGE_WEBSITE || "";
+  const legendBands = bands.length > 0 ? bands : DEFAULT_TRANSCRIPT_GRADE_BANDS;
 
   return (
     <Document>
@@ -175,9 +162,9 @@ export function TranscriptPdf({
         <View style={styles.headerRow}>
           {/* Logo */}
           <View style={styles.logoBox}>
-            {institution?.logoUrl ? (
+            {inst.logoUrl ? (
               <Image
-                src={institution.logoUrl}
+                src={inst.logoUrl}
                 style={{ width: 120, height: 40, objectFit: "contain" }}
               />
             ) : (
@@ -187,16 +174,15 @@ export function TranscriptPdf({
             )}
           </View>
 
-          {/* Centre: college name */}
+          {/* Centre: report title */}
           <View style={styles.headerCenter}>
-            <Text style={styles.collegeName}>{collegeName}</Text>
             <Text style={styles.reportTitle}>Transcript of Academic Record</Text>
           </View>
 
-          {/* Right: institution address */}
-          {instAddressLines ? (
+          {/* Right: phone, email | website, address */}
+          {instHeaderRight ? (
             <View style={styles.headerRight}>
-              <Text style={styles.addressLine}>{instAddressLines}</Text>
+              <Text style={styles.addressLine}>{instHeaderRight}</Text>
             </View>
           ) : null}
         </View>
@@ -299,8 +285,8 @@ export function TranscriptPdf({
         </View>
 
         {subjects.map((s, i) => {
-          const mark = s.finalMarksPct;
-          const grade = liveGrade(mark, bands);
+          const markPct = s.finalMarksPct ?? finalPct(s);
+          const grade = transcriptSubjectGrade(s, bands);
           return (
             <View
               key={s.id}
@@ -321,7 +307,7 @@ export function TranscriptPdf({
                 ) : null}
               </View>
               <Text style={[{ fontSize: 8 }, styles.colMark]}>
-                {mark != null ? `${mark}%` : "WD"}
+                {markPct != null ? `${markPct}%` : "WD"}
               </Text>
               <Text style={[{ fontSize: 8.5 }, styles.colGrade, gradeTextStyle(grade)]}>
                 {grade}
@@ -333,7 +319,7 @@ export function TranscriptPdf({
         {/* ── SUMMARY + GRADE BANDS ── */}
         {(() => {
           // FAIL if any subject has F grade (takes priority over overall avg)
-          const hasAnyFail = subjects.some((s) => isFailGrade(liveGrade(s.finalMarksPct, bands)));
+          const hasAnyFail = subjects.some((s) => isFailGrade(transcriptSubjectGrade(s, bands)));
           const isPassing =
             !hasAnyFail &&
             transcript.overallAvgPct != null &&
@@ -364,21 +350,26 @@ export function TranscriptPdf({
                 {transcript.credential || "Not Awarded"}
               </Text>
             </View>
-            {transcript.remarks ? (
-              <View style={[styles.summaryRow, { marginTop: 6 }]}>
-                <Text style={{ fontSize: 7.5, color: GRAY_MED, fontStyle: "italic" }}>
-                  {transcript.remarks}
-                </Text>
-              </View>
-            ) : null}
+            {transcript.overallAvgPct != null && (() => {
+              const awardedGrade = resolveGrade(transcript.overallAvgPct, bands);
+              if (!awardedGrade || awardedGrade === "—") return null;
+              return (
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryLabel}>Grade</Text>
+                  <Text style={[styles.summaryValue, gradeTextStyle(awardedGrade)]}>
+                    {awardedGrade}
+                  </Text>
+                </View>
+              );
+            })()}
           </View>
 
           {/* Grade band legend */}
-          {bands.length > 0 && (
+          {legendBands.length > 0 && (
             <View style={styles.summaryRight}>
               <View style={styles.gradeBandBox}>
                 <Text style={styles.gbTitle}>Grade Scale</Text>
-                {bands.map((b) => (
+                {legendBands.map((b) => (
                   <View key={b.id} style={styles.gbRow}>
                     <Text style={[styles.gbLabel, gradeTextStyle(b.label)]}>
                       {b.label}

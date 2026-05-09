@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { getOrCreateInstitutionProfile } from "@/lib/institution-profile";
+import { transcriptInstitutionFromProfile } from "@/lib/transcript-institution";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -11,12 +12,5 @@ export async function GET() {
 
   const profile = await getOrCreateInstitutionProfile();
 
-  return NextResponse.json({
-    name: profile.legalName ?? null,
-    address: profile.permanentAddress ?? profile.mailingAddress ?? null,
-    website: profile.website ?? null,
-    logoUrl: profile.logoUrl ?? null,
-    phone: profile.phone ?? null,
-    email: profile.email ?? null,
-  });
+  return NextResponse.json(transcriptInstitutionFromProfile(profile));
 }

@@ -2,6 +2,7 @@ import { requirePrincipalPortal } from "@/lib/api-auth";
 import { db } from "@/lib/db";
 import { getTranscriptById } from "@/lib/transcript";
 import { getOrCreateInstitutionProfile } from "@/lib/institution-profile";
+import { transcriptInstitutionFromProfile } from "@/lib/transcript-institution";
 import { TranscriptPdf } from "@/components/pdf/transcript-pdf";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { NextResponse } from "next/server";
@@ -22,14 +23,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   if (!transcript) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const institution = {
-    name: profile.legalName ?? null,
-    address: profile.permanentAddress ?? profile.mailingAddress ?? null,
-    website: profile.website ?? null,
-    logoUrl: profile.logoUrl ?? null,
-    phone: profile.phone ?? null,
-    email: profile.email ?? null,
-  };
+  const institution = transcriptInstitutionFromProfile(profile);
 
   const rendered = await renderToBuffer(
     <TranscriptPdf transcript={transcript} bands={bands} institution={institution} />
